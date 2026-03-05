@@ -1,0 +1,18 @@
+export type Role = "student" | "lecturer" | "admin";
+
+export interface RoleOption {
+  value: Role;
+  label: string;
+  icon: string;
+  activeColor: string;
+  activeBg: string;
+  activeRing: string;
+  activeText: string;
+}
+
+export interface LoginFormData {
+  identifier: string;
+  password: string;
+  rememberMe: boolean;
+  role: Role;
+}
