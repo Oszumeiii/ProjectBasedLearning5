@@ -9,7 +9,7 @@ import LoginPage from "../features/auth/pages/LoginPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/dashboard" replace />, // Tự động chuyển hướng root về dashboard
+    element: <Navigate to="/login" replace />, // Tự động chuyển hướng root về dashboard
   },
   {
     path: "/dashboard",
