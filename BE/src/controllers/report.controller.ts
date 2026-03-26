@@ -49,7 +49,7 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
         r.view_count,
         r.created_at,
         r.author_id,
-        u.name AS author_name,
+        u.full_name AS author_name,
         u.email AS author_email,
         COALESCE(AVG(rr.rating), 0) AS avg_rating,
         COUNT(rr.id) AS rating_count
@@ -57,7 +57,7 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
       LEFT JOIN users u ON u.id = r.author_id
       LEFT JOIN report_ratings rr ON rr.report_id = r.id
       ${whereClause}
-      GROUP BY r.id, u.name, u.email
+      GROUP BY r.id, u.full_name, u.email
       ${orderBy}
       LIMIT $${params.length + 1} OFFSET $${params.length + 2}
     `
@@ -105,7 +105,7 @@ export const getReportById = async (req: Request, res: Response): Promise<void> 
          r.project_id,
          r.created_at,
          r.author_id,
-         u.name AS author_name,
+         u.full_name AS author_name,
          u.email AS author_email,
          COALESCE(AVG(rr.rating), 0) AS avg_rating,
          COUNT(rr.id) AS rating_count
@@ -113,7 +113,7 @@ export const getReportById = async (req: Request, res: Response): Promise<void> 
        LEFT JOIN users u ON u.id = r.author_id
        LEFT JOIN report_ratings rr ON rr.report_id = r.id
        WHERE r.id = $1
-       GROUP BY r.id, u.name, u.email`,
+       GROUP BY r.id, u.full_name, u.email`,
       [id]
     )
 
@@ -168,7 +168,7 @@ export const createReport = async (req: Request, res: Response): Promise<void> =
 
     const result = await pool.query(
       `INSERT INTO reports (title, description, content, file_url, visibility, project_id, author_id, course_id)
-       VALUES ($1, $2, $3, $4, COALESCE($5, 'public'), $6, $7, $8)
+       VALUES ($1, $2, $3, $4, COALESCE($5, 'course'), $6, $7, $8)
        RETURNING id, title, description, content, file_url, visibility, project_id, author_id, course_id, created_at, view_count`,
       [
         title,
@@ -184,8 +184,8 @@ export const createReport = async (req: Request, res: Response): Promise<void> =
 
     // Lấy tên tác giả để trả về
     const report = result.rows[0]
-    const userResult = await pool.query('SELECT name, email FROM users WHERE id = $1', [authorId])
-    report.author_name = userResult.rows[0]?.name ?? null
+    const userResult = await pool.query('SELECT full_name, email FROM users WHERE id = $1', [authorId])
+    report.author_name = userResult.rows[0]?.full_name ?? null
     report.author_email = userResult.rows[0]?.email ?? null
 
     res.status(201).json(report)

@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 
 import authRoutes from './routes/auth.routes'
+import adminRoutes from './routes/admin.routes'
 import reportRoutes from './routes/report.routes'
 import ragRoutes from './routes/rag.routes'
 import statsRoutes from './routes/stats.routes'
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
+app.use('/api/admin', adminRoutes)
 app.use('/api/reports', reportRoutes)
 app.use('/api/rag', ragRoutes)
 app.use('/api/stats', statsRoutes)
