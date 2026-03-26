@@ -1,6 +1,7 @@
 import app from './app'
 import { testConnection } from './config/db'
 import { PORT } from './config/env'
+import { startScheduler } from './jobs/scheduler'
 
 const name: string = 'Project Based Learning 5'
 console.log(`Welcome to ${name}`)
@@ -11,6 +12,8 @@ async function bootstrap() {
     console.error('❌ Cannot connect to database, exiting...')
     process.exit(1)
   }
+
+  startScheduler()
 
   app.listen(PORT, () => {
     console.log(`🚀 App is ready! Listening on http://localhost:${PORT}`)
