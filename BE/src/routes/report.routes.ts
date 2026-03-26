@@ -25,12 +25,12 @@ router.get('/:id', authMiddleware, getReportById)
 // Tạo — tất cả user đã đăng nhập (report gắn với project)
 router.post('/', authMiddleware, createReport)
 
-// Sửa/xóa — chỉ chủ report (student) hoặc lecturer/admin
+// Sửa/xóa — chủ báo cáo (SV) hoặc GV / quản lý khoa / admin
 router.put('/:id', authMiddleware, requireOwnership, updateReport)
 router.delete('/:id', authMiddleware, requireOwnership, deleteReport)
 
-// Đánh giá — chỉ lecturer và admin
-router.post('/:id/rating', authMiddleware, requireRole('lecturer', 'admin'), upsertRating)
+// Đánh giá — GV, quản lý khoa, admin
+router.post('/:id/rating', authMiddleware, requireRole('lecturer', 'manager', 'admin'), upsertRating)
 router.get('/:id/ratings', authMiddleware, getRatings)
 
 // Yêu thích — tất cả user đã đăng nhập

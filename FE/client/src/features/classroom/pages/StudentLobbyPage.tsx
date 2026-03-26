@@ -1,5 +1,5 @@
 // src/features/classroom/pages/StudentLobbyPage.tsx
-import { ClassCard } from "../components/ClassCard";
+import { ClassCard } from "../components/StudentClassCard";
 import { School, LayoutGrid, List } from "lucide-react";
 
 export const StudentLobbyPage = () => {
