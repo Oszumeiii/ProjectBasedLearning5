@@ -7,6 +7,7 @@ const app_1 = __importDefault(require("./app"));
 const db_1 = require("./config/db");
 const env_1 = require("./config/env");
 const scheduler_1 = require("./jobs/scheduler");
+const storage_service_1 = require("./services/storage.service");
 const name = 'Project Based Learning 5';
 console.log(`Welcome to ${name}`);
 async function bootstrap() {
@@ -16,6 +17,13 @@ async function bootstrap() {
         process.exit(1);
     }
     (0, scheduler_1.startScheduler)();
+    try {
+        await (0, storage_service_1.ensureBucket)();
+        console.log('✅ MinIO bucket ready');
+    }
+    catch (err) {
+        console.warn('⚠️ MinIO not available — file upload sẽ không hoạt động:', err.message);
+    }
     app_1.default.listen(env_1.PORT, () => {
         console.log(`🚀 App is ready! Listening on http://localhost:${env_1.PORT}`);
     });
