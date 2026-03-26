@@ -1,10 +1,12 @@
 import type { Request, Response } from 'express'
 import pool from '../config/db'
+import { isCourseModerator } from '../utils/roles'
 
 // ==================== CRUD Lớp học phần ====================
 
 /**
- * Tạo lớp học phần (Lecturer / Admin)
+ * Tạo lớp học phần (GV / quản lý khoa / admin).
+ * Loại `thesis` chỉ manager hoặc admin (theo quy ước EduRAG).
  */
 export const createCourse = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -13,36 +15,60 @@ export const createCourse = async (req: Request, res: Response): Promise<void> =
       return
     }
 
-    const { name, code, description, semester } = req.body as {
+    const { name, code, description, semester, academicYear, courseType } = req.body as {
       name?: string
       code?: string
       description?: string
       semester?: string
+      academicYear?: string
+      courseType?: string
     }
 
-    if (!name || !code) {
-      res.status(400).json({ message: 'name và code là bắt buộc' })
+    if (!name || !code || !semester?.trim() || !academicYear?.trim()) {
+      res.status(400).json({ message: 'name, code, semester và academicYear là bắt buộc' })
       return
     }
 
-    // Kiểm tra code đã tồn tại chưa
-    const existing = await pool.query('SELECT id FROM courses WHERE code = $1', [code])
+    const ctype = (courseType ?? 'project').toLowerCase()
+    const allowedTypes = ['project', 'thesis', 'research', 'internship'] as const
+    if (!allowedTypes.includes(ctype as (typeof allowedTypes)[number])) {
+      res.status(400).json({ message: 'courseType phải là: project | thesis | research | internship' })
+      return
+    }
+
+    if (ctype === 'thesis' && req.user.role !== 'manager' && req.user.role !== 'admin') {
+      res.status(403).json({ message: 'Chỉ quản lý khoa (manager) hoặc admin được tạo lớp loại khóa luận (thesis)' })
+      return
+    }
+
+    const existing = await pool.query('SELECT id FROM courses WHERE code = $1 AND deleted_at IS NULL', [code])
     if (existing.rows.length > 0) {
       res.status(409).json({ message: `Mã lớp "${code}" đã tồn tại` })
       return
     }
 
     const result = await pool.query(
-      `INSERT INTO courses (name, code, description, semester, lecturer_id)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO courses (
+         name, code, description, semester, academic_year, course_type,
+         lecturer_id, created_by
+       )
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [name, code, description ?? null, semester ?? null, req.user.id]
+      [
+        name,
+        code,
+        description ?? null,
+        semester.trim(),
+        academicYear.trim(),
+        ctype,
+        req.user.id,
+        req.user.id
+      ]
     )
 
-    // Lấy tên lecturer
-    const lecturer = await pool.query('SELECT name, email FROM users WHERE id = $1', [req.user.id])
+    const lecturer = await pool.query('SELECT full_name, email FROM users WHERE id = $1', [req.user.id])
     const course = result.rows[0]
-    course.lecturer_name = lecturer.rows[0]?.name ?? null
+    course.lecturer_name = lecturer.rows[0]?.full_name ?? null
 
     res.status(201).json(course)
   } catch (error) {
@@ -55,7 +81,7 @@ export const createCourse = async (req: Request, res: Response): Promise<void> =
  * Danh sách lớp học phần
  * - Lecturer: thấy lớp mình tạo
  * - Student: thấy lớp đã enroll
- * - Admin: thấy tất cả
+ * - Admin / manager: thấy tất cả
  */
 export const listCourses = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -67,41 +93,42 @@ export const listCourses = async (req: Request, res: Response): Promise<void> =>
     let sql: string
     let params: unknown[]
 
-    if (req.user.role === 'admin') {
+    if (isCourseModerator(req.user.role)) {
       sql = `
-        SELECT c.*, u.name AS lecturer_name, u.email AS lecturer_email,
+        SELECT c.*, u.full_name AS lecturer_name, u.email AS lecturer_email,
                COUNT(e.id)::int AS student_count
         FROM courses c
         LEFT JOIN users u ON u.id = c.lecturer_id
         LEFT JOIN enrollments e ON e.course_id = c.id
-        GROUP BY c.id, u.name, u.email
+        WHERE c.deleted_at IS NULL
+        GROUP BY c.id, u.full_name, u.email
         ORDER BY c.created_at DESC
       `
       params = []
     } else if (req.user.role === 'lecturer') {
       sql = `
-        SELECT c.*, u.name AS lecturer_name, u.email AS lecturer_email,
+        SELECT c.*, u.full_name AS lecturer_name, u.email AS lecturer_email,
                COUNT(e.id)::int AS student_count
         FROM courses c
         LEFT JOIN users u ON u.id = c.lecturer_id
         LEFT JOIN enrollments e ON e.course_id = c.id
-        WHERE c.lecturer_id = $1
-        GROUP BY c.id, u.name, u.email
+        WHERE c.lecturer_id = $1 AND c.deleted_at IS NULL
+        GROUP BY c.id, u.full_name, u.email
         ORDER BY c.created_at DESC
       `
       params = [req.user.id]
     } else {
       // Student: lớp mình đã enroll
       sql = `
-        SELECT c.*, u.name AS lecturer_name, u.email AS lecturer_email,
+        SELECT c.*, u.full_name AS lecturer_name, u.email AS lecturer_email,
                e.enrolled_at,
                COUNT(e2.id)::int AS student_count
         FROM enrollments e
         JOIN courses c ON c.id = e.course_id
         LEFT JOIN users u ON u.id = c.lecturer_id
         LEFT JOIN enrollments e2 ON e2.course_id = c.id
-        WHERE e.student_id = $1
-        GROUP BY c.id, u.name, u.email, e.enrolled_at
+        WHERE e.student_id = $1 AND c.deleted_at IS NULL
+        GROUP BY c.id, u.full_name, u.email, e.enrolled_at
         ORDER BY e.enrolled_at DESC
       `
       params = [req.user.id]
@@ -129,10 +156,10 @@ export const getCourseById = async (req: Request, res: Response): Promise<void> 
 
     // Lấy thông tin lớp
     const courseResult = await pool.query(
-      `SELECT c.*, u.name AS lecturer_name, u.email AS lecturer_email
+      `SELECT c.*, u.full_name AS lecturer_name, u.email AS lecturer_email
        FROM courses c
        LEFT JOIN users u ON u.id = c.lecturer_id
-       WHERE c.id = $1`,
+       WHERE c.id = $1 AND c.deleted_at IS NULL`,
       [id]
     )
 
@@ -160,7 +187,7 @@ export const getCourseById = async (req: Request, res: Response): Promise<void> 
 
     // Danh sách sinh viên trong lớp
     const studentsResult = await pool.query(
-      `SELECT u.id, u.name, u.email, u.major, e.enrolled_at
+      `SELECT u.id, u.full_name, u.email, u.major, e.enrolled_at
        FROM enrollments e
        JOIN users u ON u.id = e.student_id
        WHERE e.course_id = $1
@@ -219,7 +246,7 @@ export const updateCourse = async (req: Request, res: Response): Promise<void> =
        SET name = COALESCE($1, name),
            description = COALESCE($2, description),
            semester = COALESCE($3, semester)
-       WHERE id = $4
+       WHERE id = $4 AND deleted_at IS NULL
        RETURNING *`,
       [name ?? null, description ?? null, semester ?? null, id]
     )
@@ -261,14 +288,17 @@ export const deleteCourse = async (req: Request, res: Response): Promise<void> =
       }
     }
 
-    const result = await pool.query('DELETE FROM courses WHERE id = $1 RETURNING id', [id])
+    const result = await pool.query(
+      'UPDATE courses SET deleted_at = NOW() WHERE id = $1 AND deleted_at IS NULL RETURNING id',
+      [id]
+    )
 
     if (result.rows.length === 0) {
       res.status(404).json({ message: 'Course not found' })
       return
     }
 
-    res.json({ message: 'Course deleted' })
+    res.json({ message: 'Course archived (soft delete)' })
   } catch (error) {
     console.error('❌ Error in deleteCourse:', error)
     res.status(500).json({ message: 'Internal server error' })
@@ -321,7 +351,10 @@ export const enrollStudent = async (req: Request, res: Response): Promise<void> 
     }
 
     // Kiểm tra user có phải student không
-    const userCheck = await pool.query('SELECT id, name, email, role FROM users WHERE id = $1', [targetStudentId])
+    const userCheck = await pool.query(
+      'SELECT id, full_name, email, role FROM users WHERE id = $1 AND deleted_at IS NULL',
+      [targetStudentId]
+    )
     if (userCheck.rows.length === 0) {
       res.status(404).json({ message: 'User not found' })
       return
@@ -347,7 +380,7 @@ export const enrollStudent = async (req: Request, res: Response): Promise<void> 
 
     res.status(201).json({
       ...result.rows[0],
-      student_name: userCheck.rows[0].name,
+      student_name: userCheck.rows[0].full_name,
       student_email: userCheck.rows[0].email
     })
   } catch (error) {
@@ -411,15 +444,15 @@ export const getMyEnrollments = async (req: Request, res: Response): Promise<voi
 
     const result = await pool.query(
       `SELECT c.id, c.name, c.code, c.description, c.semester,
-              u.name AS lecturer_name, u.email AS lecturer_email,
+              u.full_name AS lecturer_name, u.email AS lecturer_email,
               e.enrolled_at,
               COUNT(e2.id)::int AS student_count
        FROM enrollments e
        JOIN courses c ON c.id = e.course_id
        LEFT JOIN users u ON u.id = c.lecturer_id
        LEFT JOIN enrollments e2 ON e2.course_id = c.id
-       WHERE e.student_id = $1
-       GROUP BY c.id, u.name, u.email, e.enrolled_at
+       WHERE e.student_id = $1 AND c.deleted_at IS NULL
+       GROUP BY c.id, u.full_name, u.email, e.enrolled_at
        ORDER BY e.enrolled_at DESC`,
       [req.user.id]
     )
