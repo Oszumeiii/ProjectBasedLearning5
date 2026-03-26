@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const db_1 = require("./config/db");
 const env_1 = require("./config/env");
+const scheduler_1 = require("./jobs/scheduler");
 const name = 'Project Based Learning 5';
 console.log(`Welcome to ${name}`);
 async function bootstrap() {
@@ -14,6 +15,7 @@ async function bootstrap() {
         console.error('❌ Cannot connect to database, exiting...');
         process.exit(1);
     }
+    (0, scheduler_1.startScheduler)();
     app_1.default.listen(env_1.PORT, () => {
         console.log(`🚀 App is ready! Listening on http://localhost:${env_1.PORT}`);
     });
