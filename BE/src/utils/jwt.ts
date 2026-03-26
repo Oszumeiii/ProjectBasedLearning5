@@ -1,7 +1,8 @@
-import jwt from 'jsonwebtoken'
-import { JWT_SECRET } from '../config/env'
+import jwt, { type SignOptions } from 'jsonwebtoken'
+import { JWT_EXPIRES_IN, JWT_SECRET } from '../config/env'
 
-export type UserRole = 'student' | 'lecturer' | 'admin'
+/** Khớp CHECK (role IN (...)) trong bảng users */
+export type UserRole = 'student' | 'lecturer' | 'manager' | 'admin'
 
 export interface JwtPayload {
   userId: number
@@ -16,9 +17,8 @@ export const createToken = (userId: number, email: string, role: UserRole): stri
 
   const payload: JwtPayload = { userId, email, role }
 
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: '1h'
-  })
+  const signOptions = { expiresIn: JWT_EXPIRES_IN } as SignOptions
+  return jwt.sign(payload, JWT_SECRET, signOptions)
 }
 
 export const verifyToken = (token: string): JwtPayload => {
