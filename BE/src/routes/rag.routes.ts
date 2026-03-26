@@ -6,7 +6,7 @@ import { ragQA, semanticSearch, storeEmbeddings } from '../controllers/rag.contr
 const router = Router()
 
 // Store embeddings — chỉ lecturer + admin
-router.post('/embeddings', authMiddleware, requireRole('lecturer', 'admin'), storeEmbeddings)
+router.post('/embeddings', authMiddleware, requireRole('lecturer', 'manager', 'admin'), storeEmbeddings)
 
 // Search & QA — tất cả user đã đăng nhập
 router.post('/search', authMiddleware, semanticSearch)

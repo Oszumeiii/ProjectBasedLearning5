@@ -5,7 +5,7 @@ declare module 'express-serve-static-core' {
     user?: {
       id: number
       email: string
-      role: 'student' | 'lecturer' | 'admin'
+      role: 'student' | 'lecturer' | 'manager' | 'admin'
     }
   }
 }

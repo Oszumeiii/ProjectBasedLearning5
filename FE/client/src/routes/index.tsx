@@ -1,34 +1,47 @@
-// src/routes/index.tsx (hoặc AppRouter.tsx)
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+
+// Layouts
+import { StudentLayout } from "../layouts/StudentLayout";
+import InstructorLayout from "../layouts/InstructorLayout";
+
+// Auth Pages
 import LoginPage from "../features/auth/pages/LoginPage";
-import { StudentLayout } from "../layouts/StudentLayout"; // Import Layout tổng thể
-import { StudentLobbyPage } from "../features/classroom/pages/StudentLobbyPage"; // Import trang Lobby
-import { ClassroomDetailPage } from "../features/classroom/pages/ClassroomDetailPage"; // Import trang Classroom Detail
-import { AssignmentSubmissionPage } from "../features/classroom/pages/AssignmentSubmissionPage"; // Import trang Assignment Submission
-import { AcademicLibraryPage } from "../features/classroom/pages/AcademicLibraryPage"; // Import trang Material Library
-import { AnalysisFeedbackPage } from "../features/classroom/pages/AnalysisFeedbackPage"; // Import trang Feedback (nếu có)
+
+// Student Pages
+import { StudentLobbyPage } from "../features/classroom/pages/StudentLobbyPage";
+import { ClassroomDetailPage } from "../features/classroom/pages/ClassroomDetailPage";
+import { AssignmentSubmissionPage } from "../features/classroom/pages/AssignmentSubmissionPage";
+import { AcademicLibraryPage } from "../features/classroom/pages/AcademicLibraryPage";
+import { AnalysisFeedbackPage } from "../features/classroom/pages/AnalysisFeedbackPage";
+
+// Instructor Pages
+import { InstructorLobbyPage } from "../features/instructor/pages/InstructorLobbyPage";
+import { InstructorClassroomPage } from "../features/instructor/pages/InstructorClassroomPage";
+
 const router = createBrowserRouter([
+  // 1. Điều hướng mặc định
   {
     path: "/",
     element: <Navigate to="/login" replace />,
   },
+
+  // 2. Route Đăng nhập
   {
     path: "/login",
     element: <LoginPage />,
   },
 
-  // --- NHÓM ROUTE CỦA STUDENT ---
-  // Tất cả các route bên trong này sẽ được bọc bởi StudentLayout
+  // 3. NHÓM ROUTE CỦA STUDENT (SINH VIÊN)
   {
     path: "/student",
-    element: <StudentLayout />,
+    element: <StudentLayout />, // Layout này phải chứa <Outlet />
     children: [
       {
-        index: true, // Path mặc định khi vào /student
+        index: true,
         element: <Navigate to="lobby" replace />,
       },
       {
@@ -36,33 +49,64 @@ const router = createBrowserRouter([
         element: <StudentLobbyPage />,
       },
       {
-        path: "class/:classId", // :classId là id động để biết đang vào lớp nào
+        path: "class/:classId",
         element: <ClassroomDetailPage />,
       },
       {
-        path: "assignment", // :assignmentId là id động để biết đang vào bài tập nào
+        path: "assignment",
         element: <AssignmentSubmissionPage />,
       },
       {
-        path: "library", // Thư viện tài liệu chung của lớp
+        path: "library",
         element: <AcademicLibraryPage />,
       },
       {
         path: "feedback",
         element: <AnalysisFeedbackPage />,
       },
-      // Sau này bạn thêm các trang khác của sinh viên ở đây:
-      // { path: "classroom/:id", element: <ClassroomPage /> },
-      // { path: "assignments", element: <AssignmentsPage /> },
     ],
   },
-  // ------------------------------
 
+  // 4. NHÓM ROUTE CỦA INSTRUCTOR (GIẢNG VIÊN)
+  {
+    path: "/instructor",
+    element: <InstructorLayout />, // Layout này phải chứa <Outlet /> để render các con bên dưới
+    children: [
+      {
+        index: true,
+        element: <Navigate to="lobby" replace />,
+      },
+      {
+        path: "lobby",
+        element: <InstructorLobbyPage />,
+      },
+      {
+        path: "classroom",
+        element: <InstructorClassroomPage />,
+      },
+      // Sau này bạn có thể thêm các trang quản lý lớp chi tiết tại đây
+      // {
+      //   path: "management/:classId",
+      //   element: <InstructorManagementPage />,
+      // },
+    ],
+  },
+
+  // 5. CATCH ALL - 404 NOT FOUND
   {
     path: "*",
     element: (
-      <div className="flex h-screen items-center justify-center text-slate-400 bg-[#0b1326]">
-        404 - Không tìm thấy trang
+      <div className="flex h-screen items-center justify-center text-slate-400 bg-[#0b1326] font-manrope">
+        <div className="text-center">
+          <h1 className="text-6xl font-bold text-indigo-500 mb-4">404</h1>
+          <p className="text-lg">Không tìm thấy trang yêu cầu.</p>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"
+          >
+            Quay lại trang chủ
+          </button>
+        </div>
       </div>
     ),
   },
