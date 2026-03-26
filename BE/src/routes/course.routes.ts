@@ -24,14 +24,14 @@ router.get('/my/enrollments', authMiddleware, getMyEnrollments)
 router.get('/:id', authMiddleware, getCourseById)
 
 // Tạo lớp — chỉ lecturer + admin
-router.post('/', authMiddleware, requireRole('lecturer', 'admin'), createCourse)
+router.post('/', authMiddleware, requireRole('lecturer', 'manager', 'admin'), createCourse)
 
 // Sửa/xóa lớp — lecturer owner + admin (check trong controller)
-router.put('/:id', authMiddleware, requireRole('lecturer', 'admin'), updateCourse)
-router.delete('/:id', authMiddleware, requireRole('lecturer', 'admin'), deleteCourse)
+router.put('/:id', authMiddleware, requireRole('lecturer', 'manager', 'admin'), updateCourse)
+router.delete('/:id', authMiddleware, requireRole('lecturer', 'manager', 'admin'), deleteCourse)
 
-// Thêm/xóa sinh viên — lecturer owner + admin
-router.post('/:id/enroll', authMiddleware, requireRole('lecturer', 'admin'), enrollStudent)
-router.delete('/:id/unenroll/:studentId', authMiddleware, requireRole('lecturer', 'admin'), unenrollStudent)
+// Thêm/xóa sinh viên — chủ nhiệm / quản lý khoa / admin
+router.post('/:id/enroll', authMiddleware, requireRole('lecturer', 'manager', 'admin'), enrollStudent)
+router.delete('/:id/unenroll/:studentId', authMiddleware, requireRole('lecturer', 'manager', 'admin'), unenrollStudent)
 
 export default router

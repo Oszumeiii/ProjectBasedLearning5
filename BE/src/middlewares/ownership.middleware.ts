@@ -5,7 +5,7 @@ import pool from '../config/db'
  * Middleware kiểm tra quyền sở hữu report.
  *
  * Logic:
- * - Admin / lecturer → bypass, cho phép luôn
+ * - Admin / manager / lecturer → bypass, cho phép luôn
  * - Student → kiểm tra report.author_id = req.user.id
  *
  * ⚠️  Middleware này phải đặt SAU authMiddleware
@@ -17,8 +17,8 @@ export const requireOwnership = async (req: Request, res: Response, next: NextFu
       return
     }
 
-    // Admin và lecturer được bypass ownership check
-    if (req.user.role === 'admin' || req.user.role === 'lecturer') {
+    // Admin, quản lý khoa và GV được bypass ownership check
+    if (req.user.role === 'admin' || req.user.role === 'manager' || req.user.role === 'lecturer') {
       next()
       return
     }
