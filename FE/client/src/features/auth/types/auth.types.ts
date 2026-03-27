@@ -1,4 +1,4 @@
-export type Role = "student" | "lecturer" | "admin";
+export type Role = "student" | "instructor" | "admin";
 
 export interface RoleOption {
   value: Role;

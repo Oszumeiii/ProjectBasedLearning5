@@ -34,7 +34,7 @@ export const StudentLobbyPage = () => {
         <div className="lg:col-span-2 flex flex-col justify-center p-8 rounded-xl bg-gradient-to-br from-[#131b2e] to-[#171f33] relative overflow-hidden border border-slate-800/50">
           <div className="relative z-10">
             <h3 className="font-headline text-3xl font-extrabold text-[#dae2fd] tracking-tight">
-              Welcome back, Scholar
+              Chào mừng trở lại
             </h3>
             <p className="text-[#c6c6cd] mt-2 max-w-md">
               You have 3 active assignments requiring attention this week. Your
@@ -47,7 +47,7 @@ export const StudentLobbyPage = () => {
         <div className="p-6 rounded-xl bg-[#222a3d] border border-slate-800/50 flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <span className="text-[#c6c6cd] font-medium text-sm">
-              Overall Progress
+              Tiến độ tổng thể
             </span>
             <span className="text-[#4fdbc8] font-bold">84%</span>
           </div>
@@ -64,7 +64,7 @@ export const StudentLobbyPage = () => {
       <section>
         <div className="flex items-center justify-between mb-6">
           <h4 className="font-headline text-xl font-bold text-[#dae2fd] flex items-center gap-2">
-            <School className="text-[#adc6ff]" size={24} /> My Enrolled Classes
+            <School className="text-[#adc6ff]" size={24} /> Các lớp đã tham gia
           </h4>
           <div className="flex gap-2">
             <button className="p-2 rounded-lg bg-[#222a3d] text-[#adc6ff] shadow-inner">

@@ -16,7 +16,7 @@ const ROLE_OPTIONS: RoleOption[] = [
     activeText: "peer-checked:text-primary group-hover:text-primary",
   },
   {
-    value: "lecturer",
+    value: "instructor",
     label: "Giảng viên",
     icon: "person_book",
     activeColor:
