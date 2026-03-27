@@ -54,16 +54,7 @@ export const createCourse = async (req: Request, res: Response): Promise<void> =
        )
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [
-        name,
-        code,
-        description ?? null,
-        semester.trim(),
-        academicYear.trim(),
-        ctype,
-        req.user.id,
-        req.user.id
-      ]
+      [name, code, description ?? null, semester.trim(), academicYear.trim(), ctype, req.user.id, req.user.id]
     )
 
     const lecturer = await pool.query('SELECT full_name, email FROM users WHERE id = $1', [req.user.id])
@@ -302,6 +293,79 @@ export const deleteCourse = async (req: Request, res: Response): Promise<void> =
   } catch (error) {
     console.error('❌ Error in deleteCourse:', error)
     res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// ==================== Join Course ====================
+
+export const joinCourseByCode = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // 1. Kiểm tra User đã đăng nhập chưa (từ authMiddleware)
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
+
+    const { courseCode } = req.body as { courseCode: string }
+    const studentId = req.user.id
+
+    if (!courseCode) {
+      res.status(400).json({ message: 'Vui lòng nhập mã tham gia lớp học' })
+      return
+    }
+
+    // 2. Tìm lớp dựa trên enrollment_code (Dùng UPPER để khớp chính xác không phân biệt hoa thường)
+    const courseQuery = await pool.query(
+      `SELECT id, name, max_students, is_active 
+       FROM public.courses 
+       WHERE UPPER(enrollment_code) = UPPER($1) 
+         AND deleted_at IS NULL`,
+      [courseCode.trim()]
+    )
+
+    if (courseQuery.rows.length === 0) {
+      res.status(404).json({ message: 'Mã lớp học không chính xác hoặc không tồn tại' })
+      return
+    }
+
+    const course = courseQuery.rows[0]
+
+    // 3. Kiểm tra xem lớp có đang mở tham gia không (dựa trên cột is_active của bạn)
+    if (!course.is_active) {
+      res.status(400).json({ message: 'Lớp học này hiện đang đóng, không thể tham gia' })
+      return
+    }
+
+    // 4. Kiểm tra sĩ số hiện tại (so với max_students trong DB của bạn)
+    const countRes = await pool.query('SELECT COUNT(*)::int AS count FROM public.enrollments WHERE course_id = $1', [
+      course.id
+    ])
+
+    if (countRes.rows[0].count >= course.max_students) {
+      res.status(400).json({ message: 'Lớp học đã đạt giới hạn sĩ số tối đa' })
+      return
+    }
+
+    // 5. Kiểm tra xem sinh viên đã tham gia lớp này chưa
+    const checkEnroll = await pool.query('SELECT id FROM public.enrollments WHERE course_id = $1 AND student_id = $2', [
+      course.id,
+      studentId
+    ])
+
+    if (checkEnroll.rows.length > 0) {
+      res.status(400).json({ message: 'Bạn đã tham gia lớp học này rồi' })
+      return
+    }
+
+    // 6. Thực hiện đăng ký tham gia (Insert vào bảng enrollments)
+    await pool.query('INSERT INTO public.enrollments (course_id, student_id) VALUES ($1, $2)', [course.id, studentId])
+
+    res.status(201).json({
+      message: `Tham gia thành công lớp: ${course.name}`
+    })
+  } catch (error) {
+    console.error('❌ JoinCourse Error:', error)
+    res.status(500).json({ message: 'Lỗi hệ thống khi tham gia lớp học' })
   }
 }
 

@@ -6,19 +6,19 @@ async function testRegister() {
       "http://localhost:3000/api/auth/register",
       {
         // Khớp với cột full_name
-        full_name: "Nguyen Van A",
+        full_name: "Nguyen Van G",
         // Khớp với cột email (đã có UNIQUE constraint)
-        email: "sv04@gmail.vn",
+        email: "sv05@gmail.vn",
         // Khớp với cột major
         major: "Information Technology",
         // Khớp với cột student_code (DB của bạn dùng student_code, không phải MSSV)
-        student_code: "2024IT001",
+        student_code: "SV05",
         // Password để BE băm (hash)
         password: "123456a",
         // Khớp với check constraint 'role' (student, lecturer, manager, admin)
         role: "student",
         // Thêm thông tin bổ sung để test các cột khác trong DB
-        class_name: "IT-K24",
+        class_name: "",
         gender: "male", // khớp với check constraint gender
         intake_year: 2024,
       },
