@@ -1,9 +1,10 @@
-export type Role = "student" | "lecturer" | "admin";
+export type Role = "student" | "instructor" | "admin";
 
 export interface RoleOption {
   value: Role;
   label: string;
   icon: string;
+
   activeColor: string;
   activeBg: string;
   activeRing: string;
@@ -15,4 +16,17 @@ export interface LoginFormData {
   password: string;
   rememberMe: boolean;
   role: Role;
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  major: string;
+  role: Role;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: User;
 }
