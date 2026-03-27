@@ -9,7 +9,8 @@ import {
   deleteCourse,
   enrollStudent,
   unenrollStudent,
-  getMyEnrollments
+  getMyEnrollments,
+  joinCourseByCode
 } from '../controllers/course.controller'
 
 const router = Router()
@@ -19,6 +20,9 @@ router.get('/', authMiddleware, listCourses)
 
 // Lớp tôi đã tham gia — student
 router.get('/my/enrollments', authMiddleware, getMyEnrollments)
+
+// Tham gia lớp bằng mã code — student
+router.post('/joinByEnrollmentCode', authMiddleware, joinCourseByCode)
 
 // Chi tiết lớp — thành viên + lecturer + admin
 router.get('/:id', authMiddleware, getCourseById)
