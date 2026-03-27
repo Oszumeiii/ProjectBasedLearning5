@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const InstructorLayout: React.FC = () => {
   return (
@@ -8,10 +9,10 @@ const InstructorLayout: React.FC = () => {
       <aside className="h-screen w-64 fixed left-0 top-0 bg-slate-950 flex flex-col py-6 z-50 border-r border-slate-900">
         <div className="px-6 mb-10">
           <h1 className="text-indigo-400 font-bold text-xl tracking-tight font-manrope">
-            The Curator
+            Giảng viên
           </h1>
           <p className="text-[10px] text-slate-500 font-manrope uppercase tracking-widest mt-1">
-            Instructor Panel
+            Ban giảng viên
           </p>
         </div>
 
@@ -21,11 +22,11 @@ const InstructorLayout: React.FC = () => {
             className="flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600/20 text-indigo-400 border-r-2 border-indigo-500 font-medium text-sm"
           >
             <span className="material-symbols-outlined">newspaper</span>
-            <span>Lobby</span>
+            <NavLink to={"lobby"}>Sảnh</NavLink>
           </Link>
           <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors text-sm">
             <span className="material-symbols-outlined">analytics</span>
-            <span>Grading Center</span>
+            <NavLink to={"grading"}>Chấm bài</NavLink>
           </button>
           <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors text-sm">
             <span className="material-symbols-outlined">settings</span>
@@ -56,12 +57,12 @@ const InstructorLayout: React.FC = () => {
         <header className="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 shadow-xl">
           <div className="flex items-center gap-4">
             <h2 className="text-slate-100 font-bold font-manrope tracking-tight">
-              Academic Workspace
+              Không gian làm việc
             </h2>
           </div>
           <div className="flex items-center gap-6">
             <div className="hidden lg:flex items-center gap-2 bg-[#171f33] px-4 py-1.5 rounded-full border border-slate-800 text-xs">
-              <span className="text-indigo-400">Role: Instructor</span>
+              <span className="text-indigo-400">Vai trò:Giảng viên</span>
             </div>
             <span className="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">
               notifications

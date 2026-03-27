@@ -1,26 +1,42 @@
 // src/layouts/components/TopNavBar.tsx
 import { Search, Bell, History, Key } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 export const TopNavBar = () => {
   return (
     <header className="flex justify-between items-center w-full px-8 sticky top-0 z-40 bg-[#0b1326]/80 backdrop-blur-md h-20 border-b border-slate-800/30">
       <div className="flex items-center gap-8">
         <h2 className="font-headline font-black text-xl text-[#dae2fd]">
-          The Academic Curator
+          Trang sinh viên
         </h2>
         <nav className="hidden md:flex items-center gap-6">
-          <a
-            className="text-[#adc6ff] border-b-2 border-[#0566d9] pb-1 font-manrope font-bold text-sm"
-            href="#"
+          {/* Link 1: Tổng quan */}
+          <NavLink
+            to="/student/lobby"
+            className={({ isActive }) =>
+              `font-manrope font-bold text-sm transition-all pb-1 ${
+                isActive
+                  ? "text-[#adc6ff] border-b-2 border-[#0566d9]"
+                  : "text-slate-400 hover:text-[#adc6ff]"
+              }`
+            }
           >
-            Class Overview
-          </a>
-          <a
-            className="text-slate-400 hover:text-[#adc6ff] transition-colors font-manrope font-bold text-sm"
-            href="#"
+            Tổng quan về lớp học
+          </NavLink>
+
+          {/* Link 2: Tài liệu */}
+          <NavLink
+            to="/student/library"
+            className={({ isActive }) =>
+              `font-manrope font-bold text-sm transition-all pb-1 ${
+                isActive
+                  ? "text-[#adc6ff] border-b-2 border-[#0566d9]"
+                  : "text-slate-400 hover:text-[#adc6ff]"
+              }`
+            }
           >
-            Resources
-          </a>
+            Tài liệu tham khảo
+          </NavLink>
         </nav>
       </div>
 
@@ -29,12 +45,12 @@ export const TopNavBar = () => {
         <div className="flex items-center bg-[#171f33] rounded-full px-4 py-1.5 border border-slate-800/20 focus-within:border-[#0566d9] transition-all">
           <Key size={14} className="text-[#c6c6cd] mr-2" />
           <input
-            className="bg-transparent border-none focus:ring-0 text-sm w-32 font-mono tracking-widest text-[#adc6ff] uppercase placeholder:normal-case placeholder:font-body"
-            placeholder="Enter Class Code"
+            className="bg-transparent border-none focus:ring-0 text-[12px] w-32 font-mono tracking-widest text-[#adc6ff] uppercase placeholder:normal-case placeholder:font-body "
+            placeholder="Nhập mã lớp học"
             maxLength={6}
           />
           <button className="ml-2 text-xs font-bold text-[#d8e2ff] bg-[#0566d9]/20 px-3 py-1 rounded-full hover:bg-[#0566d9]/40 transition-colors">
-            Join
+            Tham gia
           </button>
         </div>
 

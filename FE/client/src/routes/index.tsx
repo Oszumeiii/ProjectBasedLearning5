@@ -21,6 +21,9 @@ import { AnalysisFeedbackPage } from "../features/classroom/pages/AnalysisFeedba
 // Instructor Pages
 import { InstructorLobbyPage } from "../features/instructor/pages/InstructorLobbyPage";
 import { InstructorClassroomPage } from "../features/instructor/pages/InstructorClassroomPage";
+import { InstructorGradingPage } from "../features/instructor/pages/InstructorGradingPage";
+import { InstructorGradingDetailPage } from "../features/instructor/pages/InstructorGradingDetailPage";
+import { SchedulePage } from "../features/instructor/pages/InstructorSchedulePage";
 
 const router = createBrowserRouter([
   // 1. Điều hướng mặc định
@@ -38,7 +41,7 @@ const router = createBrowserRouter([
   // 3. NHÓM ROUTE CỦA STUDENT (SINH VIÊN)
   {
     path: "/student",
-    element: <StudentLayout />, // Layout này phải chứa <Outlet />
+    element: <StudentLayout />,
     children: [
       {
         index: true,
@@ -64,13 +67,17 @@ const router = createBrowserRouter([
         path: "feedback",
         element: <AnalysisFeedbackPage />,
       },
+      {
+        path: "grading-detail",
+        element: <InstructorGradingDetailPage />,
+      },
     ],
   },
 
   // 4. NHÓM ROUTE CỦA INSTRUCTOR (GIẢNG VIÊN)
   {
     path: "/instructor",
-    element: <InstructorLayout />, // Layout này phải chứa <Outlet /> để render các con bên dưới
+    element: <InstructorLayout />,
     children: [
       {
         index: true,
@@ -84,11 +91,18 @@ const router = createBrowserRouter([
         path: "classroom",
         element: <InstructorClassroomPage />,
       },
-      // Sau này bạn có thể thêm các trang quản lý lớp chi tiết tại đây
-      // {
-      //   path: "management/:classId",
-      //   element: <InstructorManagementPage />,
-      // },
+      {
+        path: "grading",
+        element: <InstructorGradingPage />,
+      },
+      {
+        path: "grading-detail",
+        element: <InstructorGradingDetailPage />,
+      },
+      {
+        path: "schedule",
+        element: <SchedulePage />,
+      },
     ],
   },
 

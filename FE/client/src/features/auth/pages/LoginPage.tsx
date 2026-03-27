@@ -22,7 +22,9 @@ const LoginPage = () => {
 
       localStorage.setItem("token", result.token);
 
-      navigate("/dashboard");
+      if (data.role == "student") navigate("/student/lobby");
+      else if (data.role == "instructor") navigate("/instructor/lobby");
+      else if (data.role == "admin") navigate("/admin/lobby");
     } catch (error) {
       console.error("Login failed", error);
       alert("Sai tài khoản hoặc mật khẩu");
