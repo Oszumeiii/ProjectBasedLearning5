@@ -67,10 +67,6 @@ const router = createBrowserRouter([
         path: "feedback",
         element: <AnalysisFeedbackPage />,
       },
-      {
-        path: "grading-detail",
-        element: <InstructorGradingDetailPage />,
-      },
     ],
   },
 

@@ -17,10 +17,10 @@ export const SideNavBar = () => (
     <div className="p-6">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-[#0566d9] flex items-center justify-center shadow-lg shadow-[#0566d9]/20">
-          <BookOpen className="text-white" size={24} />
+          <BookOpen className="text-white" size={20} />
         </div>
         <div>
-          <h1 className="font-headline text-[#adc6ff] font-bold tracking-tighter text-xl leading-tight text-[16px]">
+          <h1 className="font-headline text-[#adc6ff] font-bold tracking-tighter text-xl leading-tight text-[15px]">
             Trung tâm nghiên cứu
           </h1>
           <p className="text-[10px] text-[#798098] font-medium uppercase tracking-widest">
