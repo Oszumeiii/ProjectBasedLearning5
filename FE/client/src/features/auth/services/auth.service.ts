@@ -1,13 +1,41 @@
 import axios from "axios";
-import type { LoginFormData } from "../types/auth.types";
+import type { LoginFormData, AuthResponse } from "../types/auth.types";
 
-// Sửa trong file auth.service.ts (hoặc file gọi axios)
-export const login = async (data: LoginFormData) => {
-  const response = await axios.post("http://localhost:3000/api/auth/login", {
-    email: data.identifier,
-    password: data.password,
-    role: data.role,
-  });
+const API_URL = "http://localhost:3000/api/auth";
 
-  return response.data;
+// Tạo instance axios để cấu hình chung (Timeout, Headers...)
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export const authService = {
+  login: async (data: LoginFormData): Promise<AuthResponse> => {
+    const response = await api.post("/login", {
+      email: data.identifier,
+      password: data.password,
+      // role: data.role, // BE của bạn thường check role dựa trên email trong DB
+    });
+    return response.data;
+  },
+
+  // Code thêm các chức năng khác dễ dàng ở đây
+  logout: () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    localStorage.clear();
+    return api.post("/logout", { refreshToken });
+  },
+
+  refreshToken: async (token: string) => {
+    const response = await api.post("/refresh", { refreshToken: token });
+    return response.data;
+  },
+
+  getMe: async () => {
+    // Cần setup Interceptor để truyền Authorization Header
+    const response = await api.get("/me");
+    return response.data;
+  },
 };
