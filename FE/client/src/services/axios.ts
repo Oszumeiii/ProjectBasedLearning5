@@ -1,70 +1,95 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 
-// 1. Khởi tạo instance với cấu hình cơ bản
-const instance: AxiosInstance = axios.create({
-  // Đảm bảo port 3000 khớp với port Backend đang chạy
-  baseURL: "http://localhost:3000/api",
-  timeout: 10000,
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
+
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// 2. Request Interceptor: Tự động đính kèm Token vào mỗi yêu cầu
-instance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // SỬA LỖI CHÍNH: Đổi 'token' thành 'accessToken' để khớp với LoginPage.tsx
+axiosInstance.interceptors.request.use(
+  (config) => {
     const token = localStorage.getItem("accessToken");
-
-    if (token && config.headers) {
-      // Đính kèm Bearer Token vào header Authorization
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error)
 );
 
-// 3. Response Interceptor: Xử lý tập trung các lỗi trả về từ Server
-instance.interceptors.response.use(
-  (response) => {
-    // Trả về toàn bộ response hoặc response.data tùy vào cấu trúc project
-    // Ở đây giữ nguyên response để các Service có thể đọc được status nếu cần
-    return response;
-  },
-  (error) => {
-    const status = error.response?.status;
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}> = [];
 
-    // Xử lý lỗi 401 (Unauthorized) - Token hết hạn hoặc không có token
-    if (status === 401) {
-      console.error("Phiên đăng nhập hết hạn hoặc không hợp lệ (401).");
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (token) prom.resolve(token);
+    else prom.reject(error);
+  });
+  failedQueue = [];
+};
 
-      // Xóa thông tin cũ để tránh lỗi lặp lại
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("user");
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-      // Chỉ chuyển hướng nếu không phải đang ở trang login
-      if (!window.location.pathname.includes("/login")) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url?.includes("/auth/login") &&
+      !originalRequest.url?.includes("/auth/refresh")
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            resolve: (token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(axiosInstance(originalRequest));
+            },
+            reject,
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken) throw new Error("No refresh token");
+
+        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+          refreshToken,
+        });
+
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+        processQueue(null, data.accessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
         window.location.href = "/login";
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 
-    // Xử lý lỗi 403 (Forbidden) - Có token nhưng không có quyền truy cập
-    if (status === 403) {
-      console.error("Bạn không có quyền truy cập tài nguyên này (403).");
-    }
-
-    // Xử lý lỗi 404 (Not Found)
-    if (status === 404) {
-      console.error("Không tìm thấy đường dẫn API hoặc tài nguyên (404).");
-    }
-
     return Promise.reject(error);
-  },
+  }
 );
 
-export default instance;
+export default axiosInstance;

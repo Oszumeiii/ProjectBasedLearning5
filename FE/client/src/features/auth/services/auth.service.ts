@@ -1,41 +1,51 @@
-import axios from "axios";
+import axiosInstance from "../../../services/axios";
 import type { LoginFormData, AuthResponse } from "../types/auth.types";
 
-const API_URL = "http://localhost:3000/api/auth";
+export const login = async (data: LoginFormData): Promise<AuthResponse> => {
+  const response = await axiosInstance.post("/auth/login", {
+    email: data.identifier,
+    password: data.password,
+  });
+  return response.data;
+};
 
-// Tạo instance axios để cấu hình chung (Timeout, Headers...)
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export const getMe = async () => {
+  const response = await axiosInstance.get("/auth/me");
+  return response.data;
+};
 
-export const authService = {
-  login: async (data: LoginFormData): Promise<AuthResponse> => {
-    const response = await api.post("/login", {
-      email: data.identifier,
-      password: data.password,
-      // role: data.role, // BE của bạn thường check role dựa trên email trong DB
-    });
-    return response.data;
-  },
+export const logoutApi = async (refreshToken: string) => {
+  const response = await axiosInstance.post("/auth/logout", { refreshToken });
+  return response.data;
+};
 
-  // Code thêm các chức năng khác dễ dàng ở đây
-  logout: () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    localStorage.clear();
-    return api.post("/logout", { refreshToken });
-  },
+export const refreshToken = async (token: string): Promise<AuthResponse> => {
+  const response = await axiosInstance.post("/auth/refresh", {
+    refreshToken: token,
+  });
+  return response.data;
+};
 
-  refreshToken: async (token: string) => {
-    const response = await api.post("/refresh", { refreshToken: token });
-    return response.data;
-  },
+export const changePassword = async (
+  currentPassword: string,
+  newPassword: string
+) => {
+  const response = await axiosInstance.post("/auth/change-password", {
+    currentPassword,
+    newPassword,
+  });
+  return response.data;
+};
 
-  getMe: async () => {
-    // Cần setup Interceptor để truyền Authorization Header
-    const response = await api.get("/me");
-    return response.data;
-  },
+export const forgotPassword = async (email: string) => {
+  const response = await axiosInstance.post("/auth/forgot-password", { email });
+  return response.data;
+};
+
+export const resetPassword = async (token: string, password: string) => {
+  const response = await axiosInstance.post("/auth/reset-password", {
+    token,
+    password,
+  });
+  return response.data;
 };
