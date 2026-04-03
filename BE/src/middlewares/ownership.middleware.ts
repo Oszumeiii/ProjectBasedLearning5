@@ -8,7 +8,7 @@ import pool from '../config/db'
  * - Admin / manager / lecturer → bypass, cho phép luôn
  * - Student → kiểm tra report.author_id = req.user.id
  *
- * ⚠️  Middleware này phải đặt SAU authMiddleware
+ *  Middleware này phải đặt sau authMiddleware
  */
 export const requireOwnership = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {

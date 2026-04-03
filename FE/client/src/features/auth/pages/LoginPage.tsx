@@ -1,65 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../services/auth.service";
 import AuthHeader from "../components/AuthHeader";
 import AuthBranding from "../components/AuthBranding";
 import AuthFooter from "../components/AuthFooter";
 import LoginForm from "../components/LoginForm";
-import type { LoginFormData } from "../types/auth.types";
+import { login } from "../services/auth.service";
+import { useAuth } from "../context/AuthContext";
+import type { LoginFormData, Role } from "../types/auth.types";
+
+const ROLE_HOME: Record<Role, string> = {
+  student: "/student/lobby",
+  lecturer: "/instructor/lobby",
+  manager: "/manager/lobby",
+  admin: "/admin/lobby",
+};
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { loginAction } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      const result = await authService.login(data);
+      const result = await login(data);
 
-      // 1. Kiểm tra quyền hạn (Role)
       if (result.user.role !== data.role) {
-        alert("Vai trò đăng nhập không khớp với tài khoản này.");
+        alert("Bạn không có quyền đăng nhập với vai trò này");
         return;
       }
 
-      // 2. Lưu trữ an toàn (Nên lưu cả Access và Refresh Token)
-      localStorage.setItem("accessToken", result.accessToken);
-      localStorage.setItem("refreshToken", result.refreshToken);
-      localStorage.setItem("user", JSON.stringify(result.user));
-
-      // 3. Điều hướng dựa trên role (Dùng switch case cho sạch)
-      switch (result.user.role) {
-        case "student":
-          navigate("/student/lobby");
-          break;
-        case "lecturer":
-          navigate("/instructor/lobby");
-          break;
-        case "admin":
-          navigate("/admin/lobby");
-          break;
-        default:
-          navigate("/");
-      }
+      loginAction(result);
+      navigate(ROLE_HOME[result.user.role] || "/login");
     } catch (error: any) {
-      // Xử lý lỗi từ Backend trả về
-      const message = error.response?.data?.message || "Đăng nhập thất bại";
-      console.error("Login error:", message);
-      alert(message);
+      const msg =
+        error.response?.data?.message || "Sai tài khoản hoặc mật khẩu";
+      alert(msg);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#101622] text-[#f1f5f9]">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ background: "#101622", color: "#f1f5f9" }}
+    >
       <AuthHeader />
 
       <main className="flex-1 flex overflow-hidden">
         <AuthBranding />
 
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 bg-[#0d1117]">
-          {/* Bạn có thể truyền isLoading vào LoginForm để disable nút submit khi đang gọi API */}
+        <div
+          className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12"
+          style={{ background: "#0d1117" }}
+        >
           <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
         </div>
       </main>

@@ -3,10 +3,10 @@ import React from "react";
 interface AssetCardProps {
   title: string;
   description: string;
-  type: "Document" | "Dataset" | "Media" | "Link";
+  type: string;
   time: string;
   icon: string;
-  colorClass: string; // Ví dụ: "text-indigo-400 bg-indigo-500/10"
+  colorClass: string; 
 }
 
 export const AssetCard: React.FC<AssetCardProps> = ({

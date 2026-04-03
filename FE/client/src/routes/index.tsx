@@ -4,9 +4,12 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import ProtectedRoute from "../components/ProtectedRoute";
+
 // Layouts
 import { StudentLayout } from "../layouts/StudentLayout";
 import InstructorLayout from "../layouts/InstructorLayout";
+import ManagerLayout from "../layouts/ManagerLayout";
 
 // Auth Pages
 import LoginPage from "../features/auth/pages/LoginPage";
@@ -25,84 +28,93 @@ import { InstructorGradingPage } from "../features/instructor/pages/InstructorGr
 import { InstructorGradingDetailPage } from "../features/instructor/pages/InstructorGradingDetailPage";
 import { SchedulePage } from "../features/instructor/pages/InstructorSchedulePage";
 
+// Manager Pages
+import { ManagerLobbyPage } from "../features/manager/pages/ManagerLobbyPage";
+import { ManagerCoursesPage } from "../features/manager/pages/ManagerCoursesPage";
+import { ManagerReportsPage } from "../features/manager/pages/ManagerReportsPage";
+import { AdminUsersPage } from "../features/manager/pages/AdminUsersPage";
+import { AdminAccessControlPage } from "../features/manager/pages/AdminAccessControlPage";
+
 const router = createBrowserRouter([
-  // 1. Điều hướng mặc định
-  {
-    path: "/",
-    element: <Navigate to="/login" replace />,
-  },
+  { path: "/", element: <Navigate to="/login" replace /> },
+  { path: "/login", element: <LoginPage /> },
 
-  // 2. Route Đăng nhập
+  // STUDENT
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-
-  // 3. NHÓM ROUTE CỦA STUDENT (SINH VIÊN)
-  {
-    path: "/student",
-    element: <StudentLayout />,
+    element: <ProtectedRoute allowedRoles={["student"]} />,
     children: [
       {
-        index: true,
-        element: <Navigate to="lobby" replace />,
-      },
-      {
-        path: "lobby",
-        element: <StudentLobbyPage />,
-      },
-      {
-        path: "class/:classId",
-        element: <ClassroomDetailPage />,
-      },
-      {
-        path: "assignment",
-        element: <AssignmentSubmissionPage />,
-      },
-      {
-        path: "library",
-        element: <AcademicLibraryPage />,
-      },
-      {
-        path: "feedback",
-        element: <AnalysisFeedbackPage />,
+        path: "/student",
+        element: <StudentLayout />,
+        children: [
+          { index: true, element: <Navigate to="lobby" replace /> },
+          { path: "lobby", element: <StudentLobbyPage /> },
+          { path: "class/:classId", element: <ClassroomDetailPage /> },
+          { path: "class/:classId/submit", element: <AssignmentSubmissionPage /> },
+          { path: "library", element: <AcademicLibraryPage /> },
+          { path: "feedback", element: <AnalysisFeedbackPage /> },
+          { path: "grading-detail", element: <InstructorGradingDetailPage /> },
+        ],
       },
     ],
   },
 
-  // 4. NHÓM ROUTE CỦA INSTRUCTOR (GIẢNG VIÊN)
+  // INSTRUCTOR (LECTURER)
   {
-    path: "/instructor",
-    element: <InstructorLayout />,
+    element: <ProtectedRoute allowedRoles={["lecturer"]} />,
     children: [
       {
-        index: true,
-        element: <Navigate to="lobby" replace />,
-      },
-      {
-        path: "lobby",
-        element: <InstructorLobbyPage />,
-      },
-      {
-        path: "classroom",
-        element: <InstructorClassroomPage />,
-      },
-      {
-        path: "grading",
-        element: <InstructorGradingPage />,
-      },
-      {
-        path: "grading-detail",
-        element: <InstructorGradingDetailPage />,
-      },
-      {
-        path: "schedule",
-        element: <SchedulePage />,
+        path: "/instructor",
+        element: <InstructorLayout />,
+        children: [
+          { index: true, element: <Navigate to="lobby" replace /> },
+          { path: "lobby", element: <InstructorLobbyPage /> },
+          { path: "class/:courseId", element: <InstructorClassroomPage /> },
+          { path: "grading", element: <InstructorGradingPage /> },
+          { path: "grading-detail", element: <InstructorGradingDetailPage /> },
+          { path: "schedule", element: <SchedulePage /> },
+        ],
       },
     ],
   },
 
-  // 5. CATCH ALL - 404 NOT FOUND
+  // MANAGER
+  {
+    element: <ProtectedRoute allowedRoles={["manager"]} />,
+    children: [
+      {
+        path: "/manager",
+        element: <ManagerLayout />,
+        children: [
+          { index: true, element: <Navigate to="lobby" replace /> },
+          { path: "lobby", element: <ManagerLobbyPage /> },
+          { path: "courses", element: <ManagerCoursesPage /> },
+          { path: "reports", element: <ManagerReportsPage /> },
+        ],
+      },
+    ],
+  },
+
+  // ADMIN
+  {
+    element: <ProtectedRoute allowedRoles={["admin"]} />,
+    children: [
+      {
+        path: "/admin",
+        element: <ManagerLayout />,
+        children: [
+          { index: true, element: <Navigate to="lobby" replace /> },
+          { path: "lobby", element: <ManagerLobbyPage /> },
+          { path: "courses", element: <ManagerCoursesPage /> },
+          { path: "reports", element: <ManagerReportsPage /> },
+          { path: "users", element: <AdminUsersPage /> },
+          { path: "access", element: <AdminAccessControlPage /> },
+        ],
+      },
+    ],
+  },
+
+  // 404
   {
     path: "*",
     element: (
@@ -122,6 +134,4 @@ const router = createBrowserRouter([
   },
 ]);
 
-export const AppRouter = () => {
-  return <RouterProvider router={router} />;
-};
+export const AppRouter = () => <RouterProvider router={router} />;
