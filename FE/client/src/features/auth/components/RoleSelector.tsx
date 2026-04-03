@@ -16,7 +16,7 @@ const ROLE_OPTIONS: RoleOption[] = [
     activeText: "peer-checked:text-primary group-hover:text-primary",
   },
   {
-    value: "instructor",
+    value: "lecturer",
     label: "Giảng viên",
     icon: "person_book",
     activeColor:
@@ -25,6 +25,17 @@ const ROLE_OPTIONS: RoleOption[] = [
     activeRing: "peer-checked:ring-1",
     activeText:
       "peer-checked:text-secondary-green group-hover:text-secondary-green",
+  },
+  {
+    value: "manager",
+    label: "Quản lý",
+    icon: "supervisor_account",
+    activeColor:
+      "peer-checked:border-amber-400 peer-checked:ring-amber-400",
+    activeBg: "peer-checked:bg-amber-400/10",
+    activeRing: "peer-checked:ring-1",
+    activeText:
+      "peer-checked:text-amber-400 group-hover:text-amber-400",
   },
   {
     value: "admin",
@@ -39,7 +50,7 @@ const ROLE_OPTIONS: RoleOption[] = [
 
 const RoleSelector = ({ selectedRole, onChange }: RoleSelectorProps) => {
   return (
-    <div className="grid grid-cols-3 gap-3 mb-8">
+    <div className="grid grid-cols-4 gap-3 mb-8">
       {ROLE_OPTIONS.map((role) => (
         <label key={role.value} className="cursor-pointer group">
           <input

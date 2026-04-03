@@ -1,13 +1,12 @@
-// src/features/classroom/components/ClassHeader.tsx
-import { BookOpen, Users, Info } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
-export const ClassHeader = ({
-  title,
-  teacher,
-}: {
+interface ClassHeaderProps {
   title: string;
   teacher: string;
-}) => (
+  action?: React.ReactNode;
+}
+
+export const ClassHeader = ({ title, teacher, action }: ClassHeaderProps) => (
   <div className="bg-[#131b2e] border-b border-slate-800/50 p-8">
     <div className="max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -23,15 +22,7 @@ export const ClassHeader = ({
             <span className="text-[#adc6ff] font-semibold">{teacher}</span>
           </p>
         </div>
-
-        <div className="flex gap-4">
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#222a3d] rounded-lg text-sm font-bold border border-slate-700 hover:bg-[#2d3449] transition-all">
-            <Users size={18} /> Mọi người
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#0566d9] text-white rounded-lg text-sm font-bold shadow-lg shadow-[#0566d9]/20 hover:scale-105 transition-all">
-            <Info size={18} /> Thông tin môn
-          </button>
-        </div>
+        {action && <div className="flex gap-4">{action}</div>}
       </div>
     </div>
   </div>
