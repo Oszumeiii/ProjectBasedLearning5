@@ -1,3 +1,5 @@
+// src/features/auth/components/RoleSelector.tsx
+
 import type { Role, RoleOption } from "../types/auth.types";
 
 interface RoleSelectorProps {
@@ -11,20 +13,18 @@ const ROLE_OPTIONS: RoleOption[] = [
     label: "Sinh viên",
     icon: "school",
     activeColor: "peer-checked:border-primary peer-checked:ring-primary",
-    activeBg: "peer-checked:bg-primary/10",
-    activeRing: "peer-checked:ring-1",
-    activeText: "peer-checked:text-primary group-hover:text-primary",
+    activeBg: "peer-checked:bg-primary/5",
+    activeRing: "peer-checked:ring-2",
+    activeText: "peer-checked:text-primary",
   },
   {
     value: "lecturer",
     label: "Giảng viên",
     icon: "person_book",
-    activeColor:
-      "peer-checked:border-secondary-green peer-checked:ring-secondary-green",
-    activeBg: "peer-checked:bg-secondary-green/10",
-    activeRing: "peer-checked:ring-1",
-    activeText:
-      "peer-checked:text-secondary-green group-hover:text-secondary-green",
+    activeColor: "peer-checked:border-secondary peer-checked:ring-secondary",
+    activeBg: "peer-checked:bg-secondary/5",
+    activeRing: "peer-checked:ring-2",
+    activeText: "peer-checked:text-secondary",
   },
   {
     value: "manager",
@@ -41,10 +41,10 @@ const ROLE_OPTIONS: RoleOption[] = [
     value: "admin",
     label: "Quản trị",
     icon: "admin_panel_settings",
-    activeColor: "peer-checked:border-white dark:peer-checked:border-white",
-    activeBg: "peer-checked:bg-white/10",
-    activeRing: "",
-    activeText: "peer-checked:text-white group-hover:text-white",
+    activeColor: "peer-checked:border-white",
+    activeBg: "peer-checked:bg-white/5",
+    activeRing: "peer-checked:ring-2",
+    activeText: "peer-checked:text-white",
   },
 ];
 
@@ -69,7 +69,7 @@ const RoleSelector = ({ selectedRole, onChange }: RoleSelectorProps) => {
             >
               {role.icon}
             </span>
-            <span className="text-xs font-bold uppercase tracking-tight">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-tight text-slate-500 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors">
               {role.label}
             </span>
           </div>
