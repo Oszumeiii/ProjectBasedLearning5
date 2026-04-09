@@ -21,11 +21,11 @@ import {
 import { getCourseById } from "../../classroom/services/course.service";
 import { useAssignments } from "../../../context/AssignmentContext";
 import {
-  getAssignmentStats,
   type Assignment,
   type AssignmentSubmission,
-  type ClassPost,
-} from "../../../mocks/assignments";
+  type AssignmentType,
+} from "../../classroom/services/assignment.service";
+import type { ClassPost, ClassPostComment } from "../../classroom/services/classPost.service";
 
 interface CourseDetail {
   id: number;
@@ -70,6 +70,7 @@ export const InstructorClassroomPage: React.FC = () => {
     createAssignment,
     gradeSubmission,
     addPost,
+    getAssignmentStats,
   } = useAssignments();
 
   const [course, setCourse] = useState<CourseDetail | null>(null);
@@ -81,10 +82,11 @@ export const InstructorClassroomPage: React.FC = () => {
   const [formDesc, setFormDesc] = useState("");
   const [formDeadline, setFormDeadline] = useState("");
   const [formMaxScore, setFormMaxScore] = useState("10");
-  const [formType, setFormType] = useState<Assignment["type"]>("report");
+  const [formType, setFormType] = useState<AssignmentType>("report");
   const [formAttachments, setFormAttachments] = useState<
     Array<{ name: string; size: string }>
   >([]);
+  const [savingAssignment, setSavingAssignment] = useState(false);
   const attachmentInputRef = useRef<HTMLInputElement>(null);
 
   const [expandedAssignment, setExpandedAssignment] = useState<number | null>(null);
@@ -95,9 +97,9 @@ export const InstructorClassroomPage: React.FC = () => {
 
   useEffect(() => {
     if (!courseId) return;
-    ensureCourseData(cid);
     const fetchData = async () => {
       try {
+        await ensureCourseData(cid);
         const courseData = await getCourseById(Number(courseId));
         setCourse(courseData);
       } catch (err) {
@@ -106,7 +108,7 @@ export const InstructorClassroomPage: React.FC = () => {
         setLoading(false);
       }
     };
-    fetchData();
+    void fetchData();
   }, [courseId, cid, ensureCourseData]);
 
   const formatFileSize = (bytes: number) => {
@@ -132,39 +134,32 @@ export const InstructorClassroomPage: React.FC = () => {
     setFormAttachments((prev) => prev.filter((a) => a.name !== name));
   };
 
-  const handleCreateAssignment = () => {
+  const handleCreateAssignment = async () => {
     if (!formTitle.trim()) return;
-    createAssignment({
-      courseId: cid,
-      title: formTitle,
-      description: formDesc,
-      deadline: formDeadline || new Date(Date.now() + 7 * 86400000).toISOString(),
-      maxScore: Number(formMaxScore) || 10,
-      createdBy: course?.lecturer_name || "Giảng viên",
-      type: formType,
-      attachments: formAttachments,
-      submissions:
-        course?.students.map((s, i) => ({
-          id: Date.now() + i,
-          assignmentId: 0,
-          studentId: s.id,
-          studentName: s.full_name,
-          studentEmail: s.email,
-          submittedAt: null,
-          status: "not_submitted" as const,
-          score: null,
-          feedback: null,
-          fileName: null,
-          fileSize: null,
-        })) || [],
-    });
-    setShowForm(false);
-    setFormTitle("");
-    setFormDesc("");
-    setFormDeadline("");
-    setFormMaxScore("10");
-    setFormType("report");
-    setFormAttachments([]);
+    setSavingAssignment(true);
+    try {
+      await createAssignment({
+        courseId: cid,
+        title: formTitle,
+        description: formDesc,
+        deadline: formDeadline || new Date(Date.now() + 7 * 86400000).toISOString(),
+        maxScore: Number(formMaxScore) || 10,
+        type: formType,
+        attachments: formAttachments,
+      });
+      setShowForm(false);
+      setFormTitle("");
+      setFormDesc("");
+      setFormDeadline("");
+      setFormMaxScore("10");
+      setFormType("report");
+      setFormAttachments([]);
+    } catch (e) {
+      console.error(e);
+      alert("Không tạo được bài tập");
+    } finally {
+      setSavingAssignment(false);
+    }
   };
 
   if (loading) {
@@ -269,14 +264,10 @@ export const InstructorClassroomPage: React.FC = () => {
                   <button
                     onClick={() => {
                       if (!newPostContent.trim()) return;
-                      addPost({
+                      void addPost({
                         courseId: cid,
-                        authorName: course.lecturer_name || "Giảng viên",
-                        authorRole: "lecturer",
                         content: newPostContent,
                         isPinned: false,
-                        attachments: [],
-                        comments: [],
                       });
                       setNewPostContent("");
                     }}
@@ -291,7 +282,7 @@ export const InstructorClassroomPage: React.FC = () => {
           </div>
 
           {[...posts]
-            .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
+            .sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0))
             .map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
@@ -334,7 +325,7 @@ export const InstructorClassroomPage: React.FC = () => {
                     <label className="block text-xs text-slate-400 mb-1">Loại</label>
                     <select
                       value={formType}
-                      onChange={(e) => setFormType(e.target.value as Assignment["type"])}
+                      onChange={(e) => setFormType(e.target.value as AssignmentType)}
                       className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:ring-1 focus:ring-indigo-500"
                     >
                       <option value="report">Báo cáo</option>
@@ -427,11 +418,11 @@ export const InstructorClassroomPage: React.FC = () => {
                   Hủy
                 </button>
                 <button
-                  disabled={!formTitle.trim()}
-                  onClick={handleCreateAssignment}
+                  onClick={() => void handleCreateAssignment()}
+                  disabled={!formTitle.trim() || savingAssignment}
                   className="px-5 py-2 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-500 disabled:opacity-50"
                 >
-                  Tạo bài tập
+                  {savingAssignment ? "Đang tạo..." : "Tạo bài tập"}
                 </button>
               </div>
             </div>
@@ -449,14 +440,14 @@ export const InstructorClassroomPage: React.FC = () => {
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4 flex-1">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${TYPE_COLOR[a.type]}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${TYPE_COLOR[a.assignment_type]}`}>
                           <ClipboardList size={20} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h4 className="font-bold text-[#dae2fd] text-sm">{a.title}</h4>
-                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${TYPE_COLOR[a.type]}`}>
-                              {TYPE_LABEL[a.type]}
+                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${TYPE_COLOR[a.assignment_type]}`}>
+                              {TYPE_LABEL[a.assignment_type]}
                             </span>
                           </div>
                           <div className="flex items-center gap-4 mt-1.5 text-xs text-slate-500">
@@ -468,7 +459,7 @@ export const InstructorClassroomPage: React.FC = () => {
                                 <span>Hạn: {new Date(a.deadline).toLocaleDateString("vi-VN")} {new Date(a.deadline).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}</span>
                               )}
                             </span>
-                            <span>Điểm: {a.maxScore}</span>
+                            <span>Điểm: {Number(a.max_score)}</span>
                             {a.attachments.length > 0 && (
                               <span className="flex items-center gap-1"><Paperclip size={12} /> {a.attachments.length} file</span>
                             )}
@@ -512,7 +503,7 @@ export const InstructorClassroomPage: React.FC = () => {
                         <span className="flex items-center gap-1 text-blue-400"><FileText size={14} /> {stats.submitted - stats.graded} chờ chấm</span>
                         <span className="flex items-center gap-1 text-red-400"><AlertTriangle size={14} /> {stats.total - stats.submitted} chưa nộp</span>
                         {stats.avgScore !== null && (
-                          <span className="text-[#4fdbc8]">TB: {stats.avgScore.toFixed(1)}/{a.maxScore}</span>
+                          <span className="text-[#4fdbc8]">TB: {stats.avgScore.toFixed(1)}/{Number(a.max_score)}</span>
                         )}
                       </div>
                       <div className="overflow-x-auto">
@@ -527,8 +518,8 @@ export const InstructorClassroomPage: React.FC = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {a.submissions.map((sub) => (
-                              <SubmissionRow key={sub.id} submission={sub} maxScore={a.maxScore} assignmentId={a.id} onGrade={gradeSubmission} />
+                            {(a.submissions ?? []).map((sub) => (
+                              <SubmissionRow key={sub.id} submission={sub} maxScore={Number(a.max_score)} assignmentId={a.id} onGrade={gradeSubmission} />
                             ))}
                           </tbody>
                         </table>
@@ -576,7 +567,7 @@ export const InstructorClassroomPage: React.FC = () => {
                   {assignments.map((a) => (
                     <th key={a.id} className="text-center px-3 py-3 font-semibold min-w-[100px]">
                       <div className="truncate max-w-[120px]">{a.title}</div>
-                      <div className="text-slate-600 mt-0.5">/{a.maxScore}</div>
+                      <div className="text-slate-600 mt-0.5">/{Number(a.max_score)}</div>
                     </th>
                   ))}
                   <th className="text-center px-4 py-3 font-semibold">Tổng</th>
@@ -584,7 +575,7 @@ export const InstructorClassroomPage: React.FC = () => {
               </thead>
               <tbody>
                 {course.students.map((student, si) => {
-                  const totalMax = assignments.reduce((s, a) => s + a.maxScore, 0);
+                  const totalMax = assignments.reduce((s, a) => s + Number(a.max_score), 0);
                   let totalScore = 0;
                   let hasAnyGrade = false;
                   return (
@@ -596,12 +587,12 @@ export const InstructorClassroomPage: React.FC = () => {
                         </div>
                       </td>
                       {assignments.map((a) => {
-                        const sub = a.submissions.find((s) => s.studentId === student.id);
+                        const sub = (a.submissions ?? []).find((s) => s.student_id === student.id);
                         if (sub?.score !== null && sub?.score !== undefined) { totalScore += sub.score; hasAnyGrade = true; }
                         return (
                           <td key={a.id} className="text-center px-3 py-3">
                             {sub?.status === "graded" && sub.score !== null ? (
-                              <span className={`font-bold ${sub.score >= a.maxScore * 0.8 ? "text-emerald-400" : sub.score >= a.maxScore * 0.5 ? "text-amber-400" : "text-red-400"}`}>{sub.score}</span>
+                              <span className={`font-bold ${sub.score >= Number(a.max_score) * 0.8 ? "text-emerald-400" : sub.score >= Number(a.max_score) * 0.5 ? "text-amber-400" : "text-red-400"}`}>{sub.score}</span>
                             ) : sub?.status === "submitted" ? (
                               <span className="text-blue-400 text-xs">Chờ chấm</span>
                             ) : (
@@ -655,10 +646,10 @@ function SubmissionRow({
       <tr className="border-t border-slate-800/30 hover:bg-[#171f33] transition-colors">
         <td className="px-5 py-2.5">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-indigo-900/50 flex items-center justify-center text-[10px] font-bold text-indigo-300">{submission.studentName.charAt(0)}</div>
+            <div className="w-7 h-7 rounded-full bg-indigo-900/50 flex items-center justify-center text-[10px] font-bold text-indigo-300">{(submission.student_name ?? "?").charAt(0)}</div>
             <div>
-              <p className="text-xs font-medium text-slate-200">{submission.studentName}</p>
-              <p className="text-[10px] text-slate-600">{submission.studentEmail}</p>
+              <p className="text-xs font-medium text-slate-200">{submission.student_name}</p>
+              <p className="text-[10px] text-slate-600">{submission.student_email}</p>
             </div>
           </div>
         </td>
@@ -666,11 +657,11 @@ function SubmissionRow({
           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${st.bg} ${st.color}`}>{st.label}</span>
         </td>
         <td className="px-3 py-2.5 text-xs text-slate-500">
-          {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString("vi-VN") : "—"}
+          {submission.submitted_at ? new Date(submission.submitted_at).toLocaleDateString("vi-VN") : "—"}
         </td>
         <td className="px-3 py-2.5">
-          {submission.fileName ? (
-            <span className="text-xs text-slate-400 flex items-center gap-1 cursor-pointer hover:text-indigo-400"><Download size={12} /> {submission.fileName.slice(0, 25)}...</span>
+          {submission.report_file_name ? (
+            <span className="text-xs text-slate-400 flex items-center gap-1 cursor-pointer hover:text-indigo-400"><Download size={12} /> {submission.report_file_name.slice(0, 25)}...</span>
           ) : (
             <span className="text-xs text-slate-600">—</span>
           )}
@@ -714,7 +705,7 @@ function SubmissionRow({
                 onClick={() => {
                   const score = Number(scoreInput);
                   if (isNaN(score) || score < 0 || score > maxScore) return;
-                  onGrade(assignmentId, submission.studentId, score, feedbackInput);
+                  onGrade(assignmentId, submission.student_id, score, feedbackInput);
                   setGrading(false);
                   setScoreInput("");
                   setFeedbackInput("");
@@ -749,20 +740,20 @@ function PostCard({ post }: { post: ClassPost }) {
     <div className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
       <div className="p-5">
         <div className="flex items-start gap-3">
-          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.authorRole === "lecturer" ? "bg-indigo-900 border border-indigo-500/30 text-indigo-300" : "bg-slate-800 border border-slate-700 text-slate-400"}`}>
-            {post.authorName.charAt(0)}
+          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.author_role === "lecturer" ? "bg-indigo-900 border border-indigo-500/30 text-indigo-300" : "bg-slate-800 border border-slate-700 text-slate-400"}`}>
+            {(post.author_name ?? "?").charAt(0)}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-[#dae2fd]">{post.authorName}</span>
-              {post.authorRole === "lecturer" && <span className="text-[9px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
-              {post.isPinned && <Pin size={12} className="text-amber-400" />}
-              <span className="text-[10px] text-slate-600">{timeAgo(post.createdAt)}</span>
+              <span className="text-sm font-bold text-[#dae2fd]">{post.author_name}</span>
+              {post.author_role === "lecturer" && <span className="text-[9px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
+              {post.is_pinned && <Pin size={12} className="text-amber-400" />}
+              <span className="text-[10px] text-slate-600">{timeAgo(post.created_at)}</span>
             </div>
             <p className="text-sm text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
             {post.attachments.length > 0 && (
               <div className="flex gap-2 flex-wrap mt-3">
-                {post.attachments.map((att) => (
+                {post.attachments.map((att: { name: string; size?: string }) => (
                   <span key={att.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 cursor-pointer">
                     <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
                   </span>
@@ -781,14 +772,14 @@ function PostCard({ post }: { post: ClassPost }) {
           )}
           {showComments && (
             <div className="px-5 py-3 space-y-3">
-              {post.comments.map((c) => (
+              {post.comments.map((c: ClassPostComment) => (
                 <div key={c.id} className="flex items-start gap-2.5">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.authorRole === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{c.authorName.charAt(0)}</div>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{(c.author_name ?? "?").charAt(0)}</div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-slate-300">{c.authorName}</span>
-                      {c.authorRole === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
-                      <span className="text-[10px] text-slate-600">{timeAgo(c.createdAt)}</span>
+                      <span className="text-xs font-semibold text-slate-300">{c.author_name}</span>
+                      {c.author_role === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
+                      <span className="text-[10px] text-slate-600">{timeAgo(c.created_at)}</span>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5">{c.content}</p>
                   </div>

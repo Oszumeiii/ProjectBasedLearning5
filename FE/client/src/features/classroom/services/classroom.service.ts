@@ -1,4 +1,5 @@
 import axios from "../../../services/axios";
+import { joinCourseByJoinCode } from "./course.service";
 import { CourseResponse, CourseDetail } from "../types";
 
 const API_URL = "/courses";
@@ -39,11 +40,5 @@ export const classroomService = {
    * Endpoint thực tế trong BE: POST /api/courses/join
    * Payload: { courseCode: string }
    */
-  joinCourseByCode: async (code: string): Promise<{ message: string }> => {
-    // Sửa lại endpoint thành "/join" để khớp với logic xử lý mã tham gia trong Controller của bạn
-    const response = await axios.post(`${API_URL}/join`, {
-      courseCode: code,
-    });
-    return response.data;
-  },
+  joinCourseByCode: joinCourseByJoinCode,
 };

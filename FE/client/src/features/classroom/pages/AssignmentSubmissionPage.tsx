@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Clock, AlertCircle, ChevronLeft, Upload, X, ListTodo } from "lucide-react";
-import { createReport } from "../services/report.service";
 import { useAuth } from "../../auth/context/AuthContext";
 import { useAssignments } from "../../../context/AssignmentContext";
-import { getAssignmentStats } from "../../../mocks/assignments";
 
 export const AssignmentSubmissionPage = () => {
   const { classId } = useParams<{ classId: string }>();
@@ -12,10 +10,12 @@ export const AssignmentSubmissionPage = () => {
   const assignmentIdParam = searchParams.get("assignmentId");
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { getAssignmentsByCourse, ensureCourseData, submitAssignment } = useAssignments();
+  const { getAssignmentsByCourse, ensureCourseData, submitAssignment, getAssignmentStats } = useAssignments();
 
   const cid = Number(classId) || 1;
-  useEffect(() => { ensureCourseData(cid); }, [cid, ensureCourseData]);
+  useEffect(() => {
+    void ensureCourseData(cid);
+  }, [cid, ensureCourseData]);
   const assignments = getAssignmentsByCourse(cid);
   const upcomingAssignments = assignments.filter(
     (a) => !getAssignmentStats(a).isOverdue
@@ -46,28 +46,24 @@ export const AssignmentSubmissionPage = () => {
     setError(null);
 
     try {
+      if (!selectedAssignmentId) {
+        setError("Vui lòng chọn bài tập cần nộp");
+        setUploading(false);
+        return;
+      }
+      if (!file) {
+        setError("Vui lòng chọn file nộp bài");
+        setUploading(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("title", title.trim());
       if (description.trim()) formData.append("description", description.trim());
       if (classId) formData.append("courseId", classId);
-      if (file) formData.append("file", file);
+      formData.append("file", file);
 
-      try {
-        await createReport(formData);
-      } catch {
-        // API might fail in dev, continue with mock update
-      }
-
-      if (selectedAssignmentId && user) {
-        submitAssignment(
-          selectedAssignmentId,
-          1,
-          user.full_name || "Sinh viên",
-          user.email || "student@test.com",
-          file?.name || `${title.trim()}.pdf`,
-          file ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : "0.5 MB"
-        );
-      }
+      await submitAssignment(selectedAssignmentId, formData);
 
       setSuccess(true);
       setTitle("");
@@ -158,7 +154,7 @@ export const AssignmentSubmissionPage = () => {
                             {a.title}
                           </p>
                           <p className="text-[10px] text-slate-500 mt-0.5">
-                            Điểm: {a.maxScore} • Còn {daysLeft} ngày
+                            Điểm: {Number(a.max_score)} • Còn {daysLeft} ngày
                           </p>
                         </div>
                         {isSelected && (
@@ -229,7 +225,7 @@ export const AssignmentSubmissionPage = () => {
                 <p>
                   Điểm tối đa:{" "}
                   <span className="text-[#4fdbc8]">
-                    {selectedAssignment.maxScore}
+                    {selectedAssignment.max_score}
                   </span>
                 </p>
               </div>

@@ -32,7 +32,7 @@ export const PASSWORD_RESET_HOURS = Number(process.env.PASSWORD_RESET_HOURS ?? '
 export const ACTIVATION_TOKEN_HOURS = Number(process.env.ACTIVATION_TOKEN_HOURS ?? '24')
 
 /** URL FE nhận link kích hoạt — FE sẽ gọi API /api/auth/activate */
-export const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:3001'
+export const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:3000'
 
 // ─── MinIO / S3 Storage ───
 export const MINIO_ENDPOINT = process.env.MINIO_ENDPOINT ?? 'localhost'
