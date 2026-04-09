@@ -1,28 +1,33 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ClassCard } from "../components/StudentClassCard";
 import { School, LayoutGrid, List } from "lucide-react";
 import { useAuth } from "../../auth/context/AuthContext";
-import { listCourses, type Course } from "../services/course.service";
+import { getMyCourses, type Course } from "../services/course.service";
+import { useLocation } from "react-router-dom";
 
 export const StudentLobbyPage = () => {
-  const { user } = useAuth();
+  useAuth();
+  const location = useLocation();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const data = await listCourses();
-        setCourses(data);
-      } catch (err: any) {
-        setError(err.response?.data?.message || "Không thể tải danh sách lớp");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCourses();
+  const fetchCourses = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getMyCourses();
+      setCourses(data);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Không thể tải danh sách lớp");
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    void fetchCourses();
+  }, [fetchCourses, location.key]);
 
   return (
     <div className="p-8 max-w-7xl mx-auto w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -87,7 +92,7 @@ export const StudentLobbyPage = () => {
           <div className="text-center py-20">
             <p className="text-red-400">{error}</p>
             <button
-              onClick={() => window.location.reload()}
+              onClick={fetchCourses}
               className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
             >
               Thử lại

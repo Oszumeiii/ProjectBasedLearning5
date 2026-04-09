@@ -4,38 +4,64 @@ import { requireRole } from '../middlewares/role.middleware'
 import {
   createCourse,
   listCourses,
+  getMyCourses,
   getCourseById,
-  updateCourse,
+  patchCourse,
   deleteCourse,
-  enrollStudent,
+  joinCourseByCode,
+  enrollOrRequestEnrollment,
+  updateEnrollmentStatus,
+  bulkUpdateEnrollmentStatus,
+  updateEnrollmentGrade,
   unenrollStudent,
   getMyEnrollments,
-  joinCourseByCode
+  getCourseStudents,
+  addCourseLecturer,
+  removeCourseLecturer
 } from '../controllers/course.controller'
+import {
+  listEvaluationCriteria,
+  createEvaluationCriterion,
+  updateEvaluationCriterion,
+  deleteEvaluationCriterion,
+  reorderEvaluationCriteria
+} from '../controllers/evaluationCriteria.controller'
 
 const router = Router()
 
-// Xem lớp — tất cả user (filter theo role trong controller)
-router.get('/', authMiddleware, listCourses)
+const staffCreate = requireRole('lecturer', 'manager', 'admin')
 
-// Lớp tôi đã tham gia — student
+// —— Phải khai báo trước /:id ——
+router.get('/my', authMiddleware, getMyCourses)
 router.get('/my/enrollments', authMiddleware, getMyEnrollments)
 
-// Tham gia lớp bằng mã code — student
+router.patch('/enrollments/:enrollmentId/status', authMiddleware, updateEnrollmentStatus)
+router.patch('/enrollments/:enrollmentId/grade', authMiddleware, updateEnrollmentGrade)
+
 router.post('/joinByEnrollmentCode', authMiddleware, joinCourseByCode)
+router.post('/join', authMiddleware, joinCourseByCode)
 
-// Chi tiết lớp — thành viên + lecturer + admin
+router.get('/', authMiddleware, listCourses)
+
+router.post('/', authMiddleware, staffCreate, createCourse)
+
+router.get('/:id/evaluation-criteria', authMiddleware, listEvaluationCriteria)
+router.post('/:id/evaluation-criteria', authMiddleware, staffCreate, createEvaluationCriterion)
+router.patch('/:id/evaluation-criteria/:criteriaId', authMiddleware, staffCreate, updateEvaluationCriterion)
+router.delete('/:id/evaluation-criteria/:criteriaId', authMiddleware, staffCreate, deleteEvaluationCriterion)
+router.patch('/:id/evaluation-criteria/reorder', authMiddleware, staffCreate, reorderEvaluationCriteria)
+
+router.get('/:id/students', authMiddleware, getCourseStudents)
+router.post('/:id/lecturers', authMiddleware, staffCreate, addCourseLecturer)
+router.delete('/:id/lecturers/:userId', authMiddleware, staffCreate, removeCourseLecturer)
+
+router.post('/:id/enroll', authMiddleware, enrollOrRequestEnrollment)
+router.patch('/:id/enrollments/bulk-status', authMiddleware, staffCreate, bulkUpdateEnrollmentStatus)
+router.delete('/:id/unenroll/:studentId', authMiddleware, unenrollStudent)
+
 router.get('/:id', authMiddleware, getCourseById)
-
-// Tạo lớp — chỉ lecturer + admin
-router.post('/', authMiddleware, requireRole('lecturer', 'manager', 'admin'), createCourse)
-
-// Sửa/xóa lớp — lecturer owner + admin (check trong controller)
-router.put('/:id', authMiddleware, requireRole('lecturer', 'manager', 'admin'), updateCourse)
-router.delete('/:id', authMiddleware, requireRole('lecturer', 'manager', 'admin'), deleteCourse)
-
-// Thêm/xóa sinh viên — chủ nhiệm / quản lý khoa / admin
-router.post('/:id/enroll', authMiddleware, requireRole('lecturer', 'manager', 'admin'), enrollStudent)
-router.delete('/:id/unenroll/:studentId', authMiddleware, requireRole('lecturer', 'manager', 'admin'), unenrollStudent)
+router.patch('/:id', authMiddleware, staffCreate, patchCourse)
+router.put('/:id', authMiddleware, staffCreate, patchCourse)
+router.delete('/:id', authMiddleware, staffCreate, deleteCourse)
 
 export default router
