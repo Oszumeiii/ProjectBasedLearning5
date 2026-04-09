@@ -1,44 +1,50 @@
 import { Router } from 'express'
+import multer from 'multer'
 import { authMiddleware } from '../middlewares/auth.middleware'
 import { requireRole } from '../middlewares/role.middleware'
-import { requireOwnership } from '../middlewares/ownership.middleware'
+import { UPLOAD_MAX_SIZE_MB } from '../config/env'
 import {
-  addFavorite,
-  createReport,
-  deleteReport,
-  getReportById,
-  getReportVersionById,
-  listReportVersions,
-  listReports,
-  removeFavorite,
-  updateReport,
-  getRatings,
-  upsertRating
+  createReport, listReports, getReportById, updateReport, deleteReport,
+  updateReportStatus, resubmitReport, downloadReport,
+  listReportVersions, downloadReportVersion,
+  upsertRating, getRatings, addFavorite, removeFavorite
 } from '../controllers/report.controller'
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: UPLOAD_MAX_SIZE_MB * 1024 * 1024 }
+})
 
 const router = Router()
 
-// Xem — tất cả user đã đăng nhập
-router.get('/', authMiddleware, listReports)
-router.get('/:id', authMiddleware, getReportById)
+router.use(authMiddleware)
 
-// Tạo — tất cả user đã đăng nhập (report gắn với project)
-router.post('/', authMiddleware, createReport)
+// CRUD
+router.get('/', listReports)
+router.get('/:id', getReportById)
+router.post('/', upload.single('file'), createReport)
+router.patch('/:id', updateReport)
+router.delete('/:id', deleteReport)
 
-// Sửa/xóa — chủ báo cáo (SV) hoặc GV / quản lý khoa / admin
-router.put('/:id', authMiddleware, requireOwnership, updateReport)
-router.delete('/:id', authMiddleware, requireOwnership, deleteReport)
+// Workflow duyệt (staff only)
+router.patch('/:id/status', requireRole('lecturer', 'manager', 'admin'), updateReportStatus)
 
-// Đánh giá — GV, quản lý khoa, admin
-router.post('/:id/rating', authMiddleware, requireRole('lecturer', 'manager', 'admin'), upsertRating)
-router.get('/:id/ratings', authMiddleware, getRatings)
+// Nộp lại (tác giả)
+router.post('/:id/resubmit', upload.single('file'), resubmitReport)
 
-// Yêu thích — tất cả user đã đăng nhập
-router.post('/:id/favorite', authMiddleware, addFavorite)
-router.delete('/:id/favorite', authMiddleware, removeFavorite)
+// Download (presigned URL)
+router.get('/:id/download', downloadReport)
 
-// Lịch sử phiên bản — tất cả user đã đăng nhập
-router.get('/:id/versions', authMiddleware, listReportVersions)
-router.get('/:id/versions/:versionId', authMiddleware, getReportVersionById)
+// Versions
+router.get('/:id/versions', listReportVersions)
+router.get('/:id/versions/:versionId/download', downloadReportVersion)
+
+// Ratings (GV/staff đánh giá)
+router.post('/:id/rating', requireRole('lecturer', 'manager', 'admin'), upsertRating)
+router.get('/:id/ratings', getRatings)
+
+// Favorites
+router.post('/:id/favorite', addFavorite)
+router.delete('/:id/favorite', removeFavorite)
 
 export default router

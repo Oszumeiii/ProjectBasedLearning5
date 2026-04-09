@@ -32,7 +32,18 @@ export const PASSWORD_RESET_HOURS = Number(process.env.PASSWORD_RESET_HOURS ?? '
 export const ACTIVATION_TOKEN_HOURS = Number(process.env.ACTIVATION_TOKEN_HOURS ?? '24')
 
 /** URL FE nhận link kích hoạt — FE sẽ gọi API /api/auth/activate */
-export const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:3001'
+export const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:3000'
+
+// ─── MinIO / S3 Storage ───
+export const MINIO_ENDPOINT = process.env.MINIO_ENDPOINT ?? 'localhost'
+export const MINIO_PORT = Number(process.env.MINIO_PORT ?? '9000')
+export const MINIO_USE_SSL = process.env.MINIO_USE_SSL === 'true'
+export const MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY ?? 'minioadmin'
+export const MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY ?? 'minioadmin'
+export const MINIO_BUCKET = process.env.MINIO_BUCKET ?? 'edurag-reports'
+
+// ─── Upload ───
+export const UPLOAD_MAX_SIZE_MB = Number(process.env.UPLOAD_MAX_SIZE_MB ?? '50')
 
 if (!JWT_SECRET) {
   console.warn('⚠️ JWT_SECRET is not set. Please set it in your .env file.')
