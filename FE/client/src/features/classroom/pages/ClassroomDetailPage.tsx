@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { getCourseById } from "../services/course.service";
 import { listReports, type Report } from "../services/report.service";
-import { getAssignmentStats, type ClassPost } from "../../../mocks/assignments";
+import type { ClassPost } from "../services/classPost.service";
 import { useAuth } from "../../auth/context/AuthContext";
 import { useAssignments } from "../../../context/AssignmentContext";
 
@@ -53,6 +53,7 @@ export const ClassroomDetailPage = () => {
     ensureCourseData,
     addPost,
     addComment,
+    getAssignmentStats,
   } = useAssignments();
 
   const [course, setCourse] = useState<CourseDetail | null>(null);
@@ -66,9 +67,9 @@ export const ClassroomDetailPage = () => {
 
   useEffect(() => {
     if (!classId) return;
-    ensureCourseData(cid);
     const fetchData = async () => {
       try {
+        await ensureCourseData(cid);
         const courseData = await getCourseById(Number(classId));
         setCourse(courseData);
         try {
@@ -87,7 +88,7 @@ export const ClassroomDetailPage = () => {
         setLoading(false);
       }
     };
-    fetchData();
+    void fetchData();
   }, [classId, cid, ensureCourseData]);
 
   if (loading) {
@@ -185,14 +186,10 @@ export const ClassroomDetailPage = () => {
                       <button
                         onClick={() => {
                           if (!newComment.trim()) return;
-                          addPost({
+                          void addPost({
                             courseId: cid,
-                            authorName: user?.full_name || "Sinh viên",
-                            authorRole: "student",
                             content: newComment,
                             isPinned: false,
-                            attachments: [],
-                            comments: [],
                           });
                           setNewComment("");
                         }}
@@ -207,18 +204,13 @@ export const ClassroomDetailPage = () => {
               </div>
 
               {[...posts]
-                .sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0))
+                .sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0))
                 .map((post) => (
                   <PostCard
                     key={post.id}
                     post={post}
                     onAddComment={(content) =>
-                      addComment(
-                        post.id,
-                        user?.full_name || "Sinh viên",
-                        "student",
-                        content
-                      )
+                      addComment(post.id, content)
                     }
                     timeAgo={timeAgo}
                   />
@@ -243,8 +235,8 @@ export const ClassroomDetailPage = () => {
               ) : (
                 assignments.map((a) => {
                   const stats = getAssignmentStats(a);
-                  const mySubmission = a.submissions.find(
-                    (s) => s.studentEmail === user?.email || s.studentId === 1
+                  const mySubmission = (a.submissions ?? []).find(
+                    (s) => s.student_email === user?.email || s.student_id === 1
                   );
                   const myStatus: "pending" | "submitted" | "graded" =
                     mySubmission?.status === "graded"
@@ -259,9 +251,9 @@ export const ClassroomDetailPage = () => {
                         <div className="flex items-start justify-between">
                           <div className="flex items-start gap-4 flex-1">
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                              a.type === "report" ? "bg-blue-500/15 text-blue-400"
-                                : a.type === "exercise" ? "bg-amber-500/15 text-amber-400"
-                                : a.type === "project" ? "bg-purple-500/15 text-purple-400"
+                              a.assignment_type === "report" ? "bg-blue-500/15 text-blue-400"
+                                : a.assignment_type === "exercise" ? "bg-amber-500/15 text-amber-400"
+                                : a.assignment_type === "project" ? "bg-purple-500/15 text-purple-400"
                                 : "bg-emerald-500/15 text-emerald-400"
                             }`}>
                               <ListTodo size={20} />
@@ -276,7 +268,7 @@ export const ClassroomDetailPage = () => {
                                     ? <span className="text-red-400">Đã hết hạn</span>
                                     : <span>Hạn: {new Date(a.deadline).toLocaleDateString("vi-VN")}</span>}
                                 </span>
-                                <span>Điểm: {a.maxScore}</span>
+                                <span>Điểm: {Number(a.max_score)}</span>
                                 {a.attachments.length > 0 && (
                                   <span className="flex items-center gap-1">
                                     <Paperclip size={12} /> {a.attachments.length} tài liệu
@@ -297,7 +289,7 @@ export const ClassroomDetailPage = () => {
                           <div className="shrink-0 ml-4 flex flex-col items-end gap-2">
                             <StatusBadge
                               status={myStatus}
-                              score={mySubmission?.score !== null && mySubmission?.score !== undefined ? `${mySubmission.score}/${a.maxScore}` : undefined}
+                              score={mySubmission?.score !== null && mySubmission?.score !== undefined ? `${mySubmission.score}/${Number(a.max_score)}` : undefined}
                             />
                             {myStatus === "pending" && !stats.isOverdue && (
                               <button
@@ -460,15 +452,15 @@ function PostCard({
     <div className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
       <div className="p-5">
         <div className="flex items-start gap-3">
-          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.authorRole === "lecturer" ? "bg-indigo-900 border border-indigo-500/30 text-indigo-300" : "bg-slate-800 border border-slate-700 text-slate-400"}`}>
-            {post.authorName.charAt(0)}
+          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.author_role === "lecturer" ? "bg-indigo-900 border border-indigo-500/30 text-indigo-300" : "bg-slate-800 border border-slate-700 text-slate-400"}`}>
+            {(post.author_name ?? "?").charAt(0)}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm font-bold text-[#dae2fd]">{post.authorName}</span>
-              {post.authorRole === "lecturer" && <span className="text-[9px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
-              {post.isPinned && <Pin size={12} className="text-amber-400" />}
-              <span className="text-[10px] text-slate-600">{timeAgo(post.createdAt)}</span>
+              <span className="text-sm font-bold text-[#dae2fd]">{post.author_name}</span>
+              {post.author_role === "lecturer" && <span className="text-[9px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
+              {post.is_pinned && <Pin size={12} className="text-amber-400" />}
+              <span className="text-[10px] text-slate-600">{timeAgo(post.created_at)}</span>
             </div>
             <p className="text-sm text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
             {post.attachments.length > 0 && (
@@ -489,12 +481,12 @@ function PostCard({
           <div className="px-5 py-3 space-y-3">
             {post.comments.map((c) => (
               <div key={c.id} className="flex items-start gap-2.5">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.authorRole === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{c.authorName.charAt(0)}</div>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{(c.author_name ?? "?").charAt(0)}</div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-slate-300">{c.authorName}</span>
-                    {c.authorRole === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
-                    <span className="text-[10px] text-slate-600">{timeAgo(c.createdAt)}</span>
+                    <span className="text-xs font-semibold text-slate-300">{c.author_name}</span>
+                    {c.author_role === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
+                    <span className="text-[10px] text-slate-600">{timeAgo(c.created_at)}</span>
                   </div>
                   <p className="text-xs text-slate-400 mt-0.5">{c.content}</p>
                 </div>

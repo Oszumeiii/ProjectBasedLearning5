@@ -20,6 +20,8 @@ const ManagerLayout = () => {
 
   const showManagerUsers = !isAdmin && access.managerCanViewUsers;
   const showManagerAccess = !isAdmin && access.managerCanViewAccessSettings;
+  /** Import CSV + gửi mail: cùng quyền xem người dùng (Admin luôn có). */
+  const showManagerImport = showManagerUsers;
 
   return (
     <div className="flex min-h-screen bg-[#0b1326] text-[#dae2fd]">
@@ -63,6 +65,10 @@ const ManagerLayout = () => {
               <p className="px-4 pt-6 pb-1 text-[10px] font-bold uppercase tracking-widest text-violet-500/90">
                 Hệ thống &amp; bảo mật
               </p>
+              <NavLink to="import-students" className={navClass}>
+                <span className="material-symbols-outlined text-lg">upload_file</span>
+                Import sinh viên (CSV)
+              </NavLink>
               <NavLink to="users" className={navClass}>
                 <span className="material-symbols-outlined text-lg">group</span>
                 Người dùng
@@ -83,6 +89,12 @@ const ManagerLayout = () => {
                 <NavLink to="users" className={navClass}>
                   <span className="material-symbols-outlined text-lg">group</span>
                   Người dùng
+                </NavLink>
+              )}
+              {showManagerImport && (
+                <NavLink to="import-students" className={navClass}>
+                  <span className="material-symbols-outlined text-lg">upload_file</span>
+                  Import sinh viên (CSV)
                 </NavLink>
               )}
               {showManagerAccess && (
