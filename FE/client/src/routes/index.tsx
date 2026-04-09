@@ -2,6 +2,7 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
+  Link,
 } from "react-router-dom";
 
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -34,6 +35,8 @@ import { ManagerCoursesPage } from "../features/manager/pages/ManagerCoursesPage
 import { ManagerReportsPage } from "../features/manager/pages/ManagerReportsPage";
 import { AdminUsersPage } from "../features/manager/pages/AdminUsersPage";
 import { AdminAccessControlPage } from "../features/manager/pages/AdminAccessControlPage";
+import { StudentImportPage } from "../features/manager/pages/StudentImportPage";
+import { ManagerCourseDetailPage } from "../features/manager/pages/ManagerCourseDetailPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/login" replace /> },
@@ -53,7 +56,6 @@ const router = createBrowserRouter([
           { path: "class/:classId/submit", element: <AssignmentSubmissionPage /> },
           { path: "library", element: <AcademicLibraryPage /> },
           { path: "feedback", element: <AnalysisFeedbackPage /> },
-          { path: "grading-detail", element: <InstructorGradingDetailPage /> },
         ],
       },
     ],
@@ -69,6 +71,8 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="lobby" replace /> },
           { path: "lobby", element: <InstructorLobbyPage /> },
+          { path: "courses", element: <ManagerCoursesPage /> },
+          { path: "courses/:courseId", element: <ManagerCourseDetailPage /> },
           { path: "class/:courseId", element: <InstructorClassroomPage /> },
           { path: "grading", element: <InstructorGradingPage /> },
           { path: "grading-detail", element: <InstructorGradingDetailPage /> },
@@ -89,7 +93,11 @@ const router = createBrowserRouter([
           { index: true, element: <Navigate to="lobby" replace /> },
           { path: "lobby", element: <ManagerLobbyPage /> },
           { path: "courses", element: <ManagerCoursesPage /> },
+          { path: "courses/:courseId", element: <ManagerCourseDetailPage /> },
           { path: "reports", element: <ManagerReportsPage /> },
+          { path: "users", element: <AdminUsersPage /> },
+          { path: "access", element: <AdminAccessControlPage /> },
+          { path: "import-students", element: <StudentImportPage /> },
         ],
       },
     ],
@@ -106,9 +114,11 @@ const router = createBrowserRouter([
           { index: true, element: <Navigate to="lobby" replace /> },
           { path: "lobby", element: <ManagerLobbyPage /> },
           { path: "courses", element: <ManagerCoursesPage /> },
+          { path: "courses/:courseId", element: <ManagerCourseDetailPage /> },
           { path: "reports", element: <ManagerReportsPage /> },
           { path: "users", element: <AdminUsersPage /> },
           { path: "access", element: <AdminAccessControlPage /> },
+          { path: "import-students", element: <StudentImportPage /> },
         ],
       },
     ],
@@ -122,12 +132,12 @@ const router = createBrowserRouter([
         <div className="text-center">
           <h1 className="text-6xl font-bold text-indigo-500 mb-4">404</h1>
           <p className="text-lg">Không tìm thấy trang yêu cầu.</p>
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"
+          <Link
+            to="/"
+            className="mt-6 inline-block px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"
           >
             Quay lại trang chủ
-          </button>
+          </Link>
         </div>
       </div>
     ),

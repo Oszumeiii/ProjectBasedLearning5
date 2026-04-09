@@ -32,6 +32,19 @@ const InstructorLayout = () => {
             Sảnh
           </NavLink>
           <NavLink
+            to="/instructor/courses"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-indigo-600/20 text-indigo-400 border-r-2 border-indigo-500"
+                  : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+              }`
+            }
+          >
+            <span className="material-symbols-outlined">school</span>
+            Quản lý lớp
+          </NavLink>
+          <NavLink
             to="/instructor/grading"
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${

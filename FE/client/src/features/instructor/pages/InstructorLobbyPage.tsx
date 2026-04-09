@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
 import { InstructorClassCard } from "../components/InstructorClassCard";
-import { listCourses, type Course } from "../../classroom/services/course.service";
+import { getMyCourses, type Course } from "../../classroom/services/course.service";
 import { listReports } from "../../classroom/services/report.service";
 import { useAuth } from "../../auth/context/AuthContext";
 
@@ -17,7 +19,7 @@ export const InstructorLobbyPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const coursesData = await listCourses();
+        const coursesData = await getMyCourses();
         const enriched = await Promise.all(
           coursesData.map(async (c) => {
             try {
@@ -57,6 +59,12 @@ export const InstructorLobbyPage: React.FC = () => {
             Xin chào {user?.full_name}. Quản lý các lớp học và báo cáo sinh viên.
           </p>
         </div>
+        <Link
+          to="/instructor/courses"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-bold text-sm text-white shrink-0"
+        >
+          <Plus size={18} /> Quản lý lớp học
+        </Link>
       </div>
 
       {loading ? (

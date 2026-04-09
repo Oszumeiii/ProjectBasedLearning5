@@ -3,22 +3,27 @@ import pool from '../config/db'
 
 export const overviewStats = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const [users, projects, reports, plagiarismChecks, feedbacks, queries] = await Promise.all([
-      pool.query('SELECT COUNT(*)::int AS count FROM users'),
-      pool.query('SELECT COUNT(*)::int AS count FROM projects'),
-      pool.query('SELECT COUNT(*)::int AS count FROM reports'),
-      pool.query('SELECT COUNT(*)::int AS count FROM plagiarism_checks'),
-      pool.query('SELECT COUNT(*)::int AS count FROM feedback'),
-      pool.query('SELECT COALESCE(SUM(query_count), 0)::int AS count FROM rag_query_logs')
+    const safeCount = (sql: string) =>
+      pool.query(sql).then(r => r.rows[0]?.count ?? 0).catch(() => 0)
+
+    const [
+      totalStudents, totalProjects, totalReports,
+      totalPlagiarismChecks, totalFeedback, totalRagQueries,
+      totalCourses
+    ] = await Promise.all([
+      safeCount('SELECT COUNT(*)::int AS count FROM users'),
+      safeCount('SELECT COUNT(*)::int AS count FROM projects'),
+      safeCount('SELECT COUNT(*)::int AS count FROM reports'),
+      safeCount('SELECT COUNT(*)::int AS count FROM plagiarism_checks'),
+      safeCount('SELECT COUNT(*)::int AS count FROM feedback'),
+      safeCount('SELECT COUNT(*)::int AS count FROM rag_query_logs'),
+      safeCount("SELECT COUNT(*)::int AS count FROM courses WHERE deleted_at IS NULL")
     ])
 
     res.json({
-      totalStudents: users.rows[0]?.count ?? 0,
-      totalProjects: projects.rows[0]?.count ?? 0,
-      totalReports: reports.rows[0]?.count ?? 0,
-      totalPlagiarismChecks: plagiarismChecks.rows[0]?.count ?? 0,
-      totalFeedback: feedbacks.rows[0]?.count ?? 0,
-      totalRagQueries: queries.rows[0]?.count ?? 0
+      totalStudents, totalProjects, totalReports,
+      totalPlagiarismChecks, totalFeedback, totalRagQueries,
+      totalCourses
     })
   } catch (error) {
     console.error('❌ Error in overviewStats:', error)
