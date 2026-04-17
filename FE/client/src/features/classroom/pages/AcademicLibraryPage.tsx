@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, FileText, Download, Eye, BookOpen } from "lucide-react";
+import { Search, FileText, Download, Eye, BookOpen, Filter } from "lucide-react";
 import {
   listReports,
   type Report,
@@ -21,6 +21,8 @@ export const AcademicLibraryPage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [sort, setSort] = useState<"recent" | "popular" | "rated">("recent");
+  const [fileTypeFilter, setFileTypeFilter] = useState<"all" | "pdf" | "docx" | "pptx">("all");
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 400);
@@ -34,15 +36,20 @@ export const AcademicLibraryPage = () => {
         status: "approved",
         search: debouncedSearch || undefined,
         limit: 50,
-        sort: "newest",
+        sort,
       });
-      setReports(data.items || []);
+      const items: Report[] = data.items || [];
+      const filteredItems =
+        fileTypeFilter === "all"
+          ? items
+          : items.filter((item) => item.file_type?.toLowerCase() === fileTypeFilter);
+      setReports(filteredItems);
     } catch (err) {
       console.error("Failed to load reports", err);
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, sort, fileTypeFilter]);
 
   useEffect(() => {
     fetchReports();
@@ -68,26 +75,53 @@ export const AcademicLibraryPage = () => {
           </p>
         </header>
 
-        <div className="relative mb-8">
-          <Search
-            size={20}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-          />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm kiếm báo cáo theo tiêu đề, tác giả..."
-            className="w-full pl-12 pr-4 py-3.5 bg-[#131b2e] border border-slate-800 rounded-xl text-sm text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
-          />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-sm"
+        <div className="space-y-4 mb-8">
+          <div className="relative">
+            <Search
+              size={20}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+            />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Tìm kiếm báo cáo theo tiêu đề, tác giả..."
+              className="w-full pl-12 pr-4 py-3.5 bg-[#131b2e] border border-slate-800 rounded-xl text-sm text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-sm"
+              >
+                Xóa
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-2 text-xs text-slate-400">
+              <Filter size={14} /> Bộ lọc
+            </div>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as "recent" | "popular" | "rated")}
+              className="bg-[#131b2e] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200"
             >
-              Xóa
-            </button>
-          )}
+              <option value="recent">Mới nhất</option>
+              <option value="popular">Xem nhiều</option>
+              <option value="rated">Đánh giá cao</option>
+            </select>
+            <select
+              value={fileTypeFilter}
+              onChange={(e) => setFileTypeFilter(e.target.value as "all" | "pdf" | "docx" | "pptx")}
+              className="bg-[#131b2e] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200"
+            >
+              <option value="all">Tất cả file</option>
+              <option value="pdf">PDF</option>
+              <option value="docx">DOCX</option>
+              <option value="pptx">PPTX</option>
+            </select>
+          </div>
         </div>
 
         {loading ? (

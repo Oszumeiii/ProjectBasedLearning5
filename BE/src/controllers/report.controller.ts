@@ -212,7 +212,7 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
       params.push(req.user.id, req.user.id)
       conds.push(`(
         r.author_id = $${params.length - 1}
-        OR r.visibility = 'public'
+        OR (r.visibility = 'public' AND r.status = 'approved')
         OR (r.visibility = 'course' AND r.course_id IN (
           SELECT course_id FROM enrollments WHERE student_id = $${params.length}
         ))
@@ -412,6 +412,7 @@ export const updateReportStatus = async (req: Request, res: Response): Promise<v
       `UPDATE reports SET
          status = $1, reviewed_by = $2, review_note = $3
          ${timeField ? `, ${timeField} = NOW()` : ''}
+         ${status === 'approved' ? `, visibility = 'public'` : ''}
        WHERE id = $4 RETURNING *`,
       [status, req.user.id, reviewNote?.trim() || null, id]
     )

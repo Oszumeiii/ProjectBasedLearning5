@@ -7,7 +7,7 @@ import {
   createReport, listReports, getReportById, updateReport, deleteReport,
   updateReportStatus, resubmitReport, downloadReport,
   listReportVersions, downloadReportVersion,
-  upsertRating, getRatings, addFavorite, removeFavorite
+  addFavorite, removeFavorite
 } from '../controllers/report.controller'
 
 const upload = multer({
@@ -38,10 +38,6 @@ router.get('/:id/download', downloadReport)
 // Versions
 router.get('/:id/versions', listReportVersions)
 router.get('/:id/versions/:versionId/download', downloadReportVersion)
-
-// Ratings (GV/staff đánh giá)
-router.post('/:id/rating', requireRole('lecturer', 'manager', 'admin'), upsertRating)
-router.get('/:id/ratings', getRatings)
 
 // Favorites
 router.post('/:id/favorite', addFavorite)

@@ -1,26 +1,44 @@
 import { useEffect, useState } from "react";
 import { FileText, Eye, Calendar } from "lucide-react";
-import { listReports, type Report } from "../../classroom/services/report.service";
+import {
+  listReports,
+  updateReportStatus,
+  type Report,
+} from "../../classroom/services/report.service";
 
 export const ManagerReportsPage = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [actingId, setActingId] = useState<number | null>(null);
+
+  const load = async () => {
+    try {
+      const data = await listReports({ limit: 100, sort: "recent" });
+      setReports(data.items || []);
+    } catch (e: unknown) {
+      setError("Không tải được danh sách báo cáo.");
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const data = await listReports({ limit: 100, sort: "newest" });
-        setReports(data.items || []);
-      } catch (e: unknown) {
-        setError("Không tải được danh sách báo cáo.");
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    void load();
   }, []);
+
+  const handleQuickReview = async (id: number, status: "approved" | "revision_needed" | "rejected") => {
+    setActingId(id);
+    try {
+      await updateReportStatus(id, status);
+      await load();
+    } catch (e) {
+      console.error("Failed to update report status", e);
+    } finally {
+      setActingId(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -72,6 +90,7 @@ export const ManagerReportsPage = () => {
                     <Calendar size={12} /> Ngày
                   </span>
                 </th>
+                <th className="px-4 py-3 font-semibold text-right">Duyệt nhanh</th>
               </tr>
             </thead>
             <tbody>
@@ -96,6 +115,34 @@ export const ManagerReportsPage = () => {
                   </td>
                   <td className="px-4 py-3 text-slate-500 text-xs hidden lg:table-cell">
                     {new Date(r.created_at).toLocaleDateString("vi-VN")}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <div className="inline-flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickReview(r.id, "approved")}
+                        disabled={actingId === r.id || r.status === "approved"}
+                        className="px-2 py-1 rounded bg-emerald-500/15 text-emerald-300 text-[10px] font-bold disabled:opacity-40"
+                      >
+                        Duyệt
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleQuickReview(r.id, "revision_needed")}
+                        disabled={actingId === r.id || r.status === "approved"}
+                        className="px-2 py-1 rounded bg-amber-500/15 text-amber-300 text-[10px] font-bold disabled:opacity-40"
+                      >
+                        Sửa lại
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleQuickReview(r.id, "rejected")}
+                        disabled={actingId === r.id || r.status === "approved"}
+                        className="px-2 py-1 rounded bg-red-500/15 text-red-300 text-[10px] font-bold disabled:opacity-40"
+                      >
+                        Từ chối
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

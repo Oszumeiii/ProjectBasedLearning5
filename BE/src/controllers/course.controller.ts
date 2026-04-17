@@ -48,9 +48,10 @@ async function generateUniqueCourseCode(courseType: string, semester: string): P
   throw new Error('Không tạo được mã học phần duy nhất')
 }
 
-async function loadCourseRow(id: number): Promise<(CourseRow & Record<string, unknown>) | null> {
-  if (!Number.isFinite(id) || id <= 0) return null
-  const r = await pool.query(`SELECT * FROM courses WHERE id = $1 AND deleted_at IS NULL`, [id])
+async function loadCourseRow(id: number | string): Promise<(CourseRow & Record<string, unknown>) | null> {
+  const parsedId = Number(id)
+  if (!Number.isFinite(parsedId) || parsedId <= 0) return null
+  const r = await pool.query(`SELECT * FROM courses WHERE id = $1 AND deleted_at IS NULL`, [parsedId])
   return r.rows[0] ?? null
 }
 

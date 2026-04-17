@@ -36,11 +36,10 @@ export interface ReportVersion {
   created_at: string;
 }
 
-export interface ReportRating {
+export interface ReportFeedback {
   id: number;
   report_id: number;
   user_id: number;
-  rating: number;
   comment: string | null;
   reviewer_name: string;
   created_at: string;
@@ -54,11 +53,17 @@ export interface ListReportsParams {
   search?: string;
   page?: number;
   limit?: number;
-  sort?: string;
+  sort?: "recent" | "popular" | "rated" | "newest";
 }
 
 export const listReports = async (params?: ListReportsParams) => {
-  const response = await axiosInstance.get("/reports", { params });
+  const normalizedParams = params
+    ? {
+        ...params,
+        sort: params.sort === "newest" ? "recent" : params.sort,
+      }
+    : undefined;
+  const response = await axiosInstance.get("/reports", { params: normalizedParams });
   return response.data;
 };
 
@@ -163,21 +168,19 @@ export const listReportVersions = async (
   return response.data.items;
 };
 
-export const upsertRating = async (
-  id: number,
-  rating: number,
-  comment?: string
-) => {
-  const response = await axiosInstance.post(`/reports/${id}/rating`, {
-    rating,
-    comment,
-  });
-  return response.data;
-};
-
-export const getRatings = async (id: number): Promise<ReportRating[]> => {
-  const response = await axiosInstance.get(`/reports/${id}/ratings`);
-  return response.data.items;
+export const getReportFeedback = async (id: number): Promise<ReportFeedback[]> => {
+  const report = await getReportById(id);
+  if (!report.review_note?.trim()) return [];
+  return [
+    {
+      id: report.id,
+      report_id: report.id,
+      user_id: 0,
+      comment: report.review_note,
+      reviewer_name: report.reviewer_name || "Giảng viên",
+      created_at: report.updated_at,
+    },
+  ];
 };
 
 export const addFavorite = async (id: number) => {
