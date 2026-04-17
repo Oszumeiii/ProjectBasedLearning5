@@ -13,7 +13,9 @@ import {
   gradeAssignmentSubmission,
   listClassPostsByCourse,
   createClassPost,
-  addClassPostComment
+  addClassPostComment,
+  downloadAssignmentAttachment,
+  downloadClassPostAttachment
 } from '../controllers/assignment.controller'
 
 const upload = multer({
@@ -26,16 +28,18 @@ const router = Router()
 router.use(authMiddleware)
 
 router.get('/course/:courseId', listAssignmentsByCourse)
-router.post('/', requireRole('lecturer', 'manager', 'admin'), createAssignment)
-router.patch('/:id', requireRole('lecturer', 'manager', 'admin'), patchAssignment)
+router.post('/', upload.array('files'), requireRole('lecturer', 'manager', 'admin'), createAssignment)
+router.patch('/:id', upload.array('files'), requireRole('lecturer', 'manager', 'admin'), patchAssignment)
 router.delete('/:id', requireRole('lecturer', 'manager', 'admin'), deleteAssignment)
 
 router.get('/:id/submissions', listAssignmentSubmissions)
 router.post('/:id/submit', upload.single('file'), submitAssignment)
 router.patch('/submissions/:submissionId/grade', requireRole('lecturer', 'manager', 'admin'), gradeAssignmentSubmission)
+router.get('/:id/attachments/:attachmentIndex/download', downloadAssignmentAttachment)
 
 router.get('/class-posts/course/:courseId', listClassPostsByCourse)
-router.post('/class-posts', createClassPost)
+router.post('/class-posts', upload.array('files'), createClassPost)
+router.get('/class-posts/:id/attachments/:attachmentIndex/download', downloadClassPostAttachment)
 router.post('/class-posts/:id/comments', addClassPostComment)
 
 export default router

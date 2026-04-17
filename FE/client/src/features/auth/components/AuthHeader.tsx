@@ -30,24 +30,24 @@ const AuthHeader = () => {
 
         {/* Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <a
+          <button
+            type="button"
             className="text-sm font-medium transition-colors"
             style={{ color: "#64748b" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#135bec")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "#64748b")}
-            href="#"
           >
             Hướng dẫn
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             className="text-sm font-medium transition-colors"
             style={{ color: "#64748b" }}
             onMouseEnter={(e) => (e.currentTarget.style.color = "#135bec")}
             onMouseLeave={(e) => (e.currentTarget.style.color = "#64748b")}
-            href="#"
           >
             Về chúng tôi
-          </a>
+          </button>
           <button
             className="text-sm font-bold text-white px-5 py-2 rounded-lg transition-all"
             style={{ background: "#135bec" }}

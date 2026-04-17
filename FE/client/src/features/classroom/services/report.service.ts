@@ -6,6 +6,7 @@ export interface Report {
   description: string | null;
   status: string;
   file_url: string | null;
+  file_name?: string | null;
   file_type: string | null;
   file_size: number | null;
   visibility: string;
@@ -113,9 +114,46 @@ export const resubmitReport = async (id: number, formData: FormData) => {
   return response.data;
 };
 
-export const downloadReport = async (id: number) => {
-  const response = await axiosInstance.get(`/reports/${id}/download`);
-  return response.data;
+const getFileNameFromDisposition = (contentDisposition?: string | null) => {
+  if (!contentDisposition) return null;
+  const utf8Match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (utf8Match?.[1]) {
+    return decodeURIComponent(utf8Match[1]);
+  }
+  const basicMatch = contentDisposition.match(/filename="?([^";]+)"?/i);
+  return basicMatch?.[1] ?? null;
+};
+
+export const downloadBinaryFile = async (
+  url: string,
+  preferredFileName?: string | null
+): Promise<void> => {
+  const response = await axiosInstance.get(url, { responseType: "blob" });
+  const blob = new Blob([response.data], {
+    type: response.headers["content-type"] || response.data?.type || "application/octet-stream",
+  });
+  const objectUrl = window.URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = objectUrl;
+  anchor.download =
+    preferredFileName?.trim() ||
+    getFileNameFromDisposition(response.headers["content-disposition"]) ||
+    "download";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.URL.revokeObjectURL(objectUrl);
+};
+
+export const downloadReport = async (id: number): Promise<void> => {
+  await downloadBinaryFile(`/reports/${id}/download`);
+};
+
+export const downloadReportInBrowser = async (
+  id: number,
+  preferredFileName?: string | null
+) => {
+  await downloadBinaryFile(`/reports/${id}/download`, preferredFileName);
 };
 
 export const listReportVersions = async (

@@ -42,6 +42,17 @@ export const forgotPassword = async (email: string) => {
   return response.data;
 };
 
+export const activateAccount = async (
+  token: string,
+  password: string
+): Promise<AuthResponse> => {
+  const response = await axiosInstance.post("/auth/activate", {
+    token,
+    password,
+  });
+  return response.data;
+};
+
 export const resetPassword = async (token: string, password: string) => {
   const response = await axiosInstance.post("/auth/reset-password", {
     token,

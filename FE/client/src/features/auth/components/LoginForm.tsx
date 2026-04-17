@@ -133,9 +133,9 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
             </label>
           </div>
           <div className="text-sm">
-            <a className="font-medium text-primary hover:underline" href="#">
+            <button type="button" className="font-medium text-primary hover:underline">
               Quên mật khẩu?
-            </a>
+            </button>
           </div>
         </div>
 
@@ -155,12 +155,12 @@ const LoginForm = ({ onSubmit, isLoading = false }: LoginFormProps) => {
       <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Bạn chưa có tài khoản?{" "}
-          <a
+          <button
+            type="button"
             className="font-bold text-slate-900 dark:text-white hover:underline"
-            href="#"
           >
             Liên hệ quản trị viên
-          </a>
+          </button>
         </p>
       </div>
 

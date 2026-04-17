@@ -1,7 +1,12 @@
 import { Client } from 'minio'
 import {
-  MINIO_ENDPOINT, MINIO_PORT, MINIO_USE_SSL,
-  MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET
+  MINIO_ENDPOINT,
+  MINIO_PORT,
+  MINIO_USE_SSL,
+  MINIO_ACCESS_KEY,
+  MINIO_SECRET_KEY,
+  MINIO_BUCKET,
+  MINIO_PUBLIC_URL
 } from '../config/env.js'
 
 const minioClient = new Client({
@@ -40,7 +45,20 @@ export async function uploadFile(
 // ─── Presigned download URL ───
 
 export async function getPresignedUrl(key: string, expirySeconds = 3600): Promise<string> {
-  return minioClient.presignedGetObject(BUCKET, key, expirySeconds)
+  const presigned = await minioClient.presignedGetObject(BUCKET, key, expirySeconds)
+
+  if (!MINIO_PUBLIC_URL) return presigned
+
+  try {
+    const source = new URL(presigned)
+    const target = new URL(MINIO_PUBLIC_URL)
+    source.protocol = target.protocol
+    source.hostname = target.hostname
+    source.port = target.port
+    return source.toString()
+  } catch {
+    return presigned
+  }
 }
 
 // ─── Download raw buffer ───

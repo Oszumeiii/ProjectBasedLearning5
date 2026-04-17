@@ -19,13 +19,20 @@ import {
   X,
 } from "lucide-react";
 import { getCourseById } from "../../classroom/services/course.service";
+import { downloadReportInBrowser } from "../../classroom/services/report.service";
 import { useAssignments } from "../../../context/AssignmentContext";
 import {
-  type Assignment,
+  downloadAssignmentAttachmentInBrowser,
+  type AssignmentAttachmentInput,
   type AssignmentSubmission,
   type AssignmentType,
 } from "../../classroom/services/assignment.service";
-import type { ClassPost, ClassPostComment } from "../../classroom/services/classPost.service";
+import {
+  downloadClassPostAttachmentInBrowser,
+  type ClassPost,
+  type ClassPostAttachmentInput,
+  type ClassPostComment,
+} from "../../classroom/services/classPost.service";
 
 interface CourseDetail {
   id: number;
@@ -70,6 +77,7 @@ export const InstructorClassroomPage: React.FC = () => {
     createAssignment,
     gradeSubmission,
     addPost,
+    addComment,
     getAssignmentStats,
   } = useAssignments();
 
@@ -83,14 +91,14 @@ export const InstructorClassroomPage: React.FC = () => {
   const [formDeadline, setFormDeadline] = useState("");
   const [formMaxScore, setFormMaxScore] = useState("10");
   const [formType, setFormType] = useState<AssignmentType>("report");
-  const [formAttachments, setFormAttachments] = useState<
-    Array<{ name: string; size: string }>
-  >([]);
+  const [formAttachments, setFormAttachments] = useState<AssignmentAttachmentInput[]>([]);
   const [savingAssignment, setSavingAssignment] = useState(false);
   const attachmentInputRef = useRef<HTMLInputElement>(null);
 
   const [expandedAssignment, setExpandedAssignment] = useState<number | null>(null);
   const [newPostContent, setNewPostContent] = useState("");
+  const [postAttachments, setPostAttachments] = useState<ClassPostAttachmentInput[]>([]);
+  const postAttachmentInputRef = useRef<HTMLInputElement>(null);
 
   const assignments = getAssignmentsByCourse(cid);
   const posts = getPostsByCourse(cid);
@@ -99,9 +107,9 @@ export const InstructorClassroomPage: React.FC = () => {
     if (!courseId) return;
     const fetchData = async () => {
       try {
-        await ensureCourseData(cid);
         const courseData = await getCourseById(Number(courseId));
         setCourse(courseData);
+        await ensureCourseData(cid);
       } catch (err) {
         console.error("Failed to load data", err);
       } finally {
@@ -120,11 +128,11 @@ export const InstructorClassroomPage: React.FC = () => {
   const handleAttachmentPick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files?.length) return;
-    const next: Array<{ name: string; size: string }> = [...formAttachments];
+    const next: AssignmentAttachmentInput[] = [...formAttachments];
     for (let i = 0; i < files.length; i++) {
       const f = files[i];
       if (next.some((a) => a.name === f.name)) continue;
-      next.push({ name: f.name, size: formatFileSize(f.size) });
+      next.push({ file: f, name: f.name, size: formatFileSize(f.size) });
     }
     setFormAttachments(next);
     e.target.value = "";
@@ -132,6 +140,23 @@ export const InstructorClassroomPage: React.FC = () => {
 
   const removeFormAttachment = (name: string) => {
     setFormAttachments((prev) => prev.filter((a) => a.name !== name));
+  };
+
+  const handlePostAttachmentPick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    const next: ClassPostAttachmentInput[] = [...postAttachments];
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      if (next.some((a) => a.name === f.name)) continue;
+      next.push({ file: f, name: f.name, size: formatFileSize(f.size) });
+    }
+    setPostAttachments(next);
+    e.target.value = "";
+  };
+
+  const removePostAttachment = (name: string) => {
+    setPostAttachments((prev) => prev.filter((a) => a.name !== name));
   };
 
   const handleCreateAssignment = async () => {
@@ -257,10 +282,47 @@ export const InstructorClassroomPage: React.FC = () => {
                   rows={2}
                   className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:ring-1 focus:ring-indigo-500 resize-none"
                 />
-                <div className="flex justify-between items-center mt-2">
-                  <button className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1">
-                    <Paperclip size={14} /> Đính kèm
-                  </button>
+                <div className="flex justify-between items-center mt-2 gap-3">
+                  <div className="flex-1">
+                    <input
+                      ref={postAttachmentInputRef}
+                      type="file"
+                      multiple
+                      className="hidden"
+                      onChange={handlePostAttachmentPick}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => postAttachmentInputRef.current?.click()}
+                      className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1"
+                    >
+                      <Paperclip size={14} /> Đính kèm
+                    </button>
+                    {postAttachments.length > 0 && (
+                      <ul className="mt-2 space-y-1">
+                        {postAttachments.map((att) => (
+                          <li
+                            key={att.name}
+                            className="flex items-center justify-between gap-2 rounded-lg bg-[#0b1326] border border-slate-800 px-3 py-1.5 text-xs text-slate-300"
+                          >
+                            <span className="truncate flex items-center gap-1.5">
+                              <Paperclip size={12} className="text-indigo-400 shrink-0" />
+                              <span className="truncate">{att.name}</span>
+                              <span className="text-slate-600 shrink-0">{att.size}</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removePostAttachment(att.name)}
+                              className="p-0.5 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 shrink-0"
+                              aria-label="Xóa file"
+                            >
+                              <X size={14} />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                   <button
                     onClick={() => {
                       if (!newPostContent.trim()) return;
@@ -268,8 +330,10 @@ export const InstructorClassroomPage: React.FC = () => {
                         courseId: cid,
                         content: newPostContent,
                         isPinned: false,
+                        attachments: postAttachments,
                       });
                       setNewPostContent("");
+                      setPostAttachments([]);
                     }}
                     disabled={!newPostContent.trim()}
                     className="px-4 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-500 disabled:opacity-40 flex items-center gap-1.5"
@@ -284,7 +348,7 @@ export const InstructorClassroomPage: React.FC = () => {
           {[...posts]
             .sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0))
             .map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} onAddComment={(content) => addComment(post.id, content)} />
             ))}
         </div>
       )}
@@ -450,6 +514,11 @@ export const InstructorClassroomPage: React.FC = () => {
                               {TYPE_LABEL[a.assignment_type]}
                             </span>
                           </div>
+                          {a.description && (
+                            <p className="mt-2 text-sm text-slate-400 leading-relaxed line-clamp-2">
+                              {a.description}
+                            </p>
+                          )}
                           <div className="flex items-center gap-4 mt-1.5 text-xs text-slate-500">
                             <span className="flex items-center gap-1">
                               <Clock size={12} />
@@ -491,10 +560,22 @@ export const InstructorClassroomPage: React.FC = () => {
                       )}
                       {a.attachments.length > 0 && (
                         <div className="px-5 py-2 flex gap-2 flex-wrap">
-                          {a.attachments.map((att) => (
-                            <span key={att.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 cursor-pointer">
+                          {a.attachments.map((att, index) => (
+                            <button
+                              key={`${att.name}-${index}`}
+                              type="button"
+                              onClick={() => {
+                                void downloadAssignmentAttachmentInBrowser(a.id, index, att.name).catch(
+                                  (error) => {
+                                    console.error(error);
+                                    alert("Không tải được file đính kèm");
+                                  }
+                                );
+                              }}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 hover:text-indigo-300"
+                            >
                               <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
-                            </span>
+                            </button>
                           ))}
                         </div>
                       )}
@@ -627,7 +708,7 @@ function SubmissionRow({
   submission: AssignmentSubmission;
   maxScore: number;
   assignmentId: number;
-  onGrade: (aId: number, sId: number, score: number, feedback: string) => void;
+  onGrade: (aId: number, submissionId: number, score: number, feedback: string) => void;
 }) {
   const [grading, setGrading] = useState(false);
   const [scoreInput, setScoreInput] = useState("");
@@ -660,8 +741,17 @@ function SubmissionRow({
           {submission.submitted_at ? new Date(submission.submitted_at).toLocaleDateString("vi-VN") : "—"}
         </td>
         <td className="px-3 py-2.5">
-          {submission.report_file_name ? (
-            <span className="text-xs text-slate-400 flex items-center gap-1 cursor-pointer hover:text-indigo-400"><Download size={12} /> {submission.report_file_name.slice(0, 25)}...</span>
+          {submission.report_id && submission.report_file_name ? (
+            <button
+              type="button"
+              onClick={() => void downloadReportInBrowser(submission.report_id!, submission.report_file_name)}
+              className="text-xs text-slate-400 flex items-center gap-1 hover:text-indigo-400"
+            >
+              <Download size={12} />
+              {submission.report_file_name.length > 25
+                ? `${submission.report_file_name.slice(0, 25)}...`
+                : submission.report_file_name}
+            </button>
           ) : (
             <span className="text-xs text-slate-600">—</span>
           )}
@@ -705,7 +795,7 @@ function SubmissionRow({
                 onClick={() => {
                   const score = Number(scoreInput);
                   if (isNaN(score) || score < 0 || score > maxScore) return;
-                  onGrade(assignmentId, submission.student_id, score, feedbackInput);
+                  onGrade(assignmentId, submission.id, score, feedbackInput);
                   setGrading(false);
                   setScoreInput("");
                   setFeedbackInput("");
@@ -724,8 +814,9 @@ function SubmissionRow({
   );
 }
 
-function PostCard({ post }: { post: ClassPost }) {
+function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (content: string) => void }) {
   const [showComments, setShowComments] = useState(post.comments.length <= 2);
+  const [replyText, setReplyText] = useState("");
 
   const timeAgo = (date: string) => {
     const diff = Date.now() - new Date(date).getTime();
@@ -753,42 +844,83 @@ function PostCard({ post }: { post: ClassPost }) {
             <p className="text-sm text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
             {post.attachments.length > 0 && (
               <div className="flex gap-2 flex-wrap mt-3">
-                {post.attachments.map((att: { name: string; size?: string }) => (
-                  <span key={att.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 cursor-pointer">
+                {post.attachments.map((att: { name: string; size?: string }, index: number) => (
+                  <button
+                    key={`${att.name}-${index}`}
+                    type="button"
+                    onClick={() => {
+                      void downloadClassPostAttachmentInBrowser(post.id, index, att.name).catch(
+                        (error) => {
+                          console.error(error);
+                          alert("Không tải được file đính kèm");
+                        }
+                      );
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 hover:text-indigo-300"
+                  >
                     <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
-                  </span>
+                  </button>
                 ))}
               </div>
             )}
           </div>
         </div>
       </div>
-      {post.comments.length > 0 && (
-        <div className="border-t border-slate-800/50 bg-[#0e1627]">
-          {!showComments && post.comments.length > 2 && (
-            <button onClick={() => setShowComments(true)} className="w-full py-2 text-xs text-indigo-400 hover:text-indigo-300">
-              Xem {post.comments.length} bình luận
-            </button>
-          )}
-          {showComments && (
-            <div className="px-5 py-3 space-y-3">
-              {post.comments.map((c: ClassPostComment) => (
-                <div key={c.id} className="flex items-start gap-2.5">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{(c.author_name ?? "?").charAt(0)}</div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-slate-300">{c.author_name}</span>
-                      {c.author_role === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
-                      <span className="text-[10px] text-slate-600">{timeAgo(c.created_at)}</span>
+
+      <div className="border-t border-slate-800/50 bg-[#0e1627]">
+        {post.comments.length > 0 && (
+          <>
+            {!showComments && post.comments.length > 2 && (
+              <button onClick={() => setShowComments(true)} className="w-full py-2 text-xs text-indigo-400 hover:text-indigo-300">
+                Xem {post.comments.length} bình luận
+              </button>
+            )}
+            {showComments && (
+              <div className="px-5 py-3 space-y-3">
+                {post.comments.map((c: ClassPostComment) => (
+                  <div key={c.id} className="flex items-start gap-2.5">
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{(c.author_name ?? "?").charAt(0)}</div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-slate-300">{c.author_name}</span>
+                        {c.author_role === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
+                        <span className="text-[10px] text-slate-600">{timeAgo(c.created_at)}</span>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-0.5">{c.content}</p>
                     </div>
-                    <p className="text-xs text-slate-400 mt-0.5">{c.content}</p>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </>
+        )}
+        <div className="px-5 py-2 flex items-center gap-2">
+          <input
+            type="text"
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && replyText.trim()) {
+                onAddComment(replyText);
+                setReplyText("");
+              }
+            }}
+            placeholder="Trả lời..."
+            className="flex-1 bg-transparent border-none text-xs text-slate-300 placeholder:text-slate-600 focus:ring-0 focus:outline-none"
+          />
+          <button
+            onClick={() => {
+              if (!replyText.trim()) return;
+              onAddComment(replyText);
+              setReplyText("");
+            }}
+            disabled={!replyText.trim()}
+            className="text-indigo-500 disabled:text-slate-700 hover:text-indigo-300"
+          >
+            <Send size={14} />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

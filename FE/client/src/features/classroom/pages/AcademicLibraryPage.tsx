@@ -1,26 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Search,
-  FileText,
-  Download,
-  Eye,
-  Star,
-  Filter,
-  BookOpen,
-} from "lucide-react";
+import { Search, FileText, Download, Eye, BookOpen } from "lucide-react";
 import {
   listReports,
   type Report,
-  addFavorite,
-  removeFavorite,
+  downloadReportInBrowser,
 } from "../services/report.service";
-
-const STATUS_LABEL: Record<string, string> = {
-  approved: "Đã duyệt",
-  pending: "Chờ duyệt",
-  under_review: "Đang duyệt",
-};
 
 const FILE_COLORS: Record<string, string> = {
   PDF: "text-red-400 bg-red-500/10",
@@ -166,16 +151,28 @@ export const AcademicLibraryPage = () => {
                   <p className="text-[#c6c6cd] text-sm mb-4 line-clamp-2">
                     {report.description || "Không có mô tả"}
                   </p>
-                  <div className="flex items-center gap-4 text-xs text-slate-500">
-                    <span>{report.author_name}</span>
-                    <span>•</span>
-                    <span>
-                      {new Date(report.created_at).toLocaleDateString("vi-VN")}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Eye size={12} /> {report.view_count} lượt xem
-                    </span>
+                  <div className="flex items-center justify-between gap-3 text-xs text-slate-500">
+                    <div className="flex items-center gap-4">
+                      <span>{report.author_name}</span>
+                      <span>•</span>
+                      <span>
+                        {new Date(report.created_at).toLocaleDateString("vi-VN")}
+                      </span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <Eye size={12} /> {report.view_count} lượt xem
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void downloadReportInBrowser(report.id, report.file_name);
+                      }}
+                      className="inline-flex items-center gap-1 rounded-md border border-slate-700 bg-[#0b1326] px-2 py-1 text-[10px] font-bold text-slate-300 hover:text-white"
+                    >
+                      <Download size={12} /> Tải file
+                    </button>
                   </div>
                 </div>
               ))}
@@ -236,11 +233,23 @@ export const AcademicLibraryPage = () => {
                   <p className="text-[11px] text-[#c6c6cd] line-clamp-2 mb-3">
                     {report.description || "Không có mô tả"}
                   </p>
-                  <div className="flex items-center justify-between text-[10px] text-slate-500">
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 gap-2">
                     <span>{report.author_name}</span>
-                    <span className="flex items-center gap-1">
-                      <Eye size={10} /> {report.view_count}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center gap-1">
+                        <Eye size={10} /> {report.view_count}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          void downloadReportInBrowser(report.id, report.file_name);
+                        }}
+                        className="inline-flex items-center gap-1 rounded border border-slate-700 bg-[#0b1326] px-2 py-1 text-[10px] font-bold text-slate-300 hover:text-white"
+                      >
+                        <Download size={11} /> Tải
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

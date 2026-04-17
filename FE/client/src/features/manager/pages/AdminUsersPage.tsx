@@ -5,6 +5,7 @@ import { useAuth } from "../../auth/context/AuthContext";
 import { useAccessControl } from "../../../context/AccessControlContext";
 import {
   listAdminUsers,
+  resendActivationEmail,
   updateUserAccountStatus,
   type AdminUserRow,
 } from "../services/admin.service";
@@ -72,6 +73,19 @@ export const AdminUsersPage = () => {
       await load();
     } catch (err) {
       console.error(err);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleResendActivation = async (email: string) => {
+    if (!isAdmin) return;
+    setUpdatingId(-1);
+    try {
+      const result = await resendActivationEmail(email);
+      alert(result.message || "Đã gửi lại email kích hoạt");
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Không gửi lại được email kích hoạt");
     } finally {
       setUpdatingId(null);
     }
@@ -190,20 +204,32 @@ export const AdminUsersPage = () => {
                     </td>
                     {isAdmin && (
                       <td className="px-4 py-3">
-                        <select
-                          disabled={updatingId === u.id}
-                          value={u.account_status}
-                          onChange={(e) =>
-                            handleStatusChange(u.id, e.target.value)
-                          }
-                          className="text-xs bg-[#0b1326] border border-slate-700 rounded px-2 py-1.5 text-slate-200 max-w-[160px]"
-                        >
-                          {Object.entries(STATUS_LABEL).map(([k, v]) => (
-                            <option key={k} value={k}>
-                              {v}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="flex flex-col gap-2 max-w-[180px]">
+                          <select
+                            disabled={updatingId === u.id}
+                            value={u.account_status}
+                            onChange={(e) =>
+                              handleStatusChange(u.id, e.target.value)
+                            }
+                            className="text-xs bg-[#0b1326] border border-slate-700 rounded px-2 py-1.5 text-slate-200"
+                          >
+                            {Object.entries(STATUS_LABEL).map(([k, v]) => (
+                              <option key={k} value={k}>
+                                {v}
+                              </option>
+                            ))}
+                          </select>
+                          {u.account_status === "pending_activation" && (
+                            <button
+                              type="button"
+                              disabled={updatingId === -1}
+                              onClick={() => handleResendActivation(u.email)}
+                              className="text-xs rounded border border-indigo-500/30 bg-indigo-500/10 px-2 py-1.5 text-indigo-300 hover:bg-indigo-500/20 disabled:opacity-50"
+                            >
+                              Gửi lại kích hoạt
+                            </button>
+                          )}
+                        </div>
                       </td>
                     )}
                   </tr>
