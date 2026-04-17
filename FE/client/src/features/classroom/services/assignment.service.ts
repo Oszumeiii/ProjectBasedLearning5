@@ -174,7 +174,7 @@ export const submitAssignment = async (
 
 export const gradeSubmission = async (
   submissionId: number,
-  body: { score: number; feedback: string }
+  body: { feedback: string; score?: number | null }
 ) => {
   if (!Number.isFinite(submissionId) || submissionId <= 0) {
     throw new Error("submissionId không hợp lệ");

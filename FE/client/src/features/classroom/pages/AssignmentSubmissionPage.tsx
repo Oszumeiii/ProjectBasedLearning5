@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Clock, AlertCircle, ChevronLeft, Upload, X, ListTodo } from "lucide-react";
+import { Clock, AlertCircle, ChevronLeft, Upload, X, ListTodo, CheckCircle2 } from "lucide-react";
 import { useAuth } from "../../auth/context/AuthContext";
 import { useAssignments } from "../../../context/AssignmentContext";
 
@@ -30,6 +30,7 @@ export const AssignmentSubmissionPage = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "under_review">("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedAssignment = selectedAssignmentId
@@ -66,6 +67,7 @@ export const AssignmentSubmissionPage = () => {
       await submitAssignment(selectedAssignmentId, formData);
 
       setSuccess(true);
+      setSubmitStatus("under_review");
       setTitle("");
       setDescription("");
       setFile(null);
@@ -107,8 +109,13 @@ export const AssignmentSubmissionPage = () => {
       <div className="max-w-7xl mx-auto px-8 pt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           {success && (
-            <div className="p-4 bg-emerald-900/30 border border-emerald-500/30 rounded-xl text-emerald-400">
-              Nộp bài thành công! Đang chuyển về lớp học...
+            <div className="p-4 bg-emerald-900/30 border border-emerald-500/30 rounded-xl text-emerald-300 space-y-1">
+              <div className="flex items-center gap-2 font-semibold">
+                <CheckCircle2 size={16} /> Nộp bài thành công
+              </div>
+              <p className="text-xs text-emerald-400">
+                Báo cáo đã vào hàng chờ duyệt và sẽ chỉ công khai khi được duyệt.
+              </p>
             </div>
           )}
 
@@ -249,7 +256,7 @@ export const AssignmentSubmissionPage = () => {
             <div className="flex items-center justify-between mb-4">
               <span className="text-slate-400 text-sm italic">Trạng thái:</span>
               <span className="text-amber-400 text-sm font-bold flex items-center gap-1">
-                <AlertCircle size={14} /> Chưa nộp
+                <AlertCircle size={14} /> {submitStatus === "under_review" ? "Đang chờ duyệt" : "Chưa nộp"}
               </span>
             </div>
             <div className="flex items-center gap-3 text-[#dae2fd]">
@@ -257,7 +264,11 @@ export const AssignmentSubmissionPage = () => {
               <div>
                 <p className="text-xs text-slate-400">File đính kèm:</p>
                 <p className="text-sm font-bold">
-                  {file ? file.name : "Chưa chọn file"}
+                  {submitStatus === "under_review"
+                    ? "Đã nộp, đang chờ giảng viên duyệt"
+                    : file
+                      ? file.name
+                      : "Chưa chọn file"}
                 </p>
               </div>
             </div>

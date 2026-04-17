@@ -4,14 +4,12 @@ import { Verified, User } from "lucide-react";
 interface GradeBannerProps {
   title: string;
   instructorName: string;
-  score: number;
   comment: string;
 }
 
 export const GradeBanner = ({
   title,
   instructorName,
-  score,
   comment,
 }: GradeBannerProps) => (
   <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#222a3d] to-[#131b2e] p-8 shadow-xl border border-slate-800/50">
@@ -37,20 +35,11 @@ export const GradeBanner = ({
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center p-6 bg-[#2d3449] rounded-2xl border border-slate-700/50 min-w-[160px]">
+      <div className="flex flex-col items-center justify-center p-6 bg-[#2d3449] rounded-2xl border border-slate-700/50 min-w-[220px]">
         <span className="text-[10px] text-[#c6c6cd] uppercase font-bold tracking-tighter">
-          Instructor Score
+          Phản hồi giảng viên
         </span>
-        <div className="text-6xl font-black text-[#adc6ff]">
-          {score}
-          <span className="text-2xl text-[#c6c6cd]">/100</span>
-        </div>
-        <div className="mt-2 h-1.5 w-full bg-[#0b1326] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#adc6ff]"
-            style={{ width: `${score}%` }}
-          ></div>
-        </div>
+        <div className="text-2xl font-bold text-[#adc6ff] mt-2">Nhận xét</div>
       </div>
     </div>
   </section>

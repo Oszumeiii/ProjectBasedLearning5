@@ -2,26 +2,41 @@ import React, { useEffect, useState } from "react";
 import { SubmissionRow } from "../components/SubmissionRow";
 import {
   listReports,
+  updateReportStatus,
   type Report,
 } from "../../classroom/services/report.service";
 
 export const InstructorGradingPage: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
+  const [actingId, setActingId] = useState<number | null>(null);
+
+  const fetchReports = async () => {
+    try {
+      const data = await listReports({ limit: 50, sort: "recent" });
+      setReports(data.items || []);
+    } catch (err) {
+      console.error("Failed to load reports", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const data = await listReports({ limit: 50, sort: "newest" });
-        setReports(data.items || []);
-      } catch (err) {
-        console.error("Failed to load reports", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchReports();
+    void fetchReports();
   }, []);
+
+  const handleQuickReview = async (id: number, status: "approved" | "revision_needed" | "rejected") => {
+    setActingId(id);
+    try {
+      await updateReportStatus(id, status);
+      await fetchReports();
+    } catch (err) {
+      console.error("Failed to update status", err);
+    } finally {
+      setActingId(null);
+    }
+  };
 
   const statusCounts = {
     pending: reports.filter((r) => r.status === "pending").length,
@@ -34,10 +49,10 @@ export const InstructorGradingPage: React.FC = () => {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-3xl font-manrope font-extrabold text-[#dae2fd] tracking-tight">
-            Trung tâm chấm bài
+            Trung tâm phản hồi
           </h2>
           <p className="text-slate-400 text-sm mt-1">
-            Quản lý chấm điểm, kiểm tra đạo văn và phân tích báo cáo.
+            Quản lý nhận xét, kiểm tra đạo văn và phân tích báo cáo.
           </p>
         </div>
         <div className="flex gap-3">
@@ -95,6 +110,11 @@ export const InstructorGradingPage: React.FC = () => {
                         ? "Analyzing"
                         : "Not Run"
                   }
+                  onApprove={() => handleQuickReview(report.id, "approved")}
+                  onRevision={() => handleQuickReview(report.id, "revision_needed")}
+                  onReject={() => handleQuickReview(report.id, "rejected")}
+                  busy={actingId === report.id}
+                  disableActions={report.status === "approved"}
                 />
               ))}
             </tbody>
