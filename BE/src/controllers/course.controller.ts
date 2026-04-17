@@ -403,9 +403,49 @@ export const getCourseById = async (req: Request, res: Response): Promise<void> 
     const course = courseResult.rows[0] as CourseRow & Record<string, unknown>
 
     if (req.user.role === 'student') {
-      const ok = await isStudentEnrolled(id, req.user.id)
-      if (!ok) {
-        res.status(403).json({ message: 'Bạn chưa tham gia lớp này' })
+      const enrollment = await pool.query(
+        'SELECT status FROM enrollments WHERE course_id = $1 AND student_id = $2 LIMIT 1',
+        [id, req.user.id]
+      )
+
+      if (enrollment.rows.length === 0) {
+        res.status(403).json({
+          message: 'Bạn chưa tham gia lớp này',
+          enrollmentStatus: 'not_enrolled'
+        })
+        return
+      }
+
+      const enrollmentStatus = String(enrollment.rows[0].status ?? '').toLowerCase()
+      if (enrollmentStatus === 'pending') {
+        res.status(403).json({
+          message: 'Yêu cầu ghi danh đang chờ duyệt',
+          enrollmentStatus: 'pending'
+        })
+        return
+      }
+
+      if (enrollmentStatus === 'rejected') {
+        res.status(403).json({
+          message: 'Yêu cầu ghi danh đã bị từ chối',
+          enrollmentStatus: 'rejected'
+        })
+        return
+      }
+
+      if (enrollmentStatus === 'dropped') {
+        res.status(403).json({
+          message: 'Bạn đã rời khỏi lớp học này',
+          enrollmentStatus: 'dropped'
+        })
+        return
+      }
+
+      if (!['active', 'completed', 'failed'].includes(enrollmentStatus)) {
+        res.status(403).json({
+          message: 'Bạn không có quyền xem lớp này',
+          enrollmentStatus
+        })
         return
       }
     } else if (!isCourseAdminRole(req.user.role)) {

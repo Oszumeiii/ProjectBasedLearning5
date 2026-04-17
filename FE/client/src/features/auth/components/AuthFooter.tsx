@@ -6,18 +6,18 @@ const AuthFooter = () => {
           © 2024 Hệ thống Quản lý NCKH Thông minh. All rights reserved.
         </p>
         <div className="flex gap-6">
-          <a
+          <button
+            type="button"
             className="text-xs text-slate-500 hover:text-primary transition-colors"
-            href="#"
           >
             Chính sách bảo mật
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             className="text-xs text-slate-500 hover:text-primary transition-colors"
-            href="#"
           >
             Điều khoản sử dụng
-          </a>
+          </button>
         </div>
       </div>
     </footer>

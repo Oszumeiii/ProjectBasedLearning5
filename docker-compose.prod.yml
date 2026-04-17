@@ -1,0 +1,58 @@
+services:
+  minio:
+    image: minio/minio:RELEASE.2025-02-18T16-25-55Z
+    container_name: edurag-minio-prod
+    profiles: ["prod"]
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+      target: production
+    container_name: edurag-backend-prod
+    profiles: ["prod"]
+    depends_on:
+      minio:
+        condition: service_healthy
+    env_file:
+      - ./BE/.env
+    environment:
+      NODE_ENV: production
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+
+  frontend:
+    build:
+      context: ./FE/client
+      dockerfile: Dockerfile.prod
+      args:
+        REACT_APP_API_URL: http://localhost:3001/api
+    container_name: edurag-frontend-prod
+    profiles: ["prod"]
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+
+volumes:
+  minio_data:

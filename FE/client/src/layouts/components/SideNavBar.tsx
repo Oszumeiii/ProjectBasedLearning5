@@ -1,9 +1,4 @@
-import {
-  BookOpen,
-  Calendar,
-  ClipboardList,
-  Settings,
-} from "lucide-react";
+import { BookOpen, ClipboardList, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../features/auth/context/AuthContext";
 
@@ -75,12 +70,12 @@ export const SideNavBar = () => {
           <span className="material-symbols-outlined text-lg">logout</span>
           Đăng xuất
         </button>
-        <a
-          href="#"
-          className="flex items-center gap-3 p-3 text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all rounded-lg"
+        <button
+          type="button"
+          className="flex w-full items-center gap-3 p-3 text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition-all rounded-lg text-left"
         >
           <Settings size={18} /> Settings
-        </a>
+        </button>
       </div>
     </aside>
   );
