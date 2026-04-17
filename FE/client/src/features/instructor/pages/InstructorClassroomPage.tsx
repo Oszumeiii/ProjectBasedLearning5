@@ -15,7 +15,6 @@ import {
   Download,
   Send,
   Pin,
-  BarChart3,
   X,
 } from "lucide-react";
 import { getCourseById } from "../../classroom/services/course.service";
@@ -50,7 +49,7 @@ interface CourseDetail {
   }>;
 }
 
-type Tab = "posts" | "assignments" | "students" | "grades";
+type Tab = "posts" | "assignments" | "students";
 
 const TYPE_LABEL: Record<string, string> = {
   report: "Báo cáo",
@@ -216,7 +215,6 @@ export const InstructorClassroomPage: React.FC = () => {
       icon: <Users size={16} />,
       count: course.student_count,
     },
-    { key: "grades", label: "Điểm số", icon: <BarChart3 size={16} /> },
   ];
 
   return (
@@ -528,7 +526,6 @@ export const InstructorClassroomPage: React.FC = () => {
                                 <span>Hạn: {new Date(a.deadline).toLocaleDateString("vi-VN")} {new Date(a.deadline).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}</span>
                               )}
                             </span>
-                            <span>Điểm: {Number(a.max_score)}</span>
                             {a.attachments.length > 0 && (
                               <span className="flex items-center gap-1"><Paperclip size={12} /> {a.attachments.length} file</span>
                             )}
@@ -580,12 +577,9 @@ export const InstructorClassroomPage: React.FC = () => {
                         </div>
                       )}
                       <div className="px-5 py-3 flex gap-6 text-xs border-t border-slate-800/50">
-                        <span className="flex items-center gap-1 text-emerald-400"><CheckCircle size={14} /> {stats.graded} đã chấm</span>
-                        <span className="flex items-center gap-1 text-blue-400"><FileText size={14} /> {stats.submitted - stats.graded} chờ chấm</span>
+                        <span className="flex items-center gap-1 text-emerald-400"><CheckCircle size={14} /> {stats.graded} đã phản hồi</span>
+                        <span className="flex items-center gap-1 text-blue-400"><FileText size={14} /> {stats.submitted - stats.graded} chờ phản hồi</span>
                         <span className="flex items-center gap-1 text-red-400"><AlertTriangle size={14} /> {stats.total - stats.submitted} chưa nộp</span>
-                        {stats.avgScore !== null && (
-                          <span className="text-[#4fdbc8]">TB: {stats.avgScore.toFixed(1)}/{Number(a.max_score)}</span>
-                        )}
                       </div>
                       <div className="overflow-x-auto">
                         <table className="w-full text-sm">
@@ -595,12 +589,12 @@ export const InstructorClassroomPage: React.FC = () => {
                               <th className="text-left px-3 py-2 font-semibold">Trạng thái</th>
                               <th className="text-left px-3 py-2 font-semibold">Nộp lúc</th>
                               <th className="text-left px-3 py-2 font-semibold">File</th>
-                              <th className="text-center px-3 py-2 font-semibold">Điểm</th>
+                              <th className="text-center px-3 py-2 font-semibold">Phản hồi</th>
                             </tr>
                           </thead>
                           <tbody>
                             {(a.submissions ?? []).map((sub) => (
-                              <SubmissionRow key={sub.id} submission={sub} maxScore={Number(a.max_score)} assignmentId={a.id} onGrade={gradeSubmission} />
+                              <SubmissionRow key={sub.id} submission={sub} assignmentId={a.id} onGrade={gradeSubmission} />
                             ))}
                           </tbody>
                         </table>
@@ -636,63 +630,6 @@ export const InstructorClassroomPage: React.FC = () => {
         </div>
       )}
 
-      {/* ── Tab: Điểm số ── */}
-      {tab === "grades" && (
-        <div>
-          <p className="text-sm text-slate-400 mb-4">Tổng hợp điểm số</p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm bg-[#131b2e] rounded-xl overflow-hidden border border-slate-800/50">
-              <thead>
-                <tr className="bg-[#0b1326] text-[10px] text-slate-500 uppercase tracking-wider">
-                  <th className="text-left px-5 py-3 font-semibold sticky left-0 bg-[#0b1326]">Sinh viên</th>
-                  {assignments.map((a) => (
-                    <th key={a.id} className="text-center px-3 py-3 font-semibold min-w-[100px]">
-                      <div className="truncate max-w-[120px]">{a.title}</div>
-                      <div className="text-slate-600 mt-0.5">/{Number(a.max_score)}</div>
-                    </th>
-                  ))}
-                  <th className="text-center px-4 py-3 font-semibold">Tổng</th>
-                </tr>
-              </thead>
-              <tbody>
-                {course.students.map((student, si) => {
-                  const totalMax = assignments.reduce((s, a) => s + Number(a.max_score), 0);
-                  let totalScore = 0;
-                  let hasAnyGrade = false;
-                  return (
-                    <tr key={student.id} className={`${si % 2 === 0 ? "bg-[#131b2e]" : "bg-[#151d30]"} hover:bg-[#171f33]`}>
-                      <td className="px-5 py-3 sticky left-0 bg-inherit">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-indigo-900 border border-indigo-500/30 flex items-center justify-center text-[10px] font-bold text-indigo-300">{student.full_name.charAt(0)}</div>
-                          <span className="text-slate-200 font-medium text-xs truncate max-w-[120px]">{student.full_name}</span>
-                        </div>
-                      </td>
-                      {assignments.map((a) => {
-                        const sub = (a.submissions ?? []).find((s) => s.student_id === student.id);
-                        if (sub?.score !== null && sub?.score !== undefined) { totalScore += sub.score; hasAnyGrade = true; }
-                        return (
-                          <td key={a.id} className="text-center px-3 py-3">
-                            {sub?.status === "graded" && sub.score !== null ? (
-                              <span className={`font-bold ${sub.score >= Number(a.max_score) * 0.8 ? "text-emerald-400" : sub.score >= Number(a.max_score) * 0.5 ? "text-amber-400" : "text-red-400"}`}>{sub.score}</span>
-                            ) : sub?.status === "submitted" ? (
-                              <span className="text-blue-400 text-xs">Chờ chấm</span>
-                            ) : (
-                              <span className="text-slate-600">—</span>
-                            )}
-                          </td>
-                        );
-                      })}
-                      <td className="text-center px-4 py-3 font-bold text-[#4fdbc8]">
-                        {hasAnyGrade ? <>{totalScore}<span className="text-slate-600 font-normal">/{totalMax}</span></> : <span className="text-slate-600">—</span>}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
@@ -701,24 +638,21 @@ export const InstructorClassroomPage: React.FC = () => {
 
 function SubmissionRow({
   submission,
-  maxScore,
   assignmentId,
   onGrade,
 }: {
   submission: AssignmentSubmission;
-  maxScore: number;
   assignmentId: number;
-  onGrade: (aId: number, submissionId: number, score: number, feedback: string) => void;
+  onGrade: (aId: number, submissionId: number, feedback: string) => Promise<void>;
 }) {
   const [grading, setGrading] = useState(false);
-  const [scoreInput, setScoreInput] = useState("");
-  const [feedbackInput, setFeedbackInput] = useState("");
+  const [feedbackInput, setFeedbackInput] = useState(submission.feedback || "");
 
   const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
     not_submitted: { label: "Chưa nộp", color: "text-red-400", bg: "bg-red-500/10" },
     submitted: { label: "Đã nộp", color: "text-blue-400", bg: "bg-blue-500/10" },
     late: { label: "Nộp muộn", color: "text-amber-400", bg: "bg-amber-500/10" },
-    graded: { label: "Đã chấm", color: "text-emerald-400", bg: "bg-emerald-500/10" },
+    graded: { label: "Đã phản hồi", color: "text-emerald-400", bg: "bg-emerald-500/10" },
   };
   const st = STATUS_MAP[submission.status] || STATUS_MAP.not_submitted;
 
@@ -757,33 +691,22 @@ function SubmissionRow({
           )}
         </td>
         <td className="px-3 py-2.5 text-center">
-          {submission.status === "graded" && submission.score !== null ? (
-            <span className="font-bold text-emerald-400">{submission.score}/{maxScore}</span>
-          ) : submission.status === "submitted" ? (
+          {(submission.status === "graded" || submission.status === "submitted" || submission.status === "late") ? (
             <button
               onClick={() => setGrading(!grading)}
               className="px-2 py-1 bg-indigo-600/20 text-indigo-400 text-[10px] font-bold rounded hover:bg-indigo-600 hover:text-white transition-colors"
             >
-              Chấm điểm
+              {submission.feedback?.trim() ? "Sửa nhận xét" : "Nhận xét"}
             </button>
           ) : (
             <span className="text-slate-600 text-xs">—</span>
           )}
         </td>
       </tr>
-      {grading && submission.status === "submitted" && (
+      {grading && (submission.status === "submitted" || submission.status === "late" || submission.status === "graded") && (
         <tr className="bg-[#0b1326]">
           <td colSpan={5} className="px-5 py-3">
             <div className="flex items-center gap-3">
-              <input
-                type="number"
-                min={0}
-                max={maxScore}
-                placeholder={`Điểm (0-${maxScore})`}
-                value={scoreInput}
-                onChange={(e) => setScoreInput(e.target.value)}
-                className="w-24 bg-[#131b2e] border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200 focus:ring-1 focus:ring-indigo-500"
-              />
               <input
                 type="text"
                 placeholder="Nhận xét..."
@@ -792,18 +715,20 @@ function SubmissionRow({
                 className="flex-1 bg-[#131b2e] border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200 focus:ring-1 focus:ring-indigo-500"
               />
               <button
-                onClick={() => {
-                  const score = Number(scoreInput);
-                  if (isNaN(score) || score < 0 || score > maxScore) return;
-                  onGrade(assignmentId, submission.id, score, feedbackInput);
-                  setGrading(false);
-                  setScoreInput("");
-                  setFeedbackInput("");
+                onClick={async () => {
+                  if (!feedbackInput.trim()) return;
+                  try {
+                    await onGrade(assignmentId, submission.id, feedbackInput);
+                    setGrading(false);
+                  } catch (error: any) {
+                    const message = error?.response?.data?.message || "Lưu nhận xét thất bại";
+                    alert(message);
+                  }
                 }}
-                disabled={!scoreInput}
+                disabled={!feedbackInput.trim()}
                 className="px-3 py-1.5 bg-emerald-600 text-white text-xs font-bold rounded hover:bg-emerald-500 disabled:opacity-50"
               >
-                Lưu điểm
+                Lưu nhận xét
               </button>
               <button onClick={() => setGrading(false)} className="text-xs text-slate-500 hover:text-white">Hủy</button>
             </div>
