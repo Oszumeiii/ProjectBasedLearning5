@@ -14,6 +14,7 @@ import ManagerLayout from "../layouts/ManagerLayout";
 
 // Auth Pages
 import LoginPage from "../features/auth/pages/LoginPage";
+import ActivationPage from "../features/auth/pages/ActivationPage";
 
 // Student Pages
 import { StudentLobbyPage } from "../features/classroom/pages/StudentLobbyPage";
@@ -41,6 +42,7 @@ import { ManagerCourseDetailPage } from "../features/manager/pages/ManagerCourse
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/login" replace /> },
   { path: "/login", element: <LoginPage /> },
+  { path: "/activate", element: <ActivationPage /> },
 
   // STUDENT
   {

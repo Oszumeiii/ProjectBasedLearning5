@@ -1,4 +1,5 @@
 import axiosInstance from "../../../services/axios";
+import { downloadBinaryFile } from "./report.service";
 
 export type AssignmentType = "report" | "exercise" | "project" | "quiz";
 export type SubmissionStatus = "not_submitted" | "submitted" | "late" | "graded" | "returned";
@@ -7,6 +8,12 @@ export interface AssignmentAttachment {
   name: string;
   url?: string;
   size?: string;
+}
+
+export interface AssignmentAttachmentInput {
+  file: File;
+  name: string;
+  size: string;
 }
 
 export interface AssignmentSubmission {
@@ -57,6 +64,16 @@ export const listAssignmentsByCourse = async (courseId: number): Promise<Assignm
   const response = await axiosInstance.get<{ items: Assignment[] }>(`/assignments/course/${courseId}`);
   return response.data.items.map((item) => ({
     ...item,
+    id: Number(item.id),
+    course_id: Number(item.course_id),
+    created_by: item.created_by !== undefined ? Number(item.created_by) : undefined,
+    max_score: Number(item.max_score),
+    total_submissions:
+      item.total_submissions !== undefined ? Number(item.total_submissions) : undefined,
+    submitted_count:
+      item.submitted_count !== undefined ? Number(item.submitted_count) : undefined,
+    graded_count:
+      item.graded_count !== undefined ? Number(item.graded_count) : undefined,
     attachments: Array.isArray(item.attachments) ? item.attachments : [],
   }));
 };
@@ -69,8 +86,23 @@ export const createAssignment = async (body: {
   deadline: string;
   maxScore: number;
   attachments?: AssignmentAttachment[];
+  attachmentFiles?: File[];
 }) => {
-  const response = await axiosInstance.post(`/assignments`, body);
+  const formData = new FormData();
+  formData.append("courseId", String(body.courseId));
+  formData.append("title", body.title);
+  if (body.description) formData.append("description", body.description);
+  formData.append("assignmentType", body.assignmentType);
+  formData.append("deadline", body.deadline);
+  formData.append("maxScore", String(body.maxScore));
+  if (body.attachments?.length) {
+    formData.append("attachments", JSON.stringify(body.attachments));
+  }
+  if (body.attachmentFiles?.length) {
+    body.attachmentFiles.forEach((file) => formData.append("files", file));
+  }
+
+  const response = await axiosInstance.post(`/assignments`, formData);
   return response.data;
 };
 
@@ -83,10 +115,25 @@ export const patchAssignment = async (
     deadline: string;
     maxScore: number;
     attachments: AssignmentAttachment[];
+    attachmentFiles: File[];
     isPublished: boolean;
   }>
 ) => {
-  const response = await axiosInstance.patch(`/assignments/${id}`, body);
+  const formData = new FormData();
+  if (body.title !== undefined) formData.append("title", body.title);
+  if (body.description !== undefined) formData.append("description", body.description ?? "");
+  if (body.assignmentType !== undefined) formData.append("assignmentType", body.assignmentType);
+  if (body.deadline !== undefined) formData.append("deadline", body.deadline);
+  if (body.maxScore !== undefined) formData.append("maxScore", String(body.maxScore));
+  if (body.isPublished !== undefined) formData.append("isPublished", String(body.isPublished));
+  if (body.attachments !== undefined) {
+    formData.append("attachments", JSON.stringify(body.attachments));
+  }
+  if (body.attachmentFiles?.length) {
+    body.attachmentFiles.forEach((file) => formData.append("files", file));
+  }
+
+  const response = await axiosInstance.patch(`/assignments/${id}`, formData);
   return response.data;
 };
 
@@ -99,7 +146,18 @@ export const listAssignmentSubmissions = async (assignmentId: number): Promise<A
   const response = await axiosInstance.get<{ items: AssignmentSubmission[] }>(
     `/assignments/${assignmentId}/submissions`
   );
-  return response.data.items;
+  return response.data.items.map((item) => ({
+    ...item,
+    id: Number(item.id),
+    assignment_id: Number(item.assignment_id),
+    student_id: Number(item.student_id),
+    report_id: item.report_id !== null && item.report_id !== undefined ? Number(item.report_id) : null,
+    score: item.score !== null && item.score !== undefined ? Number(item.score) : null,
+    report_file_size:
+      item.report_file_size !== null && item.report_file_size !== undefined
+        ? Number(item.report_file_size)
+        : null,
+  }));
 };
 
 export const submitAssignment = async (
@@ -118,8 +176,22 @@ export const gradeSubmission = async (
   submissionId: number,
   body: { score: number; feedback: string }
 ) => {
+  if (!Number.isFinite(submissionId) || submissionId <= 0) {
+    throw new Error("submissionId không hợp lệ");
+  }
   const response = await axiosInstance.patch(`/assignments/submissions/${submissionId}/grade`, body);
   return response.data;
+};
+
+export const downloadAssignmentAttachmentInBrowser = async (
+  assignmentId: number,
+  attachmentIndex: number,
+  preferredFileName?: string
+) => {
+  await downloadBinaryFile(
+    `/assignments/${assignmentId}/attachments/${attachmentIndex}/download`,
+    preferredFileName
+  );
 };
 
 export const getAssignmentStats = (assignment: Assignment): AssignmentStats => {

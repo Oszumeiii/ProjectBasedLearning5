@@ -4,7 +4,7 @@ import pool from '../config/db'
 import { UPLOAD_MAX_SIZE_MB } from '../config/env'
 import { createNotification } from '../utils/notification.js'
 import { detectFileType } from '../utils/file-type.js'
-import { uploadFile, getPresignedUrl } from '../services/storage.service.js'
+import { uploadFile, getPresignedUrl, downloadFile } from '../services/storage.service.js'
 import { processReport } from '../services/report-processor.service.js'
 
 const sha256 = (buf: Buffer): string => crypto.createHash('sha256').update(buf).digest('hex')
@@ -534,7 +534,7 @@ export const downloadReport = async (req: Request, res: Response): Promise<void>
 
     const id = Number(req.params.id)
     const report = (await pool.query(
-      'SELECT id, file_url, file_name, author_id, course_id, visibility FROM reports WHERE id = $1 AND deleted_at IS NULL',
+      'SELECT id, file_url, file_name, file_type, author_id, course_id, visibility FROM reports WHERE id = $1 AND deleted_at IS NULL',
       [id]
     )).rows[0]
 
@@ -547,8 +547,20 @@ export const downloadReport = async (req: Request, res: Response): Promise<void>
 
     await pool.query('UPDATE reports SET download_count = download_count + 1 WHERE id = $1', [id])
 
-    const url = await getPresignedUrl(report.file_url, 3600)
-    res.json({ url, fileName: report.file_name })
+    const fileBuffer = await downloadFile(report.file_url)
+    const fileName = report.file_name ?? `report-${id}`
+    const contentType =
+      report.file_type === 'pdf'
+        ? 'application/pdf'
+        : report.file_type === 'docx'
+          ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+          : report.file_type === 'zip'
+            ? 'application/zip'
+            : 'application/octet-stream'
+
+    res.setHeader('Content-Type', contentType)
+    res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(fileName)}"`)
+    res.send(fileBuffer)
   } catch (error) {
     console.error('❌ Error in downloadReport:', error)
     res.status(500).json({ message: 'Internal server error' })
@@ -662,7 +674,7 @@ export const getRatings = async (req: Request, res: Response): Promise<void> => 
 
     const [items, agg] = await Promise.all([
       pool.query(
-        `SELECT rr.*, u.full_name AS user_name
+        `SELECT rr.*, u.full_name AS reviewer_name
          FROM report_ratings rr LEFT JOIN users u ON u.id = rr.user_id
          WHERE rr.report_id = $1 ORDER BY rr.created_at DESC`,
         [reportId]

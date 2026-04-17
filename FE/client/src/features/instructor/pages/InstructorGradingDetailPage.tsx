@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { AIAdvisorSidebar } from "../components/AIAdvisorSidebar";
 import {
   getReportById,
+  downloadReportInBrowser,
   type Report,
 } from "../../classroom/services/report.service";
 
@@ -72,7 +73,14 @@ export const InstructorGradingDetailPage: React.FC = () => {
             <button className="p-2.5 rounded-xl bg-[#171f33] text-slate-400 hover:text-white border border-slate-800 transition-colors">
               <span className="material-symbols-outlined">zoom_in</span>
             </button>
-            <button className="p-2.5 rounded-xl bg-[#171f33] text-slate-400 hover:text-white border border-slate-800 transition-colors">
+            <button
+              type="button"
+              onClick={() => {
+                if (!report) return;
+                void downloadReportInBrowser(report.id, report.file_name);
+              }}
+              className="p-2.5 rounded-xl bg-[#171f33] text-slate-400 hover:text-white border border-slate-800 transition-colors"
+            >
               <span className="material-symbols-outlined">download</span>
             </button>
           </div>

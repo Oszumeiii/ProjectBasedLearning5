@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import type { ChangeEvent, ReactNode } from "react";
 import { ClassHeader } from "../components/ClassHeader";
 import {
   FolderOpen,
@@ -15,10 +16,20 @@ import {
   Paperclip,
   Pin,
   Send,
+  X,
 } from "lucide-react";
 import { getCourseById } from "../services/course.service";
-import { listReports, type Report } from "../services/report.service";
-import type { ClassPost } from "../services/classPost.service";
+import {
+  downloadReportInBrowser,
+  listReports,
+  type Report,
+} from "../services/report.service";
+import {
+  downloadClassPostAttachmentInBrowser,
+  type ClassPost,
+  type ClassPostAttachmentInput,
+} from "../services/classPost.service";
+import { downloadAssignmentAttachmentInBrowser } from "../services/assignment.service";
 import { useAuth } from "../../auth/context/AuthContext";
 import { useAssignments } from "../../../context/AssignmentContext";
 
@@ -37,6 +48,17 @@ interface CourseDetail {
     major: string | null;
     enrolled_at: string;
   }>;
+}
+
+interface CourseAccessErrorState {
+  type:
+    | "pending"
+    | "not_enrolled"
+    | "rejected"
+    | "dropped"
+    | "not_found"
+    | "unknown";
+  message: string;
 }
 
 type Tab = "posts" | "assignments" | "library";
@@ -61,6 +83,9 @@ export const ClassroomDetailPage = () => {
   const [tab, setTab] = useState<Tab>("posts");
   const [publicReports, setPublicReports] = useState<Report[]>([]);
   const [newComment, setNewComment] = useState("");
+  const [postAttachments, setPostAttachments] = useState<ClassPostAttachmentInput[]>([]);
+  const postAttachmentInputRef = useRef<HTMLInputElement>(null);
+  const [loadError, setLoadError] = useState<CourseAccessErrorState | null>(null);
 
   const assignments = getAssignmentsByCourse(cid);
   const posts = getPostsByCourse(cid);
@@ -69,9 +94,16 @@ export const ClassroomDetailPage = () => {
     if (!classId) return;
     const fetchData = async () => {
       try {
-        await ensureCourseData(cid);
+        setLoadError(null);
         const courseData = await getCourseById(Number(classId));
         setCourse(courseData);
+
+        try {
+          await ensureCourseData(cid);
+        } catch (error) {
+          console.error("Failed to load course assignments/posts", error);
+        }
+
         try {
           const pubData = await listReports({
             status: "approved",
@@ -82,8 +114,27 @@ export const ClassroomDetailPage = () => {
         } catch {
           /* ignore */
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to load course detail", err);
+        const status = err.response?.status;
+        const enrollmentStatus =
+          String(err.response?.data?.enrollmentStatus || "").toLowerCase();
+        const message =
+          err.response?.data?.message || "Không thể tải thông tin lớp học";
+
+        if (status === 403 && enrollmentStatus === "pending") {
+          setLoadError({ type: "pending", message });
+        } else if (status === 403 && enrollmentStatus === "not_enrolled") {
+          setLoadError({ type: "not_enrolled", message });
+        } else if (status === 403 && enrollmentStatus === "rejected") {
+          setLoadError({ type: "rejected", message });
+        } else if (status === 403 && enrollmentStatus === "dropped") {
+          setLoadError({ type: "dropped", message });
+        } else if (status === 404) {
+          setLoadError({ type: "not_found", message });
+        } else {
+          setLoadError({ type: "unknown", message });
+        }
       } finally {
         setLoading(false);
       }
@@ -96,6 +147,17 @@ export const ClassroomDetailPage = () => {
       <div className="flex items-center justify-center py-20 bg-[#0b1326] min-h-screen">
         <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
         <span className="ml-3 text-slate-400">Đang tải...</span>
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="flex items-center justify-center py-20 bg-[#0b1326] min-h-screen px-6">
+        <CourseAccessState
+          state={loadError}
+          onBack={() => navigate("/student/lobby")}
+        />
       </div>
     );
   }
@@ -117,7 +179,30 @@ export const ClassroomDetailPage = () => {
     return `${Math.floor(hours / 24)} ngày trước`;
   };
 
-  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const handlePostAttachmentPick = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    const next: ClassPostAttachmentInput[] = [...postAttachments];
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      if (next.some((a) => a.name === f.name)) continue;
+      next.push({ file: f, name: f.name, size: formatFileSize(f.size) });
+    }
+    setPostAttachments(next);
+    e.target.value = "";
+  };
+
+  const removePostAttachment = (name: string) => {
+    setPostAttachments((prev) => prev.filter((a) => a.name !== name));
+  };
+
+  const tabs: { key: Tab; label: string; icon: ReactNode }[] = [
     { key: "posts", label: "Bảng tin", icon: <MessageSquare size={16} /> },
     { key: "assignments", label: "Bài tập", icon: <ListTodo size={16} /> },
     { key: "library", label: "Tài liệu", icon: <BookOpenCheck size={16} /> },
@@ -179,10 +264,47 @@ export const ClassroomDetailPage = () => {
                       rows={2}
                       className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:ring-1 focus:ring-[#0566d9] resize-none"
                     />
-                    <div className="flex justify-between items-center mt-2">
-                      <button className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1">
-                        <Paperclip size={14} /> Đính kèm
-                      </button>
+                    <div className="flex justify-between items-center mt-2 gap-3">
+                      <div className="flex-1">
+                        <input
+                          ref={postAttachmentInputRef}
+                          type="file"
+                          multiple
+                          className="hidden"
+                          onChange={handlePostAttachmentPick}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => postAttachmentInputRef.current?.click()}
+                          className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1"
+                        >
+                          <Paperclip size={14} /> Đính kèm
+                        </button>
+                        {postAttachments.length > 0 && (
+                          <ul className="mt-2 space-y-1">
+                            {postAttachments.map((att) => (
+                              <li
+                                key={att.name}
+                                className="flex items-center justify-between gap-2 rounded-lg bg-[#0b1326] border border-slate-800 px-3 py-1.5 text-xs text-slate-300"
+                              >
+                                <span className="truncate flex items-center gap-1.5">
+                                  <Paperclip size={12} className="text-[#0566d9] shrink-0" />
+                                  <span className="truncate">{att.name}</span>
+                                  <span className="text-slate-600 shrink-0">{att.size}</span>
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => removePostAttachment(att.name)}
+                                  className="p-0.5 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 shrink-0"
+                                  aria-label="Xóa file"
+                                >
+                                  <X size={14} />
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
                       <button
                         onClick={() => {
                           if (!newComment.trim()) return;
@@ -190,8 +312,10 @@ export const ClassroomDetailPage = () => {
                             courseId: cid,
                             content: newComment,
                             isPinned: false,
+                            attachments: postAttachments,
                           });
                           setNewComment("");
+                          setPostAttachments([]);
                         }}
                         disabled={!newComment.trim()}
                         className="px-4 py-1.5 bg-[#0566d9] text-white text-xs font-bold rounded-lg hover:bg-[#004395] disabled:opacity-40 flex items-center gap-1.5"
@@ -236,7 +360,9 @@ export const ClassroomDetailPage = () => {
                 assignments.map((a) => {
                   const stats = getAssignmentStats(a);
                   const mySubmission = (a.submissions ?? []).find(
-                    (s) => s.student_email === user?.email || s.student_id === 1
+                    (s) =>
+                      Number(s.student_id) === Number(user?.id) ||
+                      s.student_email === user?.email
                   );
                   const myStatus: "pending" | "submitted" | "graded" =
                     mySubmission?.status === "graded"
@@ -277,16 +403,30 @@ export const ClassroomDetailPage = () => {
                               </div>
                               {a.attachments.length > 0 && (
                                 <div className="flex gap-2 flex-wrap mt-2">
-                                  {a.attachments.map((att) => (
-                                    <span key={att.name} className="inline-flex items-center gap-1 px-2 py-1 bg-[#0b1326] rounded text-[10px] text-slate-400 border border-slate-800 cursor-pointer hover:border-[#0566d9]/30">
+                                  {a.attachments.map((att, index) => (
+                                    <button
+                                      key={`${att.name}-${index}`}
+                                      type="button"
+                                      onClick={() => {
+                                        void downloadAssignmentAttachmentInBrowser(
+                                          a.id,
+                                          index,
+                                          att.name
+                                        ).catch((error) => {
+                                          console.error(error);
+                                          alert("Không tải được file đính kèm");
+                                        });
+                                      }}
+                                      className="inline-flex items-center gap-1 px-2 py-1 bg-[#0b1326] rounded text-[10px] text-slate-400 border border-slate-800 cursor-pointer hover:border-[#0566d9]/30 hover:text-[#adc6ff]"
+                                    >
                                       <Paperclip size={10} /> {att.name}
-                                    </span>
+                                    </button>
                                   ))}
                                 </div>
                               )}
                             </div>
                           </div>
-                          <div className="shrink-0 ml-4 flex flex-col items-end gap-2">
+                          <div className="shrink-0 ml-4 flex flex-col items-end gap-2 max-w-[240px]">
                             <StatusBadge
                               status={myStatus}
                               score={mySubmission?.score !== null && mySubmission?.score !== undefined ? `${mySubmission.score}/${Number(a.max_score)}` : undefined}
@@ -299,10 +439,35 @@ export const ClassroomDetailPage = () => {
                                 Nộp bài
                               </button>
                             )}
+                            {mySubmission?.report_id && mySubmission.report_file_name && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  void downloadReportInBrowser(
+                                    mySubmission.report_id!,
+                                    mySubmission.report_file_name
+                                  )
+                                }
+                                className="text-xs text-indigo-300 hover:text-indigo-200 flex items-center gap-1"
+                              >
+                                <Paperclip size={12} />
+                                {mySubmission.report_file_name}
+                              </button>
+                            )}
                             {mySubmission?.feedback && (
-                              <p className="text-[10px] text-slate-500 max-w-[160px] text-right">
-                                "{mySubmission.feedback}"
-                              </p>
+                              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-left">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+                                  Nhận xét giảng viên
+                                </p>
+                                <p className="mt-1 text-xs leading-relaxed text-slate-300 whitespace-pre-wrap">
+                                  {mySubmission.feedback}
+                                </p>
+                                {mySubmission.graded_at && (
+                                  <p className="mt-1 text-[10px] text-slate-500">
+                                    Chấm lúc {new Date(mySubmission.graded_at).toLocaleString("vi-VN")}
+                                  </p>
+                                )}
+                              </div>
                             )}
                           </div>
                         </div>
@@ -436,6 +601,91 @@ function StatusBadge({ status, score }: { status: "pending" | "submitted" | "gra
   return <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold border ${c.color}`}>{c.label}</span>;
 }
 
+function CourseAccessState({
+  state,
+  onBack,
+}: {
+  state: CourseAccessErrorState;
+  onBack: () => void;
+}) {
+  const variants: Record<
+    CourseAccessErrorState["type"],
+    {
+      title: string;
+      subtitle: string;
+      tone: string;
+      icon: ReactNode;
+    }
+  > = {
+    pending: {
+      title: "Đang chờ duyệt",
+      subtitle: "Yêu cầu ghi danh của bạn đang chờ giảng viên phê duyệt.",
+      tone: "text-amber-300",
+      icon: <Clock size={28} className="text-amber-400" />,
+    },
+    not_enrolled: {
+      title: "Bạn chưa tham gia lớp",
+      subtitle: "Hãy dùng mã lớp để gửi yêu cầu ghi danh trước khi truy cập.",
+      tone: "text-blue-300",
+      icon: <FolderOpen size={28} className="text-blue-400" />,
+    },
+    rejected: {
+      title: "Yêu cầu ghi danh bị từ chối",
+      subtitle: "Bạn có thể liên hệ giảng viên để biết thêm chi tiết.",
+      tone: "text-red-300",
+      icon: <AlertCircleIcon />,
+    },
+    dropped: {
+      title: "Bạn đã rời lớp",
+      subtitle: "Liên hệ giảng viên nếu bạn cần tham gia lại lớp học này.",
+      tone: "text-slate-300",
+      icon: <AlertCircleIcon />,
+    },
+    not_found: {
+      title: "Không tìm thấy lớp học",
+      subtitle: "Lớp có thể đã bị xóa hoặc đường dẫn không còn hợp lệ.",
+      tone: "text-red-300",
+      icon: <AlertCircleIcon />,
+    },
+    unknown: {
+      title: "Không thể mở lớp học",
+      subtitle: "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.",
+      tone: "text-slate-300",
+      icon: <AlertCircleIcon />,
+    },
+  };
+
+  const current = variants[state.type];
+
+  return (
+    <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-[#131b2e] p-6 text-center">
+      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#0b1326] border border-slate-700">
+        {current.icon}
+      </div>
+      <h2 className={`text-xl font-bold mb-2 ${current.tone}`}>{current.title}</h2>
+      <p className="text-slate-300 text-sm">{state.message || current.subtitle}</p>
+      {state.message !== current.subtitle && (
+        <p className="text-slate-500 text-xs mt-2">{current.subtitle}</p>
+      )}
+      <button
+        type="button"
+        onClick={onBack}
+        className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#0566d9] px-4 py-2 text-sm font-bold text-white hover:bg-[#004395]"
+      >
+        Quay về danh sách lớp
+      </button>
+    </div>
+  );
+}
+
+function AlertCircleIcon() {
+  return (
+    <span className="material-symbols-outlined text-[28px] text-red-400">
+      warning
+    </span>
+  );
+}
+
 function PostCard({
   post,
   onAddComment,
@@ -445,7 +695,7 @@ function PostCard({
   onAddComment: (content: string) => void;
   timeAgo: (date: string) => string;
 }) {
-  const [showComments, setShowComments] = useState(true);
+  const showComments = true;
   const [replyText, setReplyText] = useState("");
 
   return (
@@ -465,10 +715,22 @@ function PostCard({
             <p className="text-sm text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
             {post.attachments.length > 0 && (
               <div className="flex gap-2 flex-wrap mt-3">
-                {post.attachments.map((att) => (
-                  <span key={att.name} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 cursor-pointer">
+                {post.attachments.map((att, index) => (
+                  <button
+                    key={`${att.name}-${index}`}
+                    type="button"
+                    onClick={() => {
+                      void downloadClassPostAttachmentInBrowser(post.id, index, att.name).catch(
+                        (error) => {
+                          console.error(error);
+                          alert("Không tải được file đính kèm");
+                        }
+                      );
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 cursor-pointer hover:text-[#adc6ff]"
+                  >
                     <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
-                  </span>
+                  </button>
                 ))}
               </div>
             )}
