@@ -1,7 +1,26 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm --prefix \"d:/Documents/ProjectBasedLearning5/FE/client\" test -- --watchAll=false)"
+      "Bash(npm --prefix \"d:/Documents/ProjectBasedLearning5/FE/client\" test -- --watchAll=false)",
+      "Bash(find \"d:\\\\Documents\\\\ProjectBasedLearning5/RAG\" -type f -name \"*.py\" -exec wc -l {} \\\\;)",
+      "Bash(find \"d:\\\\Documents\\\\ProjectBasedLearning5/RAG\" -type f -name \"*.py\" -exec head -5 {} \\\\;)",
+      "Bash(wc -l \"d:\\\\Documents\\\\ProjectBasedLearning5\\\\RAG\"/**/*.py)",
+      "Bash(npm run:*)",
+      "Bash(npm --prefix \"d:/Documents/ProjectBasedLearning5/BE\" run build)",
+      "Bash(npm --prefix \"d:/Documents/ProjectBasedLearning5/FE/client\" run build)",
+      "Bash(docker compose:*)",
+      "Bash(git -C \"d:/Documents/ProjectBasedLearning5\" status --short)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3001)",
+      "Bash(findstr :3000)",
+      "Bash(tasklist /FI \"PID eq 3080\")",
+      "Bash(tasklist /FI \"PID eq 26856\")",
+      "Bash(cmd.exe /c tasklist /FI \"PID eq 3080\")",
+      "Bash(FRONTEND_PORT=3300 BACKEND_PORT=3301 MINIO_API_PORT=9100 MINIO_CONSOLE_PORT=9101 docker compose -f \"d:/Documents/ProjectBasedLearning5/docker-compose.yml\" up -d --build)",
+      "Bash(psql --version)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\ADMIN\\.claude\\plans"
     ]
   }
 }

@@ -9,7 +9,7 @@ export const AssignmentSubmissionPage = () => {
   const [searchParams] = useSearchParams();
   const assignmentIdParam = searchParams.get("assignmentId");
   const navigate = useNavigate();
-  const { user } = useAuth();
+  useAuth();
   const { getAssignmentsByCourse, ensureCourseData, submitAssignment, getAssignmentStats } = useAssignments();
 
   const cid = Number(classId) || 1;

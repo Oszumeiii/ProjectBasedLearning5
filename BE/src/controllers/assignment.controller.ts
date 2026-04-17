@@ -1,9 +1,10 @@
 import type { Request, Response } from 'express'
 import crypto from 'crypto'
+import path from 'path'
 import pool from '../config/db'
 import { UPLOAD_MAX_SIZE_MB } from '../config/env'
 import { detectFileType } from '../utils/file-type'
-import { uploadFile } from '../services/storage.service'
+import { uploadFile, downloadFile } from '../services/storage.service'
 import { canManageCourse, isStudentEnrolled, type CourseRow } from '../utils/courseAccess'
 import { createNotification } from '../utils/notification'
 
@@ -18,7 +19,7 @@ async function loadCourse(courseId: number): Promise<(CourseRow & Record<string,
 async function loadAssignment(assignmentId: number): Promise<Record<string, unknown> | null> {
   if (!Number.isInteger(assignmentId) || assignmentId <= 0) return null
   const r = await pool.query(
-    `SELECT a.*, c.lecturer_id
+    `SELECT a.*, c.id AS course_row_id, c.lecturer_id
      FROM assignments a
      JOIN courses c ON c.id = a.course_id
      WHERE a.id = $1 AND a.deleted_at IS NULL`,
@@ -42,6 +43,64 @@ function normalizeAttachments(input: unknown): Array<{ name: string; url?: strin
   return normalized
 }
 
+function parseAttachmentPayload(input: unknown): Array<{ name: string; url?: string; size?: string }> {
+  if (typeof input === 'string') {
+    try {
+      return normalizeAttachments(JSON.parse(input))
+    } catch {
+      return []
+    }
+  }
+  return normalizeAttachments(input)
+}
+
+async function uploadAttachmentFiles(
+  files: Express.Multer.File[] | undefined,
+  folder: string
+): Promise<Array<{ name: string; url: string; size: string }>> {
+  if (!files?.length) return []
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const uploaded: Array<{ name: string; url: string; size: string }> = []
+
+  for (const file of files) {
+    const ext = path.extname(file.originalname).replace('.', '').toLowerCase() || 'bin'
+    const hash = sha256(file.buffer)
+    const key = `${folder}/${year}/${month}/${hash}.${ext}`
+    await uploadFile(key, file.buffer, file.mimetype || 'application/octet-stream')
+    uploaded.push({
+      name: file.originalname,
+      url: key,
+      size: `${Math.max(1, Math.round(file.size / 1024))} KB`
+    })
+  }
+
+  return uploaded
+}
+
+function getAttachmentFromUnknown(
+  value: unknown,
+  index: number
+): { name: string; url: string } | null {
+  if (!Array.isArray(value) || index < 0 || index >= value.length) return null
+  const row = value[index] as Record<string, unknown>
+  const name = typeof row?.name === 'string' ? row.name : ''
+  const url = typeof row?.url === 'string' ? row.url : ''
+  if (!name || !url) return null
+  return { name, url }
+}
+
+function contentTypeFromFileName(fileName: string): string {
+  const ext = path.extname(fileName).toLowerCase()
+  if (ext === '.pdf') return 'application/pdf'
+  if (ext === '.docx') return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  if (ext === '.zip') return 'application/zip'
+  if (ext === '.png') return 'image/png'
+  if (ext === '.jpg' || ext === '.jpeg') return 'image/jpeg'
+  return 'application/octet-stream'
+}
+
 export const listAssignmentsByCourse = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -56,8 +115,9 @@ export const listAssignmentsByCourse = async (req: Request, res: Response): Prom
       return
     }
 
+    const isStudent = req.user.role === 'student'
     let canView = false
-    if (req.user.role === 'student') {
+    if (isStudent) {
       canView = await isStudentEnrolled(courseId, req.user.id)
     } else {
       canView = await canManageCourse(req.user.id, req.user.role, course)
@@ -82,9 +142,11 @@ export const listAssignmentsByCourse = async (req: Request, res: Response): Prom
               ) AS graded_count
        FROM assignments a
        LEFT JOIN users u ON u.id = a.created_by
-       WHERE a.course_id = $1 AND a.deleted_at IS NULL
+       WHERE a.course_id = $1
+         AND a.deleted_at IS NULL
+         AND ($2 = false OR a.is_published = TRUE)
        ORDER BY a.created_at DESC`,
-      [courseId]
+      [courseId, !isStudent]
     )
 
     res.json({ items: result.rows })
@@ -123,6 +185,8 @@ export const createAssignment = async (req: Request, res: Response): Promise<voi
       latePenaltyPercent?: number | string
       attachments?: unknown
     }
+    const uploadedAttachments = await uploadAttachmentFiles(req.files as Express.Multer.File[] | undefined, 'assignment-attachments')
+    const finalAttachments = [...parseAttachmentPayload(attachments), ...uploadedAttachments]
 
     const parsedCourseId = Number(courseId)
     if (!Number.isInteger(parsedCourseId) || parsedCourseId <= 0) {
@@ -184,7 +248,7 @@ export const createAssignment = async (req: Request, res: Response): Promise<voi
         type,
         deadline,
         parsedMaxScore,
-        JSON.stringify(normalizeAttachments(attachments)),
+        JSON.stringify(finalAttachments),
         Boolean(allowLateSubmission),
         parsedLatePenalty,
         req.user.id
@@ -249,13 +313,17 @@ export const patchAssignment = async (req: Request, res: Response): Promise<void
       return
     }
 
-    const canManage = await canManageCourse(req.user.id, req.user.role, assignment as unknown as CourseRow)
+    const canManage = await canManageCourse(req.user.id, req.user.role, { id: Number(assignment.course_row_id), lecturer_id: Number(assignment.lecturer_id) } as CourseRow)
     if (!canManage) {
       res.status(403).json({ message: 'Forbidden' })
       return
     }
 
     const { title, description, assignmentType, deadline, maxScore, allowLateSubmission, latePenaltyPercent, isPublished, attachments } = req.body as Record<string, unknown>
+    const uploadedAttachments = await uploadAttachmentFiles(req.files as Express.Multer.File[] | undefined, 'assignment-attachments')
+    const baseAttachments = attachments !== undefined ? parseAttachmentPayload(attachments) : null
+    const mergedAttachments =
+      baseAttachments === null ? (uploadedAttachments.length ? uploadedAttachments : null) : [...baseAttachments, ...uploadedAttachments]
 
     const parsedMaxScore =
       maxScore === undefined || maxScore === null || maxScore === '' ? null : Number(maxScore)
@@ -295,7 +363,7 @@ export const patchAssignment = async (req: Request, res: Response): Promise<void
         allowLateSubmission != null ? Boolean(allowLateSubmission) : null,
         parsedLatePenalty,
         isPublished != null ? Boolean(isPublished) : null,
-        attachments !== undefined ? JSON.stringify(normalizeAttachments(attachments)) : null,
+        mergedAttachments !== null ? JSON.stringify(mergedAttachments) : null,
         assignmentId
       ]
     )
@@ -321,7 +389,7 @@ export const deleteAssignment = async (req: Request, res: Response): Promise<voi
       return
     }
 
-    const canManage = await canManageCourse(req.user.id, req.user.role, assignment as unknown as CourseRow)
+    const canManage = await canManageCourse(req.user.id, req.user.role, { id: Number(assignment.course_row_id), lecturer_id: Number(assignment.lecturer_id) } as CourseRow)
     if (!canManage) {
       res.status(403).json({ message: 'Forbidden' })
       return
@@ -349,14 +417,26 @@ export const listAssignmentSubmissions = async (req: Request, res: Response): Pr
       return
     }
 
-    const canManage = await canManageCourse(req.user.id, req.user.role, assignment as unknown as CourseRow)
-    if (!canManage) {
-      res.status(403).json({ message: 'Forbidden' })
-      return
+    const courseId = Number(assignment.course_id)
+    const isStudent = req.user.role === 'student'
+
+    if (isStudent) {
+      const enrolled = await isStudentEnrolled(courseId, req.user.id)
+      if (!enrolled) {
+        res.status(403).json({ message: 'Forbidden' })
+        return
+      }
+    } else {
+      const canManage = await canManageCourse(req.user.id, req.user.role, { id: Number(assignment.course_row_id), lecturer_id: Number(assignment.lecturer_id) } as CourseRow)
+      if (!canManage) {
+        res.status(403).json({ message: 'Forbidden' })
+        return
+      }
     }
 
     const result = await pool.query(
       `SELECT s.*,
+              r.id AS report_id,
               u.full_name AS student_name,
               u.email AS student_email,
               r.file_name AS report_file_name,
@@ -365,8 +445,9 @@ export const listAssignmentSubmissions = async (req: Request, res: Response): Pr
        JOIN users u ON u.id = s.student_id
        LEFT JOIN reports r ON r.id = s.report_id
        WHERE s.assignment_id = $1
+         AND ($2 = false OR s.student_id = $3)
        ORDER BY u.full_name ASC`,
-      [assignmentId]
+      [assignmentId, isStudent, req.user.id]
     )
 
     res.json({ items: result.rows })
@@ -632,6 +713,121 @@ export const listClassPostsByCourse = async (req: Request, res: Response): Promi
   }
 }
 
+export const downloadAssignmentAttachment = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
+
+    const assignmentId = Number(req.params.id)
+    const attachmentIndex = Number(req.params.attachmentIndex)
+    if (!Number.isInteger(attachmentIndex) || attachmentIndex < 0) {
+      res.status(400).json({ message: 'attachmentIndex không hợp lệ' })
+      return
+    }
+
+    const assignment = await loadAssignment(assignmentId)
+    if (!assignment) {
+      res.status(404).json({ message: 'Assignment not found' })
+      return
+    }
+
+    const courseId = Number(assignment.course_id)
+    if (req.user.role === 'student') {
+      const enrolled = await isStudentEnrolled(courseId, req.user.id)
+      if (!enrolled) {
+        res.status(403).json({ message: 'Forbidden' })
+        return
+      }
+    } else {
+      const canView = await canManageCourse(
+        req.user.id,
+        req.user.role,
+        { id: Number(assignment.course_row_id), lecturer_id: Number(assignment.lecturer_id) } as CourseRow
+      )
+      if (!canView) {
+        res.status(403).json({ message: 'Forbidden' })
+        return
+      }
+    }
+
+    const attachment = getAttachmentFromUnknown(assignment.attachments, attachmentIndex)
+    if (!attachment) {
+      res.status(404).json({ message: 'Attachment not found' })
+      return
+    }
+
+    const fileBuffer = await downloadFile(attachment.url)
+    res.setHeader('Content-Type', contentTypeFromFileName(attachment.name))
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(attachment.name)}`)
+    res.send(fileBuffer)
+  } catch (error) {
+    console.error('❌ downloadAssignmentAttachment:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+export const downloadClassPostAttachment = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
+
+    const postId = Number(req.params.id)
+    const attachmentIndex = Number(req.params.attachmentIndex)
+    if (!Number.isInteger(attachmentIndex) || attachmentIndex < 0) {
+      res.status(400).json({ message: 'attachmentIndex không hợp lệ' })
+      return
+    }
+
+    const postQuery = await pool.query(
+      'SELECT id, course_id, attachments FROM class_posts WHERE id = $1 AND deleted_at IS NULL',
+      [postId]
+    )
+    if (postQuery.rows.length === 0) {
+      res.status(404).json({ message: 'Post not found' })
+      return
+    }
+
+    const post = postQuery.rows[0]
+    const courseId = Number(post.course_id)
+    if (req.user.role === 'student') {
+      const enrolled = await isStudentEnrolled(courseId, req.user.id)
+      if (!enrolled) {
+        res.status(403).json({ message: 'Forbidden' })
+        return
+      }
+    } else {
+      const course = await loadCourse(courseId)
+      if (!course) {
+        res.status(404).json({ message: 'Course not found' })
+        return
+      }
+      const canView = await canManageCourse(req.user.id, req.user.role, course)
+      if (!canView) {
+        res.status(403).json({ message: 'Forbidden' })
+        return
+      }
+    }
+
+    const attachment = getAttachmentFromUnknown(post.attachments, attachmentIndex)
+    if (!attachment) {
+      res.status(404).json({ message: 'Attachment not found' })
+      return
+    }
+
+    const fileBuffer = await downloadFile(attachment.url)
+    res.setHeader('Content-Type', contentTypeFromFileName(attachment.name))
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(attachment.name)}`)
+    res.send(fileBuffer)
+  } catch (error) {
+    console.error('❌ downloadClassPostAttachment:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
 export const createClassPost = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -645,6 +841,8 @@ export const createClassPost = async (req: Request, res: Response): Promise<void
       isPinned?: boolean
       attachments?: unknown
     }
+    const uploadedAttachments = await uploadAttachmentFiles(req.files as Express.Multer.File[] | undefined, 'class-post-attachments')
+    const finalAttachments = [...parseAttachmentPayload(attachments), ...uploadedAttachments]
 
     const parsedCourseId = Number(courseId)
     if (!Number.isInteger(parsedCourseId) || parsedCourseId <= 0) {
@@ -684,7 +882,7 @@ export const createClassPost = async (req: Request, res: Response): Promise<void
         req.user.id,
         content.trim(),
         Boolean(isPinned) && req.user.role !== 'student',
-        JSON.stringify(normalizeAttachments(attachments))
+        JSON.stringify(finalAttachments)
       ]
     )
 
