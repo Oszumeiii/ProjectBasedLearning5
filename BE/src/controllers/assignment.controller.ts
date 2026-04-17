@@ -10,9 +10,10 @@ import { createNotification } from '../utils/notification'
 
 const sha256 = (buf: Buffer): string => crypto.createHash('sha256').update(buf).digest('hex')
 
-async function loadCourse(courseId: number): Promise<(CourseRow & Record<string, unknown>) | null> {
-  if (!Number.isInteger(courseId) || courseId <= 0) return null
-  const r = await pool.query('SELECT * FROM courses WHERE id = $1 AND deleted_at IS NULL', [courseId])
+async function loadCourse(courseId: number | string): Promise<(CourseRow & Record<string, unknown>) | null> {
+  const parsedCourseId = Number(courseId)
+  if (!Number.isInteger(parsedCourseId) || parsedCourseId <= 0) return null
+  const r = await pool.query('SELECT * FROM courses WHERE id = $1 AND deleted_at IS NULL', [parsedCourseId])
   return r.rows[0] ?? null
 }
 
@@ -575,11 +576,10 @@ export const gradeAssignmentSubmission = async (req: Request, res: Response): Pr
     }
 
     const submissionId = Number(req.params.submissionId)
-    const { score, feedback } = req.body as { score?: number | string; feedback?: string }
+    const { feedback } = req.body as { feedback?: string }
 
-    const parsedScore = Number(score)
-    if (!Number.isFinite(parsedScore) || parsedScore < 0 || parsedScore > 100) {
-      res.status(400).json({ message: 'score phải trong khoảng 0-100' })
+    if (!feedback?.trim()) {
+      res.status(400).json({ message: 'feedback là bắt buộc' })
       return
     }
 
@@ -609,34 +609,27 @@ export const gradeAssignmentSubmission = async (req: Request, res: Response): Pr
       return
     }
 
-    const maxScore = Number(row.max_score)
-    if (parsedScore > maxScore) {
-      res.status(400).json({ message: `score không được vượt quá điểm tối đa (${maxScore})` })
-      return
-    }
-
     const updated = await pool.query(
       `UPDATE assignment_submissions
-       SET score = $1,
-           feedback = $2,
+       SET feedback = $1,
            status = 'graded',
-           graded_by = $3,
+           graded_by = $2,
            graded_at = NOW()
-       WHERE id = $4
+       WHERE id = $3
        RETURNING *`,
-      [parsedScore, feedback?.trim() || null, req.user.id, submissionId]
+      [feedback.trim(), req.user.id, submissionId]
     )
 
     await createNotification({
       userId: row.student_id,
       type: 'assignment_graded',
-      title: 'Bài nộp đã được chấm',
-      message: `Bài nộp #${row.assignment_id} của bạn đã được chấm: ${parsedScore}/${maxScore}`,
+      title: 'Bài nộp đã có phản hồi',
+      message: `Bài nộp #${row.assignment_id} của bạn đã có nhận xét từ giảng viên.`,
       refType: 'course',
       refId: row.course_id
     })
 
-    res.json({ message: 'Đã chấm điểm', submission: updated.rows[0] })
+    res.json({ message: 'Đã lưu nhận xét', submission: updated.rows[0] })
   } catch (error) {
     console.error('❌ gradeAssignmentSubmission:', error)
     res.status(500).json({ message: 'Internal server error' })

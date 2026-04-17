@@ -8,6 +8,11 @@ interface SubmissionProps {
   plagiarism: number;
   status: "Analyzing" | "Done" | "Not Run";
   isLate?: string;
+  onApprove?: () => void;
+  onRevision?: () => void;
+  onReject?: () => void;
+  busy?: boolean;
+  disableActions?: boolean;
 }
 
 export const SubmissionRow: React.FC<SubmissionProps> = ({
@@ -18,6 +23,11 @@ export const SubmissionRow: React.FC<SubmissionProps> = ({
   plagiarism,
   status,
   isLate,
+  onApprove,
+  onRevision,
+  onReject,
+  busy,
+  disableActions,
 }) => {
   return (
     <tr className="hover:bg-slate-800/40 transition-colors group border-b border-slate-900/50">
@@ -84,9 +94,32 @@ export const SubmissionRow: React.FC<SubmissionProps> = ({
         )}
       </td>
       <td className="py-4 px-6 text-right">
-        <button className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 text-xs font-bold hover:bg-indigo-600 hover:text-white transition-all">
-          View Detail
-        </button>
+        <div className="flex items-center justify-end gap-2">
+          <button
+            type="button"
+            onClick={onApprove}
+            disabled={busy || disableActions || !onApprove}
+            className="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 text-[10px] font-bold disabled:opacity-40"
+          >
+            Duyệt
+          </button>
+          <button
+            type="button"
+            onClick={onRevision}
+            disabled={busy || disableActions || !onRevision}
+            className="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-300 text-[10px] font-bold disabled:opacity-40"
+          >
+            Sửa lại
+          </button>
+          <button
+            type="button"
+            onClick={onReject}
+            disabled={busy || disableActions || !onReject}
+            className="px-2.5 py-1 rounded-lg bg-red-500/15 text-red-300 text-[10px] font-bold disabled:opacity-40"
+          >
+            Từ chối
+          </button>
+        </div>
       </td>
     </tr>
   );
