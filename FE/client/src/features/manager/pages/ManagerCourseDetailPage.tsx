@@ -74,6 +74,9 @@ export const ManagerCourseDetailPage = () => {
       ? "/instructor"
       : "/manager";
   const isInstructorView = location.pathname.startsWith("/instructor");
+  const isAdminView = location.pathname.startsWith("/admin");
+  /** Điểm tổng kết + tiêu chí đánh giá: chỉ Manager; Admin và Instructor không dùng. */
+  const showGradesAndEvaluationCriteria = !isInstructorView && !isAdminView;
   const canEditThesisType = user?.role === "manager" || user?.role === "admin";
 
   const [loading, setLoading] = useState(true);
@@ -131,9 +134,9 @@ export const ManagerCourseDetailPage = () => {
       setCourse(c);
       const [st, ev] = await Promise.all([
         getCourseStudents(id),
-        isInstructorView
-          ? Promise.resolve({ items: [] as EvaluationCriterion[], totalWeight: 0 })
-          : getEvaluationCriteria(id).catch(() => ({ items: [], totalWeight: 0 })),
+        showGradesAndEvaluationCriteria
+          ? getEvaluationCriteria(id).catch(() => ({ items: [], totalWeight: 0 }))
+          : Promise.resolve({ items: [] as EvaluationCriterion[], totalWeight: 0 }),
       ]);
       setStudents(st);
       setCriteria(ev.items || []);
@@ -149,7 +152,7 @@ export const ManagerCourseDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, isInstructorView]);
+  }, [id, showGradesAndEvaluationCriteria]);
 
   useEffect(() => {
     void load();
@@ -752,7 +755,7 @@ export const ManagerCourseDetailPage = () => {
                 <th className="p-3">Sinh viên</th>
                 <th className="p-3">Email</th>
                 <th className="p-3">Trạng thái</th>
-                {!isInstructorView ? <th className="p-3">Điểm tổng kết</th> : null}
+                {showGradesAndEvaluationCriteria ? <th className="p-3">Điểm tổng kết</th> : null}
                 <th className="p-3 text-right">Thao tác</th>
               </tr>
             </thead>
@@ -795,7 +798,7 @@ export const ManagerCourseDetailPage = () => {
                           : s.status}
                     </span>
                   </td>
-                  {!isInstructorView ? (
+                  {showGradesAndEvaluationCriteria ? (
                     <td className="p-3">
                       <div className="flex items-center gap-2">
                         <input
@@ -954,7 +957,7 @@ export const ManagerCourseDetailPage = () => {
         </ul>
       </section>
 
-      {!isInstructorView ? (
+      {showGradesAndEvaluationCriteria ? (
         <section className="rounded-xl border border-app-line bg-app-card p-6 space-y-4">
           <h3 className="font-bold text-ink-heading flex items-center gap-2">
             <ClipboardList size={20} className="text-brand" />
