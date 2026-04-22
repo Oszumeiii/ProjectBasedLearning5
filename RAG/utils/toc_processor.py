@@ -1,4 +1,9 @@
-from RAG.utils.client_llm import client
+from utils.client_llm import client
+
+def build_toc_structure(toc_lines):
+    # Placeholder for building TOC structure (e.g., using indentation, numbering)
+    # This can be implemented using LLM or rule-based logic based on the classified TOC lines.
+    pass
 
 
 # This file contains functions to process Table of Contents (TOC) lines, including LLM-based classification and filtering.
@@ -146,3 +151,17 @@ OUTPUT FORMAT (JSON ONLY)
         return result.get("filtered_lines", [])
     except Exception:
         return lines
+    
+
+
+def toc_to_markdown(toc_json):
+    md_lines = []
+
+    for item in toc_json["table_of_contents"]:
+        level = item["level"]
+        title = item["title"].strip()
+        prefix = "#" * (level + 1)
+
+        md_lines.append(f"{prefix} {title}")
+
+    return "\n".join(md_lines)
