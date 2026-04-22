@@ -1,6 +1,7 @@
 from collections import Counter
 import re
-from RAG.utils import is_page_number, remove_headers_footers
+from utils.text_utils import is_page_number, remove_headers_footers
+
 
 
 def detect_repeated_lines(pages, threshold=0.6):
