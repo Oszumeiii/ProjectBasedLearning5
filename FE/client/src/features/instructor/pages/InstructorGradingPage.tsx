@@ -26,6 +26,7 @@ import {
 } from "../../classroom/services/report.service";
 import { getMyCourses, type Course } from "../../classroom/services/course.service";
 
+/** Trang chấm bài: lọc báo cáo, kiểm tra RAG, ghi nhận xét. */
 const STATUS_LABEL: Record<string, string> = {
   pending: "Chờ xử lý",
   processing: "Đang xử lý",
