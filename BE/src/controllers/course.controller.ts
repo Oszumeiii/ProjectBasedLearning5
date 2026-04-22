@@ -55,6 +55,24 @@ async function loadCourseRow(id: number | string): Promise<(CourseRow & Record<s
   return r.rows[0] ?? null
 }
 
+/** PG BIGINT thường về string/bigint — chuẩn hoá trước khi tra cứu lớp/ghi danh */
+function toPositiveIntId(value: unknown): number | null {
+  if (value == null) return null
+  if (typeof value === 'bigint') {
+    const n = Number(value)
+    return Number.isSafeInteger(n) && n > 0 ? n : null
+  }
+  if (typeof value === 'string') {
+    const t = value.trim()
+    if (!/^\d+$/.test(t)) return null
+    const n = Number(t)
+    return Number.isSafeInteger(n) && n > 0 ? n : null
+  }
+  const n = Number(value)
+  if (!Number.isInteger(n) || n <= 0) return null
+  return n
+}
+
 const ENROLLMENT_STATUS_TRANSITIONS: Record<string, string[]> = {
   pending: ['active', 'rejected', 'dropped'],
   active: ['dropped', 'completed', 'failed'],
@@ -989,7 +1007,12 @@ export const updateEnrollmentStatus = async (req: Request, res: Response): Promi
       return
     }
 
-    const enrollmentId = Number(req.params.enrollmentId)
+    const enrollmentId = toPositiveIntId(req.params.enrollmentId)
+    if (enrollmentId == null) {
+      res.status(400).json({ message: 'enrollmentId không hợp lệ' })
+      return
+    }
+
     const { status } = req.body as { status?: string }
 
     const allowed = ['active', 'rejected', 'dropped', 'completed', 'failed']
@@ -999,25 +1022,36 @@ export const updateEnrollmentStatus = async (req: Request, res: Response): Promi
     }
 
     const en = await pool.query(
-      `SELECT e.*, c.max_students, c.id AS cid
+      `SELECT e.course_id, e.student_id, e.status, c.max_students, c.lecturer_id, c.id AS course_pk
        FROM enrollments e
-       JOIN courses c ON c.id = e.course_id
+       INNER JOIN courses c ON c.id = e.course_id AND c.deleted_at IS NULL
        WHERE e.id = $1`,
       [enrollmentId]
     )
     if (en.rows.length === 0) {
-      res.status(404).json({ message: 'Không tìm thấy ghi danh' })
+      res.status(404).json({
+        message: 'Không tìm thấy ghi danh hoặc lớp đã bị lưu trữ (không thể cập nhật).'
+      })
       return
     }
 
-    const row = en.rows[0] as { course_id: number; student_id: number; status: string; max_students: number }
-    const course = await loadCourseRow(row.course_id)
-    if (!course) {
-      res.status(404).json({ message: 'Course not found' })
+    const raw = en.rows[0] as Record<string, unknown>
+    const courseIdNum = toPositiveIntId(raw.course_id ?? raw.course_pk)
+    const lecturerIdNum = toPositiveIntId(raw.lecturer_id)
+    if (courseIdNum == null || lecturerIdNum == null) {
+      res.status(500).json({ message: 'Dữ liệu lớp/ghi danh không hợp lệ' })
       return
     }
 
-    const can = await canManageCourse(req.user.id, req.user.role, course as CourseRow)
+    const course: CourseRow = { id: courseIdNum, lecturer_id: lecturerIdNum }
+    const row = {
+      course_id: courseIdNum,
+      student_id: toPositiveIntId(raw.student_id) ?? 0,
+      status: String(raw.status ?? ''),
+      max_students: Number(raw.max_students)
+    }
+
+    const can = await canManageCourse(req.user.id, req.user.role, course)
     if (!can) {
       res.status(403).json({ message: 'Forbidden' })
       return
@@ -1138,8 +1172,8 @@ export const updateEnrollmentGrade = async (req: Request, res: Response): Promis
       return
     }
 
-    const enrollmentId = Number(req.params.enrollmentId)
-    if (!Number.isInteger(enrollmentId) || enrollmentId <= 0) {
+    const enrollmentId = toPositiveIntId(req.params.enrollmentId)
+    if (enrollmentId == null) {
       res.status(400).json({ message: 'enrollmentId không hợp lệ' })
       return
     }
@@ -1161,24 +1195,31 @@ export const updateEnrollmentGrade = async (req: Request, res: Response): Promis
     }
 
     const enrollment = await pool.query(
-      `SELECT e.id, e.course_id, e.status, e.final_grade, e.final_score
+      `SELECT e.id, e.course_id, e.status, e.final_grade, e.final_score, c.lecturer_id, c.id AS course_pk
        FROM enrollments e
+       INNER JOIN courses c ON c.id = e.course_id AND c.deleted_at IS NULL
        WHERE e.id = $1`,
       [enrollmentId]
     )
     if (enrollment.rows.length === 0) {
-      res.status(404).json({ message: 'Không tìm thấy ghi danh' })
+      res.status(404).json({
+        message: 'Không tìm thấy ghi danh hoặc lớp đã bị lưu trữ (không thể cập nhật).'
+      })
       return
     }
 
-    const row = enrollment.rows[0] as { course_id: number; status: string }
-    const course = await loadCourseRow(row.course_id)
-    if (!course) {
-      res.status(404).json({ message: 'Course not found' })
+    const erow = enrollment.rows[0] as Record<string, unknown>
+    const courseIdNum = toPositiveIntId(erow.course_id ?? erow.course_pk)
+    const lecturerIdNum = toPositiveIntId(erow.lecturer_id)
+    if (courseIdNum == null || lecturerIdNum == null) {
+      res.status(500).json({ message: 'Dữ liệu lớp/ghi danh không hợp lệ' })
       return
     }
 
-    const can = await canManageCourse(req.user.id, req.user.role, course as CourseRow)
+    const course: CourseRow = { id: courseIdNum, lecturer_id: lecturerIdNum }
+    const row = { course_id: courseIdNum, status: String(erow.status ?? '') }
+
+    const can = await canManageCourse(req.user.id, req.user.role, course)
     if (!can) {
       res.status(403).json({ message: 'Forbidden' })
       return
