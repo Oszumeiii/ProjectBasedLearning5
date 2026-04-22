@@ -50,6 +50,10 @@ interface CourseDetail {
 }
 
 type Tab = "posts" | "assignments" | "students";
+type AssignmentPanelTab = "submissions" | "feedback";
+
+/** Backend vẫn lưu cột max_score; ẩn khỏi UI, dùng giá trị cố định. */
+const ASSIGNMENT_DEFAULT_MAX_SCORE = 10;
 
 const TYPE_LABEL: Record<string, string> = {
   report: "Báo cáo",
@@ -88,13 +92,13 @@ export const InstructorClassroomPage: React.FC = () => {
   const [formTitle, setFormTitle] = useState("");
   const [formDesc, setFormDesc] = useState("");
   const [formDeadline, setFormDeadline] = useState("");
-  const [formMaxScore, setFormMaxScore] = useState("10");
   const [formType, setFormType] = useState<AssignmentType>("report");
   const [formAttachments, setFormAttachments] = useState<AssignmentAttachmentInput[]>([]);
   const [savingAssignment, setSavingAssignment] = useState(false);
   const attachmentInputRef = useRef<HTMLInputElement>(null);
 
   const [expandedAssignment, setExpandedAssignment] = useState<number | null>(null);
+  const [assignmentPanelTab, setAssignmentPanelTab] = useState<Record<number, AssignmentPanelTab>>({});
   const [newPostContent, setNewPostContent] = useState("");
   const [postAttachments, setPostAttachments] = useState<ClassPostAttachmentInput[]>([]);
   const postAttachmentInputRef = useRef<HTMLInputElement>(null);
@@ -167,7 +171,7 @@ export const InstructorClassroomPage: React.FC = () => {
         title: formTitle,
         description: formDesc,
         deadline: formDeadline || new Date(Date.now() + 7 * 86400000).toISOString(),
-        maxScore: Number(formMaxScore) || 10,
+        maxScore: ASSIGNMENT_DEFAULT_MAX_SCORE,
         type: formType,
         attachments: formAttachments,
       });
@@ -175,7 +179,6 @@ export const InstructorClassroomPage: React.FC = () => {
       setFormTitle("");
       setFormDesc("");
       setFormDeadline("");
-      setFormMaxScore("10");
       setFormType("report");
       setFormAttachments([]);
     } catch (e) {
@@ -189,8 +192,8 @@ export const InstructorClassroomPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-        <span className="ml-3 text-slate-400">Đang tải...</span>
+        <div className="w-8 h-8 border-4 border-brand border-t-transparent rounded-full animate-spin" />
+        <span className="ml-3 text-ink-muted">Đang tải...</span>
       </div>
     );
   }
@@ -223,19 +226,19 @@ export const InstructorClassroomPage: React.FC = () => {
       <div className="mb-6">
         <button
           onClick={() => navigate("/instructor/lobby")}
-          className="text-xs text-slate-500 hover:text-indigo-400 mb-2 flex items-center gap-1"
+          className="text-xs text-ink-muted hover:text-brand mb-2 flex items-center gap-1"
         >
           ← Quay lại danh sách lớp
         </button>
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">
+            <p className="text-[10px] font-bold text-brand uppercase tracking-widest mb-1">
               {course.code}
             </p>
-            <h2 className="text-2xl font-manrope font-extrabold text-[#dae2fd] tracking-tight">
+            <h2 className="text-2xl font-extrabold text-ink-heading tracking-tight">
               {course.name}
             </h2>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-ink-muted mt-1">
               {course.lecturer_name} • {course.student_count} sinh viên
             </p>
           </div>
@@ -243,20 +246,20 @@ export const InstructorClassroomPage: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-800 mb-6">
+      <div className="flex gap-1 border-b border-app-line mb-6">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-all ${
               tab === t.key
-                ? "border-indigo-500 text-indigo-400"
-                : "border-transparent text-slate-500 hover:text-slate-300"
+                ? "border-brand text-brand"
+                : "border-transparent text-ink-muted hover:text-ink-body"
             }`}
           >
             {t.icon} {t.label}
             {t.count !== undefined && (
-              <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full">
+              <span className="rounded-full bg-app-track px-1.5 py-0.5 text-[10px] text-ink-heading">
                 {t.count}
               </span>
             )}
@@ -267,9 +270,9 @@ export const InstructorClassroomPage: React.FC = () => {
       {/* ── Tab: Bảng tin ── */}
       {tab === "posts" && (
         <div className="space-y-4 max-w-3xl">
-          <div className="p-4 bg-[#131b2e] rounded-xl border border-slate-800/50">
+          <div className="p-4 bg-app-card rounded-xl border border-app-line">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-full bg-indigo-900 border border-indigo-500/30 flex items-center justify-center text-xs font-bold text-indigo-300 shrink-0">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-app-elevated text-xs font-bold text-ink-heading">
                 {course.lecturer_name?.charAt(0) || "G"}
               </div>
               <div className="flex-1">
@@ -278,7 +281,7 @@ export const InstructorClassroomPage: React.FC = () => {
                   onChange={(e) => setNewPostContent(e.target.value)}
                   placeholder="Đăng thông báo cho lớp học..."
                   rows={2}
-                  className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:ring-1 focus:ring-indigo-500 resize-none"
+                  className="w-full bg-app-inset border border-app-line rounded-lg px-4 py-2.5 text-sm text-ink-heading placeholder:text-ink-muted focus:ring-1 focus:ring-brand/25 resize-none"
                 />
                 <div className="flex justify-between items-center mt-2 gap-3">
                   <div className="flex-1">
@@ -292,7 +295,7 @@ export const InstructorClassroomPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => postAttachmentInputRef.current?.click()}
-                      className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1"
+                      className="text-xs text-ink-muted hover:text-ink-body flex items-center gap-1"
                     >
                       <Paperclip size={14} /> Đính kèm
                     </button>
@@ -301,17 +304,17 @@ export const InstructorClassroomPage: React.FC = () => {
                         {postAttachments.map((att) => (
                           <li
                             key={att.name}
-                            className="flex items-center justify-between gap-2 rounded-lg bg-[#0b1326] border border-slate-800 px-3 py-1.5 text-xs text-slate-300"
+                            className="flex items-center justify-between gap-2 rounded-lg bg-app-inset border border-app-line px-3 py-1.5 text-xs text-ink-body"
                           >
                             <span className="truncate flex items-center gap-1.5">
-                              <Paperclip size={12} className="text-indigo-400 shrink-0" />
+                              <Paperclip size={12} className="shrink-0 text-mint" />
                               <span className="truncate">{att.name}</span>
-                              <span className="text-slate-600 shrink-0">{att.size}</span>
+                              <span className="text-ink-muted shrink-0">{att.size}</span>
                             </span>
                             <button
                               type="button"
                               onClick={() => removePostAttachment(att.name)}
-                              className="p-0.5 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 shrink-0"
+                              className="p-0.5 rounded text-ink-muted hover:text-red-400 hover:bg-red-500/10 shrink-0"
                               aria-label="Xóa file"
                             >
                               <X size={14} />
@@ -334,7 +337,7 @@ export const InstructorClassroomPage: React.FC = () => {
                       setPostAttachments([]);
                     }}
                     disabled={!newPostContent.trim()}
-                    className="px-4 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-500 disabled:opacity-40 flex items-center gap-1.5"
+                    className="px-4 py-1.5 bg-brand text-white text-xs font-bold rounded-lg hover:bg-brand-hover disabled:opacity-40 flex items-center gap-1.5"
                   >
                     <Send size={12} /> Đăng
                   </button>
@@ -355,68 +358,57 @@ export const InstructorClassroomPage: React.FC = () => {
       {tab === "assignments" && (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-ink-muted">
               {assignments.length} bài tập đã tạo
             </p>
             <button
               onClick={() => setShowForm(!showForm)}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/20"
+              className="flex items-center gap-2 px-4 py-2 bg-brand hover:bg-brand-hover text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-whisper"
             >
               <Plus size={16} /> Tạo bài tập mới
             </button>
           </div>
 
           {showForm && (
-            <div className="p-6 bg-[#131b2e] rounded-xl border border-indigo-500/20 animate-in slide-in-from-top-2 duration-300">
-              <h4 className="text-[#dae2fd] font-bold mb-4 text-sm">
+            <div className="p-6 bg-app-card rounded-xl border border-brand/20 animate-in slide-in-from-top-2 duration-300">
+              <h4 className="text-ink-heading font-bold mb-4 text-sm">
                 Tạo bài tập mới
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Tiêu đề *</label>
+                  <label className="block text-xs text-ink-muted mb-1">Tiêu đề *</label>
                   <input
                     type="text"
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
                     placeholder="VD: Nộp báo cáo tiến độ Sprint 2"
-                    className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:ring-1 focus:ring-indigo-500"
+                    className="w-full bg-app-inset border border-app-line rounded-lg px-4 py-2.5 text-sm text-ink-heading placeholder:text-ink-muted focus:ring-1 focus:ring-brand/25"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-slate-400 mb-1">Loại</label>
-                    <select
-                      value={formType}
-                      onChange={(e) => setFormType(e.target.value as AssignmentType)}
-                      className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:ring-1 focus:ring-indigo-500"
-                    >
-                      <option value="report">Báo cáo</option>
-                      <option value="exercise">Bài tập</option>
-                      <option value="project">Đồ án</option>
-                      <option value="quiz">Kiểm tra</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs text-slate-400 mb-1">Điểm tối đa</label>
-                    <input
-                      type="number"
-                      value={formMaxScore}
-                      onChange={(e) => setFormMaxScore(e.target.value)}
-                      className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:ring-1 focus:ring-indigo-500"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs text-ink-muted mb-1">Loại</label>
+                  <select
+                    value={formType}
+                    onChange={(e) => setFormType(e.target.value as AssignmentType)}
+                    className="w-full bg-app-inset border border-app-line rounded-lg px-3 py-2.5 text-sm text-ink-heading focus:ring-1 focus:ring-brand/25"
+                  >
+                    <option value="report">Báo cáo</option>
+                    <option value="exercise">Bài tập</option>
+                    <option value="project">Đồ án</option>
+                    <option value="quiz">Kiểm tra</option>
+                  </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Deadline</label>
+                  <label className="block text-xs text-ink-muted mb-1">Deadline</label>
                   <input
                     type="datetime-local"
                     value={formDeadline}
                     onChange={(e) => setFormDeadline(e.target.value)}
-                    className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:ring-1 focus:ring-indigo-500"
+                    className="w-full bg-app-inset border border-app-line rounded-lg px-4 py-2.5 text-sm text-ink-heading focus:ring-1 focus:ring-brand/25"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Đính kèm</label>
+                  <label className="block text-xs text-ink-muted mb-1">Đính kèm</label>
                   <input
                     ref={attachmentInputRef}
                     type="file"
@@ -428,7 +420,7 @@ export const InstructorClassroomPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => attachmentInputRef.current?.click()}
-                    className="w-full bg-[#0b1326] border border-dashed border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-500 hover:text-indigo-400 hover:border-indigo-500/30 flex items-center gap-2 justify-center transition-colors"
+                    className="w-full bg-app-inset border border-dashed border-app-line rounded-lg px-4 py-2.5 text-sm text-ink-muted hover:text-brand hover:border-brand/30 flex items-center gap-2 justify-center transition-colors"
                   >
                     <Paperclip size={14} /> Chọn file (PDF, Office, ảnh…)
                   </button>
@@ -437,17 +429,17 @@ export const InstructorClassroomPage: React.FC = () => {
                       {formAttachments.map((att) => (
                         <li
                           key={att.name}
-                          className="flex items-center justify-between gap-2 rounded-lg bg-[#0b1326] border border-slate-800 px-3 py-1.5 text-xs text-slate-300"
+                          className="flex items-center justify-between gap-2 rounded-lg bg-app-inset border border-app-line px-3 py-1.5 text-xs text-ink-body"
                         >
                           <span className="truncate flex items-center gap-1.5">
-                            <Paperclip size={12} className="text-indigo-400 shrink-0" />
+                            <Paperclip size={12} className="shrink-0 text-mint" />
                             <span className="truncate">{att.name}</span>
-                            <span className="text-slate-600 shrink-0">{att.size}</span>
+                            <span className="text-ink-muted shrink-0">{att.size}</span>
                           </span>
                           <button
                             type="button"
                             onClick={() => removeFormAttachment(att.name)}
-                            className="p-0.5 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 shrink-0"
+                            className="p-0.5 rounded text-ink-muted hover:text-red-400 hover:bg-red-500/10 shrink-0"
                             aria-label="Xóa file"
                           >
                             <X size={14} />
@@ -458,13 +450,13 @@ export const InstructorClassroomPage: React.FC = () => {
                   )}
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-xs text-slate-400 mb-1">Mô tả & yêu cầu</label>
+                  <label className="block text-xs text-ink-muted mb-1">Mô tả & yêu cầu</label>
                   <textarea
                     value={formDesc}
                     onChange={(e) => setFormDesc(e.target.value)}
                     rows={3}
                     placeholder="Mô tả chi tiết yêu cầu bài tập..."
-                    className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:ring-1 focus:ring-indigo-500 resize-none"
+                    className="w-full bg-app-inset border border-app-line rounded-lg px-4 py-2.5 text-sm text-ink-heading placeholder:text-ink-muted focus:ring-1 focus:ring-brand/25 resize-none"
                   />
                 </div>
               </div>
@@ -475,14 +467,14 @@ export const InstructorClassroomPage: React.FC = () => {
                     setShowForm(false);
                     setFormAttachments([]);
                   }}
-                  className="px-4 py-2 text-sm text-slate-400 hover:text-white"
+                  className="px-4 py-2 text-sm text-ink-muted hover:text-ink-heading"
                 >
                   Hủy
                 </button>
                 <button
                   onClick={() => void handleCreateAssignment()}
                   disabled={!formTitle.trim() || savingAssignment}
-                  className="px-5 py-2 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-500 disabled:opacity-50"
+                  className="px-5 py-2 bg-brand text-white text-sm font-bold rounded-lg hover:bg-brand-hover disabled:opacity-50"
                 >
                   {savingAssignment ? "Đang tạo..." : "Tạo bài tập"}
                 </button>
@@ -495,10 +487,17 @@ export const InstructorClassroomPage: React.FC = () => {
               const stats = getAssignmentStats(a);
               const isExpanded = expandedAssignment === a.id;
               return (
-                <div key={a.id} className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
+                <div key={a.id} className="bg-app-card rounded-xl border border-app-line overflow-hidden">
                   <div
-                    onClick={() => setExpandedAssignment(isExpanded ? null : a.id)}
-                    className="p-5 cursor-pointer hover:bg-[#171f33] transition-colors"
+                    onClick={() => {
+                      if (isExpanded) {
+                        setExpandedAssignment(null);
+                      } else {
+                        setExpandedAssignment(a.id);
+                        setAssignmentPanelTab((prev) => ({ ...prev, [a.id]: prev[a.id] ?? "submissions" }));
+                      }
+                    }}
+                    className="p-5 cursor-pointer hover:bg-app-elevated transition-colors"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4 flex-1">
@@ -507,17 +506,17 @@ export const InstructorClassroomPage: React.FC = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <h4 className="font-bold text-[#dae2fd] text-sm">{a.title}</h4>
+                            <h4 className="font-bold text-ink-heading text-sm">{a.title}</h4>
                             <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${TYPE_COLOR[a.assignment_type]}`}>
                               {TYPE_LABEL[a.assignment_type]}
                             </span>
                           </div>
                           {a.description && (
-                            <p className="mt-2 text-sm text-slate-400 leading-relaxed line-clamp-2">
+                            <p className="mt-2 text-sm text-ink-muted leading-relaxed line-clamp-2">
                               {a.description}
                             </p>
                           )}
-                          <div className="flex items-center gap-4 mt-1.5 text-xs text-slate-500">
+                          <div className="flex items-center gap-4 mt-1.5 text-xs text-ink-muted">
                             <span className="flex items-center gap-1">
                               <Clock size={12} />
                               {stats.isOverdue ? (
@@ -534,25 +533,25 @@ export const InstructorClassroomPage: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-4 shrink-0 ml-4">
                         <div className="text-right">
-                          <div className="text-sm font-bold text-[#dae2fd]">{stats.submitted}/{stats.total}</div>
-                          <div className="text-[10px] text-slate-500">đã nộp</div>
+                          <div className="text-sm font-bold text-ink-heading">{stats.submitted}/{stats.total}</div>
+                          <div className="text-[10px] text-ink-muted">đã nộp</div>
                         </div>
-                        <div className="w-16 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-2 w-16 overflow-hidden rounded-full bg-app-track">
                           <div
-                            className="h-full bg-gradient-to-r from-indigo-500 to-[#4fdbc8] rounded-full transition-all"
+                            className="h-full bg-gradient-to-r from-brand to-mint rounded-full transition-all"
                             style={{ width: `${stats.total > 0 ? (stats.submitted / stats.total) * 100 : 0}%` }}
                           />
                         </div>
-                        {isExpanded ? <ChevronUp size={16} className="text-slate-500" /> : <ChevronDown size={16} className="text-slate-500" />}
+                        {isExpanded ? <ChevronUp size={16} className="text-ink-muted" /> : <ChevronDown size={16} className="text-ink-muted" />}
                       </div>
                     </div>
                   </div>
 
                   {isExpanded && (
-                    <div className="border-t border-slate-800 animate-in slide-in-from-top-1 duration-200">
+                    <div className="border-t border-app-line animate-in slide-in-from-top-1 duration-200">
                       {a.description && (
                         <div className="px-5 pt-4 pb-2">
-                          <p className="text-sm text-slate-400 leading-relaxed">{a.description}</p>
+                          <p className="text-sm text-ink-muted leading-relaxed">{a.description}</p>
                         </div>
                       )}
                       {a.attachments.length > 0 && (
@@ -569,36 +568,69 @@ export const InstructorClassroomPage: React.FC = () => {
                                   }
                                 );
                               }}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 hover:text-indigo-300"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-app-inset rounded-lg text-xs text-ink-muted border border-app-line hover:border-brand/30 hover:text-brand"
                             >
-                              <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
+                              <Paperclip size={12} /> {att.name} <span className="text-ink-muted">{att.size}</span>
                             </button>
                           ))}
                         </div>
                       )}
-                      <div className="px-5 py-3 flex gap-6 text-xs border-t border-slate-800/50">
-                        <span className="flex items-center gap-1 text-emerald-400"><CheckCircle size={14} /> {stats.graded} đã phản hồi</span>
-                        <span className="flex items-center gap-1 text-blue-400"><FileText size={14} /> {stats.submitted - stats.graded} chờ phản hồi</span>
+                      <div className="px-5 py-3 flex gap-6 text-xs border-t border-app-line">
+                        <span className="flex items-center gap-1 text-emerald-400"><CheckCircle size={14} /> {stats.graded} đã nhận xét</span>
+                        <span className="flex items-center gap-1 text-blue-400"><FileText size={14} /> {stats.submitted - stats.graded} chờ nhận xét</span>
                         <span className="flex items-center gap-1 text-red-400"><AlertTriangle size={14} /> {stats.total - stats.submitted} chưa nộp</span>
                       </div>
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="bg-[#0b1326] text-[10px] text-slate-500 uppercase tracking-wider">
-                              <th className="text-left px-5 py-2 font-semibold">Sinh viên</th>
-                              <th className="text-left px-3 py-2 font-semibold">Trạng thái</th>
-                              <th className="text-left px-3 py-2 font-semibold">Nộp lúc</th>
-                              <th className="text-left px-3 py-2 font-semibold">File</th>
-                              <th className="text-center px-3 py-2 font-semibold">Phản hồi</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {(a.submissions ?? []).map((sub) => (
-                              <SubmissionRow key={sub.id} submission={sub} assignmentId={a.id} onGrade={gradeSubmission} />
-                            ))}
-                          </tbody>
-                        </table>
+                      <div className="px-5 flex gap-1 border-b border-app-line">
+                        {(["submissions", "feedback"] as const).map((key) => {
+                          const active = (assignmentPanelTab[a.id] ?? "submissions") === key;
+                          return (
+                            <button
+                              key={key}
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setAssignmentPanelTab((prev) => ({ ...prev, [a.id]: key }));
+                              }}
+                              className={`px-4 py-2.5 text-xs font-bold rounded-t-lg border-b-2 transition-colors ${
+                                active
+                                  ? "border-brand text-brand bg-app-inset"
+                                  : "border-transparent text-ink-muted hover:text-ink-body"
+                              }`}
+                            >
+                              {key === "submissions" ? "Bài nộp" : "Nhận xét"}
+                            </button>
+                          );
+                        })}
                       </div>
+                      {(assignmentPanelTab[a.id] ?? "submissions") === "submissions" ? (
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="bg-app-inset text-[10px] text-ink-muted uppercase tracking-wider">
+                                <th className="text-left px-5 py-2 font-semibold">Sinh viên</th>
+                                <th className="text-left px-3 py-2 font-semibold">Trạng thái</th>
+                                <th className="text-left px-3 py-2 font-semibold">Nộp lúc</th>
+                                <th className="text-left px-3 py-2 font-semibold">File</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {(a.submissions ?? []).map((sub) => (
+                                <SubmissionSummaryRow key={sub.id} submission={sub} />
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : (
+                        <div className="px-5 py-4 space-y-4 max-h-[480px] overflow-y-auto">
+                          {(a.submissions ?? []).map((sub) => (
+                            <FeedbackEntryRow
+                              key={sub.id}
+                              submission={sub}
+                              onSave={(payload) => gradeSubmission(a.id, sub.id, payload)}
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -611,17 +643,19 @@ export const InstructorClassroomPage: React.FC = () => {
       {/* ── Tab: Sinh viên ── */}
       {tab === "students" && (
         <div className="max-w-3xl">
-          <p className="text-sm text-slate-400 mb-4">{course.student_count} sinh viên</p>
+          <p className="text-sm text-ink-muted mb-4">{course.student_count} sinh viên</p>
           {course.students.length === 0 ? (
-            <div className="p-12 bg-[#131b2e] rounded-xl text-center text-slate-500">Chưa có sinh viên</div>
+            <div className="p-12 bg-app-card rounded-xl text-center text-ink-muted">Chưa có sinh viên</div>
           ) : (
-            <div className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
+            <div className="bg-app-card rounded-xl border border-app-line overflow-hidden">
               {course.students.map((s, i) => (
-                <div key={s.id} className={`flex items-center gap-4 px-5 py-3.5 hover:bg-[#171f33] transition-colors ${i < course.students.length - 1 ? "border-b border-slate-800/30" : ""}`}>
-                  <div className="w-9 h-9 rounded-full bg-indigo-900 border border-indigo-500/30 flex items-center justify-center text-xs font-bold text-indigo-300">{s.full_name.charAt(0)}</div>
+                <div key={s.id} className={`flex items-center gap-4 px-5 py-3.5 hover:bg-app-elevated transition-colors ${i < course.students.length - 1 ? "border-b border-app-line" : ""}`}>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-app-line bg-app-elevated text-xs font-bold text-ink-heading">
+                    {s.full_name.charAt(0)}
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-200 truncate">{s.full_name}</p>
-                    <p className="text-[11px] text-slate-500 truncate">{s.email}{s.major && ` • ${s.major}`}</p>
+                    <p className="text-sm font-semibold text-ink-heading truncate">{s.full_name}</p>
+                    <p className="text-[11px] text-ink-muted truncate">{s.email}{s.major && ` • ${s.major}`}</p>
                   </div>
                 </div>
               ))}
@@ -636,106 +670,146 @@ export const InstructorClassroomPage: React.FC = () => {
 
 /* ────────── Sub-components ────────── */
 
-function SubmissionRow({
+const SUBMISSION_STATUS_STYLE: Record<string, { label: string; color: string; bg: string }> = {
+  not_submitted: { label: "Chưa nộp", color: "text-red-400", bg: "bg-red-500/10" },
+  submitted: { label: "Đã nộp", color: "text-blue-400", bg: "bg-blue-500/10" },
+  late: { label: "Nộp muộn", color: "text-amber-400", bg: "bg-amber-500/10" },
+  graded: { label: "Đã nhận xét", color: "text-emerald-400", bg: "bg-emerald-500/10" },
+};
+
+function SubmissionSummaryRow({ submission }: { submission: AssignmentSubmission }) {
+  const st = SUBMISSION_STATUS_STYLE[submission.status] || SUBMISSION_STATUS_STYLE.not_submitted;
+  return (
+    <tr className="border-t border-app-line hover:bg-app-elevated transition-colors">
+      <td className="px-5 py-2.5">
+        <div className="flex items-center gap-2">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-app-elevated text-[10px] font-bold text-ink-heading">
+            {(submission.student_name ?? "?").charAt(0)}
+          </div>
+          <div>
+            <p className="text-xs font-medium text-ink-heading">{submission.student_name}</p>
+            <p className="text-[10px] text-ink-muted">{submission.student_email}</p>
+          </div>
+        </div>
+      </td>
+      <td className="px-3 py-2.5">
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${st.bg} ${st.color}`}>
+          {st.label}
+        </span>
+      </td>
+      <td className="px-3 py-2.5 text-xs text-ink-muted">
+        {submission.submitted_at ? new Date(submission.submitted_at).toLocaleDateString("vi-VN") : "—"}
+      </td>
+      <td className="px-3 py-2.5">
+        {submission.report_id && submission.report_file_name ? (
+          <button
+            type="button"
+            onClick={() => void downloadReportInBrowser(submission.report_id!, submission.report_file_name)}
+            className="text-xs text-ink-muted flex items-center gap-1 hover:text-brand"
+          >
+            <Download size={12} />
+            {submission.report_file_name.length > 25
+              ? `${submission.report_file_name.slice(0, 25)}...`
+              : submission.report_file_name}
+          </button>
+        ) : (
+          <span className="text-xs text-ink-muted">—</span>
+        )}
+      </td>
+    </tr>
+  );
+}
+
+function FeedbackEntryRow({
   submission,
-  assignmentId,
-  onGrade,
+  onSave,
 }: {
   submission: AssignmentSubmission;
-  assignmentId: number;
-  onGrade: (aId: number, submissionId: number, feedback: string) => Promise<void>;
+  onSave: (payload: { feedback: string }) => Promise<void>;
 }) {
-  const [grading, setGrading] = useState(false);
-  const [feedbackInput, setFeedbackInput] = useState(submission.feedback || "");
+  const [text, setText] = useState(submission.feedback ?? "");
+  const [saving, setSaving] = useState(false);
 
-  const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
-    not_submitted: { label: "Chưa nộp", color: "text-red-400", bg: "bg-red-500/10" },
-    submitted: { label: "Đã nộp", color: "text-blue-400", bg: "bg-blue-500/10" },
-    late: { label: "Nộp muộn", color: "text-amber-400", bg: "bg-amber-500/10" },
-    graded: { label: "Đã phản hồi", color: "text-emerald-400", bg: "bg-emerald-500/10" },
-  };
-  const st = STATUS_MAP[submission.status] || STATUS_MAP.not_submitted;
+  useEffect(() => {
+    setText(submission.feedback ?? "");
+  }, [submission.id, submission.feedback]);
+
+  const st = SUBMISSION_STATUS_STYLE[submission.status] || SUBMISSION_STATUS_STYLE.not_submitted;
+  const canEdit = submission.status === "submitted" || submission.status === "late" || submission.status === "graded";
 
   return (
-    <>
-      <tr className="border-t border-slate-800/30 hover:bg-[#171f33] transition-colors">
-        <td className="px-5 py-2.5">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-indigo-900/50 flex items-center justify-center text-[10px] font-bold text-indigo-300">{(submission.student_name ?? "?").charAt(0)}</div>
-            <div>
-              <p className="text-xs font-medium text-slate-200">{submission.student_name}</p>
-              <p className="text-[10px] text-slate-600">{submission.student_email}</p>
-            </div>
+    <div className="rounded-xl border border-app-line bg-app-inset p-4">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-app-elevated text-[10px] font-bold text-ink-heading">
+            {(submission.student_name ?? "?").charAt(0)}
           </div>
-        </td>
-        <td className="px-3 py-2.5">
-          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${st.bg} ${st.color}`}>{st.label}</span>
-        </td>
-        <td className="px-3 py-2.5 text-xs text-slate-500">
-          {submission.submitted_at ? new Date(submission.submitted_at).toLocaleDateString("vi-VN") : "—"}
-        </td>
-        <td className="px-3 py-2.5">
-          {submission.report_id && submission.report_file_name ? (
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-ink-heading truncate">{submission.student_name}</p>
+            <p className="text-[10px] text-ink-muted truncate">{submission.student_email}</p>
+          </div>
+        </div>
+        <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${st.bg} ${st.color}`}>
+          {st.label}
+        </span>
+      </div>
+      {submission.report_id && submission.report_file_name && (
+        <button
+          type="button"
+          onClick={() => void downloadReportInBrowser(submission.report_id!, submission.report_file_name)}
+          className="mb-3 text-[11px] text-brand flex items-center gap-1 hover:text-brand"
+        >
+          <Download size={12} />
+          {submission.report_file_name}
+        </button>
+      )}
+      {!canEdit ? (
+        <p className="text-xs text-ink-muted">Sinh viên chưa nộp bài — chưa thể gửi nhận xét.</p>
+      ) : (
+        <>
+          <label className="block text-[10px] font-bold text-ink-muted uppercase tracking-wider mb-1.5">
+            Nhận xét của giảng viên
+          </label>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={3}
+            placeholder="Viết nhận xét cho bài nộp..."
+            className="w-full bg-app-card border border-app-line rounded-lg px-3 py-2 text-xs text-ink-heading placeholder:text-ink-muted focus:ring-1 focus:ring-brand/25 resize-none"
+          />
+          <div className="flex justify-end mt-2">
             <button
               type="button"
-              onClick={() => void downloadReportInBrowser(submission.report_id!, submission.report_file_name)}
-              className="text-xs text-slate-400 flex items-center gap-1 hover:text-indigo-400"
-            >
-              <Download size={12} />
-              {submission.report_file_name.length > 25
-                ? `${submission.report_file_name.slice(0, 25)}...`
-                : submission.report_file_name}
-            </button>
-          ) : (
-            <span className="text-xs text-slate-600">—</span>
-          )}
-        </td>
-        <td className="px-3 py-2.5 text-center">
-          {(submission.status === "graded" || submission.status === "submitted" || submission.status === "late") ? (
-            <button
-              onClick={() => setGrading(!grading)}
-              className="px-2 py-1 bg-indigo-600/20 text-indigo-400 text-[10px] font-bold rounded hover:bg-indigo-600 hover:text-white transition-colors"
-            >
-              {submission.feedback?.trim() ? "Sửa nhận xét" : "Nhận xét"}
-            </button>
-          ) : (
-            <span className="text-slate-600 text-xs">—</span>
-          )}
-        </td>
-      </tr>
-      {grading && (submission.status === "submitted" || submission.status === "late" || submission.status === "graded") && (
-        <tr className="bg-[#0b1326]">
-          <td colSpan={5} className="px-5 py-3">
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                placeholder="Nhận xét..."
-                value={feedbackInput}
-                onChange={(e) => setFeedbackInput(e.target.value)}
-                className="flex-1 bg-[#131b2e] border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200 focus:ring-1 focus:ring-indigo-500"
-              />
-              <button
-                onClick={async () => {
-                  if (!feedbackInput.trim()) return;
+              disabled={!text.trim() || saving}
+              onClick={() => {
+                void (async () => {
+                  setSaving(true);
                   try {
-                    await onGrade(assignmentId, submission.id, feedbackInput);
-                    setGrading(false);
-                  } catch (error: any) {
-                    const message = error?.response?.data?.message || "Lưu nhận xét thất bại";
-                    alert(message);
+                    await onSave({ feedback: text.trim() });
+                  } catch (err) {
+                    console.error(err);
+                    const msg =
+                      err && typeof err === "object" && "response" in err
+                        ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
+                        : undefined;
+                    alert(
+                      typeof msg === "string" && msg.trim()
+                        ? msg
+                        : "Không lưu được nhận xét. Kiểm tra kết nối hoặc thử đăng nhập lại."
+                    );
+                  } finally {
+                    setSaving(false);
                   }
-                }}
-                disabled={!feedbackInput.trim()}
-                className="px-3 py-1.5 bg-emerald-600 text-white text-xs font-bold rounded hover:bg-emerald-500 disabled:opacity-50"
-              >
-                Lưu nhận xét
-              </button>
-              <button onClick={() => setGrading(false)} className="text-xs text-slate-500 hover:text-white">Hủy</button>
-            </div>
-          </td>
-        </tr>
+                })();
+              }}
+              className="px-4 py-1.5 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-500 disabled:opacity-50"
+            >
+              {saving ? "Đang lưu..." : "Lưu nhận xét"}
+            </button>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
 
@@ -753,20 +827,20 @@ function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (cont
   };
 
   return (
-    <div className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
+    <div className="bg-app-card rounded-xl border border-app-line overflow-hidden">
       <div className="p-5">
         <div className="flex items-start gap-3">
-          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.author_role === "lecturer" ? "bg-indigo-900 border border-indigo-500/30 text-indigo-300" : "bg-slate-800 border border-slate-700 text-slate-400"}`}>
+          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.author_role === "lecturer" ? "border border-brand/30 bg-app-elevated text-ink-heading" : "border border-app-line bg-app-elevated text-ink-heading"}`}>
             {(post.author_name ?? "?").charAt(0)}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-[#dae2fd]">{post.author_name}</span>
-              {post.author_role === "lecturer" && <span className="text-[9px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
+              <span className="text-sm font-bold text-ink-heading">{post.author_name}</span>
+              {post.author_role === "lecturer" && <span className="text-[9px] bg-brand/10 text-brand px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
               {post.is_pinned && <Pin size={12} className="text-amber-400" />}
-              <span className="text-[10px] text-slate-600">{timeAgo(post.created_at)}</span>
+              <span className="text-[10px] text-ink-muted">{timeAgo(post.created_at)}</span>
             </div>
-            <p className="text-sm text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
+            <p className="text-sm text-ink-body mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
             {post.attachments.length > 0 && (
               <div className="flex gap-2 flex-wrap mt-3">
                 {post.attachments.map((att: { name: string; size?: string }, index: number) => (
@@ -781,9 +855,9 @@ function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (cont
                         }
                       );
                     }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 hover:border-indigo-500/30 hover:text-indigo-300"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-app-inset rounded-lg text-xs text-ink-muted border border-app-line hover:border-brand/30 hover:text-brand"
                   >
-                    <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
+                    <Paperclip size={12} /> {att.name} <span className="text-ink-muted">{att.size}</span>
                   </button>
                 ))}
               </div>
@@ -792,11 +866,11 @@ function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (cont
         </div>
       </div>
 
-      <div className="border-t border-slate-800/50 bg-[#0e1627]">
+      <div className="border-t border-app-line bg-app-inset">
         {post.comments.length > 0 && (
           <>
             {!showComments && post.comments.length > 2 && (
-              <button onClick={() => setShowComments(true)} className="w-full py-2 text-xs text-indigo-400 hover:text-indigo-300">
+              <button onClick={() => setShowComments(true)} className="w-full py-2 text-xs text-brand hover:text-brand">
                 Xem {post.comments.length} bình luận
               </button>
             )}
@@ -804,14 +878,14 @@ function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (cont
               <div className="px-5 py-3 space-y-3">
                 {post.comments.map((c: ClassPostComment) => (
                   <div key={c.id} className="flex items-start gap-2.5">
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{(c.author_name ?? "?").charAt(0)}</div>
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "border border-brand/25 bg-app-elevated text-ink-heading" : "bg-app-elevated text-ink-heading"}`}>{(c.author_name ?? "?").charAt(0)}</div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-slate-300">{c.author_name}</span>
-                        {c.author_role === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
-                        <span className="text-[10px] text-slate-600">{timeAgo(c.created_at)}</span>
+                        <span className="text-xs font-semibold text-ink-body">{c.author_name}</span>
+                        {c.author_role === "lecturer" && <span className="text-[8px] bg-brand/10 text-brand px-1 py-0.5 rounded font-bold">GV</span>}
+                        <span className="text-[10px] text-ink-muted">{timeAgo(c.created_at)}</span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5">{c.content}</p>
+                      <p className="text-xs text-ink-muted mt-0.5">{c.content}</p>
                     </div>
                   </div>
                 ))}
@@ -831,7 +905,7 @@ function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (cont
               }
             }}
             placeholder="Trả lời..."
-            className="flex-1 bg-transparent border-none text-xs text-slate-300 placeholder:text-slate-600 focus:ring-0 focus:outline-none"
+            className="flex-1 bg-transparent border-none text-xs text-ink-body placeholder:text-ink-muted focus:ring-0 focus:outline-none"
           />
           <button
             onClick={() => {
@@ -840,7 +914,7 @@ function PostCard({ post, onAddComment }: { post: ClassPost; onAddComment: (cont
               setReplyText("");
             }}
             disabled={!replyText.trim()}
-            className="text-indigo-500 disabled:text-slate-700 hover:text-indigo-300"
+            className="text-brand hover:text-brand disabled:text-ink-faint"
           >
             <Send size={14} />
           </button>

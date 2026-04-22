@@ -1,13 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-app font-sans text-ink-body antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
 .glass-panel {
-  background: rgba(28, 31, 39, 0.7);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
 .role-card:hover {
   transform: translateY(-2px);
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.35);
 }

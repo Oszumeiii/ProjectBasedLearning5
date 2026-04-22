@@ -1,32 +1,42 @@
 // features/instructor/components/IntelligenceBriefing.tsx
 import React from "react";
 
-const BriefingItem = ({ type, title, time, description }: any) => {
+const BriefingItem = ({
+  type,
+  title,
+  time,
+  description,
+}: {
+  type: string;
+  title: string;
+  time: string;
+  description: React.ReactNode;
+}) => {
   const isUrgent = type === "urgent";
   return (
-    <div className="flex items-start gap-4 p-4 rounded-xl bg-surface-container-highest/40 border border-outline-variant/10 hover:bg-surface-container-highest transition-colors cursor-pointer">
+    <div className="flex cursor-pointer items-start gap-4 rounded-xl border border-app-line bg-app-inset/60 p-4 transition-colors hover:bg-app-elevated">
       <div
-        className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${isUrgent ? "bg-error-container/20" : "bg-tertiary-container/20"}`}
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+          isUrgent ? "bg-red-100" : "bg-app-track"
+        }`}
       >
         <span
-          className={`material-symbols-outlined ${isUrgent ? "text-error" : "text-tertiary"}`}
+          className={`material-symbols-outlined ${isUrgent ? "text-red-700" : "text-mint"}`}
           style={{ fontVariationSettings: "'FILL' 1" }}
         >
           {isUrgent ? "priority_high" : "verified"}
         </span>
       </div>
       <div className="flex-1">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <span
-            className={`text-xs font-bold tracking-widest uppercase ${isUrgent ? "text-error" : "text-tertiary"}`}
+            className={`text-xs font-bold uppercase tracking-widest ${isUrgent ? "text-red-700" : "text-mint"}`}
           >
             {title}
           </span>
-          <span className="text-[10px] text-outline">{time}</span>
+          <span className="text-[10px] text-ink-faint">{time}</span>
         </div>
-        <p className="text-sm text-on-surface font-medium mt-1">
-          {description}
-        </p>
+        <p className="mt-1 text-sm font-medium text-ink-body">{description}</p>
       </div>
     </div>
   );
@@ -34,15 +44,11 @@ const BriefingItem = ({ type, title, time, description }: any) => {
 
 export const IntelligenceBriefing = () => {
   return (
-    <div className="mt-16 bg-surface-container rounded-2xl p-8 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 blur-[80px] rounded-full -mr-20 -mt-20"></div>
-      <div className="flex items-center gap-2 mb-6">
-        <span className="material-symbols-outlined text-indigo-400">
-          auto_awesome
-        </span>
-        <h3 className="font-manrope font-bold text-xl tracking-tight text-on-surface">
-          Intelligence Briefing
-        </h3>
+    <div className="relative mt-16 overflow-hidden rounded-2xl border border-app-line bg-app-card p-8 shadow-whisper">
+      <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand/5 blur-[80px]" />
+      <div className="mb-6 flex items-center gap-2">
+        <span className="material-symbols-outlined text-brand">auto_awesome</span>
+        <h3 className="text-xl font-bold tracking-tight text-ink-heading">Intelligence Briefing</h3>
       </div>
       <div className="space-y-4">
         <BriefingItem
@@ -51,8 +57,7 @@ export const IntelligenceBriefing = () => {
           time="14m ago"
           description={
             <>
-              4 new submissions in{" "}
-              <span className="text-indigo-400">ARM-2024</span> require human
+              4 new submissions in <span className="font-semibold text-brand">ARM-2024</span> require human
               verification on AI citations.
             </>
           }

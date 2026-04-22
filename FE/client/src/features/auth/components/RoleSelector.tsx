@@ -12,49 +12,47 @@ const ROLE_OPTIONS: RoleOption[] = [
     value: "student",
     label: "Sinh viên",
     icon: "school",
-    activeColor: "peer-checked:border-primary peer-checked:ring-primary",
-    activeBg: "peer-checked:bg-primary/5",
-    activeRing: "peer-checked:ring-2",
-    activeText: "peer-checked:text-primary",
+    activeColor: "peer-checked:border-brand",
+    activeBg: "peer-checked:bg-brand/5",
+    activeRing: "peer-checked:shadow-[0_0_0_1px_rgb(124,58,237)]",
+    activeText: "peer-checked:text-brand",
   },
   {
     value: "lecturer",
     label: "Giảng viên",
     icon: "person_book",
-    activeColor: "peer-checked:border-secondary peer-checked:ring-secondary",
-    activeBg: "peer-checked:bg-secondary/5",
-    activeRing: "peer-checked:ring-2",
-    activeText: "peer-checked:text-secondary",
+    activeColor: "peer-checked:border-mint",
+    activeBg: "peer-checked:bg-mint/5",
+    activeRing: "peer-checked:shadow-[0_0_0_1px_rgb(20,184,166)]",
+    activeText: "peer-checked:text-mint",
   },
   {
     value: "manager",
     label: "Quản lý",
     icon: "supervisor_account",
-    activeColor:
-      "peer-checked:border-amber-400 peer-checked:ring-amber-400",
-    activeBg: "peer-checked:bg-amber-400/10",
-    activeRing: "peer-checked:ring-1",
-    activeText:
-      "peer-checked:text-amber-400 group-hover:text-amber-400",
+    activeColor: "peer-checked:border-ink-body",
+    activeBg: "peer-checked:bg-app-inset",
+    activeRing: "peer-checked:shadow-[0_0_0_1px_rgb(51,65,85)]",
+    activeText: "peer-checked:text-ink-heading",
   },
   {
     value: "admin",
     label: "Quản trị",
     icon: "admin_panel_settings",
-    activeColor: "peer-checked:border-white",
-    activeBg: "peer-checked:bg-white/5",
-    activeRing: "peer-checked:ring-2",
+    activeColor: "peer-checked:border-ink-heading",
+    activeBg: "peer-checked:bg-slate-900",
+    activeRing: "peer-checked:shadow-[0_0_0_1px_rgb(15,23,42)]",
     activeText: "peer-checked:text-white",
   },
 ];
 
 const RoleSelector = ({ selectedRole, onChange }: RoleSelectorProps) => {
   return (
-    <div className="grid grid-cols-4 gap-3 mb-8">
+    <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
       {ROLE_OPTIONS.map((role) => (
-        <label key={role.value} className="cursor-pointer group">
+        <label key={role.value} className="group cursor-pointer">
           <input
-            className="hidden peer"
+            className="peer hidden"
             name="role"
             type="radio"
             value={role.value}
@@ -62,14 +60,14 @@ const RoleSelector = ({ selectedRole, onChange }: RoleSelectorProps) => {
             onChange={() => onChange(role.value)}
           />
           <div
-            className={`role-card flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 ${role.activeColor} ${role.activeBg} ${role.activeRing} transition-all`}
+            className={`role-card flex flex-col items-center justify-center rounded-claude-lg border border-app-line bg-app-card p-4 transition-all ${role.activeColor} ${role.activeBg} ${role.activeRing}`}
           >
             <span
-              className={`material-symbols-outlined text-2xl mb-2 text-slate-400 ${role.activeText} transition-colors`}
+              className={`material-symbols-outlined mb-2 text-2xl text-ink-faint transition-colors ${role.activeText}`}
             >
               {role.icon}
             </span>
-            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-tight text-slate-500 dark:text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors">
+            <span className="text-[10px] font-medium uppercase tracking-wide text-ink-muted transition-colors group-hover:text-ink-heading sm:text-xs">
               {role.label}
             </span>
           </div>

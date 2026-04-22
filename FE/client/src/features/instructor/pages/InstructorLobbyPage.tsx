@@ -29,7 +29,7 @@ export const InstructorLobbyPage: React.FC = () => {
                 ...c,
                 reportCount: items.length,
                 pendingCount: items.filter(
-                  (r: any) =>
+                  (r: { status?: string }) =>
                     r.status === "pending" || r.status === "under_review"
                 ).length,
               };
@@ -50,18 +50,16 @@ export const InstructorLobbyPage: React.FC = () => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+      <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div>
-          <h3 className="text-3xl font-manrope font-extrabold text-[#dae2fd] tracking-tight">
-            Lớp học của tôi
-          </h3>
-          <p className="text-slate-400 mt-2">
+          <h3 className="text-3xl font-bold tracking-tight text-ink-heading">Lớp học của tôi</h3>
+          <p className="mt-2 text-ink-muted">
             Xin chào {user?.full_name}. Quản lý các lớp học và báo cáo sinh viên.
           </p>
         </div>
         <Link
           to="/instructor/courses"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-bold text-sm text-white shrink-0"
+          className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-sm font-bold text-white shadow-whisper transition-colors hover:bg-brand-hover"
         >
           <Plus size={18} /> Quản lý lớp học
         </Link>
@@ -69,18 +67,16 @@ export const InstructorLobbyPage: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          <span className="ml-3 text-slate-400">Đang tải...</span>
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
+          <span className="ml-3 text-ink-muted">Đang tải...</span>
         </div>
       ) : courses.length === 0 ? (
-        <div className="text-center py-20 text-slate-500">
-          <span className="material-symbols-outlined text-5xl text-slate-600 mb-4 block">
-            school
-          </span>
+        <div className="py-20 text-center text-ink-muted">
+          <span className="material-symbols-outlined mb-4 block text-5xl text-ink-faint">school</span>
           <p className="text-lg">Chưa có lớp học nào</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {courses.map((course) => (
             <InstructorClassCard
               key={course.id}

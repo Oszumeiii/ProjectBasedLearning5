@@ -55,55 +55,49 @@ export const NotificationBell = () => {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="p-2 text-slate-400 hover:text-white relative"
+        className="relative rounded-lg p-2 text-ink-muted transition-colors hover:bg-app-inset hover:text-ink-heading"
       >
         <Bell size={20} />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[9px] font-bold text-white">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-12 w-80 bg-[#131b2e] border border-slate-800 rounded-xl shadow-2xl z-50 overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
-            <span className="text-sm font-bold text-[#dae2fd]">Thông báo</span>
+        <div className="absolute right-0 top-12 z-50 w-80 overflow-hidden rounded-xl border border-app-line bg-app-card shadow-lg">
+          <div className="flex items-center justify-between border-b border-app-line px-4 py-3">
+            <span className="text-sm font-semibold text-ink-heading">Thông báo</span>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs text-indigo-400 hover:underline"
+                className="text-xs text-brand hover:underline"
               >
                 Đọc tất cả
               </button>
             )}
           </div>
-          <div className="max-h-80 overflow-y-auto custom-scrollbar">
+          <div className="custom-scrollbar max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="text-center py-8 text-slate-500 text-sm">
-                Không có thông báo
-              </div>
+              <div className="py-8 text-center text-sm text-ink-muted">Không có thông báo</div>
             ) : (
               notifications.map((n) => (
                 <div
                   key={n.id}
                   onClick={() => !n.is_read && handleMarkRead(n.id)}
-                  className={`px-4 py-3 border-b border-slate-800/50 cursor-pointer hover:bg-slate-800/30 transition-colors ${
-                    !n.is_read ? "bg-indigo-900/10" : ""
+                  className={`cursor-pointer border-b border-app-line px-4 py-3 transition-colors hover:bg-app-inset ${
+                    !n.is_read ? "bg-brand/5" : ""
                   }`}
                 >
                   <div className="flex items-start gap-2">
                     {!n.is_read && (
-                      <span className="w-2 h-2 bg-indigo-400 rounded-full mt-1.5 shrink-0" />
+                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand" />
                     )}
                     <div>
-                      <p className="text-sm text-[#dae2fd] font-medium">
-                        {n.title}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1 line-clamp-2">
-                        {n.message}
-                      </p>
-                      <p className="text-[10px] text-slate-600 mt-1">
+                      <p className="text-sm font-medium text-ink-heading">{n.title}</p>
+                      <p className="mt-1 line-clamp-2 text-xs text-ink-muted">{n.message}</p>
+                      <p className="mt-1 text-[10px] text-ink-faint">
                         {new Date(n.created_at).toLocaleString("vi-VN")}
                       </p>
                     </div>

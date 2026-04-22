@@ -6,62 +6,55 @@ export const DeficiencyAnalysis = ({
 }: {
   plagiarismScore: number;
 }) => (
-  <div className="bg-[#171f33] rounded-2xl p-8 border border-slate-800/50">
-    <div className="flex items-center justify-between mb-8">
+  <div className="rounded-2xl border border-app-line bg-app-card p-8 shadow-whisper">
+    <div className="mb-8 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <AlertTriangle className="text-red-400" size={22} />
-        <h3 className="font-bold text-xl text-[#dae2fd]">
-          Deficiency Analysis
-        </h3>
+        <AlertTriangle className="text-red-600" size={22} />
+        <h3 className="text-xl font-bold text-ink-heading">Deficiency Analysis</h3>
       </div>
-      <span className="text-[10px] font-bold text-[#c6c6cd] px-3 py-1 bg-[#222a3d] rounded-full border border-slate-700/50">
+      <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-[10px] font-bold text-red-800">
         3 CRITICAL ISSUES
       </span>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
       <div className="space-y-4">
         {[
           {
             icon: AlertTriangle,
-            color: "text-red-400",
+            color: "text-red-600",
             title: "Missing bibliography entries",
             desc: "4 citations in the text are not present in the reference list.",
-            bg: "bg-red-500/5 border-red-500/20",
+            bg: "border-red-200 bg-red-50",
           },
           {
             icon: Info,
-            color: "text-[#c6c6cd]",
+            color: "text-ink-muted",
             title: "Chapter 4 too short",
             desc: "Evaluation section is 40% below the recommended length.",
-            bg: "bg-slate-800/40",
+            bg: "border-app-line bg-app-inset",
           },
           {
             icon: CheckCircle2,
-            color: "text-[#c6c6cd]",
+            color: "text-ink-muted",
             title: "APA Formatting errors",
             desc: "Inconsistent header styling throughout pages 12-18.",
-            bg: "bg-slate-800/40",
+            bg: "border-app-line bg-app-inset",
           },
         ].map((item, i) => (
-          <div
-            key={i}
-            className={`flex items-start gap-4 p-4 rounded-xl border ${item.bg}`}
-          >
+          <div key={i} className={`flex items-start gap-4 rounded-xl border p-4 ${item.bg}`}>
             <item.icon className={item.color} size={18} />
             <div>
-              <div className="font-bold text-sm text-[#dae2fd]">
-                {item.title}
-              </div>
-              <p className="text-xs text-[#798098] mt-1">{item.desc}</p>
+              <div className="text-sm font-bold text-ink-heading">{item.title}</div>
+              <p className="mt-1 text-xs text-ink-muted">{item.desc}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col items-center justify-center bg-[#131b2e] rounded-2xl p-8 border border-slate-800/30">
-        <div className="relative w-32 h-32 flex items-center justify-center">
-          <svg className="w-full h-full transform -rotate-90 absolute">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-app-line bg-app-inset p-8">
+        <div className="relative flex h-32 w-32 items-center justify-center">
+          <svg className="absolute h-full w-full -rotate-90 transform">
             <circle
               cx="64"
               cy="64"
@@ -69,7 +62,7 @@ export const DeficiencyAnalysis = ({
               stroke="currentColor"
               strokeWidth="8"
               fill="transparent"
-              className="text-slate-800"
+              className="text-app-track"
             />
             <circle
               cx="64"
@@ -80,18 +73,14 @@ export const DeficiencyAnalysis = ({
               fill="transparent"
               strokeDasharray="364.4"
               strokeDashoffset={364.4 - (364.4 * plagiarismScore) / 100}
-              className="text-[#4fdbc8]"
+              className="text-mint"
             />
           </svg>
-          <span className="text-2xl font-black text-[#dae2fd]">
-            {plagiarismScore}%
-          </span>
+          <span className="text-2xl font-black text-ink-heading">{plagiarismScore}%</span>
         </div>
-        <div className="text-center mt-4">
-          <div className="font-bold text-sm">Plagiarism Gauge</div>
-          <p className="text-[10px] text-[#4fdbc8] font-bold mt-1 tracking-widest uppercase">
-            SAFE: LOW OVERLAP
-          </p>
+        <div className="mt-4 text-center">
+          <div className="text-sm font-bold text-ink-heading">Plagiarism Gauge</div>
+          <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-mint">SAFE: LOW OVERLAP</p>
         </div>
       </div>
     </div>

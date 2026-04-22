@@ -16,10 +16,12 @@ export async function canLecturerManageCourse(
   userId: number,
   course: CourseRow
 ): Promise<boolean> {
-  if (course.lecturer_id === userId) return true
+  const lecturerId = Number(course.lecturer_id)
+  const uid = Number(userId)
+  if (lecturerId === uid) return true
   const r = await pool.query(
     'SELECT 1 FROM course_lecturers WHERE course_id = $1 AND lecturer_id = $2 LIMIT 1',
-    [course.id, userId]
+    [Number(course.id), uid]
   )
   return r.rows.length > 0
 }

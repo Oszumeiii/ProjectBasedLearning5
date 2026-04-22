@@ -99,8 +99,8 @@ export const AdminUsersPage = () => {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-extrabold text-[#dae2fd] tracking-tight flex items-center gap-2">
-            <UserCog className="text-violet-400" size={28} />
+          <h2 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-ink-heading">
+            <UserCog className="text-violet-700" size={28} />
             Người dùng hệ thống
           </h2>
           <p className="text-slate-400 text-sm mt-1">
@@ -122,26 +122,26 @@ export const AdminUsersPage = () => {
         className="flex flex-wrap gap-3 items-end"
       >
         <div className="flex-1 min-w-[200px]">
-          <label className="text-xs text-slate-500 mb-1 block">Tìm kiếm</label>
+          <label className="mb-1 block text-xs text-ink-faint">Tìm kiếm</label>
           <div className="relative">
             <Search
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint"
             />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tên, email, mã SV..."
-              className="w-full pl-9 pr-3 py-2 rounded-lg bg-[#131b2e] border border-slate-800 text-sm text-slate-200"
+              className="w-full rounded-lg border border-app-line bg-app-inset py-2 pl-9 pr-3 text-sm text-ink-heading"
             />
           </div>
         </div>
         <div>
-          <label className="text-xs text-slate-500 mb-1 block">Vai trò</label>
+          <label className="mb-1 block text-xs text-ink-faint">Vai trò</label>
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg bg-[#131b2e] border border-slate-800 text-sm text-slate-200 min-w-[140px]"
+            className="min-w-[140px] rounded-lg border border-app-line bg-app-inset px-3 py-2 text-sm text-ink-heading"
           >
             <option value="">Tất cả</option>
             <option value="student">Sinh viên</option>
@@ -152,7 +152,7 @@ export const AdminUsersPage = () => {
         </div>
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-bold hover:bg-violet-500"
+          className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-hover"
         >
           Tìm
         </button>
@@ -160,19 +160,19 @@ export const AdminUsersPage = () => {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full animate-spin" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
         </div>
       ) : error ? (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-6 py-8 text-center text-red-300">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-8 text-center text-red-800">
           {error}
         </div>
       ) : (
         <>
-          <p className="text-xs text-slate-500">Tổng: {total} tài khoản</p>
-          <div className="rounded-xl border border-slate-800 overflow-hidden bg-[#131b2e] overflow-x-auto">
+          <p className="text-xs text-ink-muted">Tổng: {total} tài khoản</p>
+          <div className="overflow-x-auto overflow-hidden rounded-xl border border-app-line bg-app-card">
             <table className="w-full text-sm min-w-[800px]">
               <thead>
-                <tr className="bg-[#0b1326] text-left text-[10px] uppercase tracking-wider text-slate-500">
+                <tr className="bg-app-inset text-left text-[10px] uppercase tracking-wider text-ink-faint">
                   <th className="px-4 py-3">Họ tên</th>
                   <th className="px-4 py-3">Email</th>
                   <th className="px-4 py-3">Vai trò</th>
@@ -185,19 +185,21 @@ export const AdminUsersPage = () => {
                 {items.map((u) => (
                   <tr
                     key={u.id}
-                    className="border-t border-slate-800/80 hover:bg-[#171f33]"
+                    className="border-t border-app-line hover:bg-app-elevated"
                   >
-                    <td className="px-4 py-3 font-medium text-[#dae2fd]">
+                    <td className="px-4 py-3 font-medium text-ink-heading">
                       {u.full_name}
                     </td>
-                    <td className="px-4 py-3 text-slate-400">{u.email}</td>
+                    <td className="px-4 py-3 text-ink-muted">{u.email}</td>
                     <td className="px-4 py-3">
-                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                      <span className="rounded bg-app-inset px-2 py-0.5 text-[10px] font-bold uppercase text-ink-body">
                         {u.role}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-400">{STATUS_LABEL[u.account_status] || u.account_status}</td>
-                    <td className="px-4 py-3 text-slate-500 text-xs hidden lg:table-cell">
+                    <td className="px-4 py-3 text-ink-muted">
+                      {STATUS_LABEL[u.account_status] || u.account_status}
+                    </td>
+                    <td className="hidden px-4 py-3 text-xs text-ink-muted lg:table-cell">
                       {u.last_login_at
                         ? new Date(u.last_login_at).toLocaleString("vi-VN")
                         : "—"}
@@ -211,7 +213,7 @@ export const AdminUsersPage = () => {
                             onChange={(e) =>
                               handleStatusChange(u.id, e.target.value)
                             }
-                            className="text-xs bg-[#0b1326] border border-slate-700 rounded px-2 py-1.5 text-slate-200"
+                            className="rounded border border-app-line bg-app-inset px-2 py-1.5 text-xs text-ink-heading"
                           >
                             {Object.entries(STATUS_LABEL).map(([k, v]) => (
                               <option key={k} value={k}>
@@ -224,7 +226,7 @@ export const AdminUsersPage = () => {
                               type="button"
                               disabled={updatingId === -1}
                               onClick={() => handleResendActivation(u.email)}
-                              className="text-xs rounded border border-indigo-500/30 bg-indigo-500/10 px-2 py-1.5 text-indigo-300 hover:bg-indigo-500/20 disabled:opacity-50"
+                              className="rounded border border-brand/25 bg-brand/10 px-2 py-1.5 text-xs text-brand hover:bg-brand/15 disabled:opacity-50"
                             >
                               Gửi lại kích hoạt
                             </button>

@@ -32,9 +32,10 @@ const LoginPage = () => {
 
       loginAction(result);
       navigate(ROLE_HOME[result.user.role] || "/login");
-    } catch (error: any) {
+    } catch (error: unknown) {
       const msg =
-        error.response?.data?.message || "Sai tài khoản hoặc mật khẩu";
+        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        "Sai tài khoản hoặc mật khẩu";
       alert(msg);
     } finally {
       setIsLoading(false);
@@ -42,19 +43,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "#101622", color: "#f1f5f9" }}
-    >
+    <div className="flex min-h-screen flex-col bg-app text-ink-body">
       <AuthHeader />
 
-      <main className="flex-1 flex overflow-hidden">
+      <main className="flex flex-1 overflow-hidden">
         <AuthBranding />
 
-        <div
-          className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12"
-          style={{ background: "#0d1117" }}
-        >
+        <div className="flex w-full items-center justify-center bg-app-card p-6 md:p-12 lg:w-1/2">
           <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
         </div>
       </main>

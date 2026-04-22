@@ -5,24 +5,18 @@ import { TopNavBar } from "./components/TopNavBar";
 
 export const StudentLayout = () => {
   return (
-    <div className="flex h-screen overflow-hidden bg-[#0b1326] text-[#dae2fd] font-body">
-      {/* 1. Thanh điều hướng bên trái (Cố định) */}
+    <div className="flex h-screen overflow-hidden bg-app font-body text-ink-body">
       <SideNavBar />
 
-      {/* 2. Khu vực nội dung bên phải */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {/* 3. Thanh công cụ phía trên (Sticky) */}
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <TopNavBar />
 
-        {/* 4. Vùng hiển thị nội dung các Page (Lobby, Classroom, v.v.) */}
-        <main className="flex-1 overflow-y-auto bg-[#0b1326] custom-scrollbar">
-          {/* Outlet là nơi React Router sẽ render StudentLobbyPage vào */}
+        <main className="custom-scrollbar flex-1 overflow-y-auto bg-app">
           <Outlet />
         </main>
       </div>
 
-      {/* Overlay cho Mobile (Nếu sau này bạn làm Responsive) */}
-      <div className="fixed inset-0 bg-black/50 z-30 hidden md:hidden" />
+      <div className="fixed inset-0 z-30 hidden bg-slate-900/20 md:hidden" />
     </div>
   );
 };

@@ -37,8 +37,8 @@ export const AnalysisFeedbackPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20 bg-[#0b1326]">
-        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+      <div className="flex items-center justify-center bg-app py-20">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
       </div>
     );
   }
@@ -58,16 +58,12 @@ export const AnalysisFeedbackPage = () => {
     "Nội dung phân tích sẽ hiển thị khi hệ thống xử lý xong báo cáo.";
 
   return (
-    <div className="flex-1 overflow-y-auto p-8 space-y-8 bg-[#0b1326] no-scrollbar">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <GradeBanner
-          title={title}
-          instructorName={reviewer}
-          comment={comment}
-        />
+    <div className="no-scrollbar flex-1 space-y-8 overflow-y-auto bg-app p-8">
+      <div className="mx-auto max-w-7xl space-y-8">
+        <GradeBanner title={title} instructorName={reviewer} comment={comment} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-8 space-y-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="space-y-8 lg:col-span-8">
             <AiExecutiveSummary summary={summary} />
             <DeficiencyAnalysis plagiarismScore={6} />
           </div>
@@ -78,25 +74,16 @@ export const AnalysisFeedbackPage = () => {
         </div>
 
         {feedbacks.length > 0 && (
-          <div className="p-6 bg-[#131b2e] rounded-xl border border-slate-800/50">
-            <h3 className="text-[#dae2fd] font-bold mb-4">
-              Nhận xét ({feedbacks.length})
-            </h3>
+          <div className="rounded-xl border border-app-line bg-app-card p-6 shadow-whisper">
+            <h3 className="mb-4 font-bold text-ink-heading">Nhận xét ({feedbacks.length})</h3>
             <div className="space-y-4">
               {feedbacks.map((f) => (
-                <div
-                  key={f.id}
-                  className="p-4 bg-[#171f33] rounded-lg border border-slate-800/50"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-bold text-[#dae2fd]">
-                      {f.reviewer_name}
-                    </span>
+                <div key={f.id} className="rounded-lg border border-app-line bg-app-inset p-4">
+                  <div className="mb-2 flex items-center justify-between">
+                    <span className="text-sm font-bold text-ink-heading">{f.reviewer_name}</span>
                   </div>
-                  {f.comment && (
-                    <p className="text-sm text-[#c6c6cd]">{f.comment}</p>
-                  )}
-                  <p className="text-xs text-slate-600 mt-2">
+                  {f.comment && <p className="text-sm text-ink-body">{f.comment}</p>}
+                  <p className="mt-2 text-xs text-ink-faint">
                     {new Date(f.created_at).toLocaleString("vi-VN")}
                   </p>
                 </div>
@@ -105,9 +92,9 @@ export const AnalysisFeedbackPage = () => {
           </div>
         )}
 
-        <footer className="flex items-center justify-end gap-2 pt-8 border-t border-slate-800/50">
-          <span className="text-xs text-[#798098]">Trạng thái:</span>
-          <span className="px-3 py-1 bg-[#001c18] text-[#4fdbc8] text-[10px] font-bold rounded-sm uppercase">
+        <footer className="flex flex-wrap items-center justify-end gap-2 border-t border-app-line pt-8">
+          <span className="text-xs text-ink-muted">Trạng thái:</span>
+          <span className="rounded-sm bg-mint-dim px-3 py-1 text-[10px] font-bold uppercase text-teal-900">
             {report?.status || "N/A"}
           </span>
         </footer>

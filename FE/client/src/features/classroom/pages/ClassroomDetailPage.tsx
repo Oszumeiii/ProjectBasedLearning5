@@ -144,16 +144,16 @@ export const ClassroomDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20 bg-[#0b1326] min-h-screen">
-        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-        <span className="ml-3 text-slate-400">Đang tải...</span>
+      <div className="flex min-h-screen items-center justify-center bg-app py-20">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
+        <span className="ml-3 text-ink-muted">Đang tải...</span>
       </div>
     );
   }
 
   if (loadError) {
     return (
-      <div className="flex items-center justify-center py-20 bg-[#0b1326] min-h-screen px-6">
+      <div className="flex min-h-screen items-center justify-center bg-app px-6 py-20">
         <CourseAccessState
           state={loadError}
           onBack={() => navigate("/student/lobby")}
@@ -164,8 +164,8 @@ export const ClassroomDetailPage = () => {
 
   if (!course) {
     return (
-      <div className="flex items-center justify-center py-20 bg-[#0b1326] min-h-screen">
-        <p className="text-red-400">Không tìm thấy lớp học</p>
+      <div className="flex min-h-screen items-center justify-center bg-app py-20">
+        <p className="text-red-600">Không tìm thấy lớp học</p>
       </div>
     );
   }
@@ -209,14 +209,14 @@ export const ClassroomDetailPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0b1326] animate-in fade-in duration-500 pb-12">
+    <div className="min-h-screen animate-in bg-app pb-12 duration-500 fade-in">
       <ClassHeader
         title={course.name}
         teacher={course.lecturer_name || "Chưa phân công"}
         action={
           <button
             onClick={() => navigate(`/student/class/${classId}/submit`)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#0566d9] text-white rounded-lg text-sm font-bold shadow-lg shadow-[#0566d9]/20 hover:scale-105 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 bg-brand text-white rounded-lg text-sm font-bold shadow-lg shadow-whisper hover:scale-105 transition-all"
           >
             <Upload size={18} /> Nộp bài tập
           </button>
@@ -224,20 +224,20 @@ export const ClassroomDetailPage = () => {
       />
 
       <div className="max-w-7xl mx-auto px-8 pt-4">
-        <div className="flex gap-1 border-b border-slate-800">
+        <div className="flex gap-1 border-b border-app-line">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
               className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-all ${
                 tab === t.key
-                  ? "border-[#0566d9] text-[#adc6ff]"
-                  : "border-transparent text-slate-500 hover:text-slate-300"
+                  ? "border-brand text-ink-heading"
+                  : "border-transparent text-ink-muted hover:text-ink-heading"
               }`}
             >
               {t.icon} {t.label}
               {t.key === "assignments" && assignments.length > 0 && (
-                <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded-full">
+                <span className="rounded-full bg-app-track px-1.5 py-0.5 text-[10px] text-ink-heading">
                   {assignments.length}
                 </span>
               )}
@@ -251,9 +251,9 @@ export const ClassroomDetailPage = () => {
           {/* ── Tab: Bảng tin ── */}
           {tab === "posts" && (
             <>
-              <div className="p-4 bg-[#131b2e] rounded-xl border border-slate-800/50">
+              <div className="p-4 bg-app-card rounded-xl border border-app-line">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400 shrink-0">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-app-line bg-app-elevated text-xs font-bold text-ink-heading">
                     {user?.full_name?.charAt(0) || "S"}
                   </div>
                   <div className="flex-1">
@@ -262,7 +262,7 @@ export const ClassroomDetailPage = () => {
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder="Viết gì đó cho lớp..."
                       rows={2}
-                      className="w-full bg-[#0b1326] border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-600 focus:ring-1 focus:ring-[#0566d9] resize-none"
+                      className="w-full resize-none rounded-lg border border-app-line bg-app-inset px-4 py-2.5 text-sm text-ink-heading placeholder:text-ink-faint focus:ring-1 focus:ring-brand/25"
                     />
                     <div className="flex justify-between items-center mt-2 gap-3">
                       <div className="flex-1">
@@ -276,7 +276,7 @@ export const ClassroomDetailPage = () => {
                         <button
                           type="button"
                           onClick={() => postAttachmentInputRef.current?.click()}
-                          className="text-xs text-slate-500 hover:text-slate-300 flex items-center gap-1"
+                          className="flex items-center gap-1 text-xs text-ink-muted hover:text-ink-heading"
                         >
                           <Paperclip size={14} /> Đính kèm
                         </button>
@@ -285,17 +285,17 @@ export const ClassroomDetailPage = () => {
                             {postAttachments.map((att) => (
                               <li
                                 key={att.name}
-                                className="flex items-center justify-between gap-2 rounded-lg bg-[#0b1326] border border-slate-800 px-3 py-1.5 text-xs text-slate-300"
+                                className="flex items-center justify-between gap-2 rounded-lg border border-app-line bg-app-inset px-3 py-1.5 text-xs text-ink-body"
                               >
                                 <span className="truncate flex items-center gap-1.5">
-                                  <Paperclip size={12} className="text-[#0566d9] shrink-0" />
+                                  <Paperclip size={12} className="shrink-0 text-mint" />
                                   <span className="truncate">{att.name}</span>
-                                  <span className="text-slate-600 shrink-0">{att.size}</span>
+                                  <span className="shrink-0 text-ink-muted">{att.size}</span>
                                 </span>
                                 <button
                                   type="button"
                                   onClick={() => removePostAttachment(att.name)}
-                                  className="p-0.5 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 shrink-0"
+                                  className="p-0.5 rounded text-ink-muted hover:text-red-400 hover:bg-red-500/10 shrink-0"
                                   aria-label="Xóa file"
                                 >
                                   <X size={14} />
@@ -318,7 +318,7 @@ export const ClassroomDetailPage = () => {
                           setPostAttachments([]);
                         }}
                         disabled={!newComment.trim()}
-                        className="px-4 py-1.5 bg-[#0566d9] text-white text-xs font-bold rounded-lg hover:bg-[#004395] disabled:opacity-40 flex items-center gap-1.5"
+                        className="px-4 py-1.5 bg-brand text-white text-xs font-bold rounded-lg hover:bg-brand-hover disabled:opacity-40 flex items-center gap-1.5"
                       >
                         <Send size={12} /> Đăng
                       </button>
@@ -341,7 +341,7 @@ export const ClassroomDetailPage = () => {
                 ))}
 
               {posts.length === 0 && (
-                <div className="p-12 bg-[#131b2e] rounded-xl text-center text-slate-500">
+                <div className="p-12 bg-app-card rounded-xl text-center text-ink-muted">
                   Chưa có bài đăng nào. Hãy là người đầu tiên!
                 </div>
               )}
@@ -352,9 +352,9 @@ export const ClassroomDetailPage = () => {
           {tab === "assignments" && (
             <div className="space-y-3">
               {assignments.length === 0 ? (
-                <div className="p-12 bg-[#131b2e] rounded-xl border border-slate-800/50 text-center">
-                  <ListTodo size={40} className="mx-auto text-slate-600 mb-3" />
-                  <p className="text-slate-500">Chưa có bài tập nào trong lớp</p>
+                <div className="p-12 bg-app-card rounded-xl border border-app-line text-center">
+                  <ListTodo size={40} className="mx-auto text-ink-muted mb-3" />
+                  <p className="text-ink-muted">Chưa có bài tập nào trong lớp</p>
                 </div>
               ) : (
                 assignments.map((a) => {
@@ -372,7 +372,7 @@ export const ClassroomDetailPage = () => {
                         : "pending";
 
                   return (
-                    <div key={a.id} className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
+                    <div key={a.id} className="bg-app-card rounded-xl border border-app-line overflow-hidden">
                       <div className="p-5">
                         <div className="flex items-start justify-between">
                           <div className="flex items-start gap-4 flex-1">
@@ -385,16 +385,15 @@ export const ClassroomDetailPage = () => {
                               <ListTodo size={20} />
                             </div>
                             <div>
-                              <h4 className="font-bold text-[#dae2fd] text-sm">{a.title}</h4>
-                              <p className="text-xs text-slate-500 mt-1 line-clamp-2">{a.description}</p>
-                              <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
+                              <h4 className="font-bold text-ink-heading text-sm">{a.title}</h4>
+                              <p className="text-xs text-ink-muted mt-1 line-clamp-2">{a.description}</p>
+                              <div className="flex items-center gap-4 mt-2 text-xs text-ink-muted">
                                 <span className="flex items-center gap-1">
                                   <Clock size={12} />
                                   {stats.isOverdue
                                     ? <span className="text-red-400">Đã hết hạn</span>
                                     : <span>Hạn: {new Date(a.deadline).toLocaleDateString("vi-VN")}</span>}
                                 </span>
-                                <span>Điểm: {Number(a.max_score)}</span>
                                 {a.attachments.length > 0 && (
                                   <span className="flex items-center gap-1">
                                     <Paperclip size={12} /> {a.attachments.length} tài liệu
@@ -417,7 +416,7 @@ export const ClassroomDetailPage = () => {
                                           alert("Không tải được file đính kèm");
                                         });
                                       }}
-                                      className="inline-flex items-center gap-1 px-2 py-1 bg-[#0b1326] rounded text-[10px] text-slate-400 border border-slate-800 cursor-pointer hover:border-[#0566d9]/30 hover:text-[#adc6ff]"
+                                      className="inline-flex items-center gap-1 px-2 py-1 bg-app-inset rounded text-[10px] text-ink-muted border border-app-line cursor-pointer hover:border-brand/30 hover:text-brand"
                                     >
                                       <Paperclip size={10} /> {att.name}
                                     </button>
@@ -427,14 +426,11 @@ export const ClassroomDetailPage = () => {
                             </div>
                           </div>
                           <div className="shrink-0 ml-4 flex flex-col items-end gap-2 max-w-[240px]">
-                            <StatusBadge
-                              status={myStatus}
-                              score={mySubmission?.score !== null && mySubmission?.score !== undefined ? `${mySubmission.score}/${Number(a.max_score)}` : undefined}
-                            />
+                            <StatusBadge status={myStatus} hasFeedback={Boolean(mySubmission?.feedback)} />
                             {myStatus === "pending" && !stats.isOverdue && (
                               <button
                                 onClick={() => navigate(`/student/class/${classId}/submit`)}
-                                className="px-4 py-1.5 bg-[#0566d9] text-white text-xs font-bold rounded-lg hover:bg-[#004395] transition-colors"
+                                className="px-4 py-1.5 bg-brand text-white text-xs font-bold rounded-lg hover:bg-brand-hover transition-colors"
                               >
                                 Nộp bài
                               </button>
@@ -448,7 +444,7 @@ export const ClassroomDetailPage = () => {
                                     mySubmission.report_file_name
                                   )
                                 }
-                                className="text-xs text-indigo-300 hover:text-indigo-200 flex items-center gap-1"
+                                className="flex items-center gap-1 text-xs text-brand hover:text-brand-hover"
                               >
                                 <Paperclip size={12} />
                                 {mySubmission.report_file_name}
@@ -459,11 +455,11 @@ export const ClassroomDetailPage = () => {
                                 <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
                                   Nhận xét giảng viên
                                 </p>
-                                <p className="mt-1 text-xs leading-relaxed text-slate-300 whitespace-pre-wrap">
+                                <p className="mt-1 text-xs leading-relaxed text-ink-body whitespace-pre-wrap">
                                   {mySubmission.feedback}
                                 </p>
                                 {mySubmission.graded_at && (
-                                  <p className="mt-1 text-[10px] text-slate-500">
+                                  <p className="mt-1 text-[10px] text-ink-muted">
                                     Chấm lúc {new Date(mySubmission.graded_at).toLocaleString("vi-VN")}
                                   </p>
                                 )}
@@ -482,25 +478,25 @@ export const ClassroomDetailPage = () => {
           {/* ── Tab: Tài liệu ── */}
           {tab === "library" && (
             <div className="space-y-4">
-              <p className="text-sm text-slate-400">Báo cáo công khai đã được phê duyệt</p>
+              <p className="text-sm text-ink-muted">Báo cáo công khai đã được phê duyệt</p>
               {publicReports.length === 0 ? (
-                <div className="p-12 bg-[#131b2e] rounded-xl border border-slate-800/50 text-center text-slate-500">Chưa có tài liệu</div>
+                <div className="p-12 bg-app-card rounded-xl border border-app-line text-center text-ink-muted">Chưa có tài liệu</div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {publicReports.map((report) => (
                     <div
                       key={report.id}
                       onClick={() => navigate(`/student/feedback?reportId=${report.id}`)}
-                      className="p-4 bg-[#131b2e] rounded-xl border border-slate-800/50 hover:border-[#4fdbc8]/30 transition-all cursor-pointer group"
+                      className="group cursor-pointer rounded-xl border border-app-line bg-app-card p-4 transition-all hover:border-mint/35"
                     >
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 mt-0.5 shrink-0">
                           <FileText size={18} />
                         </div>
                         <div className="overflow-hidden">
-                          <h4 className="text-sm font-bold text-[#dae2fd] line-clamp-1 group-hover:text-[#4fdbc8] transition-colors">{report.title}</h4>
-                          <p className="text-[11px] text-slate-500 mt-0.5">{report.author_name} • {new Date(report.created_at).toLocaleDateString("vi-VN")}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-600">
+                          <h4 className="text-sm font-bold text-ink-heading line-clamp-1 group-hover:text-mint transition-colors">{report.title}</h4>
+                          <p className="text-[11px] text-ink-muted mt-0.5">{report.author_name} • {new Date(report.created_at).toLocaleDateString("vi-VN")}</p>
+                          <div className="flex items-center gap-3 mt-1.5 text-[10px] text-ink-muted">
                             <span className="flex items-center gap-0.5"><Eye size={10} /> {report.view_count}</span>
                             <span className="uppercase font-mono">{report.file_type || "file"}</span>
                           </div>
@@ -511,7 +507,11 @@ export const ClassroomDetailPage = () => {
                 </div>
               )}
               <div className="text-center">
-                <button onClick={() => navigate("/student/library")} className="text-sm text-[#adc6ff] hover:text-white font-semibold transition-colors">
+                <button
+                  type="button"
+                  onClick={() => navigate("/student/library")}
+                  className="text-sm font-semibold text-brand transition-colors hover:text-brand-hover"
+                >
                   Xem tất cả tại thư viện →
                 </button>
               </div>
@@ -521,23 +521,23 @@ export const ClassroomDetailPage = () => {
 
         {/* ── Sidebar ── */}
         <div className="space-y-6">
-          <div className="p-5 rounded-xl bg-[#131b2e] border border-slate-800/50">
-            <h3 className="text-[#dae2fd] font-bold text-sm mb-3 flex items-center gap-2">
-              <FolderOpen className="text-[#adc6ff]" size={16} /> Thông tin lớp
+          <div className="p-5 rounded-xl bg-app-card border border-app-line">
+            <h3 className="text-ink-heading font-bold text-sm mb-3 flex items-center gap-2">
+              <FolderOpen className="text-brand" size={16} /> Thông tin lớp
             </h3>
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between"><span className="text-slate-500">Mã lớp</span><span className="text-[#adc6ff] font-mono font-bold">{course.code}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">Sinh viên</span><span className="text-[#dae2fd] font-bold">{course.student_count}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">Bài tập</span><span className="text-[#dae2fd] font-bold">{assignments.length}</span></div>
+              <div className="flex justify-between"><span className="text-ink-muted">Mã lớp</span><span className="text-brand font-mono font-bold">{course.code}</span></div>
+              <div className="flex justify-between"><span className="text-ink-muted">Sinh viên</span><span className="text-ink-heading font-bold">{course.student_count}</span></div>
+              <div className="flex justify-between"><span className="text-ink-muted">Bài tập</span><span className="text-ink-heading font-bold">{assignments.length}</span></div>
             </div>
             {course.description && (
-              <p className="mt-3 text-xs text-slate-500 border-t border-slate-800/50 pt-3">{course.description}</p>
+              <p className="mt-3 text-xs text-ink-muted border-t border-app-line pt-3">{course.description}</p>
             )}
           </div>
 
           {assignments.filter((a) => !getAssignmentStats(a).isOverdue).length > 0 && (
-            <div className="p-5 rounded-xl bg-[#131b2e] border border-slate-800/50">
-              <h3 className="text-[#dae2fd] font-bold text-sm mb-3 flex items-center gap-2">
+            <div className="p-5 rounded-xl bg-app-card border border-app-line">
+              <h3 className="text-ink-heading font-bold text-sm mb-3 flex items-center gap-2">
                 <Clock className="text-amber-400" size={16} /> Sắp đến hạn
               </h3>
               <div className="space-y-2">
@@ -548,8 +548,8 @@ export const ClassroomDetailPage = () => {
                   .map((a) => {
                     const daysLeft = Math.ceil((new Date(a.deadline).getTime() - Date.now()) / 86400000);
                     return (
-                      <div key={a.id} onClick={() => setTab("assignments")} className="p-3 bg-[#0b1326] rounded-lg border border-slate-800 cursor-pointer hover:border-amber-500/20">
-                        <p className="text-xs font-semibold text-slate-200 line-clamp-1">{a.title}</p>
+                      <div key={a.id} onClick={() => setTab("assignments")} className="p-3 bg-app-inset rounded-lg border border-app-line cursor-pointer hover:border-amber-500/20">
+                        <p className="text-xs font-semibold text-ink-heading line-clamp-1">{a.title}</p>
                         <p className="text-[10px] text-amber-400 mt-1">Còn {daysLeft} ngày</p>
                       </div>
                     );
@@ -558,30 +558,30 @@ export const ClassroomDetailPage = () => {
             </div>
           )}
 
-          <div className="p-5 rounded-xl bg-[#222a3d] border border-slate-800/50">
-            <h3 className="text-[#dae2fd] font-bold text-sm mb-3 flex items-center gap-2">
-              <BellRing className="text-[#4fdbc8]" size={16} /> Sinh viên ({course.student_count})
+          <div className="p-5 rounded-xl bg-app-elevated border border-app-line">
+            <h3 className="text-ink-heading font-bold text-sm mb-3 flex items-center gap-2">
+              <BellRing className="text-mint" size={16} /> Sinh viên ({course.student_count})
             </h3>
             {course.students.length === 0 ? (
-              <p className="text-xs text-slate-500">Chưa có sinh viên</p>
+              <p className="text-xs text-ink-muted">Chưa có sinh viên</p>
             ) : (
               <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
                 {course.students.map((s) => (
                   <div key={s.id} className="flex items-center gap-2 text-xs">
-                    <div className="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[9px] font-bold text-slate-400">{s.full_name.charAt(0)}</div>
-                    <span className="text-slate-300 truncate">{s.full_name}</span>
+                    <div className="w-6 h-6 rounded-full bg-app-elevated border border-app-line flex items-center justify-center text-[9px] font-bold text-ink-muted">{s.full_name.charAt(0)}</div>
+                    <span className="text-ink-body truncate">{s.full_name}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          <div className="p-5 rounded-xl bg-gradient-to-br from-[#131b2e] to-[#0566d9]/10 border border-[#0566d9]/20">
-            <h3 className="text-[#adc6ff] font-bold flex items-center gap-2 mb-2 text-sm">
+          <div className="rounded-xl border border-brand/20 bg-gradient-to-br from-app-card to-brand/10 p-5">
+            <h3 className="text-brand font-bold flex items-center gap-2 mb-2 text-sm">
               <MessageSquareQuote size={16} /> Trợ lý AI
             </h3>
-            <p className="text-[11px] text-[#c6c6cd] leading-relaxed mb-3">Hỏi AI về tài liệu lớp học.</p>
-            <button className="w-full py-2 bg-[#0566d9] text-white rounded-lg font-bold text-xs hover:bg-[#004395] transition-colors">Mở khung Chat</button>
+            <p className="text-[11px] text-ink-body leading-relaxed mb-3">Hỏi AI về tài liệu lớp học.</p>
+            <button className="w-full py-2 bg-brand text-white rounded-lg font-bold text-xs hover:bg-brand-hover transition-colors">Mở khung Chat</button>
           </div>
         </div>
       </div>
@@ -591,11 +591,20 @@ export const ClassroomDetailPage = () => {
 
 /* ────────── Sub-components ────────── */
 
-function StatusBadge({ status, score }: { status: "pending" | "submitted" | "graded"; score?: string }) {
+function StatusBadge({
+  status,
+  hasFeedback,
+}: {
+  status: "pending" | "submitted" | "graded";
+  hasFeedback?: boolean;
+}) {
   const config = {
-    pending: { label: "Chưa nộp", color: "text-red-400 bg-red-500/10 border-red-500/20" },
-    submitted: { label: "Đã nộp", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
-    graded: { label: score ? `Điểm: ${score}` : "Đã chấm", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+    pending: { label: "Chưa nộp", color: "border-red-200 bg-red-50 text-red-800" },
+    submitted: { label: "Đã nộp", color: "border-blue-200 bg-blue-50 text-blue-800" },
+    graded: {
+      label: hasFeedback ? "Đã có nhận xét" : "Đã xử lý",
+      color: "border-emerald-200 bg-emerald-50 text-emerald-900",
+    },
   };
   const c = config[status];
   return <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold border ${c.color}`}>{c.label}</span>;
@@ -620,37 +629,37 @@ function CourseAccessState({
     pending: {
       title: "Đang chờ duyệt",
       subtitle: "Yêu cầu ghi danh của bạn đang chờ giảng viên phê duyệt.",
-      tone: "text-amber-300",
-      icon: <Clock size={28} className="text-amber-400" />,
+      tone: "text-amber-800",
+      icon: <Clock size={28} className="text-amber-600" />,
     },
     not_enrolled: {
       title: "Bạn chưa tham gia lớp",
       subtitle: "Hãy dùng mã lớp để gửi yêu cầu ghi danh trước khi truy cập.",
-      tone: "text-blue-300",
-      icon: <FolderOpen size={28} className="text-blue-400" />,
+      tone: "text-blue-800",
+      icon: <FolderOpen size={28} className="text-blue-600" />,
     },
     rejected: {
       title: "Yêu cầu ghi danh bị từ chối",
       subtitle: "Bạn có thể liên hệ giảng viên để biết thêm chi tiết.",
-      tone: "text-red-300",
+      tone: "text-red-700",
       icon: <AlertCircleIcon />,
     },
     dropped: {
       title: "Bạn đã rời lớp",
       subtitle: "Liên hệ giảng viên nếu bạn cần tham gia lại lớp học này.",
-      tone: "text-slate-300",
+      tone: "text-ink-body",
       icon: <AlertCircleIcon />,
     },
     not_found: {
       title: "Không tìm thấy lớp học",
       subtitle: "Lớp có thể đã bị xóa hoặc đường dẫn không còn hợp lệ.",
-      tone: "text-red-300",
+      tone: "text-red-700",
       icon: <AlertCircleIcon />,
     },
     unknown: {
       title: "Không thể mở lớp học",
       subtitle: "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.",
-      tone: "text-slate-300",
+      tone: "text-ink-body",
       icon: <AlertCircleIcon />,
     },
   };
@@ -658,19 +667,19 @@ function CourseAccessState({
   const current = variants[state.type];
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-[#131b2e] p-6 text-center">
-      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#0b1326] border border-slate-700">
+    <div className="w-full max-w-md rounded-2xl border border-app-line bg-app-card p-6 text-center">
+      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-app-inset border border-app-line">
         {current.icon}
       </div>
       <h2 className={`text-xl font-bold mb-2 ${current.tone}`}>{current.title}</h2>
-      <p className="text-slate-300 text-sm">{state.message || current.subtitle}</p>
+      <p className="text-ink-body text-sm">{state.message || current.subtitle}</p>
       {state.message !== current.subtitle && (
-        <p className="text-slate-500 text-xs mt-2">{current.subtitle}</p>
+        <p className="text-ink-muted text-xs mt-2">{current.subtitle}</p>
       )}
       <button
         type="button"
         onClick={onBack}
-        className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#0566d9] px-4 py-2 text-sm font-bold text-white hover:bg-[#004395]"
+        className="mt-6 inline-flex items-center justify-center rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white hover:bg-brand-hover"
       >
         Quay về danh sách lớp
       </button>
@@ -680,7 +689,7 @@ function CourseAccessState({
 
 function AlertCircleIcon() {
   return (
-    <span className="material-symbols-outlined text-[28px] text-red-400">
+    <span className="material-symbols-outlined text-[28px] text-red-600">
       warning
     </span>
   );
@@ -699,20 +708,24 @@ function PostCard({
   const [replyText, setReplyText] = useState("");
 
   return (
-    <div className="bg-[#131b2e] rounded-xl border border-slate-800/50 overflow-hidden">
+    <div className="bg-app-card rounded-xl border border-app-line overflow-hidden">
       <div className="p-5">
         <div className="flex items-start gap-3">
-          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${post.author_role === "lecturer" ? "bg-indigo-900 border border-indigo-500/30 text-indigo-300" : "bg-slate-800 border border-slate-700 text-slate-400"}`}>
+          <div
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold ${post.author_role === "lecturer" ? "border border-brand/25 bg-app-elevated text-ink-heading" : "border border-app-line bg-app-elevated text-ink-heading"}`}
+          >
             {(post.author_name ?? "?").charAt(0)}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm font-bold text-[#dae2fd]">{post.author_name}</span>
-              {post.author_role === "lecturer" && <span className="text-[9px] bg-indigo-500/20 text-indigo-400 px-1.5 py-0.5 rounded-full font-bold">Giảng viên</span>}
+              <span className="text-sm font-bold text-ink-heading">{post.author_name}</span>
+              {post.author_role === "lecturer" && (
+                <span className="rounded-full bg-brand/10 px-1.5 py-0.5 text-[9px] font-bold text-brand">Giảng viên</span>
+              )}
               {post.is_pinned && <Pin size={12} className="text-amber-400" />}
-              <span className="text-[10px] text-slate-600">{timeAgo(post.created_at)}</span>
+              <span className="text-[10px] text-ink-muted">{timeAgo(post.created_at)}</span>
             </div>
-            <p className="text-sm text-slate-300 mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
+            <p className="text-sm text-ink-body mt-2 leading-relaxed whitespace-pre-wrap">{post.content}</p>
             {post.attachments.length > 0 && (
               <div className="flex gap-2 flex-wrap mt-3">
                 {post.attachments.map((att, index) => (
@@ -727,9 +740,9 @@ function PostCard({
                         }
                       );
                     }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0b1326] rounded-lg text-xs text-slate-400 border border-slate-800 cursor-pointer hover:text-[#adc6ff]"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-app-inset rounded-lg text-xs text-ink-muted border border-app-line cursor-pointer hover:text-brand"
                   >
-                    <Paperclip size={12} /> {att.name} <span className="text-slate-600">{att.size}</span>
+                    <Paperclip size={12} /> {att.name} <span className="text-ink-muted">{att.size}</span>
                   </button>
                 ))}
               </div>
@@ -738,19 +751,25 @@ function PostCard({
         </div>
       </div>
 
-      <div className="border-t border-slate-800/50 bg-[#0e1627]">
+      <div className="border-t border-app-line bg-app-inset">
         {post.comments.length > 0 && showComments && (
           <div className="px-5 py-3 space-y-3">
             {post.comments.map((c) => (
               <div key={c.id} className="flex items-start gap-2.5">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${c.author_role === "lecturer" ? "bg-indigo-900/60 text-indigo-300" : "bg-slate-800 text-slate-400"}`}>{(c.author_name ?? "?").charAt(0)}</div>
+                <div
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${c.author_role === "lecturer" ? "border border-brand/20 bg-app-elevated text-ink-heading" : "bg-app-elevated text-ink-heading"}`}
+                >
+                  {(c.author_name ?? "?").charAt(0)}
+                </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-slate-300">{c.author_name}</span>
-                    {c.author_role === "lecturer" && <span className="text-[8px] bg-indigo-500/20 text-indigo-400 px-1 py-0.5 rounded font-bold">GV</span>}
-                    <span className="text-[10px] text-slate-600">{timeAgo(c.created_at)}</span>
+                    <span className="text-xs font-semibold text-ink-body">{c.author_name}</span>
+                    {c.author_role === "lecturer" && (
+                      <span className="rounded bg-brand/10 px-1 py-0.5 text-[8px] font-bold text-brand">GV</span>
+                    )}
+                    <span className="text-[10px] text-ink-muted">{timeAgo(c.created_at)}</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">{c.content}</p>
+                  <p className="text-xs text-ink-muted mt-0.5">{c.content}</p>
                 </div>
               </div>
             ))}
@@ -768,7 +787,7 @@ function PostCard({
               }
             }}
             placeholder="Trả lời..."
-            className="flex-1 bg-transparent border-none text-xs text-slate-300 placeholder:text-slate-600 focus:ring-0 focus:outline-none"
+            className="flex-1 bg-transparent border-none text-xs text-ink-body placeholder:text-ink-muted focus:ring-0 focus:outline-none"
           />
           <button
             onClick={() => {
@@ -777,7 +796,7 @@ function PostCard({
               setReplyText("");
             }}
             disabled={!replyText.trim()}
-            className="text-[#0566d9] disabled:text-slate-700 hover:text-[#adc6ff]"
+            className="text-brand disabled:text-ink-faint hover:text-brand"
           >
             <Send size={14} />
           </button>

@@ -8,25 +8,25 @@ interface MaterialProps {
 }
 
 export const MaterialItem = ({ title, date, type }: MaterialProps) => (
-  <div className="group flex items-center justify-between p-4 bg-[#171f33] rounded-xl border border-slate-800/50 hover:border-[#adc6ff]/30 transition-all">
+  <div className="group flex items-center justify-between rounded-xl border border-app-line bg-app-card p-4 transition-all hover:border-brand/20">
     <div className="flex items-center gap-4">
-      <div className="w-10 h-10 rounded-lg bg-[#222a3d] flex items-center justify-center text-[#adc6ff]">
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-app-inset text-mint">
         <FileText size={20} />
       </div>
       <div>
-        <h4 className="text-[#dae2fd] font-bold text-sm group-hover:text-[#adc6ff] transition-colors">
+        <h4 className="text-sm font-bold text-ink-heading transition-colors group-hover:text-brand">
           {title}
         </h4>
-        <p className="text-[11px] text-[#798098]">
+        <p className="text-[11px] text-ink-muted">
           {date} • {type}
         </p>
       </div>
     </div>
     <div className="flex gap-2">
-      <button className="p-2 text-slate-400 hover:text-[#4fdbc8] transition-colors">
+      <button type="button" className="p-2 text-ink-muted transition-colors hover:text-mint">
         <Eye size={18} />
       </button>
-      <button className="p-2 text-slate-400 hover:text-[#adc6ff] transition-colors">
+      <button type="button" className="p-2 text-ink-muted transition-colors hover:text-brand">
         <Download size={18} />
       </button>
     </div>

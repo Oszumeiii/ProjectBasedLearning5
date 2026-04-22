@@ -172,10 +172,7 @@ export const submitAssignment = async (
   return response.data;
 };
 
-export const gradeSubmission = async (
-  submissionId: number,
-  body: { feedback: string; score?: number | null }
-) => {
+export const gradeSubmission = async (submissionId: number, body: { feedback: string }) => {
   if (!Number.isFinite(submissionId) || submissionId <= 0) {
     throw new Error("submissionId không hợp lệ");
   }
@@ -204,10 +201,6 @@ export const getAssignmentStats = (assignment: Assignment): AssignmentStats => {
     ? submissions.filter((s) => s.status === "graded").length
     : Number(assignment.graded_count ?? 0);
   const late = submissions.filter((s) => s.status === "late").length;
-  const gradedWithScore = submissions.filter((s) => s.score !== null);
-  const avgScore = gradedWithScore.length
-    ? gradedWithScore.reduce((sum, s) => sum + Number(s.score || 0), 0) / gradedWithScore.length
-    : null;
 
   return {
     total,
@@ -215,6 +208,6 @@ export const getAssignmentStats = (assignment: Assignment): AssignmentStats => {
     graded,
     late,
     isOverdue: new Date(assignment.deadline) < new Date(),
-    avgScore,
+    avgScore: null,
   };
 };

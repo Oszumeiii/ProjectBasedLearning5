@@ -26,65 +26,61 @@ export const InstructorClassCard: React.FC<InstructorClassCardProps> = ({
   return (
     <div
       onClick={() => navigate(`/instructor/class/${courseId}`)}
-      className="group bg-[#131b2e] rounded-xl overflow-hidden relative border border-transparent hover:border-indigo-500/20 transition-all duration-300 shadow-lg cursor-pointer"
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-app-line bg-app-card shadow-whisper transition-all duration-300 hover:border-brand/25 hover:shadow-md"
     >
-      <div className="h-24 bg-gradient-to-r from-indigo-900/40 to-slate-900 relative">
+      <div className="relative h-24 bg-gradient-to-r from-brand/15 to-app-inset">
         {pendingCount > 0 && (
-          <span className="absolute top-4 right-4 bg-red-900/80 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-red-200 uppercase tracking-widest flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
+          <span className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full border border-warn-pending/30 bg-warn-pendingBg px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-warn-on">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-warn-pending" />
             {pendingCount} Chờ duyệt
           </span>
         )}
       </div>
 
-      <div className="p-6 -mt-8 relative z-10 bg-[#131b2e]/95 backdrop-blur">
-        <div className="flex justify-between items-start mb-4">
+      <div className="relative z-10 -mt-8 bg-app-card/98 p-6 backdrop-blur-sm">
+        <div className="mb-4 flex items-start justify-between">
           <div>
-            <span className="text-[10px] font-bold text-indigo-400 font-manrope tracking-widest uppercase">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-brand">
               {code} • {category}
             </span>
-            <h4 className="text-xl font-manrope font-bold text-[#dae2fd] mt-1 group-hover:text-indigo-300 transition-colors">
+            <h4 className="mt-1 text-xl font-bold text-ink-heading transition-colors group-hover:text-brand">
               {name}
             </h4>
           </div>
-          <span className="material-symbols-outlined text-indigo-400 bg-[#2d3449] p-2 rounded-lg">
+          <span className="material-symbols-outlined rounded-lg bg-brand/10 p-2 text-brand">
             hub
           </span>
         </div>
 
-        <div className="space-y-4 mb-8">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="mb-8 space-y-4">
+          <div className="flex items-center justify-between text-xs text-ink-muted">
             <span>Báo cáo đã nộp</span>
-            <span className="font-semibold text-slate-200">
+            <span className="font-semibold text-ink-heading">
               {reportCount} / {totalStudents} SV
             </span>
           </div>
-          <div className="w-full bg-[#2d3449] h-1.5 rounded-full overflow-hidden">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-app-track">
             <div
-              className="bg-[#4fdbc8] h-full rounded-full transition-all duration-500"
+              className="h-full rounded-full bg-mint transition-all duration-500"
               style={{ width: `${Math.min(progress, 100)}%` }}
-            ></div>
+            />
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-between border-t border-app-line pt-4">
           <button
             onClick={(e) => {
               e.stopPropagation();
               navigator.clipboard.writeText(code);
             }}
-            className="text-[10px] font-mono text-slate-400 hover:text-indigo-400 flex items-center gap-1"
+            className="flex items-center gap-1 font-mono text-[10px] text-ink-muted hover:text-brand"
           >
             MÃ: {code}{" "}
-            <span className="material-symbols-outlined text-xs">
-              content_copy
-            </span>
+            <span className="material-symbols-outlined text-xs">content_copy</span>
           </button>
-          <span className="bg-[#222a3d] text-[#dae2fd] px-4 py-2 rounded-lg text-xs font-semibold group-hover:bg-indigo-600 transition-colors flex items-center gap-2">
+          <span className="flex items-center gap-2 rounded-lg bg-app-inset px-4 py-2 text-xs font-semibold text-ink-heading transition-colors group-hover:bg-brand group-hover:text-white">
             Quản lý{" "}
-            <span className="material-symbols-outlined text-sm">
-              arrow_forward
-            </span>
+            <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </span>
         </div>
       </div>

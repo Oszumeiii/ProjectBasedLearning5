@@ -8,11 +8,11 @@ import {
 } from "../services/report.service";
 
 const FILE_COLORS: Record<string, string> = {
-  PDF: "text-red-400 bg-red-500/10",
-  DOCX: "text-blue-400 bg-blue-500/10",
-  DOC: "text-blue-400 bg-blue-500/10",
-  PPT: "text-orange-400 bg-orange-500/10",
-  PPTX: "text-orange-400 bg-orange-500/10",
+  PDF: "bg-red-100 text-red-700",
+  DOCX: "bg-blue-100 text-blue-800",
+  DOC: "bg-blue-100 text-blue-800",
+  PPT: "bg-orange-100 text-orange-800",
+  PPTX: "bg-orange-100 text-orange-800",
 };
 
 export const AcademicLibraryPage = () => {
@@ -63,35 +63,30 @@ export const AcademicLibraryPage = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-8 space-y-8 no-scrollbar bg-[#0b1326]">
-      <div className="max-w-5xl mx-auto">
+    <div className="no-scrollbar flex-1 space-y-8 overflow-y-auto bg-app p-8">
+      <div className="mx-auto max-w-5xl">
         <header className="mb-8">
-          <h2 className="text-4xl font-black text-[#dae2fd] tracking-tight mb-2">
-            Thư viện tài liệu
-          </h2>
-          <p className="text-[#c6c6cd] text-lg max-w-2xl">
-            Tìm kiếm và truy cập các báo cáo, tài liệu đã được phê duyệt từ
-            hệ thống.
+          <h2 className="mb-2 text-4xl font-black tracking-tight text-ink-heading">Thư viện tài liệu</h2>
+          <p className="max-w-2xl text-lg text-ink-body">
+            Tìm kiếm và truy cập các báo cáo, tài liệu đã được phê duyệt từ hệ thống.
           </p>
         </header>
 
-        <div className="space-y-4 mb-8">
+        <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search
-              size={20}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
-            />
+            <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-faint" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm kiếm báo cáo theo tiêu đề, tác giả..."
-              className="w-full pl-12 pr-4 py-3.5 bg-[#131b2e] border border-slate-800 rounded-xl text-sm text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40 transition-all"
+              className="w-full rounded-xl border border-app-line bg-app-card py-3.5 pl-12 pr-4 text-sm text-ink-heading placeholder:text-ink-faint transition-all focus:border-brand/35 focus:ring-2 focus:ring-brand/15"
             />
             {search && (
               <button
+                type="button"
                 onClick={() => setSearch("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-sm"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-ink-muted hover:text-ink-heading"
               >
                 Xóa
               </button>
@@ -99,13 +94,13 @@ export const AcademicLibraryPage = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 text-xs text-slate-400">
+            <div className="inline-flex items-center gap-2 text-xs text-ink-muted">
               <Filter size={14} /> Bộ lọc
             </div>
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as "recent" | "popular" | "rated")}
-              className="bg-[#131b2e] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200"
+              className="rounded-lg border border-app-line bg-app-card px-3 py-2 text-xs text-ink-heading"
             >
               <option value="recent">Mới nhất</option>
               <option value="popular">Xem nhiều</option>
@@ -114,7 +109,7 @@ export const AcademicLibraryPage = () => {
             <select
               value={fileTypeFilter}
               onChange={(e) => setFileTypeFilter(e.target.value as "all" | "pdf" | "docx" | "pptx")}
-              className="bg-[#131b2e] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200"
+              className="rounded-lg border border-app-line bg-app-card px-3 py-2 text-xs text-ink-heading"
             >
               <option value="all">Tất cả file</option>
               <option value="pdf">PDF</option>
@@ -126,72 +121,63 @@ export const AcademicLibraryPage = () => {
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-            <span className="ml-3 text-slate-400">Đang tìm kiếm...</span>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
+            <span className="ml-3 text-ink-muted">Đang tìm kiếm...</span>
           </div>
         ) : reports.length === 0 ? (
-          <div className="text-center py-20">
-            <BookOpen size={48} className="mx-auto text-slate-600 mb-4" />
-            <p className="text-lg text-slate-500 mb-1">
-              {search
-                ? "Không tìm thấy kết quả"
-                : "Chưa có báo cáo công khai nào"}
+          <div className="py-20 text-center">
+            <BookOpen size={48} className="mx-auto mb-4 text-ink-faint" />
+            <p className="mb-1 text-lg text-ink-muted">
+              {search ? "Không tìm thấy kết quả" : "Chưa có báo cáo công khai nào"}
             </p>
-            {search && (
-              <p className="text-sm text-slate-600">
-                Thử từ khóa khác hoặc xóa bộ lọc
-              </p>
-            )}
+            {search && <p className="text-sm text-ink-faint">Thử từ khóa khác hoặc xóa bộ lọc</p>}
           </div>
         ) : (
           <>
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="mb-4 text-xs text-ink-muted">
               {reports.length} kết quả
-              {search && <> cho "{search}"</>}
+              {search && <> cho &quot;{search}&quot;</>}
             </p>
 
             <div className="grid grid-cols-12 gap-6">
               {reports.slice(0, 1).map((report) => (
                 <div
                   key={report.id}
-                  className="col-span-12 md:col-span-8 bg-[#131b2e] rounded-xl p-6 hover:bg-[#171f33] transition-colors group relative overflow-hidden border border-slate-800/50 cursor-pointer"
-                  onClick={() =>
-                    navigate(
-                      `/student/feedback?reportId=${report.id}`
-                    )
-                  }
+                  className="group relative col-span-12 cursor-pointer overflow-hidden rounded-xl border border-app-line bg-app-card p-6 shadow-whisper transition-colors hover:bg-app-elevated md:col-span-8"
+                  onClick={() => navigate(`/student/feedback?reportId=${report.id}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") navigate(`/student/feedback?reportId=${report.id}`);
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#adc6ff]/5 rounded-full blur-3xl group-hover:bg-[#adc6ff]/10 transition-all" />
-                  <div className="flex items-start justify-between relative z-10">
-                    <div className="flex items-center gap-4 mb-4">
+                  <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-brand/5 blur-3xl transition-all group-hover:bg-brand/10" />
+                  <div className="relative z-10 flex items-start justify-between">
+                    <div className="mb-4 flex items-center gap-4">
                       <div
-                        className={`w-12 h-12 rounded-lg flex items-center justify-center ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "text-slate-400 bg-slate-500/10"}`}
+                        className={`flex h-12 w-12 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
                       >
                         <FileText size={28} />
                       </div>
                       <div>
-                        <span className="text-[10px] font-bold tracking-widest text-[#4fdbc8] uppercase bg-[#4fdbc8]/10 px-2 py-0.5 rounded">
+                        <span className="rounded bg-mint-dim px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-teal-900">
                           NỔI BẬT
                         </span>
-                        <h3 className="text-xl font-bold text-[#dae2fd] mt-1 group-hover:text-[#adc6ff] transition-colors">
+                        <h3 className="mt-1 text-xl font-bold text-ink-heading transition-colors group-hover:text-brand">
                           {report.title}
                         </h3>
                       </div>
                     </div>
-                    <span className="text-[#798098] text-xs font-mono">
-                      {formatSize(report.file_size)}
-                    </span>
+                    <span className="font-mono text-xs text-ink-faint">{formatSize(report.file_size)}</span>
                   </div>
-                  <p className="text-[#c6c6cd] text-sm mb-4 line-clamp-2">
+                  <p className="mb-4 line-clamp-2 text-sm text-ink-body">
                     {report.description || "Không có mô tả"}
                   </p>
-                  <div className="flex items-center justify-between gap-3 text-xs text-slate-500">
+                  <div className="flex items-center justify-between gap-3 text-xs text-ink-muted">
                     <div className="flex items-center gap-4">
                       <span>{report.author_name}</span>
                       <span>•</span>
-                      <span>
-                        {new Date(report.created_at).toLocaleDateString("vi-VN")}
-                      </span>
+                      <span>{new Date(report.created_at).toLocaleDateString("vi-VN")}</span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
                         <Eye size={12} /> {report.view_count} lượt xem
@@ -203,7 +189,7 @@ export const AcademicLibraryPage = () => {
                         e.stopPropagation();
                         void downloadReportInBrowser(report.id, report.file_name);
                       }}
-                      className="inline-flex items-center gap-1 rounded-md border border-slate-700 bg-[#0b1326] px-2 py-1 text-[10px] font-bold text-slate-300 hover:text-white"
+                      className="inline-flex items-center gap-1 rounded-md border border-app-line bg-app-inset px-2 py-1 text-[10px] font-bold text-ink-heading hover:bg-brand hover:text-white"
                     >
                       <Download size={12} /> Tải file
                     </button>
@@ -212,28 +198,23 @@ export const AcademicLibraryPage = () => {
               ))}
 
               {reports.length > 1 && (
-                <div className="col-span-12 md:col-span-4 flex flex-col gap-6">
+                <div className="col-span-12 flex flex-col gap-6 md:col-span-4">
                   {reports.slice(1, 3).map((report) => (
                     <div
                       key={report.id}
-                      onClick={() =>
-                        navigate(
-                          `/student/feedback?reportId=${report.id}`
-                        )
-                      }
-                      className="bg-[#131b2e] rounded-xl p-5 hover:bg-[#171f33] transition-colors border border-slate-800/50 cursor-pointer group flex-1"
+                      onClick={() => navigate(`/student/feedback?reportId=${report.id}`)}
+                      className="group flex-1 cursor-pointer rounded-xl border border-app-line bg-app-card p-5 shadow-whisper transition-colors hover:bg-app-elevated"
                     >
                       <div
-                        className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "text-slate-400 bg-slate-500/10"}`}
+                        className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
                       >
                         <FileText size={20} />
                       </div>
-                      <h3 className="text-sm font-bold text-[#dae2fd] mb-1 line-clamp-2 group-hover:text-[#adc6ff] transition-colors">
+                      <h3 className="mb-1 line-clamp-2 text-sm font-bold text-ink-heading transition-colors group-hover:text-brand">
                         {report.title}
                       </h3>
-                      <p className="text-[11px] text-slate-500">
-                        {report.author_name} •{" "}
-                        {formatSize(report.file_size)}
+                      <p className="text-[11px] text-ink-muted">
+                        {report.author_name} • {formatSize(report.file_size)}
                       </p>
                     </div>
                   ))}
@@ -243,31 +224,26 @@ export const AcademicLibraryPage = () => {
               {reports.slice(3).map((report) => (
                 <div
                   key={report.id}
-                  onClick={() =>
-                    navigate(
-                      `/student/feedback?reportId=${report.id}`
-                    )
-                  }
-                  className="col-span-12 md:col-span-4 bg-[#131b2e] rounded-xl p-5 hover:bg-[#171f33] transition-colors border border-slate-800/50 cursor-pointer group"
+                  onClick={() => navigate(`/student/feedback?reportId=${report.id}`)}
+                  className="group col-span-12 cursor-pointer rounded-xl border border-app-line bg-app-card p-5 shadow-whisper transition-colors hover:bg-app-elevated md:col-span-4"
                 >
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="mb-3 flex items-center gap-3">
                     <div
-                      className={`w-10 h-10 rounded-lg flex items-center justify-center ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "text-slate-400 bg-slate-500/10"}`}
+                      className={`flex h-10 w-10 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
                     >
                       <FileText size={20} />
                     </div>
-                    <span className="text-[10px] font-bold text-slate-500 uppercase">
-                      {report.file_type?.toUpperCase() || "FILE"} •{" "}
-                      {formatSize(report.file_size)}
+                    <span className="text-[10px] font-bold uppercase text-ink-faint">
+                      {report.file_type?.toUpperCase() || "FILE"} • {formatSize(report.file_size)}
                     </span>
                   </div>
-                  <h3 className="text-sm font-bold text-[#dae2fd] mb-1 line-clamp-2 group-hover:text-[#adc6ff] transition-colors">
+                  <h3 className="mb-1 line-clamp-2 text-sm font-bold text-ink-heading transition-colors group-hover:text-brand">
                     {report.title}
                   </h3>
-                  <p className="text-[11px] text-[#c6c6cd] line-clamp-2 mb-3">
+                  <p className="mb-3 line-clamp-2 text-[11px] text-ink-body">
                     {report.description || "Không có mô tả"}
                   </p>
-                  <div className="flex items-center justify-between text-[10px] text-slate-500 gap-2">
+                  <div className="flex items-center justify-between gap-2 text-[10px] text-ink-muted">
                     <span>{report.author_name}</span>
                     <div className="flex items-center gap-2">
                       <span className="flex items-center gap-1">
@@ -279,7 +255,7 @@ export const AcademicLibraryPage = () => {
                           e.stopPropagation();
                           void downloadReportInBrowser(report.id, report.file_name);
                         }}
-                        className="inline-flex items-center gap-1 rounded border border-slate-700 bg-[#0b1326] px-2 py-1 text-[10px] font-bold text-slate-300 hover:text-white"
+                        className="inline-flex items-center gap-1 rounded border border-app-line bg-app-inset px-2 py-1 text-[10px] font-bold text-ink-heading hover:bg-brand hover:text-white"
                       >
                         <Download size={11} /> Tải
                       </button>

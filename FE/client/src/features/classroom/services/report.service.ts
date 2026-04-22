@@ -14,6 +14,7 @@ export interface Report {
   content: string | null;
   project_id: number | null;
   course_id: number | null;
+  course_name?: string | null;
   research_paper_id: number | null;
   author_id: number;
   author_name: string;
@@ -23,6 +24,23 @@ export interface Report {
   reviewed_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface PlagiarismMatch {
+  reportId: number;
+  title: string;
+  authorName: string;
+  similarityPercent: number;
+}
+
+export interface PlagiarismCheckResult {
+  analyzed: boolean;
+  method?: string;
+  summary?: string;
+  message?: string;
+  maxSimilarityPercent?: number;
+  comparedCount?: number;
+  matches: PlagiarismMatch[];
 }
 
 export interface ReportVersion {
@@ -107,6 +125,18 @@ export const updateReportStatus = async (
     status,
     reviewNote,
   });
+  return response.data;
+};
+
+export const checkReportPlagiarism = async (reportId: number): Promise<PlagiarismCheckResult> => {
+  const response = await axiosInstance.post<PlagiarismCheckResult>(
+    `/reports/${reportId}/plagiarism-check`
+  );
+  return response.data;
+};
+
+export const patchReportReviewNote = async (reportId: number, reviewNote: string) => {
+  const response = await axiosInstance.patch(`/reports/${reportId}/review-note`, { reviewNote });
   return response.data;
 };
 

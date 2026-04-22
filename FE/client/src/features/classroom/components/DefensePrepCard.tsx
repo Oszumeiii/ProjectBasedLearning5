@@ -2,34 +2,33 @@
 import { School, Mic } from "lucide-react";
 
 export const DefensePrepCard = () => (
-  <div className="bg-[#171f33]/40 backdrop-blur-md rounded-2xl p-8 border border-[#adc6ff]/10 h-full">
-    <div className="flex items-center gap-3 mb-6">
-      <School className="text-[#adc6ff]" size={22} />
-      <h3 className="font-bold text-xl text-[#dae2fd]">Defense Prep</h3>
+  <div className="h-full rounded-2xl border border-app-line bg-app-card p-8 shadow-whisper">
+    <div className="mb-6 flex items-center gap-3">
+      <School className="text-mint" size={22} />
+      <h3 className="text-xl font-bold text-ink-heading">Defense Prep</h3>
     </div>
-    <p className="text-xs text-[#798098] mb-8 italic">
-      AI đề xuất các câu hỏi phản biện dựa trên những điểm yếu trong bài nộp của
-      bạn.
+    <p className="mb-8 text-xs italic text-ink-muted">
+      AI đề xuất các câu hỏi phản biện dựa trên những điểm yếu trong bài nộp của bạn.
     </p>
 
     <div className="space-y-4">
       {[1, 2, 3].map((q) => (
-        <div
-          key={q}
-          className="p-5 bg-[#222a3d] rounded-xl border-l-4 border-[#adc6ff]"
-        >
-          <div className="text-[10px] text-[#adc6ff] font-black uppercase tracking-widest mb-2">
+        <div key={q} className="rounded-xl border border-app-line border-l-4 border-l-mint bg-app-inset p-5">
+          <div className="mb-2 text-[10px] font-black uppercase tracking-widest text-ink-faint">
             Question {q}
           </div>
-          <p className="text-sm font-semibold text-[#dae2fd]">
-            "How does your RAG system handle hallucinations in high-stakes
-            document summarization?"
+          <p className="text-sm font-semibold text-ink-heading">
+            &quot;How does your RAG system handle hallucinations in high-stakes document
+            summarization?&quot;
           </p>
         </div>
       ))}
     </div>
 
-    <button className="w-full mt-10 py-4 border border-[#adc6ff]/30 text-[#adc6ff] font-bold rounded-xl hover:bg-[#adc6ff]/10 transition-all flex items-center justify-center gap-2 shadow-lg">
+    <button
+      type="button"
+      className="mt-10 flex w-full items-center justify-center gap-2 rounded-xl border border-brand/30 py-4 font-bold text-brand transition-all hover:bg-brand/5"
+    >
       <Mic size={18} /> Start Practice Session
     </button>
   </div>

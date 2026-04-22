@@ -12,6 +12,21 @@ const sha256 = (buf: Buffer): string => crypto.createHash('sha256').update(buf).
 const VALID_VISIBILITY = ['private', 'course', 'department', 'public'] as const
 const REVIEW_STATUSES = ['under_review', 'revision_needed', 'approved', 'rejected'] as const
 
+/** Tách từ khóa để so khớp nội dung (hỗ trợ kiểm tra trùng lặp / “RAG nội bộ”). */
+function tokenizeReportText(text: string): Set<string> {
+  const s = String(text).toLowerCase()
+  const parts = s.split(/[\s0-9.,;:!?'"()[\]{}\\/|_+=<>@#^&*~`]+/).filter(Boolean)
+  return new Set(parts.filter((w) => w.length >= 3))
+}
+
+function jaccardSimilarity(a: Set<string>, b: Set<string>): number {
+  if (a.size === 0 || b.size === 0) return 0
+  let inter = 0
+  for (const x of a) if (b.has(x)) inter++
+  const uni = a.size + b.size - inter
+  return uni === 0 ? 0 : inter / uni
+}
+
 // ─── Visibility helper: can this user see this report? ───
 
 async function canView(userId: number, role: string, report: Record<string, unknown>): Promise<boolean> {
@@ -165,6 +180,109 @@ export const createReport = async (req: Request, res: Response): Promise<void> =
     res.status(201).json(report)
   } catch (error) {
     console.error('❌ Error in createReport:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PLAGIARISM / TƯƠNG ĐỒNG (POST /reports/:id/plagiarism-check)
+// ══════════════════════════════════════════════════════════════
+
+export const checkReportPlagiarism = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
+
+    const id = Number(req.params.id)
+    const r0 = await pool.query('SELECT * FROM reports WHERE id = $1 AND deleted_at IS NULL', [id])
+    if (r0.rows.length === 0) {
+      res.status(404).json({ message: 'Report not found' })
+      return
+    }
+
+    const report = r0.rows[0] as Record<string, unknown>
+    if (!(await canView(req.user.id, req.user.role, report))) {
+      res.status(403).json({ message: 'Forbidden' })
+      return
+    }
+
+    const content = String(report.content || '').slice(0, 80000)
+    const courseId = report.course_id != null ? Number(report.course_id) : null
+
+    if (content.length < 80) {
+      res.json({
+        analyzed: false,
+        message:
+          'Chưa đủ văn bản trích xuất từ file (PDF/DOCX). Chờ xử lý xong hoặc báo cáo quá ngắn.',
+        matches: []
+      })
+      return
+    }
+
+    if (!courseId || courseId <= 0) {
+      res.json({
+        analyzed: false,
+        message: 'Báo cáo chưa gắn lớp học — chỉ so sánh được các báo cáo trong cùng một lớp.',
+        matches: []
+      })
+      return
+    }
+
+    const authorId = Number(report.author_id)
+    const cand = await pool.query(
+      `SELECT r.id, r.title, LEFT(r.content, 14000) AS content, u.full_name AS author_name
+       FROM reports r
+       JOIN users u ON u.id = r.author_id
+       WHERE r.deleted_at IS NULL
+         AND r.id != $1
+         AND r.author_id != $2
+         AND r.course_id = $3
+         AND r.content IS NOT NULL
+         AND length(trim(r.content)) > 100
+       ORDER BY r.created_at DESC
+       LIMIT 80`,
+      [id, authorId, courseId]
+    )
+
+    const targetTokens = tokenizeReportText(content)
+    const matches = cand.rows
+      .map((row: { id: unknown; title: unknown; content: unknown; author_name: unknown }) => {
+        const sim = jaccardSimilarity(targetTokens, tokenizeReportText(String(row.content || '')))
+        return {
+          reportId: Number(row.id),
+          title: String(row.title || ''),
+          authorName: String(row.author_name || ''),
+          similarityPercent: Math.min(100, Math.round(sim * 100))
+        }
+      })
+      .filter((m) => m.similarityPercent >= 12)
+      .sort((a, b) => b.similarityPercent - a.similarityPercent)
+      .slice(0, 10)
+
+    const maxSim = matches[0]?.similarityPercent ?? 0
+    let summary: string
+    if (maxSim >= 48) {
+      summary = 'Cao: có mức trùng lặp từ vựng đáng kể với báo cáo khác trong lớp — nên xem xét thủ công.'
+    } else if (maxSim >= 28) {
+      summary = 'Trung bình: một số cụm từ tương đồng với báo cáo khác.'
+    } else if (matches.length === 0) {
+      summary = 'Thấp: không thấy trùng lặp rõ trong các báo cáo cùng lớp đã so sánh.'
+    } else {
+      summary = 'Thấp đến trung bình: có điểm tương đồng nhẹ — nên đối chiếu thêm.'
+    }
+
+    res.json({
+      analyzed: true,
+      method: 'lexical_rag_corpus',
+      summary,
+      maxSimilarityPercent: maxSim,
+      comparedCount: cand.rows.length,
+      matches
+    })
+  } catch (error) {
+    console.error('❌ checkReportPlagiarism:', error)
     res.status(500).json({ message: 'Internal server error' })
   }
 }
@@ -356,6 +474,48 @@ export const updateReport = async (req: Request, res: Response): Promise<void> =
     res.json(result.rows[0])
   } catch (error) {
     console.error('❌ Error in updateReport:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GHI NHẬN XÉT GIẢNG VIÊN (PATCH /reports/:id/review-note)
+// ══════════════════════════════════════════════════════════════
+
+export const patchReportReviewNote = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
+    if (!['lecturer', 'manager', 'admin'].includes(req.user.role)) {
+      res.status(403).json({ message: 'Forbidden' })
+      return
+    }
+
+    const id = Number(req.params.id)
+    const { reviewNote } = req.body as { reviewNote?: string }
+    const note = reviewNote?.trim() || null
+
+    const existing = await pool.query('SELECT * FROM reports WHERE id = $1 AND deleted_at IS NULL', [id])
+    if (existing.rows.length === 0) {
+      res.status(404).json({ message: 'Report not found' })
+      return
+    }
+    const report = existing.rows[0] as Record<string, unknown>
+    if (!(await canView(req.user.id, req.user.role, report))) {
+      res.status(403).json({ message: 'Forbidden' })
+      return
+    }
+
+    const result = await pool.query(
+      `UPDATE reports SET review_note = $1, reviewed_by = $2 WHERE id = $3
+       RETURNING id, review_note, reviewed_by, status, title`,
+      [note, req.user.id, id]
+    )
+    res.json(result.rows[0])
+  } catch (error) {
+    console.error('❌ patchReportReviewNote:', error)
     res.status(500).json({ message: 'Internal server error' })
   }
 }

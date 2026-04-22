@@ -30,76 +30,64 @@ export const SubmissionRow: React.FC<SubmissionProps> = ({
   disableActions,
 }) => {
   return (
-    <tr className="hover:bg-slate-800/40 transition-colors group border-b border-slate-900/50">
-      <td className="py-4 px-6 text-center">
+    <tr className="group border-b border-app-line transition-colors hover:bg-app-inset/80">
+      <td className="px-6 py-4 text-center">
         <input
-          className="rounded-sm bg-slate-900 border-slate-700 text-indigo-500 focus:ring-indigo-500/30"
+          className="rounded-sm border-app-line text-brand focus:ring-brand/25"
           type="checkbox"
         />
       </td>
-      <td className="py-4 px-4 text-sm font-mono text-slate-400">{id}</td>
-      <td className="py-4 px-4 text-sm font-semibold text-slate-100">{name}</td>
-      <td className="py-4 px-4">
-        <div className="flex items-center gap-2 text-sm text-slate-400">
-          <span className="material-symbols-outlined text-indigo-400 text-lg">
-            description
-          </span>
-          <span className="truncate max-w-[150px]">{fileName}</span>
+      <td className="px-4 py-4 font-mono text-sm text-ink-muted">{id}</td>
+      <td className="px-4 py-4 text-sm font-semibold text-ink-heading">{name}</td>
+      <td className="px-4 py-4">
+        <div className="flex items-center gap-2 text-sm text-ink-muted">
+          <span className="material-symbols-outlined text-lg text-mint">description</span>
+          <span className="max-w-[150px] truncate">{fileName}</span>
         </div>
       </td>
-      <td className="py-4 px-4 text-sm">
+      <td className="px-4 py-4 text-sm">
         <div className="flex flex-col">
-          <span className="text-slate-400">{date}</span>
-          {isLate && (
-            <span className="text-[10px] text-red-400 font-bold uppercase">
-              {isLate}
-            </span>
-          )}
+          <span className="text-ink-muted">{date}</span>
+          {isLate && <span className="text-[10px] font-bold uppercase text-red-600">{isLate}</span>}
         </div>
       </td>
-      <td className="py-4 px-4">
+      <td className="px-4 py-4">
         <div className="flex items-center gap-2">
-          <div className="w-16 h-1.5 bg-slate-900 rounded-full overflow-hidden">
+          <div className="h-1.5 w-16 overflow-hidden rounded-full bg-app-track">
             <div
-              className={`h-full ${plagiarism > 20 ? "bg-red-500" : "bg-emerald-500"}`}
+              className={`h-full ${plagiarism > 20 ? "bg-red-500" : "bg-mint"}`}
               style={{ width: `${plagiarism}%` }}
-            ></div>
+            />
           </div>
-          <span
-            className={`text-xs font-bold ${plagiarism > 20 ? "text-red-400" : "text-emerald-400"}`}
-          >
+          <span className={`text-xs font-bold ${plagiarism > 20 ? "text-red-600" : "text-mint"}`}>
             {plagiarism}%
           </span>
         </div>
       </td>
-      <td className="py-4 px-4">
+      <td className="px-4 py-4">
         {status === "Analyzing" && (
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>{" "}
-            Analyzing
+          <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand" /> Analyzing
           </div>
         )}
         {status === "Done" && (
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
-            <span className="material-symbols-outlined text-xs">
-              check_circle
-            </span>{" "}
-            Done
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
+            <span className="material-symbols-outlined text-xs">check_circle</span> Done
           </div>
         )}
         {status === "Not Run" && (
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-800 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 rounded-full bg-app-inset px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink-muted">
             Not Run
           </div>
         )}
       </td>
-      <td className="py-4 px-6 text-right">
+      <td className="px-6 py-4 text-right">
         <div className="flex items-center justify-end gap-2">
           <button
             type="button"
             onClick={onApprove}
             disabled={busy || disableActions || !onApprove}
-            className="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 text-[10px] font-bold disabled:opacity-40"
+            className="rounded-lg bg-emerald-100 px-2.5 py-1 text-[10px] font-bold text-emerald-900 disabled:opacity-40"
           >
             Duyệt
           </button>
@@ -107,7 +95,7 @@ export const SubmissionRow: React.FC<SubmissionProps> = ({
             type="button"
             onClick={onRevision}
             disabled={busy || disableActions || !onRevision}
-            className="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-300 text-[10px] font-bold disabled:opacity-40"
+            className="rounded-lg bg-amber-100 px-2.5 py-1 text-[10px] font-bold text-amber-900 disabled:opacity-40"
           >
             Sửa lại
           </button>
@@ -115,7 +103,7 @@ export const SubmissionRow: React.FC<SubmissionProps> = ({
             type="button"
             onClick={onReject}
             disabled={busy || disableActions || !onReject}
-            className="px-2.5 py-1 rounded-lg bg-red-500/15 text-red-300 text-[10px] font-bold disabled:opacity-40"
+            className="rounded-lg bg-red-100 px-2.5 py-1 text-[10px] font-bold text-red-800 disabled:opacity-40"
           >
             Từ chối
           </button>

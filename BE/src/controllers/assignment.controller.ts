@@ -10,21 +10,22 @@ import { createNotification } from '../utils/notification'
 
 const sha256 = (buf: Buffer): string => crypto.createHash('sha256').update(buf).digest('hex')
 
-async function loadCourse(courseId: number | string): Promise<(CourseRow & Record<string, unknown>) | null> {
-  const parsedCourseId = Number(courseId)
-  if (!Number.isInteger(parsedCourseId) || parsedCourseId <= 0) return null
-  const r = await pool.query('SELECT * FROM courses WHERE id = $1 AND deleted_at IS NULL', [parsedCourseId])
+async function loadCourse(courseId: unknown): Promise<(CourseRow & Record<string, unknown>) | null> {
+  const id = Number(courseId)
+  if (!Number.isFinite(id) || id <= 0 || !Number.isInteger(id)) return null
+  const r = await pool.query('SELECT * FROM courses WHERE id = $1 AND deleted_at IS NULL', [id])
   return r.rows[0] ?? null
 }
 
-async function loadAssignment(assignmentId: number): Promise<Record<string, unknown> | null> {
-  if (!Number.isInteger(assignmentId) || assignmentId <= 0) return null
+async function loadAssignment(assignmentId: unknown): Promise<Record<string, unknown> | null> {
+  const id = Number(assignmentId)
+  if (!Number.isFinite(id) || id <= 0 || !Number.isInteger(id)) return null
   const r = await pool.query(
     `SELECT a.*, c.id AS course_row_id, c.lecturer_id
      FROM assignments a
      JOIN courses c ON c.id = a.course_id
      WHERE a.id = $1 AND a.deleted_at IS NULL`,
-    [assignmentId]
+    [id]
   )
   return r.rows[0] ?? null
 }
@@ -577,9 +578,10 @@ export const gradeAssignmentSubmission = async (req: Request, res: Response): Pr
 
     const submissionId = Number(req.params.submissionId)
     const { feedback } = req.body as { feedback?: string }
+    const feedbackTrimmed = feedback?.trim() || null
 
-    if (!feedback?.trim()) {
-      res.status(400).json({ message: 'feedback là bắt buộc' })
+    if (!feedbackTrimmed) {
+      res.status(400).json({ message: 'Vui lòng nhập nhận xét' })
       return
     }
 
@@ -596,7 +598,7 @@ export const gradeAssignmentSubmission = async (req: Request, res: Response): Pr
       return
     }
 
-    const row = sub.rows[0] as { course_id: number; max_score: string | number; assignment_id: number; student_id: number }
+    const row = sub.rows[0] as { course_id: number; assignment_id: number; student_id: number }
     const course = await loadCourse(row.course_id)
     if (!course) {
       res.status(404).json({ message: 'Course not found' })
@@ -611,20 +613,23 @@ export const gradeAssignmentSubmission = async (req: Request, res: Response): Pr
 
     const updated = await pool.query(
       `UPDATE assignment_submissions
-       SET feedback = $1,
+       SET score = NULL,
+           feedback = $1,
            status = 'graded',
            graded_by = $2,
            graded_at = NOW()
        WHERE id = $3
        RETURNING *`,
-      [feedback.trim(), req.user.id, submissionId]
+      [feedbackTrimmed, req.user.id, submissionId]
     )
+
+    const notifMessage = `Giảng viên đã gửi nhận xét cho bài nộp #${row.assignment_id}`
 
     await createNotification({
       userId: row.student_id,
       type: 'assignment_graded',
-      title: 'Bài nộp đã có phản hồi',
-      message: `Bài nộp #${row.assignment_id} của bạn đã có nhận xét từ giảng viên.`,
+      title: 'Nhận xét bài nộp',
+      message: notifMessage,
       refType: 'course',
       refId: row.course_id
     })

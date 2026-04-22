@@ -31,7 +31,7 @@ export const InstructorGradingDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
       </div>
     );
   }
@@ -45,13 +45,11 @@ export const InstructorGradingDetailPage: React.FC = () => {
 
   return (
     <div className="flex h-[calc(100vh-64px)] overflow-hidden animate-in fade-in duration-500">
-      <section className="flex-1 bg-[#0b1326] p-8 overflow-y-auto custom-scrollbar">
-        <div className="flex justify-between items-center mb-8">
+      <section className="custom-scrollbar flex-1 overflow-y-auto bg-app p-8">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2 text-indigo-400 mb-1">
-              <span className="material-symbols-outlined text-base">
-                verified_user
-              </span>
+            <div className="mb-1 flex items-center gap-2 text-mint">
+              <span className="material-symbols-outlined text-base">verified_user</span>
               <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
                 {report?.status === "approved"
                   ? "Đã duyệt"
@@ -60,17 +58,16 @@ export const InstructorGradingDetailPage: React.FC = () => {
                     : "Đã nộp"}
               </span>
             </div>
-            <h2 className="text-2xl font-manrope font-extrabold text-[#dae2fd]">
-              {title}
-            </h2>
-            <p className="text-slate-500 text-sm">
-              Nộp bởi{" "}
-              <span className="text-indigo-400 font-medium">{author}</span> •{" "}
-              {submittedAgo}
+            <h2 className="text-2xl font-extrabold text-ink-heading">{title}</h2>
+            <p className="text-sm text-ink-muted">
+              Nộp bởi <span className="font-medium text-ink-heading">{author}</span> • {submittedAgo}
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="p-2.5 rounded-xl bg-[#171f33] text-slate-400 hover:text-white border border-slate-800 transition-colors">
+            <button
+              type="button"
+              className="rounded-xl border border-app-line bg-app-card p-2.5 text-ink-muted transition-colors hover:bg-app-inset hover:text-ink-heading"
+            >
               <span className="material-symbols-outlined">zoom_in</span>
             </button>
             <button
@@ -79,7 +76,7 @@ export const InstructorGradingDetailPage: React.FC = () => {
                 if (!report) return;
                 void downloadReportInBrowser(report.id, report.file_name);
               }}
-              className="p-2.5 rounded-xl bg-[#171f33] text-slate-400 hover:text-white border border-slate-800 transition-colors"
+              className="rounded-xl border border-app-line bg-app-card p-2.5 text-ink-muted transition-colors hover:bg-app-inset hover:text-ink-heading"
             >
               <span className="material-symbols-outlined">download</span>
             </button>
@@ -102,7 +99,7 @@ export const InstructorGradingDetailPage: React.FC = () => {
             ) : (
               <>
                 <div>
-                  <h4 className="text-xl font-bold text-slate-900 mb-3 font-manrope">
+                  <h4 className="text-xl font-bold text-slate-900 mb-3 ">
                     Tóm tắt
                   </h4>
                   <p className="text-slate-600 italic">

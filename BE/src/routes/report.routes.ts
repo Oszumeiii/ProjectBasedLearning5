@@ -4,10 +4,22 @@ import { authMiddleware } from '../middlewares/auth.middleware'
 import { requireRole } from '../middlewares/role.middleware'
 import { UPLOAD_MAX_SIZE_MB } from '../config/env'
 import {
-  createReport, listReports, getReportById, updateReport, deleteReport,
-  updateReportStatus, resubmitReport, downloadReport,
-  listReportVersions, downloadReportVersion,
-  addFavorite, removeFavorite
+  createReport,
+  listReports,
+  getReportById,
+  updateReport,
+  deleteReport,
+  updateReportStatus,
+  resubmitReport,
+  downloadReport,
+  listReportVersions,
+  downloadReportVersion,
+  upsertRating,
+  getRatings,
+  addFavorite,
+  removeFavorite,
+  checkReportPlagiarism,
+  patchReportReviewNote,
 } from '../controllers/report.controller'
 
 const upload = multer({
@@ -21,8 +33,23 @@ router.use(authMiddleware)
 
 // CRUD
 router.get('/', listReports)
-router.get('/:id', getReportById)
 router.post('/', upload.single('file'), createReport)
+
+router.post(
+  '/:id/plagiarism-check',
+  requireRole('lecturer', 'manager', 'admin'),
+  checkReportPlagiarism
+)
+router.patch(
+  '/:id/review-note',
+  requireRole('lecturer', 'manager', 'admin'),
+  patchReportReviewNote
+)
+
+router.get('/:id/ratings', getRatings)
+router.put('/:id/ratings', upsertRating)
+
+router.get('/:id', getReportById)
 router.patch('/:id', updateReport)
 router.delete('/:id', deleteReport)
 

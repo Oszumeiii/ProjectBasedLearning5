@@ -37,7 +37,7 @@ interface AssignmentContextType {
   gradeSubmission: (
     assignmentId: number,
     submissionId: number,
-    feedback: string
+    payload: { feedback: string }
   ) => Promise<void>;
   addPost: (post: {
     courseId: number;
@@ -157,14 +157,16 @@ export const AssignmentProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, [ensureCourseData]);
 
   const gradeSubmission = useCallback(
-    async (assignmentId: number, submissionId: number, feedback: string) => {
+    async (assignmentId: number, submissionId: number, payload: { feedback: string }) => {
       const targetAssignment = assignmentsRef.current.find(
         (item) => Number(item.id) === Number(assignmentId)
       );
       if (!targetAssignment) {
         throw new Error("Không tìm thấy bài tập để phản hồi");
       }
-      const result = await gradeSubmissionApi(Number(submissionId), { feedback: feedback.trim() });
+      const result = await gradeSubmissionApi(Number(submissionId), {
+        feedback: payload.feedback.trim(),
+      });
       const updatedSubmission = result?.submission as AssignmentSubmission | undefined;
       if (updatedSubmission) {
         setAssignments((prev) =>

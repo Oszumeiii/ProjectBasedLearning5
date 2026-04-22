@@ -43,49 +43,47 @@ export const ManagerReportsPage = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
-        <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-        <span className="ml-3 text-slate-400">Đang tải...</span>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand border-t-transparent" />
+        <span className="ml-3 text-ink-muted">Đang tải...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-6 py-8 text-center text-red-300">
+      <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-8 text-center text-red-800">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="animate-in space-y-6 duration-500 fade-in">
       <div>
-        <h2 className="text-2xl font-extrabold text-[#dae2fd] tracking-tight flex items-center gap-2">
-          <FileText className="text-amber-400" size={28} /> Báo cáo
+        <h2 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-ink-heading">
+          <FileText className="text-amber-600" size={28} /> Báo cáo
         </h2>
-        <p className="text-slate-400 text-sm mt-1">
-          Theo dõi báo cáo gần đây trên toàn hệ thống
-        </p>
+        <p className="mt-1 text-sm text-ink-muted">Theo dõi báo cáo gần đây trên toàn hệ thống</p>
       </div>
 
       {reports.length === 0 ? (
-        <div className="rounded-xl border border-slate-800 bg-[#131b2e] px-8 py-16 text-center text-slate-500">
+        <div className="rounded-xl border border-app-line bg-app-card px-8 py-16 text-center text-ink-muted shadow-whisper">
           Chưa có báo cáo nào.
         </div>
       ) : (
-        <div className="rounded-xl border border-slate-800 overflow-hidden bg-[#131b2e]">
+        <div className="overflow-hidden rounded-xl border border-app-line bg-app-card shadow-whisper">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#0b1326] text-left text-[10px] uppercase tracking-wider text-slate-500">
+              <tr className="bg-app-inset text-left text-[10px] uppercase tracking-wider text-ink-faint">
                 <th className="px-4 py-3 font-semibold">Tiêu đề</th>
-                <th className="px-4 py-3 font-semibold hidden md:table-cell">Tác giả</th>
+                <th className="hidden px-4 py-3 font-semibold md:table-cell">Tác giả</th>
                 <th className="px-4 py-3 font-semibold">Trạng thái</th>
-                <th className="px-4 py-3 font-semibold hidden sm:table-cell">
+                <th className="hidden px-4 py-3 font-semibold sm:table-cell">
                   <span className="inline-flex items-center gap-1">
                     <Eye size={12} /> Lượt xem
                   </span>
                 </th>
-                <th className="px-4 py-3 font-semibold hidden lg:table-cell">
+                <th className="hidden px-4 py-3 font-semibold lg:table-cell">
                   <span className="inline-flex items-center gap-1">
                     <Calendar size={12} /> Ngày
                   </span>
@@ -95,25 +93,16 @@ export const ManagerReportsPage = () => {
             </thead>
             <tbody>
               {reports.map((r) => (
-                <tr
-                  key={r.id}
-                  className="border-t border-slate-800/80 hover:bg-[#171f33] transition-colors"
-                >
-                  <td className="px-4 py-3 font-medium text-[#dae2fd] max-w-[200px] truncate">
-                    {r.title}
-                  </td>
-                  <td className="px-4 py-3 text-slate-400 hidden md:table-cell">
-                    {r.author_name}
-                  </td>
+                <tr key={r.id} className="border-t border-app-line transition-colors hover:bg-app-elevated">
+                  <td className="max-w-[200px] truncate px-4 py-3 font-medium text-ink-heading">{r.title}</td>
+                  <td className="hidden px-4 py-3 text-ink-muted md:table-cell">{r.author_name}</td>
                   <td className="px-4 py-3">
-                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                    <span className="rounded-full bg-app-inset px-2 py-0.5 text-[10px] font-bold uppercase text-ink-body">
                       {r.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-500 hidden sm:table-cell">
-                    {r.view_count}
-                  </td>
-                  <td className="px-4 py-3 text-slate-500 text-xs hidden lg:table-cell">
+                  <td className="hidden px-4 py-3 text-ink-muted sm:table-cell">{r.view_count}</td>
+                  <td className="hidden px-4 py-3 text-xs text-ink-muted lg:table-cell">
                     {new Date(r.created_at).toLocaleDateString("vi-VN")}
                   </td>
                   <td className="px-4 py-3 text-right">

@@ -28,7 +28,6 @@ import { InstructorLobbyPage } from "../features/instructor/pages/InstructorLobb
 import { InstructorClassroomPage } from "../features/instructor/pages/InstructorClassroomPage";
 import { InstructorGradingPage } from "../features/instructor/pages/InstructorGradingPage";
 import { InstructorGradingDetailPage } from "../features/instructor/pages/InstructorGradingDetailPage";
-import { SchedulePage } from "../features/instructor/pages/InstructorSchedulePage";
 
 // Manager Pages
 import { ManagerLobbyPage } from "../features/manager/pages/ManagerLobbyPage";
@@ -78,7 +77,6 @@ const router = createBrowserRouter([
           { path: "class/:courseId", element: <InstructorClassroomPage /> },
           { path: "grading", element: <InstructorGradingPage /> },
           { path: "grading-detail", element: <InstructorGradingDetailPage /> },
-          { path: "schedule", element: <SchedulePage /> },
         ],
       },
     ],
@@ -130,13 +128,13 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: (
-      <div className="flex h-screen items-center justify-center text-slate-400 bg-[#0b1326] font-manrope">
+      <div className="flex h-screen items-center justify-center bg-app font-sans text-ink-muted">
         <div className="text-center">
-          <h1 className="text-6xl font-bold text-indigo-500 mb-4">404</h1>
-          <p className="text-lg">Không tìm thấy trang yêu cầu.</p>
+          <h1 className="mb-4 font-headline text-6xl font-bold text-brand">404</h1>
+          <p className="text-lg text-ink-body">Không tìm thấy trang yêu cầu.</p>
           <Link
             to="/"
-            className="mt-6 inline-block px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"
+            className="mt-6 inline-block rounded-full bg-brand px-6 py-2 font-semibold text-white shadow-whisper transition-colors hover:bg-brand-hover"
           >
             Quay lại trang chủ
           </Link>
