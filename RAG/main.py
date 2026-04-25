@@ -1,6 +1,7 @@
+from parse import build_path, flatten_tree, parse_markdown, print_tree, save_json
 from utils.pdf_processor import extract_pdf_clean
 from utils.pdf_processor import extract_title
-from utils.toc_processor import classify_lines
+from utils.toc_processor import classify_lines, convert_doc_to_markdown
 from utils.toc_processor import toc_to_markdown
 
 
@@ -27,9 +28,44 @@ def main ():
     
 
     # Convert doc to markdown
-    markdown = toc_to_markdown(toc_lines)
+    md_lines , structured_toc = toc_to_markdown(toc_lines)
     print("\nGenerated Markdown:")
-    print(markdown)
+    print(md_lines)
+
+
+    # convert doc to markdown
+    markdown_document = convert_doc_to_markdown(documents, structured_toc)
+
+    print("\nFinal Markdown Document:")
+    print(markdown_document)
+
+    # B2: parse markdown → tree
+    root = parse_markdown(markdown_document)
+
+    # B3: build path
+    build_path(root)
+
+    # B4: debug tree
+    print("\n=== TREE ===")
+    print_tree(root)
+
+    # B5: lưu tree
+    save_json(root.to_dict(), "pages.json")
+
+
+    # B6: flatten → chunks (RAG dùng cái này)
+    flat_chunks = flatten_tree(root)
+
+    print("\n=== CHUNKS ===")
+    for c in flat_chunks:
+        print(c["path"])
+        print(c["content"][:100], "...\n")
+
+    # B7: save chunks
+    save_json(flat_chunks, "chunks.json")
+
+    print("\nDONE 🚀")
+
 
 
 
