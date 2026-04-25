@@ -9,6 +9,7 @@ class Node:
         self.title = title
         self.level = level
         self.content = []
+        self.summary = ""  # placeholder for future summary field
         self.children = []
         self.parent = None
         self.path = ""
@@ -19,6 +20,7 @@ class Node:
             "title": self.title,
             "level": self.level,
             "content": "\n".join(self.content).strip(),
+            "summary": self.summary,
             "path": self.path,
             "children": [child.to_dict() for child in self.children]
         }
@@ -35,8 +37,6 @@ def parse_markdown(md_text: str) -> Node:
 
     for line in lines:
         line = line.rstrip()
-
-        # 🔥 FIX: hỗ trợ indent trước #
         header_match = re.match(r'^\s*(#+)\s+(.*)', line)
 
         if header_match:
@@ -45,7 +45,6 @@ def parse_markdown(md_text: str) -> Node:
 
             new_node = Node(title.strip(), level)
 
-            # pop tới đúng cha
             while stack and stack[-1].level >= level:
                 stack.pop()
 
@@ -56,7 +55,6 @@ def parse_markdown(md_text: str) -> Node:
             stack.append(new_node)
 
         else:
-            # thêm content vào node hiện tại
             if stack:
                 stack[-1].content.append(line)
 
@@ -88,6 +86,7 @@ def flatten_tree(node):
                 "id": n.id,
                 "title": n.title,
                 "content": "\n".join(n.content).strip(),
+                "summary": n.summary,
                 "path": n.path,
                 "level": n.level
             })
@@ -120,44 +119,3 @@ def print_tree(node, indent=0):
         print_tree(child, indent + 1)
 
 
-# =========================
-# MAIN TEST
-# =========================
-if __name__ == "__main__":
-    print("RUNNING PARSER...")
-
-    # 👉 test nhanh
-    md_text = """
-    # A
-    content A
-
-    ## B
-    content B
-
-    ### C
-    content C
-
-    ## D
-    content D
-    """
-
-    # nếu dùng file thật:
-    # md_text = load_markdown("data/raw/document.md")
-
-    root = parse_markdown(md_text)
-
-    # build path
-    build_path(root)
-
-    # print tree
-    print("\nTREE STRUCTURE:")
-    print_tree(root)
-
-    # save tree
-    save_json(root.to_dict(), "pages.json")
-
-    # flatten (cho embedding)
-    flat = flatten_tree(root)
-    save_json(flat, "chunks.json")
-
-    print("\nDONE!")

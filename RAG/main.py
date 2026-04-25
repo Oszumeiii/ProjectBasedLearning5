@@ -1,3 +1,6 @@
+import asyncio
+
+from summary import generate_summaries_for_tree
 from parse import build_path, flatten_tree, parse_markdown, print_tree, save_json
 from utils.pdf_processor import extract_pdf_clean
 from utils.pdf_processor import extract_title
@@ -45,6 +48,8 @@ def main ():
     # B3: build path
     build_path(root)
 
+    asyncio.run(generate_summaries_for_tree(root))
+
     # B4: debug tree
     print("\n=== TREE ===")
     print_tree(root)
@@ -67,6 +72,10 @@ def main ():
     print("\nDONE 🚀")
 
 
+    # define querry 
+    querry = "Phương pháp của báo cáo này là gì ?"
+
+    # use llm to select relevant section 
 
 
     
