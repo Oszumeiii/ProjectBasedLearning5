@@ -10,6 +10,7 @@ from utils.toc_processor import toc_to_markdown
 
 def main ():
     pdf_path = r"data\raw_docs\pbl_report.pdf"
+    pdf_path = "data/raw_docs/pbl_report.pdf"
     documents = extract_pdf_clean(pdf_path)
 
 
