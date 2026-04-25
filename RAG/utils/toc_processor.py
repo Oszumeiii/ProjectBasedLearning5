@@ -1,3 +1,7 @@
+import json
+import re
+
+from utils.text_utils import is_toc_page_by_density
 from utils.client_llm import client
 
 def build_toc_structure(toc_lines):
@@ -154,14 +158,89 @@ OUTPUT FORMAT (JSON ONLY)
     
 
 
+import json
+
 def toc_to_markdown(toc_json):
+    if isinstance(toc_json, str):
+        toc_json = json.loads(toc_json)
+
     md_lines = []
+    structured_toc = []
 
     for item in toc_json["table_of_contents"]:
+        if item["structure_id"] is None:
+            continue
+
         level = item["level"]
         title = item["title"].strip()
         prefix = "#" * (level + 1)
 
         md_lines.append(f"{prefix} {title}")
+        structured_toc.append((title, prefix))
 
-    return "\n".join(md_lines)
+    return md_lines, structured_toc
+
+
+import re
+
+
+
+def is_toc_page(page_text, structured_toc):
+    text_lower = page_text.lower()
+
+    # rule 1: có chữ mục lục
+    if "mục lục" in text_lower:
+        return True
+
+    # rule 2: density
+    count = sum(1 for title, _ in structured_toc if title in page_text)
+    if count >= 5:
+        return True
+
+    return False
+
+
+def convert_doc_to_markdown(document, structured_toc):
+    result = []
+
+    for page in document:
+        page_text = page['text']
+
+        # 🔥 BỎ QUA PAGE MỤC LỤC
+        if is_toc_page(page_text , structured_toc):
+            continue
+
+        lines = page_text.split("\n")
+        new_lines = []
+
+        for line in lines:
+            replaced = False
+
+            for title, prefix in structured_toc:
+                if re.match(rf'^\s*{re.escape(title)}', line):
+                    new_lines.append(f"{prefix} {title}")
+                    replaced = True
+                    break
+
+            if not replaced:
+                new_lines.append(line)
+
+        result.append("\n".join(new_lines))
+
+    return "\n\n".join(result)
+
+
+
+    #     for title, prefix in structured_toc:
+    #         if title in page_text:
+    #             page_text = page_text.replace(title, f"{prefix} {title}")
+
+    #     result.append(page_text)
+
+    # return "\n\n".join(result)
+
+
+
+
+
+    pass

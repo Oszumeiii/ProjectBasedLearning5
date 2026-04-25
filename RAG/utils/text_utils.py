@@ -38,3 +38,11 @@ def remove_headers_footers(text, repeated_lines):
         if line.strip() not in repeated_lines
     ]
     return "\n".join(cleaned)
+
+
+def is_toc_page_by_density(page_text, structured_toc, threshold=5):
+    count = 0
+    for title, _ in structured_toc:
+        if title in page_text:
+            count += 1
+    return count >= threshold
