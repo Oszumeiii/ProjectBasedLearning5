@@ -1,5 +1,6 @@
 # client_llm.py
-from google import genai
+import google.genai as genai
+
 import dotenv
 import os
 # load API key from .env
