@@ -10,39 +10,46 @@ def build_toc_structure(toc_lines):
     pass
 
 
-# This file contains functions to process Table of Contents (TOC) lines, including LLM-based classification and filtering.
-def classify_lines(lines):
 
+def classify_lines(lines):
     init_prompt = """
-You are a document structure extraction system.
+You are an expert document structure analyst specializing in hierarchical extraction for RAG systems.
 
 Task:
-You are given a Table of Contents extracted from OCR or text.
-Your job is to convert it into a structured JSON format.
+Convert the provided Table of Contents (TOC) into a structured JSON format that reflects a perfect parent-child hierarchy and remove any invalid entries.
 
 --------------------------------
-EXTRACTION & STRUCTURE RULES
+HIERARCHY STRATEGY (CRITICAL)
 --------------------------------
-You must clearly SEPARATE each line into 4 clean fields:
+Assign 'level' (Integer, 0-indexed) based on professional report standards:
 
-1. level (Integer): The depth of the section in the hierarchy (0-indexed).
-   - "Chương I", "1" → level: 0
-   - "1.1" → level: 1
+- Level 0 (Root): 
+  - Major Chapters (e.g., "Chương I", "Chương II").
+  - Independent sections (e.g., "TÓM TẮT ĐỒ ÁN", "DANH MỤC BẢNG").
+  
+- Level 1 (Section): 
+  - Main sections under a chapter (e.g., "1. Thực trạng", "2. Các vấn đề cần giải quyết").
+  - Note: Even if it's a single digit like "1", if it follows a "Chương", it is Level 1.
 
-2. structure_id (String | null): The numbering part ONLY (e.g., "1", "1.1", "Chương I"). If there is no numbering, set to null.
+- Level 2 (Sub-section): 
+  - Nested sections (e.g., "1.1. Linh kiện sử dụng", "1.2. Thông số kỹ thuật").
 
-3. title (String): The FULL section title, INCLUDING its numbering prefix, but EXCLUDING trailing dots and page numbers.
-   - Example Input: "Chương I: Giới thiệu tổng quan đề tài ......... 5"
-   - Correct Title: "Chương I: Giới thiệu tổng quan đề tài" (Notice: the trailing dots and page number are removed, but "Chương I:" is KEPT).
-   - Example Input: "1. Thực trạng ..... 6"
-   - Correct Title: "1. Thực trạng"
+- Level 3 (Sub-sub-section): 
+  - Deeply nested details (e.g., "1.2.1. Cảm biến AD8232").
 
-4. page (Integer | null): The extracted page number, or null if none.
+--------------------------------
+EXTRACTION RULES
+--------------------------------
+1. structure_id (String | null): The numbering part ONLY (e.g., "Chương I", "1.1", "1.2.1").
+2. title (String): The FULL title text. 
+   - KEEP the numbering prefix (e.g., "Chương I: Giới thiệu...").
+   - REMOVE all trailing dots (.........) and page numbers at the end.
+3. page (Integer | null): The extracted page number. Set to null if missing.
 
 --------------------------------
 OUTPUT FORMAT
 --------------------------------
-Return ONLY a valid JSON object:
+Return ONLY a valid JSON object. No prose, no markdown code blocks.
 
 {
   "table_of_contents": [
@@ -57,14 +64,15 @@ Return ONLY a valid JSON object:
       "structure_id": "1",
       "title": "1. Thực trạng",
       "page": 6
+    },
+    {
+      "level": 2,
+      "structure_id": "1.1",
+      "title": "1.1. Bối cảnh dự án",
+      "page": 7
     }
   ]
 }
-
---------------------------------
-CRITICAL RULES
---------------------------------
-- Output MUST be valid JSON. No markdown formatting outside the JSON.
 """
 
     if isinstance(lines, list):
@@ -80,8 +88,6 @@ CRITICAL RULES
     )
 
     return response.text
-
-
 
 
 
@@ -168,7 +174,7 @@ def toc_to_markdown(toc_json):
     structured_toc = []
 
     for item in toc_json["table_of_contents"]:
-        if item["structure_id"] is None:
+        if item["title"] is None:
             continue
 
         level = item["level"]
@@ -181,10 +187,6 @@ def toc_to_markdown(toc_json):
     return md_lines, structured_toc
 
 
-import re
-
-
-
 def is_toc_page(page_text, structured_toc):
     text_lower = page_text.lower()
 
@@ -193,9 +195,9 @@ def is_toc_page(page_text, structured_toc):
         return True
 
     # rule 2: density
-    count = sum(1 for title, _ in structured_toc if title in page_text)
-    if count >= 5:
-        return True
+    # count = sum(1 for title, _ in structured_toc if title in page_text)
+    # if count >= 5:
+    #     return True
 
     return False
 
@@ -206,7 +208,6 @@ def convert_doc_to_markdown(document, structured_toc):
     for page in document:
         page_text = page['text']
 
-        # 🔥 BỎ QUA PAGE MỤC LỤC
         if is_toc_page(page_text , structured_toc):
             continue
 
@@ -228,19 +229,3 @@ def convert_doc_to_markdown(document, structured_toc):
         result.append("\n".join(new_lines))
 
     return "\n\n".join(result)
-
-
-
-    #     for title, prefix in structured_toc:
-    #         if title in page_text:
-    #             page_text = page_text.replace(title, f"{prefix} {title}")
-
-    #     result.append(page_text)
-
-    # return "\n\n".join(result)
-
-
-
-
-
-    pass
