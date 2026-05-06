@@ -8,7 +8,7 @@ from src.utils.toc_processor import (
 )
 
 
-from src.database.supabase_client import upload_to_supabase
+from src.database.supabase_client import SupabaseRepository
 
 from src.pipeline.parse import (
     build_path,
@@ -98,7 +98,8 @@ def stage_flatten_tree(root):
 # STAGE 6: Upload
 # =========================
 def stage_upload(chunks):
-    upload_to_supabase(chunks)
+    supabase_repo = SupabaseRepository()
+    supabase_repo.insert_report_nodes(chunks , 24)
 
 
 # =========================
@@ -116,7 +117,7 @@ def run_pipeline(pdf_path):
     root = stage_build_tree(markdown_document)
 
     # Optional
-    # generate_summaries_for_tree(root)
+    generate_summaries_for_tree(root)
 
     chunks = stage_flatten_tree(root)
 

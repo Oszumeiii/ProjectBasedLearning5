@@ -2,8 +2,11 @@ import re
 import json
 import time
 import uuid
+import requests
 
-from src.utils.client_llm import client
+# Local LLM service configuration
+LLM_SERVICE_URL = "http://localhost:5000"
+LLM_SERVICE_TIMEOUT = 30
 
 
 class Node:
@@ -112,20 +115,42 @@ def generate_summary_prompt(node):
     return prompt
 
 
-def summarize_node(node, model="gemini-3-flash-preview"):
+def summarize_node(node, model="liquid"):
+    """Generate summary using local LLM service (Liquid model)."""
     prompt = generate_summary_prompt(node)
     if prompt is None:
         return ""
 
-    response = client.models.generate_content(
-        model=model,
-        contents=prompt,
-    )
-
-    summary = response.text.strip() if hasattr(response, "text") else str(response).strip()
-    if summary.startswith("```"):
-        summary = summary.strip("`\n ")
-    return summary
+    try:
+        # Call local LLM service
+        response = requests.post(
+            f"{LLM_SERVICE_URL}/generate",
+            json={
+                "messages": [
+                    {"role": "system", "content": "Bạn là một trợ lý AI chuyên tóm tắt tài liệu kỹ thuật."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_new_tokens": 500
+            },
+            timeout=LLM_SERVICE_TIMEOUT
+        )
+        response.raise_for_status()
+        
+        data = response.json()
+        summary = data.get("response", "").strip()
+        
+        # Clean up code blocks if present
+        if summary.startswith("```"):
+            summary = summary.strip("`\n ")
+        
+        return summary
+    except requests.exceptions.ConnectionError:
+        print(f"[ERROR] Could not connect to LLM service at {LLM_SERVICE_URL}")
+        print("[INFO] Make sure llm_service is running: python3 run_llm_server.py")
+        return ""
+    except Exception as e:
+        print(f"[ERROR] LLM service error: {e}")
+        return ""
 
 
 def generate_summaries_for_tree(
@@ -133,7 +158,7 @@ def generate_summaries_for_tree(
     summary_level=5,
     max_requests_per_minute=4,
     max_nodes=None,
-    model="gemini-3-flash-preview",
+    model="liquid",
     sleep_between_requests_seconds=15,
 ):
     """Populate node.summary for tree nodes using a rate-limited LLM summarization."""
