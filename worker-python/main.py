@@ -25,6 +25,9 @@ except Exception as e:
     print(f"❌ Không thể kết nối Redis: {e}")
     exit(1)
 
+
+
+
 def process_job(job_data):
     """Hàm xử lý logic chính cho mỗi báo cáo PDF"""
     try:

@@ -1,5 +1,15 @@
 import asyncio
+
+from src.utils.pdf_processor import extract_pdf_clean, extract_title
+from src.utils.toc_processor import (
+    classify_lines,
+    convert_doc_to_markdown,
+    toc_to_markdown,
+)
+
+
 from src.database.supabase_client import upload_to_supabase
+
 from src.pipeline.parse import (
     build_path,
     flatten_tree,
@@ -8,8 +18,6 @@ from src.pipeline.parse import (
     print_tree,
     save_json,
 )
-from utils.pdf_processor import extract_pdf_clean, extract_title
-from utils.toc_processor import classify_lines, convert_doc_to_markdown, toc_to_markdown
 
 
 # =========================
@@ -107,7 +115,7 @@ def run_pipeline(pdf_path):
 
     root = stage_build_tree(markdown_document)
 
-    # Optional (bật khi cần)
+    # Optional
     # generate_summaries_for_tree(root)
 
     chunks = stage_flatten_tree(root)
@@ -116,3 +124,7 @@ def run_pipeline(pdf_path):
 
     print("✅ DONE PIPELINE")
     return chunks
+
+
+if __name__ == "__main__":
+    run_pipeline("data/raw_docs/pbl_report.pdf")

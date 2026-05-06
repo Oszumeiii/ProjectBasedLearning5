@@ -3,7 +3,7 @@ import json
 import time
 import uuid
 
-from utils.client_llm import client
+from src.utils.client_llm import client
 
 
 class Node:
