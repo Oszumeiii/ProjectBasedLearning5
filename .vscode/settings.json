@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./RAG/utils",
+        "./worker-python/src/database"
+    ]
+}
