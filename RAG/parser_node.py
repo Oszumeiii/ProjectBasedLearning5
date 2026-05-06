@@ -22,18 +22,16 @@ def get_nodes_from_markdown(file_path="Output.md"):
     nodes = parser.get_nodes_from_documents(documents)
     base_nodes, objects = parser.get_nodes_and_objects(nodes)
 
-    print(f"Base Nodes: {len(base_nodes)}")
-    print(f"Summary Nodes (objects): {len(objects)}")
+    node = base_nodes[2]
+    print(node)
+    # # 🔥 In base nodes
+    # for i, node in enumerate(base_nodes[:5]):
+    #     print(f"\n[Base Node {i+1}]")
+    #     print(node)
 
-    # 🔥 In base nodes
-    for i, node in enumerate(base_nodes[:5]):
-        print(f"\n[Base Node {i+1}]")
-        print(node.get_text())
-        print("Metadata:", node.metadata)
-
-    # 🔥 In summary nodes
-    for i, obj in enumerate(objects[:5]):
-        print(f"\n[Summary Node {i+1}]")
-        print(obj.get_text())
+    # # 🔥 In summary nodes
+    # for i, obj in enumerate(objects[:5]):
+    #     print(f"\n[Summary Node {i+1}]")
+    #     print(obj.get_text())
 
     return base_nodes, objects
