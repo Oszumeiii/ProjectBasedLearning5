@@ -1,6 +1,7 @@
 import app from './app'
 import { testConnection } from './config/db'
 import { PORT } from './config/env'
+import { connectRedis } from './config/redis'
 import { startScheduler } from './jobs/scheduler'
 import { ensureBucket } from './services/storage.service'
 
@@ -12,6 +13,12 @@ async function bootstrap() {
   if (!ok) {
     console.error('❌ Cannot connect to database, exiting...')
     process.exit(1)
+  }
+
+  try {
+    await connectRedis()
+  } catch (err) {
+    console.warn('⚠️ Redis not available — queue processing sẽ không hoạt động:', (err as Error).message)
   }
 
   startScheduler()

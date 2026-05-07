@@ -349,7 +349,7 @@ validation, test để bắt đầu quá trình training (Train: 70%, Validation
 Hình 10: Phân phối dữ liệu cho 3 tập dữ liệu
 
 
-### 4.4. Xử lý dữ liệu thu được từ cảm biến
+### 4.4. Xử lý dữ liệu thu được từ cảm biến:
 - Sử dụng mức tần số 360Hz cho kết quả tốt nhất. Do đó nhóm sẽ sử dụng mức tần số
 này trên cảm biến.
 

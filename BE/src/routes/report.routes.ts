@@ -20,6 +20,7 @@ import {
   removeFavorite,
   checkReportPlagiarism,
   patchReportReviewNote,
+  getReportReferences,
 } from '../controllers/report.controller'
 
 const upload = multer({
@@ -69,5 +70,8 @@ router.get('/:id/versions/:versionId/download', downloadReportVersion)
 // Favorites
 router.post('/:id/favorite', addFavorite)
 router.delete('/:id/favorite', removeFavorite)
+
+// References (extracted by worker)
+router.get('/:id/references', getReportReferences)
 
 export default router
