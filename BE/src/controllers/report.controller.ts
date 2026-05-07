@@ -5,7 +5,7 @@ import { UPLOAD_MAX_SIZE_MB } from '../config/env'
 import { createNotification } from '../utils/notification.js'
 import { detectFileType } from '../utils/file-type.js'
 import { uploadFile, getPresignedUrl, downloadFile } from '../services/storage.service.js'
-import { processReport } from '../services/report-processor.service.js'
+import { pushToQueue } from '../config/redis.js'
 
 const sha256 = (buf: Buffer): string => crypto.createHash('sha256').update(buf).digest('hex')
 
@@ -106,7 +106,6 @@ export const createReport = async (req: Request, res: Response): Promise<void> =
     let fileSize: number | null = null
     let fileType: string | null = null
     let fileHash: string | null = null
-    let fileBuffer: Buffer | null = null
 
     const file = req.file
     if (file) {
@@ -141,7 +140,6 @@ export const createReport = async (req: Request, res: Response): Promise<void> =
       fileSize = file.size
       fileType = detected.dbType
       fileHash = hash
-      fileBuffer = file.buffer
     }
 
     const result = await pool.query(
@@ -170,10 +168,13 @@ export const createReport = async (req: Request, res: Response): Promise<void> =
       [report.id, fileUrl, fileSize, fileHash, req.user.id]
     )
 
-    // Background processing (fire-and-forget)
-    if (fileBuffer && (fileType === 'pdf' || fileType === 'docx')) {
-      processReport(report.id, fileBuffer).catch(err =>
-        console.error(`❌ Background processing for report #${report.id}:`, err)
+    if (fileUrl && (fileType === 'pdf' || fileType === 'docx')) {
+      pushToQueue('pdf_processing_queue', {
+        report_id: report.id,
+        file_key: fileUrl,
+        file_type: fileType
+      }).catch(err =>
+        console.error(`❌ Failed to enqueue report #${report.id}:`, err)
       )
     }
 
@@ -673,8 +674,12 @@ export const resubmitReport = async (req: Request, res: Response): Promise<void>
     )
 
     if (detected.dbType === 'pdf' || detected.dbType === 'docx') {
-      processReport(id, file.buffer).catch(err =>
-        console.error(`❌ Background reprocessing for report #${id}:`, err)
+      pushToQueue('pdf_processing_queue', {
+        report_id: id,
+        file_key: key,
+        file_type: detected.dbType
+      }).catch(err =>
+        console.error(`❌ Failed to enqueue resubmit for report #${id}:`, err)
       )
     }
 
@@ -886,6 +891,39 @@ export const removeFavorite = async (req: Request, res: Response): Promise<void>
     res.json({ message: 'Favorite removed' })
   } catch (error) {
     console.error('❌ Error in removeFavorite:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  REFERENCES  (GET /reports/:id/references)
+// ══════════════════════════════════════════════════════════════
+
+export const getReportReferences = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) { res.status(401).json({ message: 'Unauthorized' }); return }
+
+    const reportId = Number(req.params.id)
+
+    const report = (await pool.query(
+      'SELECT id, author_id, course_id, visibility FROM reports WHERE id = $1 AND deleted_at IS NULL',
+      [reportId]
+    )).rows[0]
+
+    if (!report) { res.status(404).json({ message: 'Report not found' }); return }
+
+    if (!(await canView(req.user.id, req.user.role, report))) {
+      res.status(403).json({ message: 'Không có quyền xem tài liệu tham khảo này' }); return
+    }
+
+    const result = await pool.query(
+      'SELECT id, title, authors, year, source, url, ref_order FROM report_references WHERE report_id = $1 ORDER BY ref_order',
+      [reportId]
+    )
+
+    res.json({ items: result.rows })
+  } catch (error) {
+    console.error('❌ Error in getReportReferences:', error)
     res.status(500).json({ message: 'Internal server error' })
   }
 }

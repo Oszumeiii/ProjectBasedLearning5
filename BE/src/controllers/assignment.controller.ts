@@ -7,6 +7,7 @@ import { detectFileType } from '../utils/file-type'
 import { uploadFile, downloadFile } from '../services/storage.service'
 import { canManageCourse, isStudentEnrolled, type CourseRow } from '../utils/courseAccess'
 import { createNotification } from '../utils/notification'
+import { pushToQueue } from '../config/redis'
 
 const sha256 = (buf: Buffer): string => crypto.createHash('sha256').update(buf).digest('hex')
 
@@ -558,6 +559,16 @@ export const submitAssignment = async (req: Request, res: Response): Promise<voi
     )
 
     await client.query('COMMIT')
+
+    if (detected.dbType === 'pdf' || detected.dbType === 'docx') {
+      pushToQueue('pdf_processing_queue', {
+        report_id: reportId,
+        file_key: key,
+        file_type: detected.dbType
+      }).catch(err =>
+        console.error(`❌ Failed to enqueue assignment report #${reportId}:`, err)
+      )
+    }
 
     res.status(201).json({ message: 'Nộp bài thành công', reportId, status: isLate ? 'late' : 'submitted' })
   } catch (error) {

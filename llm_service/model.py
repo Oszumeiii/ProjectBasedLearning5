@@ -4,7 +4,11 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from config import LLMConfig
 from tokenizer import TokenizerLoader
+import requests
+import os
 
+LLM_SERVICE_URL = os.getenv("LLM_SERVICE_URL", "http://localhost:5000")
+LLM_SERVICE_TIMEOUT = int(os.getenv("LLM_SERVICE_TIMEOUT", 30))
 
 class LLMModel:
     """LLM Model class for LiquidAI/LFM2.5-1.2B-Instruct"""
@@ -24,44 +28,77 @@ class LLMModel:
             self.tokenizer_loader = TokenizerLoader()
             self.load_model()
     
+    # def load_model(self):
+    #     """Load model from pretrained"""
+    #     try:
+    #         print(f"🔄 Loading model {LLMConfig.MODEL_NAME}...")
+            
+    #         dtype = torch.float16 if LLMConfig.USE_HALF_PRECISION else torch.float32
+            
+    #         model_kwargs = {
+    #             "cache_dir": LLMConfig.CACHE_DIR,
+    #             "dtype": dtype,
+    #             "trust_remote_code": True,
+    #             "low_cpu_mem_usage": True,
+    #         }
+            
+    #         if LLMConfig.DEVICE == "cuda":
+    #             try:
+    #                 import accelerate
+    #                 model_kwargs["device_map"] = "auto"
+    #             except ImportError:
+    #                 print("⚠️ accelerate not installed, loading model to CPU first")
+            
+    #         self.model = AutoModelForCausalLM.from_pretrained(
+    #             LLMConfig.MODEL_NAME,
+    #             **model_kwargs
+    #         )
+            
+    #         # Move to device if not using device_map
+    #         if "device_map" not in model_kwargs:
+    #             self.model = self.model.to(LLMConfig.DEVICE)
+            
+    #         self.model.eval()
+    #         print(f"✅ Model loaded successfully on {LLMConfig.DEVICE}")
+    #     except Exception as e:
+    #         print(f"❌ Error loading model: {e}")
+    #         raise
     def load_model(self):
-        """Load model from pretrained"""
+        """Load model optimized for Mac M2 Pro"""
         try:
             print(f"🔄 Loading model {LLMConfig.MODEL_NAME}...")
             
-            # Determine dtype
-            dtype = torch.float16 if LLMConfig.USE_HALF_PRECISION else torch.float32
+            # M2 Pro hỗ trợ bfloat16 cực tốt, giúp tiết kiệm RAM và chạy nhanh
+            dtype = torch.bfloat16 if torch.backends.mps.is_available() else torch.float32
             
-            # Prepare kwargs for from_pretrained
             model_kwargs = {
                 "cache_dir": LLMConfig.CACHE_DIR,
-                "dtype": dtype,
+                "torch_dtype": dtype, # Lưu ý: dùng torch_dtype thay vì dtype
                 "trust_remote_code": True,
                 "low_cpu_mem_usage": True,
             }
-            
-            # Only use device_map for CUDA (accelerate is required for this)
-            if LLMConfig.DEVICE == "cuda":
-                try:
-                    import accelerate
-                    model_kwargs["device_map"] = "auto"
-                except ImportError:
-                    print("⚠️ accelerate not installed, loading model to CPU first")
+
+            # Tự động chọn thiết bị
+            if torch.backends.mps.is_available():
+                device = "mps"
+            elif torch.cuda.is_available():
+                device = "cuda"
+            else:
+                device = "cpu"
             
             self.model = AutoModelForCausalLM.from_pretrained(
                 LLMConfig.MODEL_NAME,
                 **model_kwargs
-            )
+            ).to(device) 
             
-            # Move to device if not using device_map
-            if "device_map" not in model_kwargs:
-                self.model = self.model.to(LLMConfig.DEVICE)
+            print(device)
             
             self.model.eval()
-            print(f"✅ Model loaded successfully on {LLMConfig.DEVICE}")
+            print(f"✅ Model loaded successfully on {device} (M2 Pro Optimized)")
         except Exception as e:
             print(f"❌ Error loading model: {e}")
             raise
+        
     
     def get_tokenizer(self):
         """Get tokenizer"""
@@ -152,3 +189,18 @@ class LLMModel:
                 print("✅ Model unloaded successfully")
         except Exception as e:
             print(f"⚠️ Error unloading model: {e}")
+    
+    
+    def answer_with_context(self, user_message: str, context: str, max_new_tokens: int = None) -> str:
+        """Answer user query with provided context"""
+        system_prompt = (
+            "Bạn là một trợ lý AI chuyên trả lời câu hỏi dựa trên nội dung tài liệu đã cho. "
+            "Hãy sử dụng thông tin trong phần CONTEXT để trả lời câu hỏi của người dùng một cách chính xác và ngắn gọn."
+        )
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"CONTEXT:\n{context}\n\nQUESTION:\n{user_message}"}
+        ]
+        
+        return self.generate(messages, max_new_tokens=max_new_tokens)

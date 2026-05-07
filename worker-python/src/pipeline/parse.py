@@ -124,7 +124,7 @@ def summarize_node(node, model="liquid"):
     try:
         # Call local LLM service
         response = requests.post(
-            f"{LLM_SERVICE_URL}/generate",
+            f"{LLM_SERVICE_URL}/summary",
             json={
                 "messages": [
                     {"role": "system", "content": "Bạn là một trợ lý AI chuyên tóm tắt tài liệu kỹ thuật."},

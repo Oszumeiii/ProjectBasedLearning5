@@ -105,6 +105,8 @@ propcache==0.4.1
 proto-plus==1.27.2
 protobuf==5.29.6
 psycopg2-binary==2.9.12
+redis==5.2.1
+minio==7.2.15
 pyasn1==0.6.3
 pyasn1_modules==0.4.2
 pybase64==1.4.3

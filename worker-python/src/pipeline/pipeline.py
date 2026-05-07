@@ -6,9 +6,10 @@ from src.utils.toc_processor import (
     convert_doc_to_markdown,
     toc_to_markdown,
 )
+from src.utils.reference_extractor import extract_references
 
-
-from src.database.supabase_client import SupabaseRepository
+from src.database.supabase_client import upload_to_supabase
+from src.database.pg_client import save_report_references
 
 from src.pipeline.parse import (
     build_path,
@@ -95,17 +96,40 @@ def stage_flatten_tree(root):
 
 
 # =========================
-# STAGE 6: Upload
+# STAGE 6: Extract References
 # =========================
-def stage_upload(chunks):
-    supabase_repo = SupabaseRepository()
-    supabase_repo.insert_report_nodes(chunks , 24)
+def stage_extract_references(documents, report_id):
+    """Trích xuất tài liệu tham khảo từ các trang cuối của PDF."""
+    last_pages_text = "\n".join([doc["text"] for doc in documents[-10:]])
+    references = extract_references(last_pages_text)
+
+    if references and report_id:
+        save_report_references(report_id, references)
+        print(f"📚 Đã lưu {len(references)} tài liệu tham khảo cho report #{report_id}")
+
+    return references
+
+
+# =========================
+# STAGE 7: Upload to Supabase (only for class_posts, not reports)
+# =========================
+def stage_upload(chunks, post_id=None):
+    """Upload chunks vào Supabase. Chỉ chạy khi có post_id hợp lệ (từ class_posts)."""
+    if post_id:
+        upload_to_supabase(chunks, post_id)
+    else:
+        print("⏭️ Bỏ qua upload Supabase (không có post_id từ class_posts)")
 
 
 # =========================
 # MAIN PIPELINE
 # =========================
-def run_pipeline(pdf_path):
+def run_pipeline(pdf_path, report_id=None, post_id=None):
+    """
+    pdf_path: đường dẫn file PDF
+    report_id: ID trong bảng reports (dùng cho reference extraction + status update)
+    post_id: ID trong bảng class_posts trên Supabase (dùng cho RAG upload)
+    """
     print("🚀 START PIPELINE")
 
     documents = stage_extract_pdf(pdf_path)
@@ -121,7 +145,9 @@ def run_pipeline(pdf_path):
 
     chunks = stage_flatten_tree(root)
 
-    stage_upload(chunks)
+    stage_extract_references(documents, report_id)
+
+    stage_upload(chunks, post_id)
 
     print("✅ DONE PIPELINE")
     return chunks
