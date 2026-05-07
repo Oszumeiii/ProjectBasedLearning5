@@ -22,6 +22,7 @@ import { ClassroomDetailPage } from "../features/classroom/pages/ClassroomDetail
 import { AssignmentSubmissionPage } from "../features/classroom/pages/AssignmentSubmissionPage";
 import { AcademicLibraryPage } from "../features/classroom/pages/AcademicLibraryPage";
 import { AnalysisFeedbackPage } from "../features/classroom/pages/AnalysisFeedbackPage";
+import { ChatAIPage } from "../features/classroom/pages/ChatAIPage";
 
 // Instructor Pages
 import { InstructorLobbyPage } from "../features/instructor/pages/InstructorLobbyPage";
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
           { path: "class/:classId/submit", element: <AssignmentSubmissionPage /> },
           { path: "library", element: <AcademicLibraryPage /> },
           { path: "feedback", element: <AnalysisFeedbackPage /> },
+          { path: "chat", element: <ChatAIPage /> },
         ],
       },
     ],

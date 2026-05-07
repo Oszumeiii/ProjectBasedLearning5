@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, FileText, Download, Eye, BookOpen, Filter } from "lucide-react";
+import { Search, FileText, Download, Eye, BookOpen, Filter, Sparkles, MessageSquare } from "lucide-react";
 import {
   listReports,
   type Report,
@@ -183,16 +183,40 @@ export const AcademicLibraryPage = () => {
                         <Eye size={12} /> {report.view_count} lượt xem
                       </span>
                     </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        void downloadReportInBrowser(report.id, report.file_name);
-                      }}
-                      className="inline-flex items-center gap-1 rounded-md border border-app-line bg-app-inset px-2 py-1 text-[10px] font-bold text-ink-heading hover:bg-brand hover:text-white"
-                    >
-                      <Download size={12} /> Tải file
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        title="Xem phân tích AI"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/student/feedback?reportId=${report.id}`);
+                        }}
+                        className="inline-flex items-center gap-1 rounded-md border border-app-line bg-app-inset px-2 py-1 text-[10px] font-bold text-ink-heading hover:bg-purple-500 hover:text-white"
+                      >
+                        <Sparkles size={12} /> Summary
+                      </button>
+                      <button
+                        type="button"
+                        title="Chat AI với tài liệu"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/student/chat?reportId=${report.id}`);
+                        }}
+                        className="inline-flex items-center gap-1 rounded-md border border-app-line bg-app-inset px-2 py-1 text-[10px] font-bold text-ink-heading hover:bg-brand hover:text-white"
+                      >
+                        <MessageSquare size={12} /> Chat AI
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          void downloadReportInBrowser(report.id, report.file_name);
+                        }}
+                        className="inline-flex items-center gap-1 rounded-md border border-app-line bg-app-inset px-2 py-1 text-[10px] font-bold text-ink-heading hover:bg-brand hover:text-white"
+                      >
+                        <Download size={12} /> Tải file
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -205,10 +229,36 @@ export const AcademicLibraryPage = () => {
                       onClick={() => navigate(`/student/feedback?reportId=${report.id}`)}
                       className="group flex-1 cursor-pointer rounded-xl border border-app-line bg-app-card p-5 shadow-whisper transition-colors hover:bg-app-elevated"
                     >
-                      <div
-                        className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
-                      >
-                        <FileText size={20} />
+                      <div className="mb-3 flex items-center justify-between">
+                        <div
+                          className={`flex h-10 w-10 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
+                        >
+                          <FileText size={20} />
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            title="Xem phân tích AI"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/student/feedback?reportId=${report.id}`);
+                            }}
+                            className="rounded-lg p-1.5 text-ink-muted hover:bg-purple-100 hover:text-purple-600"
+                          >
+                            <Sparkles size={14} />
+                          </button>
+                          <button
+                            type="button"
+                            title="Chat AI với tài liệu"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/student/chat?reportId=${report.id}`);
+                            }}
+                            className="rounded-lg p-1.5 text-ink-muted hover:bg-brand/10 hover:text-brand"
+                          >
+                            <MessageSquare size={14} />
+                          </button>
+                        </div>
                       </div>
                       <h3 className="mb-1 line-clamp-2 text-sm font-bold text-ink-heading transition-colors group-hover:text-brand">
                         {report.title}
@@ -227,15 +277,41 @@ export const AcademicLibraryPage = () => {
                   onClick={() => navigate(`/student/feedback?reportId=${report.id}`)}
                   className="group col-span-12 cursor-pointer rounded-xl border border-app-line bg-app-card p-5 shadow-whisper transition-colors hover:bg-app-elevated md:col-span-4"
                 >
-                  <div className="mb-3 flex items-center gap-3">
-                    <div
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
-                    >
-                      <FileText size={20} />
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-10 w-10 items-center justify-center rounded-lg ${FILE_COLORS[report.file_type?.toUpperCase() || ""] || "bg-app-inset text-ink-muted"}`}
+                      >
+                        <FileText size={20} />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase text-ink-faint">
+                        {report.file_type?.toUpperCase() || "FILE"} • {formatSize(report.file_size)}
+                      </span>
                     </div>
-                    <span className="text-[10px] font-bold uppercase text-ink-faint">
-                      {report.file_type?.toUpperCase() || "FILE"} • {formatSize(report.file_size)}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        title="Xem phân tích AI"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/student/feedback?reportId=${report.id}`);
+                        }}
+                        className="rounded-lg p-1.5 text-ink-muted hover:bg-purple-100 hover:text-purple-600"
+                      >
+                        <Sparkles size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        title="Chat AI với tài liệu"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/student/chat?reportId=${report.id}`);
+                        }}
+                        className="rounded-lg p-1.5 text-ink-muted hover:bg-brand/10 hover:text-brand"
+                      >
+                        <MessageSquare size={14} />
+                      </button>
+                    </div>
                   </div>
                   <h3 className="mb-1 line-clamp-2 text-sm font-bold text-ink-heading transition-colors group-hover:text-brand">
                     {report.title}

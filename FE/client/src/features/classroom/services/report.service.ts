@@ -22,6 +22,7 @@ export interface Report {
   reviewer_name: string | null;
   review_note: string | null;
   reviewed_at: string | null;
+  embedding_status?: string;
   created_at: string;
   updated_at: string;
 }
@@ -221,4 +222,19 @@ export const addFavorite = async (id: number) => {
 export const removeFavorite = async (id: number) => {
   const response = await axiosInstance.delete(`/reports/${id}/favorite`);
   return response.data;
+};
+
+export interface ReportReference {
+  id: number;
+  title: string;
+  authors: string | null;
+  year: number | null;
+  source: string | null;
+  url: string | null;
+  ref_order: number;
+}
+
+export const getReportReferences = async (id: number): Promise<ReportReference[]> => {
+  const response = await axiosInstance.get(`/reports/${id}/references`);
+  return response.data.items;
 };
