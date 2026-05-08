@@ -2,7 +2,7 @@
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from llm_service.app.core.config import LLMConfig
+from llm_service.app.config.config import LLMConfig
 from llm_service.app.core.tokenizer import TokenizerLoader
 import requests
 import os

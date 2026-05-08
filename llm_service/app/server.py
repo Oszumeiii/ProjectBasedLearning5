@@ -7,7 +7,7 @@ from llm_service.app.service.summary_service import summarize_text
 from llm_service.app.service.search_service import SearchService
 
 from llm_service.app.core.model import LLMModel
-from llm_service.app.core.config import LLMConfig
+from llm_service.app.config.config import LLMConfig
 from supabase_client import SupabaseRepository
 
 from schemas import (

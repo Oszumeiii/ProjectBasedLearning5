@@ -2,4 +2,4 @@ venv/
 .venv/
 env/
 
-llm_service/app/core/model_cache
+llm_service/model_cache

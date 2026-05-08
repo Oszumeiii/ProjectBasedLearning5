@@ -2,6 +2,6 @@
 
 from .core.model import LLMModel
 from .core.tokenizer import TokenizerLoader
-from .core.config import LLMConfig
+from .config.config import LLMConfig
 
 __all__ = ["LLMModel", "TokenizerLoader", "LLMConfig"]
