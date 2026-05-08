@@ -1,3 +1,5 @@
 venv/
 .venv/
 env/
+
+llm_service/app/core/model_cache

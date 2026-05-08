@@ -125,11 +125,6 @@ def stage_upload(chunks, post_id=None):
 # MAIN PIPELINE
 # =========================
 def run_pipeline(pdf_path, report_id=None, post_id=None):
-    """
-    pdf_path: đường dẫn file PDF
-    report_id: ID trong bảng reports (dùng cho reference extraction + status update)
-    post_id: ID trong bảng class_posts trên Supabase (dùng cho RAG upload)
-    """
     print("🚀 START PIPELINE")
 
     documents = stage_extract_pdf(pdf_path)
@@ -145,7 +140,7 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
 
     chunks = stage_flatten_tree(root)
 
-    stage_extract_references(documents, report_id)
+    #stage_extract_references(documents, report_id)
 
     stage_upload(chunks, post_id)
 
@@ -154,4 +149,4 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
 
 
 if __name__ == "__main__":
-    run_pipeline("data/raw_docs/pbl_report.pdf")
+    run_pipeline("data/raw_docs/pbl_report.pdf" , 24)

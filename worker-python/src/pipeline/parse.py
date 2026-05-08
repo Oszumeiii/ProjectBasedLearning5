@@ -115,42 +115,86 @@ def generate_summary_prompt(node):
     return prompt
 
 
-def summarize_node(node, model="liquid"):
-    """Generate summary using local LLM service (Liquid model)."""
-    prompt = generate_summary_prompt(node)
-    if prompt is None:
+
+
+MAX_INPUT_CHARS = 4000
+
+
+# Topic:
+# Keywords:
+# Questions:
+def summarize_node(node):
+    content = node.content
+    if not content:
         return ""
 
-    try:
-        # Call local LLM service
-        response = requests.post(
-            f"{LLM_SERVICE_URL}/summary",
-            json={
-                "messages": [
-                    {"role": "system", "content": "Bạn là một trợ lý AI chuyên tóm tắt tài liệu kỹ thuật."},
-                    {"role": "user", "content": prompt}
-                ],
-                "max_new_tokens": 500
-            },
-            timeout=LLM_SERVICE_TIMEOUT
-        )
-        response.raise_for_status()
+    prompt = f"""
+Bạn là AI tạo semantic summary cho hệ thống RAG.
+
+Mục tiêu:
+- tối ưu semantic retrieval
+- giữ technical keywords
+- giúp query match đúng section
+
+Yêu cầu:
+- <= 100 words
+- ngắn gọn
+- giữ thuật ngữ kỹ thuật
+- mô tả section này trả lời gì
+
+Content:
+{content}
+"""
+
+    response = requests.post(
+        f"{LLM_SERVICE_URL}/summary",
+        json={
+            "content": prompt,  # Gửi thẳng prompt vào trường content
+            "max_new_tokens": 150 # Tăng nhẹ để đủ format Topic/Keywords
+        },
+        timeout=60
+    )
+    
+    response.raise_for_status()
+    data = response.json()
+    return data.get("summary", "")
+    
+# def summarize_node(node, model="liquid"):
+#     """Generate summary using local LLM service (Liquid model)."""
+#     prompt = generate_summary_prompt(node)
+#     if prompt is None:
+#         return ""
+
+#     try:
+#         # Call local LLM service
+#         response = requests.post(
+#             f"{LLM_SERVICE_URL}/summary",
+#             json={
+#                 "messages": [
+#                     {"role": "system", "content": "Bạn là một trợ lý AI chuyên tóm tắt tài liệu kỹ thuật."},
+#                     {"role": "user", "content": prompt}
+#                 ],
+#                 "max_new_tokens": 150,
+#             },
+#             timeout=LLM_SERVICE_TIMEOUT
+#         )
+#         response.raise_for_status()
         
-        data = response.json()
-        summary = data.get("response", "").strip()
+#         data = response.json()
+#         summary = data.get("response", "").strip()
         
-        # Clean up code blocks if present
-        if summary.startswith("```"):
-            summary = summary.strip("`\n ")
+#         # Clean up code blocks if present
+#         if summary.startswith("```"):
+#             summary = summary.strip("`\n ")
         
-        return summary
-    except requests.exceptions.ConnectionError:
-        print(f"[ERROR] Could not connect to LLM service at {LLM_SERVICE_URL}")
-        print("[INFO] Make sure llm_service is running: python3 run_llm_server.py")
-        return ""
-    except Exception as e:
-        print(f"[ERROR] LLM service error: {e}")
-        return ""
+#         return summary
+#     except requests.exceptions.ConnectionError:
+#         print(f"[ERROR] Could not connect to LLM service at {LLM_SERVICE_URL}")
+#         print("[INFO] Make sure llm_service is running: python3 run_llm_server.py")
+#         return ""
+#     except Exception as e:
+#         print(f"[ERROR] LLM service error: {e}")
+#         return ""
 
 
 def generate_summaries_for_tree(
@@ -185,13 +229,13 @@ def generate_summaries_for_tree(
 
     for idx, node in enumerate(candidates):
         try:
-            node.summary = summarize_node(node, model=model)
+            node.summary = summarize_node(node)
         except Exception as exc:
             node.summary = ""
             print(f"[WARN] Summary generation failed for {node.path}: {exc}")
 
         if idx < len(candidates) - 1:
-            time.sleep(sleep_between_requests_seconds)
+            time.sleep(2)
 
     return root
 

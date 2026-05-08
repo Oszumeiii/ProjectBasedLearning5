@@ -2,7 +2,7 @@ import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
-from RAG.database import supabase_client
+from src.database import supabase_client
 
 class SupabaseRepository:
     def __init__(self):
