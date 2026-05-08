@@ -21,6 +21,7 @@ import {
   checkReportPlagiarism,
   patchReportReviewNote,
   getReportReferences,
+  getReportMembers,
 } from '../controllers/report.controller'
 
 const upload = multer({
@@ -73,5 +74,8 @@ router.delete('/:id/favorite', removeFavorite)
 
 // References (extracted by worker)
 router.get('/:id/references', getReportReferences)
+
+// Members (course enrollments for group display)
+router.get('/:id/members', getReportMembers)
 
 export default router

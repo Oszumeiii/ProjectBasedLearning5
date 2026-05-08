@@ -299,6 +299,7 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
     const {
       status, courseId, authorId, projectId,
       dateFrom, dateTo, search,
+      reportType, academicYear, semester, department, tag,
       page = '1', limit = '20', sort = 'recent'
     } = req.query
 
@@ -321,9 +322,30 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
     if (typeof dateTo === 'string' && dateTo) {
       params.push(dateTo); conds.push(`r.created_at <= $${params.length}::timestamptz`)
     }
+    if (typeof reportType === 'string' && reportType) {
+      params.push(reportType); conds.push(`COALESCE(r.report_type, c.course_type) = $${params.length}`)
+    }
+    if (typeof academicYear === 'string' && academicYear) {
+      params.push(academicYear); conds.push(`COALESCE(r.academic_year, c.academic_year) = $${params.length}`)
+    }
+    if (typeof semester === 'string' && semester) {
+      params.push(semester); conds.push(`COALESCE(r.semester, c.semester) = $${params.length}`)
+    }
+    if (typeof department === 'string' && department) {
+      params.push(department); conds.push(`u.department = $${params.length}`)
+    }
+    if (typeof tag === 'string' && tag) {
+      params.push(tag); conds.push(`($${params.length} = ANY(r.tags) OR $${params.length} = ANY(p.tags))`)
+    }
     if (typeof search === 'string' && search.trim()) {
       params.push(`%${search.trim()}%`)
-      conds.push(`(r.title ILIKE $${params.length} OR r.description ILIKE $${params.length})`)
+      conds.push(`(r.title ILIKE $${params.length}
+        OR r.description ILIKE $${params.length}
+        OR r.abstract ILIKE $${params.length}
+        OR u.full_name ILIKE $${params.length}
+        OR sup.full_name ILIKE $${params.length}
+        OR c.name ILIKE $${params.length}
+        OR c.code ILIKE $${params.length})`)
     }
 
     // Role-based visibility
@@ -346,28 +368,48 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
       )`)
     }
 
+    const joins = `
+      FROM reports r
+      LEFT JOIN users u ON u.id = r.author_id
+      LEFT JOIN courses c ON c.id = r.course_id
+      LEFT JOIN projects p ON p.id = r.project_id
+      LEFT JOIN users sup ON sup.id = COALESCE(p.supervisor_id, c.lecturer_id)
+      LEFT JOIN users rv ON rv.id = r.reviewed_by
+      LEFT JOIN report_ratings rr ON rr.report_id = r.id`
+
     const where = `WHERE ${conds.join(' AND ')}`
 
     let orderBy = 'ORDER BY r.created_at DESC'
     if (sort === 'popular') orderBy = 'ORDER BY r.view_count DESC NULLS LAST'
     else if (sort === 'rated') orderBy = 'ORDER BY avg_rating DESC NULLS LAST'
+    else if (sort === 'downloads') orderBy = 'ORDER BY r.download_count DESC NULLS LAST'
 
     const [countRes, listRes] = await Promise.all([
-      pool.query(`SELECT COUNT(*)::int AS total FROM reports r ${where}`, params),
       pool.query(
-        `SELECT r.id, r.title, r.description, r.file_type, r.file_name,
-                r.status, r.visibility, r.view_count, r.download_count,
-                r.author_id, r.course_id, r.project_id, r.created_at,
+        `SELECT COUNT(DISTINCT r.id)::int AS total ${joins} ${where}`,
+        params
+      ),
+      pool.query(
+        `SELECT r.id, r.title, r.description, r.abstract, r.file_type, r.file_name,
+                r.file_size, r.status, r.visibility, r.view_count, r.download_count,
+                r.embedding_status, r.author_id, r.course_id, r.project_id,
+                r.tags, r.report_type, r.academic_year, r.semester,
+                r.created_at, r.submitted_at,
                 u.full_name AS author_name, u.email AS author_email,
-                c.name AS course_name,
+                u.student_code, u.class_name, u.department, u.major,
+                c.name AS course_name, c.code AS course_code,
+                c.course_type, c.semester AS course_semester,
+                c.academic_year AS course_academic_year,
+                p.title AS project_title,
+                sup.full_name AS supervisor_name,
+                rv.full_name AS reviewer_name,
                 COALESCE(AVG(rr.rating), 0) AS avg_rating,
-                COUNT(rr.id)::int AS rating_count
-         FROM reports r
-         LEFT JOIN users u ON u.id = r.author_id
-         LEFT JOIN courses c ON c.id = r.course_id
-         LEFT JOIN report_ratings rr ON rr.report_id = r.id
+                COUNT(DISTINCT rr.id)::int AS rating_count
+         ${joins}
          ${where}
-         GROUP BY r.id, u.full_name, u.email, c.name
+         GROUP BY r.id, u.full_name, u.email, u.student_code, u.class_name,
+                  u.department, u.major, c.name, c.code, c.course_type,
+                  c.semester, c.academic_year, p.title, sup.full_name, rv.full_name
          ${orderBy}
          LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
         [...params, limitNum, offset]
@@ -924,6 +966,41 @@ export const getReportReferences = async (req: Request, res: Response): Promise<
     res.json({ items: result.rows })
   } catch (error) {
     console.error('❌ Error in getReportReferences:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MEMBERS  (GET /reports/:id/members)
+// ══════════════════════════════════════════════════════════════
+
+export const getReportMembers = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) { res.status(401).json({ message: 'Unauthorized' }); return }
+
+    const reportId = Number(req.params.id)
+
+    const report = (await pool.query(
+      'SELECT course_id FROM reports WHERE id = $1 AND deleted_at IS NULL',
+      [reportId]
+    )).rows[0]
+
+    if (!report) { res.status(404).json({ message: 'Report not found' }); return }
+
+    if (!report.course_id) { res.json({ items: [] }); return }
+
+    const result = await pool.query(
+      `SELECT u.id, u.full_name, u.student_code, u.class_name, u.department, u.major
+       FROM enrollments e
+       JOIN users u ON u.id = e.student_id
+       WHERE e.course_id = $1 AND e.status IN ('active', 'completed')
+       ORDER BY u.full_name`,
+      [report.course_id]
+    )
+
+    res.json({ items: result.rows })
+  } catch (error) {
+    console.error('❌ Error in getReportMembers:', error)
     res.status(500).json({ message: 'Internal server error' })
   }
 }
