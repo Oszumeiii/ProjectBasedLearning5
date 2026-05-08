@@ -4,6 +4,7 @@ export interface Report {
   id: number;
   title: string;
   description: string | null;
+  abstract?: string | null;
   status: string;
   file_url: string | null;
   file_name?: string | null;
@@ -11,18 +12,36 @@ export interface Report {
   file_size: number | null;
   visibility: string;
   view_count: number;
+  download_count?: number;
   content: string | null;
   project_id: number | null;
   course_id: number | null;
   course_name?: string | null;
+  course_code?: string | null;
+  course_type?: string | null;
+  course_semester?: string | null;
+  course_academic_year?: string | null;
   research_paper_id: number | null;
   author_id: number;
   author_name: string;
   author_email: string;
+  student_code?: string | null;
+  class_name?: string | null;
+  department?: string | null;
+  major?: string | null;
   reviewer_name: string | null;
+  supervisor_name?: string | null;
+  project_title?: string | null;
   review_note: string | null;
   reviewed_at: string | null;
+  submitted_at?: string | null;
   embedding_status?: string;
+  tags?: string[];
+  report_type?: string | null;
+  academic_year?: string | null;
+  semester?: string | null;
+  avg_rating?: number;
+  rating_count?: number;
   created_at: string;
   updated_at: string;
 }
@@ -70,9 +89,23 @@ export interface ListReportsParams {
   authorId?: number;
   projectId?: number;
   search?: string;
+  reportType?: string;
+  academicYear?: string;
+  semester?: string;
+  department?: string;
+  tag?: string;
   page?: number;
   limit?: number;
-  sort?: "recent" | "popular" | "rated" | "newest";
+  sort?: "recent" | "popular" | "rated" | "newest" | "downloads";
+}
+
+export interface ReportMember {
+  id: number;
+  full_name: string;
+  student_code: string | null;
+  class_name: string | null;
+  department: string | null;
+  major: string | null;
 }
 
 export const listReports = async (params?: ListReportsParams) => {
@@ -236,5 +269,10 @@ export interface ReportReference {
 
 export const getReportReferences = async (id: number): Promise<ReportReference[]> => {
   const response = await axiosInstance.get(`/reports/${id}/references`);
+  return response.data.items;
+};
+
+export const getReportMembers = async (id: number): Promise<ReportMember[]> => {
+  const response = await axiosInstance.get(`/reports/${id}/members`);
   return response.data.items;
 };
