@@ -3,14 +3,14 @@
 from flask import Flask, request, jsonify
 from pydantic import ValidationError
 
-from llm_service.app.service.summary_service import summarize_text
-from llm_service.app.service.search_service import SearchService
+from app.service.summary_service import summarize_text
+from app.service.search_service import SearchService
 
-from llm_service.app.core.model import LLMModel
-from llm_service.app.config.config import LLMConfig
-from supabase_client import SupabaseRepository
+from app.core.model import LLMModel
+from app.config.config import LLMConfig
+from app.database.supabase_client import SupabaseRepository
 
-from schemas import (
+from app.schemas.schemas import (
     GenerateRequest,
     SummaryRequest,
     AnswerRequest,

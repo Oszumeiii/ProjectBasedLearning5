@@ -1,7 +1,7 @@
 import re
 import logging
 
-from schemas import Message
+from app.schemas.schemas import Message
 
 
 class SearchService:

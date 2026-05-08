@@ -1,4 +1,4 @@
-from llm_service.app.core.model import LLMModel
+from app.core.model import LLMModel
 
 llm = LLMModel()
 

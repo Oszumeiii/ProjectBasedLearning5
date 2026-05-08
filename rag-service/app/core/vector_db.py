@@ -18,5 +18,5 @@ class VectorDB:
         return self.collection.query(
             query_embeddings=[query_vector],
             n_results=n_results,
-            where=filter_dict # Dùng để lọc theo report_id
+            where=filter_dict 
         )

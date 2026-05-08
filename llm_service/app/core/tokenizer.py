@@ -1,7 +1,7 @@
 """Tokenizer Loader for LLM Service"""
 
 from transformers import AutoTokenizer
-from llm_service.app.config.config import LLMConfig
+from app.config.config import LLMConfig
 
 
 class TokenizerLoader:

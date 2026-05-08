@@ -4,7 +4,7 @@ import time
 import uuid
 import requests
 
-from llm_service.app.database.supabase_client import SupabaseRepository
+from src.database.supabase_client import SupabaseRepository
 supabase_repo = SupabaseRepository()
 # Local LLM service configuration
 LLM_SERVICE_URL = "http://localhost:5000"
@@ -21,6 +21,7 @@ class Node:
         self.children = []
         self.parent = None
         self.path = ""
+        self.embedding = None
 
     def to_dict(self):
         return {
@@ -30,7 +31,8 @@ class Node:
             "content": "\n".join(self.content).strip(),
             "summary": self.summary,
             "path": self.path,
-            "children": [child.to_dict() for child in self.children]
+            "children": [child.to_dict() for child in self.children],
+            "embedding": self.embedding
         }
 
 
@@ -119,9 +121,6 @@ def generate_summary_prompt(node):
 
 
 
-MAX_INPUT_CHARS = 4000
-
-
 # Topic:
 # Keywords:
 # Questions:
@@ -161,43 +160,6 @@ Content:
     data = response.json()
     return data.get("summary", "")
     
-# def summarize_node(node, model="liquid"):
-#     """Generate summary using local LLM service (Liquid model)."""
-#     prompt = generate_summary_prompt(node)
-#     if prompt is None:
-#         return ""
-
-#     try:
-#         # Call local LLM service
-#         response = requests.post(
-#             f"{LLM_SERVICE_URL}/summary",
-#             json={
-#                 "messages": [
-#                     {"role": "system", "content": "Bạn là một trợ lý AI chuyên tóm tắt tài liệu kỹ thuật."},
-#                     {"role": "user", "content": prompt}
-#                 ],
-#                 "max_new_tokens": 150,
-#             },
-#             timeout=LLM_SERVICE_TIMEOUT
-#         )
-#         response.raise_for_status()
-        
-#         data = response.json()
-#         summary = data.get("response", "").strip()
-        
-#         # Clean up code blocks if present
-#         if summary.startswith("```"):
-#             summary = summary.strip("`\n ")
-        
-#         return summary
-#     except requests.exceptions.ConnectionError:
-#         print(f"[ERROR] Could not connect to LLM service at {LLM_SERVICE_URL}")
-#         print("[INFO] Make sure llm_service is running: python3 run_llm_server.py")
-#         return ""
-#     except Exception as e:
-#         print(f"[ERROR] LLM service error: {e}")
-#         return ""
-
 
 def generate_summaries_and_embedding_for_tree(
     root,
@@ -207,7 +169,6 @@ def generate_summaries_and_embedding_for_tree(
     model="liquid",
     sleep_between_requests_seconds=15,
 ):
-    """Populate node.summary for tree nodes using a rate-limited LLM summarization."""
     candidates = []
 
     def collect(n):
@@ -225,7 +186,7 @@ def generate_summaries_and_embedding_for_tree(
         print(f"- {n.path} (Content length: {len(n.content)})")
 
     if max_nodes is None:
-        max_nodes = len(candidates)
+        max_nodes = 5
 
     candidates = sorted(candidates, key=lambda n: (n.level, n.path))[:max_nodes]
 
@@ -234,6 +195,8 @@ def generate_summaries_and_embedding_for_tree(
             node.summary = summarize_node(node)
             embedding = supabase_repo.get_embedding_vector(node.summary)
             node.embedding = embedding
+            
+            
         except Exception as exc:
             node.summary = ""
             node.embedding = None
@@ -259,7 +222,8 @@ def flatten_tree(node):
                 "content": "\n".join(n.content).strip(),
                 "summary": n.summary,
                 "path": n.path,
-                "level": n.level
+                "level": n.level,
+                "embedding": n.embedding
             })
         for c in n.children:
             dfs(c)

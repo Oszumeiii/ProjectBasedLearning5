@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
-from src.database import supabase_client
-
 class SupabaseRepository:
     def __init__(self):
         load_dotenv()
@@ -51,7 +49,6 @@ class SupabaseRepository:
         """
         if not text or not isinstance(text, str):
             return None
-        # Model trả về numpy array, cần chuyển sang list để lưu vào Supabase
         embedding = self.embedding_model.encode(text)
         return embedding.tolist()
 
@@ -96,25 +93,27 @@ class SupabaseRepository:
             return None
 
     
-def upload_to_supabase(flat_chunks, report_id=None):
-    """Upload chunks vào Supabase table 'nodes'. report_id dùng làm post_id."""
-    post_id_value = report_id if report_id is not None else 0
-    data_to_insert = []
-    for idx, chunk in enumerate(flat_chunks):
-        data_to_insert.append({
-            "post_id": post_id_value,
-            "title": chunk.get("title"),
-            "summary": chunk.get("summary"),
-            "content": chunk.get("content"),
-            "path": chunk.get("path"),
-            "level": chunk.get("level"),
-            "node_order": idx,
-        })
+    def upload_to_supabase(self, flat_chunks, report_id=None):
+        post_id_value = report_id if report_id is not None else 0
+        data_to_insert = []
+        
+        for idx, chunk in enumerate(flat_chunks):
+            print(type(chunk.get("embedding")))
+            data_to_insert.append({
+                "post_id": post_id_value,
+                "title": chunk.get("title"),
+                "summary": chunk.get("summary"),
+                "content": chunk.get("content"),
+                "path": chunk.get("path"),
+                "level": chunk.get("level"),
+                "node_order": idx,
+                "embedding": chunk.get("embedding")  
+            })
 
-    try:
-        response = supabase_client.table("nodes").insert(data_to_insert).execute()
-        print(f"✅ Đã upload {len(data_to_insert)} chunks vào Supabase (report_id={post_id_value})")
-        return response
-    except Exception as e:
-        print(f"❌ Lỗi khi insert vào Supabase: {e}")
-        return None
+        try:
+            response = self.client.table("nodes").insert(data_to_insert).execute()
+            print(f"✅ Đã upload {len(data_to_insert)} chunks vào Supabase (report_id={post_id_value})")
+            return response
+        except Exception as e:
+            print(f"❌ Lỗi khi insert vào Supabase: {e}")
+            return None
