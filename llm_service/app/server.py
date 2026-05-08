@@ -165,6 +165,7 @@ def chat():
 # =========================================================
 # GENERATE
 # =========================================================
+# This endpoint allows for more flexible generation with conversation history and system prompts.
 @app.route("/generate", methods=["POST"])
 def generate():
     try:

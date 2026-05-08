@@ -1,6 +1,9 @@
+
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
+from sentence_transformers import SentenceTransformer
+import numpy as np
 
 from src.database import supabase_client
 
@@ -9,28 +12,70 @@ class SupabaseRepository:
         load_dotenv()
         url = os.getenv("SUPABASE_URL")
         key = os.getenv("SUPABASE_KEY")
-        
         if not url or not key:
             raise ValueError("Thiếu cấu hình SUPABASE_URL hoặc SUPABASE_KEY")
-            
         self.client: Client = create_client(url, key)
         self.table_name = "nodes"
+        # Load model only once
+        self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
+    def search_nodes_by_vector(self, report_id: int, query: str, limit: int = 10):
+        """
+        Tìm kiếm nodes dựa trên embedding vector của query.
+        Sử dụng pgvector trong Supabase để thực hiện tìm kiếm gần đúng.
+        """
+        try:
+            # Giả sử bạn đã có một hàm để chuyển query thành vector (embedding)
+            query_vector = self.get_embedding_vector(query)
+            
+            # Thực hiện truy vấn pgvector với filter report_id
+            response = self.client.rpc(
+                "search_nodes_by_vector", 
+                {
+                    "report_id": report_id,
+                    "query_vector": query_vector,
+                    "limit": limit
+                }
+            ).execute()
+            
+            return response.data
+        except Exception as e:
+            print(f"❌ Error searching nodes by vector: {e}")
+            return None
+    
+
+    def get_embedding_vector(self, text: str):
+        """
+        Sinh embedding vector cho text sử dụng SentenceTransformer.
+        Trả về list[float] để lưu vào Supabase (pgvector).
+        """
+        if not text or not isinstance(text, str):
+            return None
+        # Model trả về numpy array, cần chuyển sang list để lưu vào Supabase
+        embedding = self.embedding_model.encode(text)
+        return embedding.tolist()
+
+
 
     def insert_report_nodes(self, flat_chunks, post_id: int):
-        """Đẩy dữ liệu chunks từ worker lên database"""
-        data = [
-            {
+        """
+        Đẩy dữ liệu chunks từ worker lên database, tự động sinh embedding cho từng node (dùng summary hoặc content).
+        """
+        data = []
+        for idx, chunk in enumerate(flat_chunks):
+            # Ưu tiên summary, fallback content
+            text_for_embedding = chunk.get("summary") or chunk.get("content") or ""
+            embedding = self.get_embedding_vector(text_for_embedding)
+            data.append({
                 "post_id": post_id,
                 "title": chunk.get("title"),
                 "summary": chunk.get("summary"),
                 "content": chunk.get("content"),
                 "path": chunk.get("path"),
                 "level": chunk.get("level"),
-                "node_order": idx
-            }
-            for idx, chunk in enumerate(flat_chunks)
-        ]
-        
+                "node_order": idx,
+                "embedding": embedding
+            })
         try:
             return self.client.table(self.table_name).insert(data).execute()
         except Exception as e:

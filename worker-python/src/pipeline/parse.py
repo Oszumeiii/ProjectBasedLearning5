@@ -4,6 +4,8 @@ import time
 import uuid
 import requests
 
+from llm_service.app.database.supabase_client import SupabaseRepository
+supabase_repo = SupabaseRepository()
 # Local LLM service configuration
 LLM_SERVICE_URL = "http://localhost:5000"
 LLM_SERVICE_TIMEOUT = 30
@@ -197,7 +199,7 @@ Content:
 #         return ""
 
 
-def generate_summaries_for_tree(
+def generate_summaries_and_embedding_for_tree(
     root,
     summary_level=5,
     max_requests_per_minute=4,
@@ -230,16 +232,19 @@ def generate_summaries_for_tree(
     for idx, node in enumerate(candidates):
         try:
             node.summary = summarize_node(node)
+            embedding = supabase_repo.get_embedding_vector(node.summary)
+            node.embedding = embedding
         except Exception as exc:
             node.summary = ""
-            print(f"[WARN] Summary generation failed for {node.path}: {exc}")
+            node.embedding = None
+            print(f"[WARN] Summary or embedding generation failed for {node.path}: {exc}")
 
         if idx < len(candidates) - 1:
             time.sleep(2)
 
-    return root
-
-
+    return root            
+            
+            
 # =========================
 # FLATTEN TREE → LIST (để embed)
 # =========================

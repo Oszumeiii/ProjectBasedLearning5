@@ -137,6 +137,9 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
 
     # Optional
     generate_summaries_for_tree(root)
+    
+    embedding_summaries_for_tree(root)  # TODO: Triển khai hàm này với model embedding thực tế
+    
 
     chunks = stage_flatten_tree(root)
 
