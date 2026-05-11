@@ -26,7 +26,7 @@ import {
 } from "../../classroom/services/report.service";
 import { getMyCourses, type Course } from "../../classroom/services/course.service";
 
-/** Trang chấm bài: lọc báo cáo, kiểm tra RAG, ghi nhận xét. */
+/** Trang nhận xét báo cáo: lọc báo cáo, kiểm tra RAG, ghi nhận xét. */
 const STATUS_LABEL: Record<string, string> = {
   pending: "Chờ xử lý",
   processing: "Đang xử lý",
@@ -187,7 +187,7 @@ export const InstructorGradingPage: React.FC = () => {
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-8">
         <div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-ink-heading tracking-tight">
-            Trung tâm chấm bài
+            trung tâm nhận xét báo cáo sinh viên
           </h2>
           <p className="mt-1 max-w-xl text-sm text-ink-muted">
             Danh sách báo cáo sinh viên đã nộp, lọc theo lớp, kiểm tra trùng lặp nội dung (RAG nội bộ) và
