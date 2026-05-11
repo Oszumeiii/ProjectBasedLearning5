@@ -13,6 +13,30 @@ class SupabaseRepository:
             
         self.client: Client = create_client(url, key)
         self.table_name = "nodes"
+    
+    def search_nodes_by_vector(self, report_id: int, query: str, limit: int = 10):
+        """
+        Tìm kiếm nodes dựa trên embedding vector của query.
+        Sử dụng pgvector trong Supabase để thực hiện tìm kiếm gần đúng.
+        """
+        try:
+            # Giả sử bạn đã có một hàm để chuyển query thành vector (embedding)
+            query_vector = self.get_embedding_vector(query)
+            
+            # Thực hiện truy vấn pgvector với filter report_id
+            response = self.client.rpc(
+                "search_nodes_by_vector", 
+                {
+                    "report_id": report_id,
+                    "query_vector": query_vector,
+                    "limit": limit
+                }
+            ).execute()
+            
+            return response.data
+        except Exception as e:
+            print(f"❌ Error searching nodes by vector: {e}")
+            return None
 
     def insert_report_nodes(self, flat_chunks, post_id: int):
         """Đẩy dữ liệu chunks từ worker lên database"""

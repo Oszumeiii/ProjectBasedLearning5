@@ -1,5 +1,7 @@
 import asyncio
 
+from supabase_auth import datetime
+
 from src.utils.pdf_processor import extract_pdf_clean, extract_title
 from src.utils.toc_processor import (
     classify_lines,
@@ -9,7 +11,9 @@ from src.utils.toc_processor import (
 from src.utils.reference_extractor import extract_references
 
 from src.database.supabase_client import SupabaseRepository
-from src.database.pg_client import save_report_references
+from src.database.pg_client import (
+    save_report_references,
+)
 
 from src.pipeline.parse import (
     build_path,
@@ -19,6 +23,7 @@ from src.pipeline.parse import (
     print_tree,
     save_json,
 )
+
 
 supabase_repo = SupabaseRepository()
 # =========================
@@ -34,20 +39,8 @@ def stage_extract_pdf(pdf_path):
 # =========================
 def stage_detect_toc(documents):
     title_candidates = extract_title(documents)
-
-    print("Title Candidates:")
-    for title in title_candidates:
-        print(title)
-
     toc_lines = classify_lines(title_candidates)
-
-    print("\nFiltered TOC Lines:")
-    print(toc_lines)
-
     md_lines, structured_toc = toc_to_markdown(toc_lines)
-
-    print("\nGenerated Markdown TOC:")
-    print(md_lines)
 
     return structured_toc
 
@@ -113,30 +106,105 @@ def stage_upload(chunks, post_id=None):
 # =========================
 # MAIN PIPELINE
 # =========================
+import json
+import os
+import time
+from datetime import datetime
+
+
+RESULT_FILE = "pipeline_statistics.json"
+
+
+def save_statistics(data):
+    """
+    Save statistics into json file
+    """
+
+    if not os.path.exists(RESULT_FILE):
+        with open(RESULT_FILE, "w", encoding="utf-8") as f:
+            json.dump([], f)
+
+    with open(RESULT_FILE, "r", encoding="utf-8") as f:
+        old_data = json.load(f)
+
+    old_data.append(data)
+
+    with open(RESULT_FILE, "w", encoding="utf-8") as f:
+        json.dump(old_data, f, ensure_ascii=False, indent=4)
+
+
+def measure_stage(stage_name, func, *args, **kwargs):
+    """
+    Measure execution time for each stage
+    """
+
+    print(f"\n🔹 START {stage_name}")
+
+    start = time.time()
+
+    result = func(*args, **kwargs)
+
+    end = time.time()
+
+    duration = round(end - start, 2)
+
+    print(f"✅ DONE {stage_name} ({duration}s)")
+
+    return result, duration
+
+
 def run_pipeline(pdf_path, report_id=None, post_id=None):
+
+    pipeline_start = time.time()
+
     print("🚀 START PIPELINE")
 
+    # =========================
+    # Stage 1 - Extract PDF
+    # =========================
     documents = stage_extract_pdf(pdf_path)
 
+    # =========================
+    # Stage 2 - Detect TOC
+    # =========================
     structured_toc = stage_detect_toc(documents)
 
+
+    # =========================
+    # Stage 3 - Build Markdown
+    # =========================
     markdown_document = stage_build_markdown(documents, structured_toc)
 
+    # =========================
+    # Stage 4 - Build Tree
+    # =========================
     root = stage_build_tree(markdown_document)
 
-    # Optional
+    # =========================
+    # Stage 5 - Summary + Embedding
+    # =========================
+
     generate_summaries_and_embedding_for_tree(root)
-    
 
+    # =========================
+    # Stage 6 - Flatten Tree
+    # =========================
     chunks = stage_flatten_tree(root)
+  
+    stage_upload(
+        chunks,
+        post_id
+    )
 
-    #stage_extract_references(documents, report_id)
-
-    stage_upload(chunks, post_id)
 
     print("✅ DONE PIPELINE")
+
     return chunks
 
 
 if __name__ == "__main__":
-    run_pipeline("data/raw_docs/Bao_cao_PBL4_Huy.pdf" , post_id = 25)
+    run_pipeline(
+            pdf_path=f"data/raw_docs/report1.pdf",
+            report_id=5,
+            post_id=27
+        )

@@ -161,51 +161,81 @@ Content:
     return data.get("summary", "")
     
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
+
+
+def process_node(node):
+    try:
+        node.summary = summarize_node(node)
+
+        embedding = supabase_repo.get_embedding_vector(node.summary)
+
+        node.embedding = embedding
+
+        print(
+            f"✅ {node.path} | embedding dim = {len(embedding)}"
+        )
+
+    except Exception as exc:
+        node.summary = ""
+        node.embedding = None
+
+        print(
+            f"[WARN] Failed {node.path}: {exc}"
+        )
+
+    return node
+
+
 def generate_summaries_and_embedding_for_tree(
     root,
     summary_level=5,
-    max_requests_per_minute=4,
+    max_workers=4,
     max_nodes=None,
-    model="liquid",
-    sleep_between_requests_seconds=15,
 ):
     candidates = []
 
     def collect(n):
-        if n.level > 0 and n.level <= summary_level:
+        if 0 < n.level <= summary_level:
             content = "\n".join(n.content).strip()
+
             if content:
                 candidates.append(n)
+
         for c in n.children:
             collect(c)
 
     collect(root)
-    
+
     print(f"Total nodes to summarize: {len(candidates)}")
-    for n in candidates:
-        print(f"- {n.path} (Content length: {len(n.content)})")
 
-    if max_nodes is None:
-        max_nodes = 5
+    candidates = sorted(
+        candidates,
+        key=lambda n: (n.level, n.path)
+    )
 
-    candidates = sorted(candidates, key=lambda n: (n.level, n.path))[:max_nodes]
+    if max_nodes:
+        candidates = candidates[:max_nodes]
 
-    for idx, node in enumerate(candidates):
-        try:
-            node.summary = summarize_node(node)
-            embedding = supabase_repo.get_embedding_vector(node.summary)
-            node.embedding = embedding
-            
-            
-        except Exception as exc:
-            node.summary = ""
-            node.embedding = None
-            print(f"[WARN] Summary or embedding generation failed for {node.path}: {exc}")
+    # =========================
+    # PARALLEL EXECUTION
+    # =========================
 
-        if idx < len(candidates) - 1:
-            time.sleep(2)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
 
-    return root            
+        futures = [
+            executor.submit(process_node, node)
+            for node in candidates
+        ]
+
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"[THREAD ERROR] {e}")
+
+    return root         
             
             
 # =========================

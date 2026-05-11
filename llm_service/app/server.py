@@ -1,7 +1,12 @@
-"""Simple Flask server for LLM Service"""
+"""FastAPI server for LLM Service with async support and thread pool for CPU-bound tasks"""
 
-from flask import Flask, request, jsonify
+import asyncio
+import functools
+from concurrent.futures import ThreadPoolExecutor
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import ValidationError
+from contextlib import asynccontextmanager
 
 from app.service.summary_service import summarize_text
 from app.service.search_service import SearchService
@@ -17,10 +22,49 @@ from app.schemas.schemas import (
     ChatRequest
 )
 
-app = Flask(__name__)
-
+# Global instances
 llm = LLMModel()
 repo = SupabaseRepository()
+
+# Thread pool for CPU-bound LLM operations
+# Using 1 worker to avoid concurrent GPU/MPS contention on single model
+thread_pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="llm_worker_")
+
+# Lifespan context for startup/shutdown
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    print("🚀 LLM Service starting...")
+    print(f"📊 Thread pool initialized with 1 worker for CPU-bound LLM inference")
+    yield
+    # Shutdown
+    print("🛑 LLM Service shutting down...")
+    thread_pool.shutdown(wait=True)
+
+app = FastAPI(
+    title="LLM Service API",
+    description="Optimized LLM Service with FastAPI for parallel processing",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# =========================================================
+# ASYNC HELPERS FOR CPU-BOUND OPERATIONS
+# =========================================================
+
+async def run_cpu_bound(func, *args, **kwargs):
+    """
+    Run a CPU-bound function in thread pool to avoid blocking event loop.
+    This allows FastAPI to handle multiple requests concurrently.
+    
+    Usage:
+        await run_cpu_bound(summarize_text, content=payload.content, max_new_tokens=200)
+        await run_cpu_bound(llm.chat, "hello")
+    """
+    loop = asyncio.get_event_loop()
+    # Use functools.partial to support both positional and keyword arguments
+    fn = functools.partial(func, *args, **kwargs)
+    return await loop.run_in_executor(thread_pool, fn)
 
                   
     
@@ -40,7 +84,6 @@ def get_summary_for_node(nodes):
         return summary_nodes
 
     for node in nodes:
-        # Tạo một dictionary mới chỉ chứa các trường cần thiết cho SearchService
         node_summary = {
             "id": node.get("id"),
             "title": node.get("title") or "Không có tiêu đề",
@@ -48,90 +91,103 @@ def get_summary_for_node(nodes):
             "path": node.get("path") or ""
         }
         
-        # Kiểm tra điều kiện: Node phải có ID và ít nhất là tiêu đề hoặc tóm tắt
         if node_summary["id"]:
             summary_nodes.append(node_summary)
             
     return summary_nodes
 
-@app.route("/answer", methods=["POST"])
-def answer():
+@app.post("/answer")
+async def answer(payload: AnswerRequest):
+    """
+    Answer a question based on post content with vector search.
+    Offloads CPU-bound LLM inference to thread pool for true async handling.
+    """
     try:
-        payload = AnswerRequest(**request.json)
-
         response = repo.get_nodes_by_post(payload.post_id)
-        nodes = response.data if response else []
-        summary_nodes = get_summary_for_node(nodes)
         
-        target_id = SearchService(llm).find_relevant_node_id(
+        vector_response = repo.search_nodes_by_vector(
+            report_id=payload.report_id,
+            query=payload.query,
+            limit=15
+        )
+        
+        candidate_nodes = vector_response.data if vector_response else []
+        
+        if not candidate_nodes:
+            raise HTTPException(
+                status_code=404,
+                detail="Không tìm thấy thông tin liên quan trong Vector DB"
+            )
+
+        summary_candidates = get_summary_for_node(candidate_nodes)
+        
+        # Offload node ID finding to thread pool
+        target_id = await run_cpu_bound(
+            SearchService(llm).find_relevant_node_id,
             payload.message,
-            summary_nodes
+            summary_candidates
         )
         
         print(f"🔍 Target node ID: {target_id}")
 
         if not target_id:
-            return jsonify({
-                "response": "Xin lỗi, tôi không tìm thấy thông tin này trong báo cáo."
-            })
+            return {
+                "response": "Xin lỗi, tôi không tìm thấy thông tin này trong báo cáo.",
+                "model": LLMConfig.MODEL_NAME
+            }
 
         relevant_contents = ""
 
-        for node in nodes:
+        for node in summary_candidates:
             if str(node["id"]) == str(target_id):
                 relevant_contents = node["content"]
                 break
         
         print(f"🔍 User query: {payload.message}")
 
-        response = llm.answer_with_context(
+        # Offload answer generation to thread pool
+        response = await run_cpu_bound(
+            llm.answer_with_context,
             payload.message,
             relevant_contents
         )
 
-        return jsonify({
+        return {
             "response": response,
             "model": LLMConfig.MODEL_NAME
-        })
+        }
 
     except ValidationError as e:
-        return jsonify({
-            "error": e.errors()
-        }), 400
-
+        raise HTTPException(status_code=400, detail=e.errors())
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # =========================================================
 # SUMMARY
 # =========================================================
-@app.route("/summary", methods=["POST"])
-def generate_summary():
-    print("Received summary request")
+@app.post("/summary")
+async def generate_summary(payload: SummaryRequest):
+    """
+    Generate a summary of the provided content.
+    Offloads CPU-bound LLM inference to thread pool for true async handling.
+    Multiple requests can now be queued and processed concurrently.
+    """
+    print("📝 Received summary request")
     try:
-        payload = SummaryRequest(**request.json)
-
-        response = summarize_text(
+        # Offload CPU-intensive summarization to thread pool
+        response = await run_cpu_bound(
+            summarize_text,
             content=payload.content,
             max_new_tokens=payload.max_new_tokens
         )
 
-        return jsonify({
-            "summary": response
-        })
+        return {"summary": response}
 
     except ValidationError as e:
-        return jsonify({
-            "error": e.errors()
-        }), 400
-
+        raise HTTPException(status_code=400, detail=e.errors())
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 
@@ -139,95 +195,103 @@ def generate_summary():
 # =========================================================
 # CHAT
 # =========================================================
-@app.route("/chat", methods=["POST"])
-def chat():
+@app.post("/chat")
+async def chat(payload: ChatRequest):
+    """
+    Chat with the LLM model.
+    Offloads CPU-bound LLM inference to thread pool for true async handling.
+    """
     try:
-        payload = ChatRequest(**request.json)
+        # Offload CPU-intensive chat to thread pool
+        response = await run_cpu_bound(
+            llm.chat,
+            payload.message
+        )
 
-        response = llm.chat(payload.message)
-
-        return jsonify({
+        return {
             "response": response,
             "model": LLMConfig.MODEL_NAME
-        })
+        }
 
     except ValidationError as e:
-        return jsonify({
-            "error": e.errors()
-        }), 400
-
+        raise HTTPException(status_code=400, detail=e.errors())
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # =========================================================
 # GENERATE
 # =========================================================
-# This endpoint allows for more flexible generation with conversation history and system prompts.
-@app.route("/generate", methods=["POST"])
-def generate():
+@app.post("/generate")
+async def generate(payload: GenerateRequest):
+    """
+    Generate response with flexible conversation history and system prompts.
+    Offloads CPU-bound LLM inference to thread pool for true async handling.
+    """
     try:
-        payload = GenerateRequest(**request.json)
-
-        response = llm.generate(
-            messages=[
-                {
-                    "role": m.role,
-                    "content": m.content
-                }
-                for m in payload.messages
-            ],
+        messages = [
+            {
+                "role": m.role,
+                "content": m.content
+            }
+            for m in payload.messages
+        ]
+        
+        # Offload CPU-intensive generation to thread pool
+        response = await run_cpu_bound(
+            llm.generate,
+            messages=messages,
             max_new_tokens=payload.max_new_tokens
         )
 
-        return jsonify({
+        return {
             "response": response,
             "model": LLMConfig.MODEL_NAME
-        })
+        }
 
     except ValidationError as e:
-        return jsonify({
-            "error": e.errors()
-        }), 400
-
+        raise HTTPException(status_code=400, detail=e.errors())
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # =========================================================
 # HEALTH
 # =========================================================
-@app.route("/health", methods=["GET"])
-def health_check():
-    return jsonify({
+@app.get("/health")
+async def health_check():
+    """
+    Health check endpoint.
+    """
+    return {
         "status": "healthy",
         "model": LLMConfig.MODEL_NAME
-    })
+    }
 
 
 # =========================================================
 # CONFIG
 # =========================================================
-@app.route("/config", methods=["GET"])
-def get_config():
-    return jsonify({
+@app.get("/config")
+async def get_config():
+    """
+    Get LLM service configuration.
+    """
+    return {
         "model": LLMConfig.MODEL_NAME,
         "max_new_tokens": LLMConfig.MAX_NEW_TOKENS,
         "temperature": LLMConfig.TEMPERATURE,
         "device": LLMConfig.DEVICE
-    })
+    }
 
 
-# =========================================================
-# MAIN
-# =========================================================
+# This is handled by main.py which uses uvicorn
 if __name__ == "__main__":
-    app.run(
+    import uvicorn
+    uvicorn.run(
+        "app.server:app",
         host="0.0.0.0",
         port=5000,
-        debug=False
+        reload=False,
+        workers=1
     )

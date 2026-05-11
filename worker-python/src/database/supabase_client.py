@@ -96,9 +96,11 @@ class SupabaseRepository:
     def upload_to_supabase(self, flat_chunks, report_id=None):
         post_id_value = report_id if report_id is not None else 0
         data_to_insert = []
+        null_embedding_count = 0
         
         for idx, chunk in enumerate(flat_chunks):
-            print(type(chunk.get("embedding")))
+            embedding = chunk.get("embedding")
+            print(f"Chunk {idx} embedding: {len(embedding)}" if embedding else "None")
             data_to_insert.append({
                 "post_id": post_id_value,
                 "title": chunk.get("title"),
@@ -107,13 +109,31 @@ class SupabaseRepository:
                 "path": chunk.get("path"),
                 "level": chunk.get("level"),
                 "node_order": idx,
-                "embedding": chunk.get("embedding")  
+                "embedding": embedding  # ← Embedding đã được tính hoặc lấy từ chunk
             })
 
         try:
-            response = self.client.table("nodes").insert(data_to_insert).execute()
-            print(f"✅ Đã upload {len(data_to_insert)} chunks vào Supabase (report_id={post_id_value})")
+            response = self.client.table("nodes") \
+                .insert(data_to_insert) \
+                .execute()
+
+            print("RAW RESPONSE:", response)
+
+            if hasattr(response, "data"):
+                print("Inserted rows:", len(response.data))
+
+            if hasattr(response, "error") and response.error:
+                print("SUPABASE ERROR:", response.error)
+
+            if not response.data:
+                print("❌ Không có row nào được insert")
+                return None
+
+            print(f"✅ Upload thành công {len(response.data)} rows")
+
             return response
+
         except Exception as e:
             print(f"❌ Lỗi khi insert vào Supabase: {e}")
             return None
+        

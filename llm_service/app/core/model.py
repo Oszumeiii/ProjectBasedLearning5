@@ -28,40 +28,6 @@ class LLMModel:
             self.tokenizer_loader = TokenizerLoader()
             self.load_model()
     
-    # def load_model(self):
-    #     """Load model from pretrained"""
-    #     try:
-    #         print(f"🔄 Loading model {LLMConfig.MODEL_NAME}...")
-            
-    #         dtype = torch.float16 if LLMConfig.USE_HALF_PRECISION else torch.float32
-            
-    #         model_kwargs = {
-    #             "cache_dir": LLMConfig.CACHE_DIR,
-    #             "dtype": dtype,
-    #             "trust_remote_code": True,
-    #             "low_cpu_mem_usage": True,
-    #         }
-            
-    #         if LLMConfig.DEVICE == "cuda":
-    #             try:
-    #                 import accelerate
-    #                 model_kwargs["device_map"] = "auto"
-    #             except ImportError:
-    #                 print("⚠️ accelerate not installed, loading model to CPU first")
-            
-    #         self.model = AutoModelForCausalLM.from_pretrained(
-    #             LLMConfig.MODEL_NAME,
-    #             **model_kwargs
-    #         )
-            
-    #         # Move to device if not using device_map
-    #         if "device_map" not in model_kwargs:
-    #             self.model = self.model.to(LLMConfig.DEVICE)
-            
-    #         self.model.eval()
-    #         print(f"✅ Model loaded successfully on {LLMConfig.DEVICE}")
-    #     except Exception as e:
-    #         print(f"❌ Error loading model: {e}")
     #         raise
     def load_model(self):
         """Load model optimized for Mac M2 Pro"""

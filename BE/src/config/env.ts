@@ -46,6 +46,11 @@ export const MINIO_PUBLIC_URL = process.env.MINIO_PUBLIC_URL?.trim() ?? ''
 // ─── Upload ───
 export const UPLOAD_MAX_SIZE_MB = Number(process.env.UPLOAD_MAX_SIZE_MB ?? '50')
 
+// ─── External Services ───
+export const RAG_SERVICE_URL = process.env.RAG_SERVICE_URL ?? 'http://localhost:5001'
+export const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL ?? 'http://localhost:5000'
+export const SERVICE_TIMEOUT_MS = Number(process.env.SERVICE_TIMEOUT_MS ?? '30000')
+
 if (!JWT_SECRET) {
   console.warn('⚠️ JWT_SECRET is not set. Please set it in your .env file.')
 }

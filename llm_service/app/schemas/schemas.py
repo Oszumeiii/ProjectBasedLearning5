@@ -20,6 +20,8 @@ class SummaryRequest(BaseModel):
 class AnswerRequest(BaseModel):
     message: str
     post_id: str
+    report_id: Optional[str] = None
+    query: Optional[str] = None
 
 
 class ChatRequest(BaseModel):
