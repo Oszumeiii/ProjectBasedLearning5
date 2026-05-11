@@ -98,12 +98,8 @@ def get_summary_for_node(nodes):
 
 @app.post("/answer")
 async def answer(payload: AnswerRequest):
-    """
-    Answer a question based on post content with vector search.
-    Offloads CPU-bound LLM inference to thread pool for true async handling.
-    """
     try:
-        response = repo.get_nodes_by_post(payload.post_id)
+        nodes = repo.get_nodes_by_post(payload.post_id)
         
         vector_response = repo.search_nodes_by_vector(
             report_id=payload.report_id,
@@ -121,7 +117,6 @@ async def answer(payload: AnswerRequest):
 
         summary_candidates = get_summary_for_node(candidate_nodes)
         
-        # Offload node ID finding to thread pool
         target_id = await run_cpu_bound(
             SearchService(llm).find_relevant_node_id,
             payload.message,
@@ -138,7 +133,7 @@ async def answer(payload: AnswerRequest):
 
         relevant_contents = ""
 
-        for node in summary_candidates:
+        for node in nodes:
             if str(node["id"]) == str(target_id):
                 relevant_contents = node["content"]
                 break
