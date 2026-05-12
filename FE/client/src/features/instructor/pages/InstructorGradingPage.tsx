@@ -15,11 +15,16 @@ import {
   ShieldAlert,
   Save,
   ExternalLink,
+  CheckCircle,
+  XCircle,
+  RotateCcw,
+  Info,
 } from "lucide-react";
 import {
   listReports,
   checkReportPlagiarism,
   patchReportReviewNote,
+  updateReportStatus,
   downloadReportInBrowser,
   type Report,
   type PlagiarismCheckResult,
@@ -85,6 +90,8 @@ export const InstructorGradingPage: React.FC = () => {
   const [savingNote, setSavingNote] = useState(false);
   const [plagiarismLoading, setPlagiarismLoading] = useState(false);
   const [plagiarismResult, setPlagiarismResult] = useState<PlagiarismCheckResult | null>(null);
+  const [statusUpdating, setStatusUpdating] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ text: string; type: "success" | "error" | "info" } | null>(null);
   const lastHydratedReportId = useRef<number | null>(null);
 
   const selected = reports.find((r) => r.id === selectedId) ?? null;
@@ -142,6 +149,7 @@ export const InstructorGradingPage: React.FC = () => {
       lastHydratedReportId.current = selectedId;
       setReviewDraft(r.review_note ?? "");
       setPlagiarismResult(null);
+      setStatusMessage(null);
     }
   }, [selectedId, reports]);
 
@@ -161,6 +169,27 @@ export const InstructorGradingPage: React.FC = () => {
       alert("Không chạy được kiểm tra RAG. Thử lại sau.");
     } finally {
       setPlagiarismLoading(false);
+    }
+  };
+
+  const handleStatusUpdate = async (newStatus: "approved" | "revision_needed" | "rejected") => {
+    if (!selected) return;
+    setStatusUpdating(true);
+    setStatusMessage(null);
+    try {
+      const data = await updateReportStatus(selected.id, newStatus, reviewDraft.trim() || undefined);
+      const msg = data.reviewMessage || `Trạng thái đã cập nhật thành "${newStatus}".`;
+      setStatusMessage({ text: msg, type: newStatus === "approved" ? "success" : newStatus === "rejected" ? "error" : "info" });
+      setReports((prev) =>
+        prev.map((r) =>
+          r.id === selected.id ? { ...r, status: newStatus, review_note: reviewDraft.trim() || r.review_note } : r
+        )
+      );
+    } catch (e: unknown) {
+      const errMsg = (e as { response?: { data?: { message?: string } } })?.response?.data?.message || "Không thể cập nhật trạng thái.";
+      setStatusMessage({ text: errMsg, type: "error" });
+    } finally {
+      setStatusUpdating(false);
     }
   };
 
@@ -473,6 +502,61 @@ export const InstructorGradingPage: React.FC = () => {
                       {savingNote ? "Đang lưu…" : "Lưu nhận xét"}
                     </button>
                   </div>
+                </div>
+
+                {/* Duyệt báo cáo */}
+                <div className="rounded-xl border border-app-line bg-app-inset p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <CheckCircle size={18} className="text-emerald-400" />
+                    <h4 className="text-sm font-bold text-ink-heading">Duyệt báo cáo</h4>
+                    <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full border ${STATUS_CLASS[selected.status] || "border-app-line bg-app-inset text-ink-muted"}`}>
+                      {STATUS_LABEL[selected.status] || selected.status}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-ink-muted mb-3">
+                    Chọn trạng thái duyệt cho báo cáo. Nhận xét ở trên (nếu có) sẽ được gửi kèm.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      disabled={statusUpdating || selected.status === "approved"}
+                      onClick={() => void handleStatusUpdate("approved")}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {statusUpdating ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle size={14} />}
+                      Duyệt
+                    </button>
+                    <button
+                      type="button"
+                      disabled={statusUpdating || selected.status === "approved"}
+                      onClick={() => void handleStatusUpdate("revision_needed")}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 text-white text-xs font-bold hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {statusUpdating ? <Loader2 size={14} className="animate-spin" /> : <RotateCcw size={14} />}
+                      Yêu cầu sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled={statusUpdating || selected.status === "approved"}
+                      onClick={() => void handleStatusUpdate("rejected")}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 text-white text-xs font-bold hover:bg-red-500 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {statusUpdating ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />}
+                      Từ chối
+                    </button>
+                  </div>
+                  {statusMessage && (
+                    <div className={`mt-3 flex items-start gap-2 rounded-lg border px-3 py-2 text-xs ${
+                      statusMessage.type === "success"
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+                        : statusMessage.type === "error"
+                          ? "border-red-200 bg-red-50 text-red-800"
+                          : "border-blue-200 bg-blue-50 text-blue-800"
+                    }`}>
+                      <Info size={14} className="shrink-0 mt-0.5" />
+                      <span>{statusMessage.text}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Trích xuất nhanh */}

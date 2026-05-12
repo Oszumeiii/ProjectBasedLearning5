@@ -605,9 +605,27 @@ export const updateReportStatus = async (req: Request, res: Response): Promise<v
     }
 
     const existing = await pool.query(
-      'SELECT id, author_id, title FROM reports WHERE id = $1 AND deleted_at IS NULL', [id]
+      'SELECT id, author_id, title, course_id FROM reports WHERE id = $1 AND deleted_at IS NULL', [id]
     )
     if (existing.rows.length === 0) { res.status(404).json({ message: 'Report not found' }); return }
+
+    const report = existing.rows[0]
+
+    if (req.user.role === 'lecturer') {
+      const courseId = report.course_id
+      if (!courseId) {
+        res.status(403).json({ message: 'Báo cáo không thuộc lớp nào — bạn không có quyền duyệt.' }); return
+      }
+      const teaches = await pool.query(
+        'SELECT 1 FROM courses WHERE id = $1 AND lecturer_id = $2', [courseId, req.user.id]
+      )
+      const coLecturer = await pool.query(
+        'SELECT 1 FROM course_lecturers WHERE course_id = $1 AND lecturer_id = $2', [courseId, req.user.id]
+      )
+      if (teaches.rows.length === 0 && coLecturer.rows.length === 0) {
+        res.status(403).json({ message: 'Bạn không phải giảng viên của lớp này — không có quyền duyệt.' }); return
+      }
+    }
 
     const timeField = status === 'approved' ? 'approved_at' : status === 'rejected' ? 'rejected_at' : null
 
@@ -620,7 +638,13 @@ export const updateReportStatus = async (req: Request, res: Response): Promise<v
       [status, req.user.id, reviewNote?.trim() || null, id]
     )
 
-    const report = existing.rows[0]
+    const statusMessages: Record<string, string> = {
+      approved: `Báo cáo "${report.title}" đã được duyệt thành công.`,
+      rejected: `Báo cáo "${report.title}" đã bị từ chối.${reviewNote ? ' Lý do: ' + reviewNote : ''}`,
+      revision_needed: `Báo cáo "${report.title}" cần chỉnh sửa lại.${reviewNote ? ' Ghi chú: ' + reviewNote : ''}`,
+      under_review: `Báo cáo "${report.title}" đã chuyển sang trạng thái chờ duyệt.`
+    }
+
     const typeMap: Record<string, { type: string; title: string; msg: string }> = {
       approved: {
         type: 'report.approved', title: 'Báo cáo được duyệt',
@@ -645,7 +669,10 @@ export const updateReportStatus = async (req: Request, res: Response): Promise<v
       })
     }
 
-    res.json(result.rows[0])
+    res.json({
+      ...result.rows[0],
+      reviewMessage: statusMessages[status] || `Trạng thái báo cáo đã cập nhật thành "${status}".`
+    })
   } catch (error) {
     console.error('❌ Error in updateReportStatus:', error)
     res.status(500).json({ message: 'Internal server error' })

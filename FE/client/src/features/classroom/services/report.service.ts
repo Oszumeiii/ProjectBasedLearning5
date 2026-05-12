@@ -154,7 +154,7 @@ export const updateReportStatus = async (
   id: number,
   status: string,
   reviewNote?: string
-) => {
+): Promise<Report & { reviewMessage: string }> => {
   const response = await axiosInstance.patch(`/reports/${id}/status`, {
     status,
     reviewNote,
