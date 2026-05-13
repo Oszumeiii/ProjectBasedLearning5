@@ -3,7 +3,7 @@ from app.core.model import LLMModel
 llm = LLMModel()
 
 
-def summarize_text(content: str, max_new_tokens=200):
+def summarize_text(content: str, max_new_tokens=300) -> str:
     messages = [
         {
             "role": "system",
@@ -25,7 +25,7 @@ Hãy tóm tắt nội dung sau ngắn gọn nhưng đầy đủ ý chính:
     return llm.generate(
         messages=messages,
         max_new_tokens=max_new_tokens,
-        temperature=0.3
+        temperature=0.2
     )
     
     

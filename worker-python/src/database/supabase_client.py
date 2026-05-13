@@ -109,7 +109,7 @@ class SupabaseRepository:
                 "path": chunk.get("path"),
                 "level": chunk.get("level"),
                 "node_order": idx,
-                "embedding": embedding  # ← Embedding đã được tính hoặc lấy từ chunk
+                "embedding": embedding  
             })
 
         try:

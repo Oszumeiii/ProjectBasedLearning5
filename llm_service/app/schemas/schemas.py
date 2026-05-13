@@ -14,16 +14,14 @@ class GenerateRequest(BaseModel):
 
 class SummaryRequest(BaseModel):
     content: str
-    max_new_tokens: int = 200
+    max_new_tokens: int = 256
+
 
 
 class AnswerRequest(BaseModel):
     message: str
-    post_id: str
-    report_id: Optional[str] = None
-    query: Optional[str] = None
-
+    post_id: int
 
 class ChatRequest(BaseModel):
     message: str
-    post_id: Optional[str] = None
+    post_id: Optional[int] = None

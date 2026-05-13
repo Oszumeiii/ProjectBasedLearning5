@@ -1,4 +1,5 @@
 import os
+from sentence_transformers import SentenceTransformer
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
@@ -13,6 +14,17 @@ class SupabaseRepository:
             
         self.client: Client = create_client(url, key)
         self.table_name = "nodes"
+        
+        self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        self.client = create_client(url, key)
+    
+    def get_embedding_vector(self, text: str):
+        """Sinh embedding vector cho text sử dụng SentenceTransformer."""
+        if not text or not isinstance(text, str):
+            return None
+        embedding = self.embedding_model.encode(text)
+        return embedding.tolist()
+    
     
     def search_nodes_by_vector(self, report_id: int, query: str, limit: int = 10):
         """
@@ -20,20 +32,17 @@ class SupabaseRepository:
         Sử dụng pgvector trong Supabase để thực hiện tìm kiếm gần đúng.
         """
         try:
-            # Giả sử bạn đã có một hàm để chuyển query thành vector (embedding)
             query_vector = self.get_embedding_vector(query)
-            
-            # Thực hiện truy vấn pgvector với filter report_id
             response = self.client.rpc(
                 "search_nodes_by_vector", 
                 {
-                    "report_id": report_id,
+                    "post_id_param": report_id,
                     "query_vector": query_vector,
-                    "limit": limit
+                    "match_count": limit
                 }
             ).execute()
             
-            return response.data
+            return response
         except Exception as e:
             print(f"❌ Error searching nodes by vector: {e}")
             return None
@@ -90,7 +99,7 @@ def upload_to_supabase(flat_chunks, report_id=None):
         })
 
     try:
-        response = supabase_client.table("nodes").insert(data_to_insert).execute()
+        response = self.client.table("nodes").insert(data_to_insert).execute()
         print(f"✅ Đã upload {len(data_to_insert)} chunks vào Supabase (report_id={post_id_value})")
         return response
     except Exception as e:

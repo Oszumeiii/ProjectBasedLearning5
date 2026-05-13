@@ -130,7 +130,7 @@ class LLMModel:
         self,
         messages: list,
         system_prompt: str = None,
-        max_new_tokens: int = None
+        max_new_tokens: int = 256
     ) -> str:
         """Generate with conversation history"""
         try:
@@ -157,7 +157,7 @@ class LLMModel:
             print(f"⚠️ Error unloading model: {e}")
     
     
-    def answer_with_context(self, user_message: str, context: str, max_new_tokens: int = None) -> str:
+    def answer_with_context(self, user_message: str, context: str, max_new_tokens: int = 256) -> str:
         """Answer user query with provided context"""
         system_prompt = (
             "Bạn là một trợ lý AI chuyên trả lời câu hỏi dựa trên nội dung tài liệu đã cho. "

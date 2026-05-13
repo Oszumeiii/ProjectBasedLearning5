@@ -88,7 +88,7 @@ def get_summary_for_node(nodes):
             "id": node.get("id"),
             "title": node.get("title") or "Không có tiêu đề",
             "summary": node.get("summary") or "Không có tóm tắt",
-            "path": node.get("path") or ""
+            # "path": node.get("path") or ""
         }
         
         if node_summary["id"]:
@@ -100,11 +100,12 @@ def get_summary_for_node(nodes):
 async def answer(payload: AnswerRequest):
     try:
         nodes = repo.get_nodes_by_post(payload.post_id)
+        nodes = nodes.data if nodes else []
         
         vector_response = repo.search_nodes_by_vector(
-            report_id=payload.report_id,
-            query=payload.query,
-            limit=15
+            report_id=payload.post_id,
+            query=payload.message,
+            limit=10
         )
         
         candidate_nodes = vector_response.data if vector_response else []
@@ -133,19 +134,28 @@ async def answer(payload: AnswerRequest):
 
         relevant_contents = ""
 
+        target_id_clean = str(target_id).strip()
+        print(f"🔍 Target node ID (cleaned): {target_id_clean}")
+        relevant_contents = ""
+
         for node in nodes:
-            if str(node["id"]) == str(target_id):
-                relevant_contents = node["content"]
+            node_id = str(node.get("id", "")).strip()
+
+            print(f"🔍 Checking node ID: {node_id}")
+
+            if node_id == target_id_clean:
+                relevant_contents = node.get("content", "")
                 break
         
         print(f"🔍 User query: {payload.message}")
-
+        print(f"🔍 Relevant content for answer generation:\n{relevant_contents}")
         # Offload answer generation to thread pool
         response = await run_cpu_bound(
             llm.answer_with_context,
             payload.message,
             relevant_contents
         )
+        print(f"🔍 Generated answer: {response}")
 
         return {
             "response": response,

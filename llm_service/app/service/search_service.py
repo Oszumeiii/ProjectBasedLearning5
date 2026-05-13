@@ -69,10 +69,10 @@ class SearchService:
         print(summary_nodes[0])
         for i, node in enumerate(summary_nodes):
             nodes_context += (
-                f"Node {i+1}:\n"
+                #f"Node {i+1}:\n"
                 f"  ID: {node.get('id')}\n"
                 f"  Tiêu đề: {node.get('title')}\n"
-                #f"  Tóm tắt: {node.get('summary')}\n"
+                f"  Tóm tắt: {node.get('summary')}\n"
                 #f"  Path: {node.get('path')}\n"
                 "------------------\n"
             )
