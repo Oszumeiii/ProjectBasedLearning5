@@ -33,7 +33,7 @@ const InstructorLayout = () => {
           </NavLink>
           <NavLink to="/instructor/grading" className={linkClass}>
             <span className="material-symbols-outlined">analytics</span>
-            Chấm bài
+            Nhận xét
           </NavLink>
         </nav>
 

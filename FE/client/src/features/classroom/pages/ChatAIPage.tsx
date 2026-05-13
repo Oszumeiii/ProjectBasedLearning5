@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Send, Bot, User, FileText, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getReportById, type Report } from "../services/report.service";
+import { askRagQA } from "../services/rag.service";
 
 interface Message {
   id: string;
@@ -32,7 +33,7 @@ export const ChatAIPage = () => {
           {
             id: "welcome",
             role: "assistant",
-            content: `Xin chào! Tôi là trợ lý AI cho tài liệu "${data.title}". Bạn có thể hỏi tôi bất kỳ câu hỏi gì về nội dung báo cáo này.`,
+            content: `Xin chao! Toi la tro ly AI cho tai lieu "${data.title}". Ban co the hoi toi bat ky cau hoi gi ve noi dung bao cao nay.`,
             timestamp: new Date(),
           },
         ]);
@@ -48,7 +49,7 @@ export const ChatAIPage = () => {
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: `user-${Date.now()}`,
@@ -61,18 +62,31 @@ export const ChatAIPage = () => {
     setInput("");
     setIsTyping(true);
 
-    // TODO: Integrate with actual RAG API endpoint
-    setTimeout(() => {
+    try {
+      const result = await askRagQA({
+        question: userMessage.content,
+        reportId: reportId ? Number(reportId) : null,
+      });
+
       const aiResponse: Message = {
         id: `ai-${Date.now()}`,
         role: "assistant",
-        content:
-          "Tính năng Chat AI đang được phát triển. Hệ thống sẽ sử dụng RAG (Retrieval-Augmented Generation) để trả lời câu hỏi dựa trên nội dung tài liệu của bạn.",
+        content: result.answer,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, aiResponse]);
+    } catch (err) {
+      console.error("Failed to ask RAG QA", err);
+      const aiResponse: Message = {
+        id: `ai-error-${Date.now()}`,
+        role: "assistant",
+        content: "Khong the gui cau hoi toi he thong RAG. Vui long thu lai sau.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, aiResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -84,7 +98,6 @@ export const ChatAIPage = () => {
 
   return (
     <div className="flex h-full flex-col bg-app">
-      {/* Header */}
       <div className="flex items-center gap-4 border-b border-app-line bg-app-card px-6 py-4">
         <button
           type="button"
@@ -108,7 +121,6 @@ export const ChatAIPage = () => {
         </div>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto px-6 py-6">
         <div className="mx-auto max-w-3xl space-y-4">
           {messages.map((msg) => (
@@ -164,14 +176,13 @@ export const ChatAIPage = () => {
         </div>
       </div>
 
-      {/* Input */}
       <div className="border-t border-app-line bg-app-card px-6 py-4">
         <div className="mx-auto flex max-w-3xl items-end gap-3">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Hỏi về nội dung tài liệu..."
+            placeholder="Hoi ve noi dung tai lieu..."
             rows={1}
             className="flex-1 resize-none rounded-xl border border-app-line bg-app-inset px-4 py-3 text-sm text-ink-heading placeholder:text-ink-faint focus:border-brand/35 focus:outline-none focus:ring-2 focus:ring-brand/15"
           />
