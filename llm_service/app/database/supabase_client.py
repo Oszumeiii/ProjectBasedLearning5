@@ -16,7 +16,7 @@ class SupabaseRepository:
         self.table_name = "nodes"
         
         self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-        self.client = create_client(url, key)
+        #self.client = create_client(url, key)
     
     def get_embedding_vector(self, text: str):
         """Sinh embedding vector cho text sử dụng SentenceTransformer."""

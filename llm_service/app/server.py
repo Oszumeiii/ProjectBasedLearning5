@@ -127,8 +127,14 @@ async def answer(payload: AnswerRequest):
         print(f"🔍 Target node ID: {target_id}")
 
         if not target_id:
+            response = await run_cpu_bound(
+                llm.answer_without_context,
+                payload.message
+            )
+            response = response.strip() if response else "Xin lỗi, tôi không thể tìm thấy thông tin liên quan để trả lời câu hỏi của bạn."
+            
             return {
-                "response": "Xin lỗi, tôi không tìm thấy thông tin này trong báo cáo.",
+                "response": response,
                 "model": LLMConfig.MODEL_NAME
             }
 

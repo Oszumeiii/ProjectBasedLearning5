@@ -1,74 +1,64 @@
-"""LLM Model Loader and Interface"""
+"""LLM Model using Ollama"""
 
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from app.config.config import LLMConfig
-from app.core.tokenizer import TokenizerLoader
 import requests
-import os
+import json
+from app.config.config import LLMConfig
 
-LLM_SERVICE_URL = os.getenv("LLM_SERVICE_URL", "http://localhost:5000")
-LLM_SERVICE_TIMEOUT = int(os.getenv("LLM_SERVICE_TIMEOUT", 30))
+OLLAMA_API_TIMEOUT = 120*2  
 
 class LLMModel:
-    """LLM Model class for LiquidAI/LFM2.5-1.2B-Instruct"""
+    """LLM Model class using Ollama (Qwen2.5-7B-Instruct)"""
     
     _instance = None
     
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance.model = None
-            cls._instance.tokenizer_loader = None
+            cls._instance.ollama_url = LLMConfig.OLLAMA_BASE_URL
+            cls._instance.model_name = LLMConfig.MODEL_NAME
         return cls._instance
     
     def __init__(self):
-        """Initialize LLM Model"""
-        if self.model is None:
-            self.tokenizer_loader = TokenizerLoader()
-            self.load_model()
+        """Initialize Ollama connection"""
+        self.check_ollama_connection()
     
-    #         raise
-    def load_model(self):
-        """Load model optimized for Mac M2 Pro"""
+    def check_ollama_connection(self):
+        """Check if Ollama server is running"""
         try:
-            print(f"🔄 Loading model {LLMConfig.MODEL_NAME}...")
+            response = requests.get(
+                f"{self.ollama_url}/api/tags",
+                timeout=5
+            )
+            response.raise_for_status()
+            models = response.json().get("models", [])
+            available_models = [m["name"] for m in models]
             
-            # M2 Pro hỗ trợ bfloat16 cực tốt, giúp tiết kiệm RAM và chạy nhanh
-            dtype = torch.bfloat16 if torch.backends.mps.is_available() else torch.float32
-            
-            model_kwargs = {
-                "cache_dir": LLMConfig.CACHE_DIR,
-                "torch_dtype": dtype, # Lưu ý: dùng torch_dtype thay vì dtype
-                "trust_remote_code": True,
-                "low_cpu_mem_usage": True,
-            }
-
-            # Tự động chọn thiết bị
-            if torch.backends.mps.is_available():
-                device = "mps"
-            elif torch.cuda.is_available():
-                device = "cuda"
+            if self.model_name not in available_models:
+                print(f"⚠️  Model {self.model_name} not found. Available models: {available_models}")
+                print(f"🔄 Pulling model {self.model_name}...")
+                self.pull_model()
             else:
-                device = "cpu"
-            
-            self.model = AutoModelForCausalLM.from_pretrained(
-                LLMConfig.MODEL_NAME,
-                **model_kwargs
-            ).to(device) 
-            
-            print(device)
-            
-            self.model.eval()
-            print(f"✅ Model loaded successfully on {device} (M2 Pro Optimized)")
-        except Exception as e:
-            print(f"❌ Error loading model: {e}")
+                print(f"✅ Ollama connected. Model {self.model_name} is available")
+        except requests.exceptions.ConnectionError:
+            print(f"❌ Ollama server not found at {self.ollama_url}")
+            print("🔄 Make sure to run: ollama serve")
             raise
-        
+        except Exception as e:
+            print(f"❌ Error checking Ollama: {e}")
+            raise
     
-    def get_tokenizer(self):
-        """Get tokenizer"""
-        return self.tokenizer_loader.get_tokenizer()
+    def pull_model(self):
+        """Pull model from Ollama"""
+        try:
+            url = f"{self.ollama_url}/api/pull"
+            data = {"name": self.model_name}
+            
+            response = requests.post(url, json=data, timeout=600)  # 10 min timeout for pulling
+            response.raise_for_status()
+            print(f"✅ Model {self.model_name} pulled successfully")
+        except Exception as e:
+            print(f"❌ Error pulling model: {e}")
+            raise
     
     def generate(
         self,
@@ -78,43 +68,56 @@ class LLMModel:
         top_p: float = None,
         top_k: int = None
     ) -> str:
-        """Generate response from messages"""
+        """Generate response from messages using Ollama"""
         try:
             # Use config defaults if not provided
             max_new_tokens = max_new_tokens or LLMConfig.MAX_NEW_TOKENS
             temperature = temperature or LLMConfig.TEMPERATURE
             top_p = top_p or LLMConfig.TOP_P
-            top_k = top_k or LLMConfig.TOP_K
             
-            tokenizer = self.get_tokenizer()
+            # Convert Message objects to dicts if needed
+            formatted_messages = []
+            for msg in messages:
+                if isinstance(msg, dict):
+                    formatted_messages.append(msg)
+                else:
+                    # Handle Message object
+                    formatted_messages.append({
+                        "role": getattr(msg, "role", "user"),
+                        "content": getattr(msg, "content", "")
+                    })
             
-            # Apply chat template
-            inputs = tokenizer.apply_chat_template(
-                messages,
-                add_generation_prompt=True,
-                tokenize=True,
-                return_dict=True,
-                return_tensors="pt"
-            ).to(self.model.device)
+            url = f"{self.ollama_url}/api/chat"
             
-            # Generate response
-            with torch.no_grad():
-                outputs = self.model.generate(
-                    **inputs,
-                    max_new_tokens=max_new_tokens,
-                    temperature=temperature,
-                    top_p=top_p,
-                    top_k=top_k,
-                    do_sample=True
-                )
+            payload = {
+                "model": self.model_name,
+                "messages": formatted_messages,
+                "stream": False,
+                "options": {
+                    "temperature": temperature,
+                    "top_p": top_p,
+                    "top_k": top_k,
+                    "num_predict": max_new_tokens,
+                }
+            }
             
-            # Decode response
-            response = tokenizer.decode(
-                outputs[0][inputs["input_ids"].shape[-1]:],
-                skip_special_tokens=True
+            response = requests.post(
+                url,
+                json=payload,
+                timeout=OLLAMA_API_TIMEOUT
             )
+            response.raise_for_status()
             
-            return response.strip()
+            result = response.json()
+            message_content = result.get("message", {}).get("content", "")
+            
+            if not message_content:
+                raise ValueError(f"Empty response from Ollama: {result}")
+            
+            return message_content.strip()
+        except requests.exceptions.Timeout:
+            print(f"❌ Ollama API timeout after {OLLAMA_API_TIMEOUT}s")
+            raise
         except Exception as e:
             print(f"❌ Error during generation: {e}")
             raise
@@ -145,28 +148,44 @@ class LLMModel:
             print(f"❌ Error in generate_with_history: {e}")
             raise
     
-    def unload_model(self):
-        """Unload model from memory"""
-        try:
-            if self.model is not None:
-                del self.model
-                self.model = None
-                torch.cuda.empty_cache()
-                print("✅ Model unloaded successfully")
-        except Exception as e:
-            print(f"⚠️ Error unloading model: {e}")
-    
-    
-    def answer_with_context(self, user_message: str, context: str, max_new_tokens: int = 256) -> str:
+    def answer_with_context(self, user_message: str, context: str, max_new_tokens: int = 512) -> str:
         """Answer user query with provided context"""
         system_prompt = (
             "Bạn là một trợ lý AI chuyên trả lời câu hỏi dựa trên nội dung tài liệu đã cho. "
-            "Hãy sử dụng thông tin trong phần CONTEXT để trả lời câu hỏi của người dùng một cách chính xác và ngắn gọn."
+            "Hãy sử dụng thông tin trong phần CONTEXT để trả lời câu hỏi của người dùng một cách chính xác ."
         )
         
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"CONTEXT:\n{context}\n\nQUESTION:\n{user_message}"}
+        ]
+        
+        return self.generate(messages, max_new_tokens=max_new_tokens)
+
+    def answer_without_context(self, user_message: str, max_new_tokens: int = 512) -> str:
+        """Answer user query without any context"""
+        system_prompt = (
+            "Bạn là một trợ lý AI chuyên trả lời câu hỏi của người dùng. "
+            "Hãy trả lời câu hỏi một cách chính xác và ngắn gọn dựa trên kiến thức chung của bạn."
+        )
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message}
+        ]
+        
+        return self.generate(messages, max_new_tokens=max_new_tokens)
+    
+    def summarize(self, text: str, max_new_tokens: int = 256) -> str:
+        """Summarize text"""
+        system_prompt = (
+            "Bạn là một trợ lý AI chuyên tạo tóm tắt. "
+            "Hãy tóm tắt nội dung sau đây một cách ngắn gọn và chính xác, giữ lại những thông tin quan trọng nhất."
+        )
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"TEXT:\n{text}"}
         ]
         
         return self.generate(messages, max_new_tokens=max_new_tokens)

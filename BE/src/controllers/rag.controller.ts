@@ -17,6 +17,29 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
     }
     console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`);
 
+    // 1. Lấy contexts từ vector search
+    let contexts: any[] = [];
+    try {
+      const contextResult = await pool.query(
+        `SELECT id, report_id, content, page_number, section_title, embedding_score as score
+         FROM report_chunks 
+         WHERE report_id = $1 
+         ORDER BY embedding_score DESC 
+         LIMIT 5`,
+        [reportId]
+      );
+      contexts = contextResult.rows.map((row: any) => ({
+        id: row.id,
+        reportId: row.report_id,
+        content: row.content,
+        pageNumber: row.page_number,
+        sectionTitle: row.section_title,
+        score: row.score
+      }));
+    } catch (dbError) {
+      console.warn('⚠️ Không thể lấy contexts từ database:', dbError);
+    }
+
     const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000';
     
     const response = await fetch(`${LLM_SERVICE_URL}/answer`, {
@@ -40,9 +63,9 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
     const data = await response.json()
 
     res.status(200).json({
-      success: true,
-      data: data.response,
-      model: data.model
+      question: question,
+      answer: data.response || data.answer || '',
+      contexts: contexts
     });
 
   } catch (error: any) {

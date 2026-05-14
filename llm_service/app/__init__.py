@@ -1,7 +1,6 @@
-"""LLM Service Package - LiquidAI/LFM2.5-1.2B-Instruct"""
+"""LLM Service Package - Qwen2.5-7B-Instruct via Ollama"""
 
 from .core.model import LLMModel
-from .core.tokenizer import TokenizerLoader
 from .config.config import LLMConfig
 
-__all__ = ["LLMModel", "TokenizerLoader", "LLMConfig"]
+__all__ = ["LLMModel", "LLMConfig"]
