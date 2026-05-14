@@ -235,7 +235,9 @@ if __name__ == "__main__":
     # =========================
     # test search in pinecone
     # =========================
-    
+    pc = PineconeDB()
+    index = pc.index
+
     query = "Đề tài nào sử dụng mô hình CNN "
     results = pc.semantic_search(query=query, top_k=3)
     print(

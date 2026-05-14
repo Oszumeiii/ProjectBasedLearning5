@@ -18,27 +18,27 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
     console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`);
 
     // 1. Lấy contexts từ vector search
-    let contexts: any[] = [];
-    try {
-      const contextResult = await pool.query(
-        `SELECT id, report_id, content, page_number, section_title, embedding_score as score
-         FROM report_chunks 
-         WHERE report_id = $1 
-         ORDER BY embedding_score DESC 
-         LIMIT 5`,
-        [reportId]
-      );
-      contexts = contextResult.rows.map((row: any) => ({
-        id: row.id,
-        reportId: row.report_id,
-        content: row.content,
-        pageNumber: row.page_number,
-        sectionTitle: row.section_title,
-        score: row.score
-      }));
-    } catch (dbError) {
-      console.warn('⚠️ Không thể lấy contexts từ database:', dbError);
-    }
+    // let contexts: any[] = [];
+    // try {
+    //   const contextResult = await pool.query(
+    //     `SELECT id, report_id, content, page_number, section_title, embedding_score as score
+    //      FROM report_chunks 
+    //      WHERE report_id = $1 
+    //      ORDER BY embedding_score DESC 
+    //      LIMIT 5`,
+    //     [reportId]
+    //   );
+    //   contexts = contextResult.rows.map((row: any) => ({
+    //     id: row.id,
+    //     reportId: row.report_id,
+    //     content: row.content,
+    //     pageNumber: row.page_number,
+    //     sectionTitle: row.section_title,
+    //     score: row.score
+    //   }));
+    // } catch (dbError) {
+    //   console.warn('⚠️ Không thể lấy contexts từ database:', dbError);
+    // }
 
     const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000';
     
@@ -65,7 +65,7 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({
       question: question,
       answer: data.response || data.answer || '',
-      contexts: contexts
+      contexts: ""
     });
 
   } catch (error: any) {
@@ -180,45 +180,73 @@ export const storeEmbeddings = async (req: Request, res: Response): Promise<void
   }
 }
 
-export const semanticSearch = async (req: Request, res: Response): Promise<void> => {
+export const semanticSearch = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+
   try {
-    const { embedding, reportId, topK = 5 } = req.body as {
-      embedding?: number[]
-      reportId?: number
-      topK?: number
+
+    const { query } = req.body as {
+      query?: string
     }
 
-    if (!embedding || embedding.length === 0) {
-      res.status(400).json({ message: 'embedding is required' })
+    if (!query) {
+      res.status(400).json({
+        message: 'query is required'
+      })
       return
     }
 
-    const k = clampTopK(topK)
-    const parsedReportId = normalizeReportId(reportId)
-    const embeddingLiteral = toPgVectorLiteral(embedding)
+    const LLM_SERVICE_URL =
+      process.env.LLM_SERVICE_URL ||
+      'http://localhost:5000'
 
-    const sql = `
-      SELECT id, report_id, chunk_text AS content, embedding <-> $1::vector AS distance
-      FROM report_chunks
-      WHERE embedding IS NOT NULL
-        AND ($2::bigint IS NULL OR report_id = $2)
-      ORDER BY embedding <-> $1::vector ASC
-      LIMIT $3
-    `
+    const response = await fetch(
+      `${LLM_SERVICE_URL}/semantic-search`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query
+        }),
+      }
+    )
 
-    const result = await pool.query(sql, [embeddingLiteral, parsedReportId, k])
+    if (!response.ok) {
 
-    res.json({
-      results: result.rows.map((row) => ({
-        id: row.id,
-        reportId: row.report_id,
-        content: row.content,
-        score: 1 / (1 + Number(row.distance))
-      }))
+      const detail = await response.text()
+
+      res.status(response.status).json({
+        message: 'Lỗi từ LLM Service',
+        detail,
+      })
+
+      return
+    }
+
+    const data = await response.json()
+
+    res.status(200).json({
+      query,
+      matches: data.matches || [],
+      total: data.matches?.length || 0
     })
-  } catch (error) {
-    console.error('Error in semanticSearch:', error)
-    res.status(500).json({ message: 'Internal server error' })
+
+  } catch (error: any) {
+
+    console.error(
+      '❌ Lỗi khi gọi LLM Service:',
+      error.message
+    )
+
+    res.status(500).json({
+      message:
+        'Không thể kết nối đến dịch vụ AI.',
+      error: error.message
+    })
   }
 }
 
