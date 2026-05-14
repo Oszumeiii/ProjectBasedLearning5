@@ -1,6 +1,69 @@
 import type { Request, Response } from 'express'
 import pool from '../config/db'
 
+export const ragQA = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+    const { question, reportId } = req.body as {
+      question?: string
+      reportId?: number
+    }
+
+    if (!question || !reportId) {
+      res.status(400).json({ 
+        message: 'Thiếu thông tin bắt buộc: question và reportId là bắt buộc.' 
+      });
+      return;
+    }
+    console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`);
+
+    const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000';
+    
+    const response = await fetch(`${LLM_SERVICE_URL}/answer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: question,
+        post_id: reportId,
+      }),
+    });
+
+    if (!response.ok) {
+      const detail = await response.text()
+      res.status(response.status).json({
+        message: 'Lỗi từ LLM Service',
+        detail,
+      });
+      return
+    }
+
+    const data = await response.json()
+
+    res.status(200).json({
+      success: true,
+      data: data.response,
+      model: data.model
+    });
+
+  } catch (error: any) {
+    console.error('❌ Lỗi khi gọi LLM Service:', error.message);
+
+    if (error.response) {
+      res.status(error.response.status).json({
+        message: 'Lỗi từ LLM Service',
+        detail: error.response.data.detail
+      });
+    } else {
+      res.status(500).json({
+        message: 'Không thể kết nối đến dịch vụ AI. Vui lòng thử lại sau.',
+        error: error.message
+      });
+    }
+  }
+};
+
+
+
 const toPgVectorLiteral = (embedding: number[]): string => {
   return `[${embedding.join(',')}]`
 }
@@ -136,125 +199,125 @@ export const semanticSearch = async (req: Request, res: Response): Promise<void>
   }
 }
 
-export const ragQA = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { question, reportId, embedding, topK = 5 } = req.body as {
-      question?: string
-      reportId?: number
-      embedding?: number[]
-      topK?: number
-    }
+// export const ragQA = async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     const { question, reportId, embedding, topK = 5 } = req.body as {
+//       question?: string
+//       reportId?: number
+//       embedding?: number[]
+//       topK?: number
+//     }
 
-    const normalizedQuestion = question?.trim()
-    if (!normalizedQuestion) {
-      res.status(400).json({ message: 'question is required' })
-      return
-    }
+//     const normalizedQuestion = question?.trim()
+//     if (!normalizedQuestion) {
+//       res.status(400).json({ message: 'question is required' })
+//       return
+//     }
 
-    const k = clampTopK(topK)
-    const parsedReportId = normalizeReportId(reportId)
-    let rows: Array<{
-      id: number
-      report_id: number
-      report_title?: string
-      content: string
-      page_number?: number | null
-      section_title?: string | null
-      score: number
-    }> = []
+//     const k = clampTopK(topK)
+//     const parsedReportId = normalizeReportId(reportId)
+//     let rows: Array<{
+//       id: number
+//       report_id: number
+//       report_title?: string
+//       content: string
+//       page_number?: number | null
+//       section_title?: string | null
+//       score: number
+//     }> = []
 
-    if (embedding?.length) {
-      const embeddingLiteral = toPgVectorLiteral(embedding)
-      const result = await pool.query(
-        `
-          SELECT
-            rc.id,
-            rc.report_id,
-            r.title AS report_title,
-            rc.chunk_text AS content,
-            rc.page_number,
-            rc.section_title,
-            1 / (1 + (rc.embedding <-> $1::vector)) AS score
-          FROM report_chunks rc
-          JOIN reports r ON r.id = rc.report_id
-          WHERE rc.embedding IS NOT NULL
-            AND r.deleted_at IS NULL
-            AND ($2::bigint IS NULL OR rc.report_id = $2)
-          ORDER BY rc.embedding <-> $1::vector ASC
-          LIMIT $3
-        `,
-        [embeddingLiteral, parsedReportId, k]
-      )
-      rows = result.rows
-    } else {
-      const likeQuery = `%${normalizedQuestion}%`
-      const result = await pool.query(
-        `
-          SELECT
-            rc.id,
-            rc.report_id,
-            r.title AS report_title,
-            rc.chunk_text AS content,
-            rc.page_number,
-            rc.section_title,
-            ts_rank_cd(
-              to_tsvector('simple', coalesce(rc.chunk_text, '')),
-              plainto_tsquery('simple', $1)
-            ) AS score
-          FROM report_chunks rc
-          JOIN reports r ON r.id = rc.report_id
-          WHERE r.deleted_at IS NULL
-            AND ($2::bigint IS NULL OR rc.report_id = $2)
-            AND (
-              to_tsvector('simple', coalesce(rc.chunk_text, '')) @@ plainto_tsquery('simple', $1)
-              OR rc.chunk_text ILIKE $3
-            )
-          ORDER BY score DESC, rc.char_count DESC NULLS LAST
-          LIMIT $4
-        `,
-        [normalizedQuestion, parsedReportId, likeQuery, k]
-      )
-      rows = result.rows
-    }
+//     if (embedding?.length) {
+//       const embeddingLiteral = toPgVectorLiteral(embedding)
+//       const result = await pool.query(
+//         `
+//           SELECT
+//             rc.id,
+//             rc.report_id,
+//             r.title AS report_title,
+//             rc.chunk_text AS content,
+//             rc.page_number,
+//             rc.section_title,
+//             1 / (1 + (rc.embedding <-> $1::vector)) AS score
+//           FROM report_chunks rc
+//           JOIN reports r ON r.id = rc.report_id
+//           WHERE rc.embedding IS NOT NULL
+//             AND r.deleted_at IS NULL
+//             AND ($2::bigint IS NULL OR rc.report_id = $2)
+//           ORDER BY rc.embedding <-> $1::vector ASC
+//           LIMIT $3
+//         `,
+//         [embeddingLiteral, parsedReportId, k]
+//       )
+//       rows = result.rows
+//     } else {
+//       const likeQuery = `%${normalizedQuestion}%`
+//       const result = await pool.query(
+//         `
+//           SELECT
+//             rc.id,
+//             rc.report_id,
+//             r.title AS report_title,
+//             rc.chunk_text AS content,
+//             rc.page_number,
+//             rc.section_title,
+//             ts_rank_cd(
+//               to_tsvector('simple', coalesce(rc.chunk_text, '')),
+//               plainto_tsquery('simple', $1)
+//             ) AS score
+//           FROM report_chunks rc
+//           JOIN reports r ON r.id = rc.report_id
+//           WHERE r.deleted_at IS NULL
+//             AND ($2::bigint IS NULL OR rc.report_id = $2)
+//             AND (
+//               to_tsvector('simple', coalesce(rc.chunk_text, '')) @@ plainto_tsquery('simple', $1)
+//               OR rc.chunk_text ILIKE $3
+//             )
+//           ORDER BY score DESC, rc.char_count DESC NULLS LAST
+//           LIMIT $4
+//         `,
+//         [normalizedQuestion, parsedReportId, likeQuery, k]
+//       )
+//       rows = result.rows
+//     }
 
-    if (rows.length === 0 && parsedReportId) {
-      const fallback = await pool.query(
-        `
-          SELECT
-            id,
-            id AS report_id,
-            title AS report_title,
-            content,
-            0.1 AS score
-          FROM reports
-          WHERE id = $1
-            AND deleted_at IS NULL
-            AND content IS NOT NULL
-            AND content <> ''
-          LIMIT 1
-        `,
-        [parsedReportId]
-      )
-      rows = fallback.rows
-    }
+//     if (rows.length === 0 && parsedReportId) {
+//       const fallback = await pool.query(
+//         `
+//           SELECT
+//             id,
+//             id AS report_id,
+//             title AS report_title,
+//             content,
+//             0.1 AS score
+//           FROM reports
+//           WHERE id = $1
+//             AND deleted_at IS NULL
+//             AND content IS NOT NULL
+//             AND content <> ''
+//           LIMIT 1
+//         `,
+//         [parsedReportId]
+//       )
+//       rows = fallback.rows
+//     }
 
-    const contexts = rows.map((row) => ({
-      id: row.id,
-      reportId: row.report_id,
-      reportTitle: row.report_title,
-      content: row.content,
-      pageNumber: row.page_number ?? null,
-      sectionTitle: row.section_title ?? null,
-      score: Number(row.score) || 0
-    }))
+//     const contexts = rows.map((row) => ({
+//       id: row.id,
+//       reportId: row.report_id,
+//       reportTitle: row.report_title,
+//       content: row.content,
+//       pageNumber: row.page_number ?? null,
+//       sectionTitle: row.section_title ?? null,
+//       score: Number(row.score) || 0
+//     }))
 
-    res.json({
-      question: normalizedQuestion,
-      answer: buildExtractiveAnswer(normalizedQuestion, contexts),
-      contexts
-    })
-  } catch (error) {
-    console.error('Error in ragQA:', error)
-    res.status(500).json({ message: 'Internal server error' })
-  }
-}
+//     res.json({
+//       question: normalizedQuestion,
+//       answer: buildExtractiveAnswer(normalizedQuestion, contexts),
+//       contexts
+//     })
+//   } catch (error) {
+//     console.error('Error in ragQA:', error)
+//     res.status(500).json({ message: 'Internal server error' })
+//   }
+// }

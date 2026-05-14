@@ -1,0 +1,48 @@
+import os
+from supabase import create_client, Client
+from dotenv import load_dotenv
+
+class SupabaseRepository:
+    def __init__(self):
+        load_dotenv()
+        url = os.getenv("SUPABASE_URL")
+        key = os.getenv("SUPABASE_KEY")
+        
+        if not url or not key:
+            raise ValueError("Thiếu cấu hình SUPABASE_URL hoặc SUPABASE_KEY")
+            
+        self.client: Client = create_client(url, key)
+        self.table_name = "nodes"
+
+    def insert_report_nodes(self, flat_chunks, post_id: int):
+        """Đẩy dữ liệu chunks từ worker lên database"""
+        data = [
+            {
+                "post_id": post_id,
+                "title": chunk.get("title"),
+                "summary": chunk.get("summary"),
+                "content": chunk.get("content"),
+                "path": chunk.get("path"),
+                "level": chunk.get("level"),
+                "node_order": idx
+            }
+            for idx, chunk in enumerate(flat_chunks)
+        ]
+        
+        try:
+            return self.client.table(self.table_name).insert(data).execute()
+        except Exception as e:
+            print(f"❌ Error inserting nodes: {e}")
+            return None
+
+    def get_nodes_by_post(self, post_id: int):
+        """Fetch toàn bộ cấu trúc báo cáo (dùng cho hiển thị mục lục/nội dung)"""
+        try:
+            return self.client.table(self.table_name)\
+                .select("*")\
+                .eq("post_id", post_id)\
+                .order("node_order")\
+                .execute()
+        except Exception as e:
+            print(f"❌ Error fetching nodes: {e}")
+            return None

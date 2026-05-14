@@ -66,7 +66,6 @@ export const ChatAIPage = () => {
       const result = await askRagQA({
         question: userMessage.content,
         reportId: reportId ? Number(reportId) : null,
-        topK: 5,
       });
 
       const aiResponse: Message = {

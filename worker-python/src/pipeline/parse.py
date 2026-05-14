@@ -2,8 +2,13 @@ import re
 import json
 import time
 import uuid
+import requests
 
-from src.utils.client_llm import client
+from src.database.supabase_client import SupabaseRepository
+supabase_repo = SupabaseRepository()
+# Local LLM service configuration
+LLM_SERVICE_URL = "http://localhost:5000"
+LLM_SERVICE_TIMEOUT = 30
 
 
 class Node:
@@ -16,6 +21,7 @@ class Node:
         self.children = []
         self.parent = None
         self.path = ""
+        self.embedding = None
 
     def to_dict(self):
         return {
@@ -25,7 +31,8 @@ class Node:
             "content": "\n".join(self.content).strip(),
             "summary": self.summary,
             "path": self.path,
-            "children": [child.to_dict() for child in self.children]
+            "children": [child.to_dict() for child in self.children],
+            "embedding": self.embedding
         }
 
 
@@ -112,65 +119,125 @@ def generate_summary_prompt(node):
     return prompt
 
 
-def summarize_node(node, model="gemini-3-flash-preview"):
-    prompt = generate_summary_prompt(node)
-    if prompt is None:
+
+
+# Topic:
+# Keywords:
+# Questions:
+def summarize_node(node):
+    content = node.content
+    if not content:
         return ""
 
-    response = client.models.generate_content(
-        model=model,
-        contents=prompt,
+    prompt = f"""
+Bạn là AI tạo semantic summary cho hệ thống RAG.
+
+Mục tiêu:
+- tối ưu semantic retrieval
+- giữ technical keywords
+- giúp query match đúng section
+
+Yêu cầu:
+- <= 100 words
+- ngắn gọn
+- giữ thuật ngữ kỹ thuật
+- mô tả section này trả lời gì
+
+Content:
+{content}
+"""
+
+    response = requests.post(
+        f"{LLM_SERVICE_URL}/summary",
+        json={
+            "content": prompt,  # Gửi thẳng prompt vào trường content
+            "max_new_tokens": 150 # Tăng nhẹ để đủ format Topic/Keywords
+        },
+        timeout=60
     )
+    
+    response.raise_for_status()
+    data = response.json()
+    return data.get("summary", "")
+    
 
-    summary = response.text.strip() if hasattr(response, "text") else str(response).strip()
-    if summary.startswith("```"):
-        summary = summary.strip("`\n ")
-    return summary
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 
-def generate_summaries_for_tree(
+def process_node(node):
+    try:
+        node.summary = summarize_node(node)
+
+        embedding = supabase_repo.get_embedding_vector(node.summary)
+
+        node.embedding = embedding
+
+        print(
+            f"✅ {node.path} | embedding dim = {len(embedding)}"
+        )
+
+    except Exception as exc:
+        node.summary = ""
+        node.embedding = None
+
+        print(
+            f"[WARN] Failed {node.path}: {exc}"
+        )
+
+    return node
+
+
+def generate_summaries_and_embedding_for_tree(
     root,
     summary_level=5,
-    max_requests_per_minute=4,
+    max_workers=4,
     max_nodes=None,
-    model="gemini-3-flash-preview",
-    sleep_between_requests_seconds=15,
 ):
-    """Populate node.summary for tree nodes using a rate-limited LLM summarization."""
     candidates = []
 
     def collect(n):
-        if n.level > 0 and n.level <= summary_level:
+        if 0 < n.level <= summary_level:
             content = "\n".join(n.content).strip()
+
             if content:
                 candidates.append(n)
+
         for c in n.children:
             collect(c)
 
     collect(root)
-    
+
     print(f"Total nodes to summarize: {len(candidates)}")
-    for n in candidates:
-        print(f"- {n.path} (Content length: {len(n.content)})")
 
-    if max_nodes is None:
-        max_nodes = len(candidates)
+    candidates = sorted(
+        candidates,
+        key=lambda n: (n.level, n.path)
+    )
 
-    candidates = sorted(candidates, key=lambda n: (n.level, n.path))[:max_nodes]
+    if max_nodes:
+        candidates = candidates[:max_nodes]
 
-    for idx, node in enumerate(candidates):
-        try:
-            node.summary = summarize_node(node, model=model)
-        except Exception as exc:
-            node.summary = ""
-            print(f"[WARN] Summary generation failed for {node.path}: {exc}")
+    # =========================
+    # PARALLEL EXECUTION
+    # =========================
 
-        if idx < len(candidates) - 1:
-            time.sleep(sleep_between_requests_seconds)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
 
-    return root
+        futures = [
+            executor.submit(process_node, node)
+            for node in candidates
+        ]
 
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"[THREAD ERROR] {e}")
 
+    return root         
+            
+            
 # =========================
 # FLATTEN TREE → LIST (để embed)
 # =========================
@@ -185,7 +252,8 @@ def flatten_tree(node):
                 "content": "\n".join(n.content).strip(),
                 "summary": n.summary,
                 "path": n.path,
-                "level": n.level
+                "level": n.level,
+                "embedding": n.embedding
             })
         for c in n.children:
             dfs(c)

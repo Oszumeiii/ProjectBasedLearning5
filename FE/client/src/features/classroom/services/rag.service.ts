@@ -24,7 +24,6 @@ export const askRagQA = async (body: {
   const response = await axiosInstance.post<RagQAResponse>("/rag/qa", {
     question: body.question,
     reportId: body.reportId ?? undefined,
-    topK: body.topK ?? 5,
   });
   return response.data;
 };
