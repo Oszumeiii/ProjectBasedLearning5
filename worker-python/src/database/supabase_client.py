@@ -13,6 +13,7 @@ class SupabaseRepository:
         if not url or not key:
             raise ValueError("Thiếu cấu hình SUPABASE_URL hoặc SUPABASE_KEY")
         self.client: Client = create_client(url, key)
+        self.report_table = "reports"
         self.table_name = "nodes"
         # Load model only once
         self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
@@ -51,8 +52,20 @@ class SupabaseRepository:
             return None
         embedding = self.embedding_model.encode(text)
         return embedding.tolist()
-
-
+    
+    
+    # Hàm cập nhật embedding cho summary doc 
+    def update_doc_summary(self, report_id: int , summary :str):
+        """
+        Cập nhật summary cho một report đã tồn tại.
+        """
+        try:
+            response = self.client.table(self.report_table).update({"summary": summary}).eq("id", report_id).execute()
+            return response
+        except Exception as e:
+            print(f"❌ Error updating node embedding: {e}")
+            return None
+        
 
     def insert_report_nodes(self, flat_chunks, post_id: int):
         """
@@ -93,14 +106,11 @@ class SupabaseRepository:
             return None
 
     
-    def upload_to_supabase(self, flat_chunks, report_id=None):
+    def upload_to_supabase(self, flat_chunks, global_summary, report_id=None):
         post_id_value = report_id if report_id is not None else 0
         data_to_insert = []
-        null_embedding_count = 0
-        
         for idx, chunk in enumerate(flat_chunks):
             embedding = chunk.get("embedding")
-            print(f"Chunk {idx} embedding: {len(embedding)}" if embedding else "None")
             data_to_insert.append({
                 "post_id": post_id_value,
                 "title": chunk.get("title"),
@@ -117,8 +127,6 @@ class SupabaseRepository:
                 .insert(data_to_insert) \
                 .execute()
 
-            print("RAW RESPONSE:", response)
-
             if hasattr(response, "data"):
                 print("Inserted rows:", len(response.data))
 
@@ -128,6 +136,13 @@ class SupabaseRepository:
             if not response.data:
                 print("❌ Không có row nào được insert")
                 return None
+            
+            update_doc_summary_response = self.update_doc_summary(report_id, global_summary)
+            if update_doc_summary_response and hasattr(update_doc_summary_response, "error") and update_doc_summary_response.error:
+                print("❌ Lỗi khi cập nhật summary cho report:", update_doc_summary_response.error)
+            else:
+                print("✅ Cập nhật summary cho report thành công")
+    
 
             print(f"✅ Upload thành công {len(response.data)} rows")
 

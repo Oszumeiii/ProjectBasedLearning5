@@ -1,7 +1,5 @@
 import asyncio
-
-from supabase_auth import datetime
-
+from http import client
 from src.utils.pdf_processor import extract_pdf_clean, extract_title
 from src.utils.toc_processor import (
     classify_lines,
@@ -23,9 +21,19 @@ from src.pipeline.parse import (
     print_tree,
     save_json,
 )
+# =========================
+# MAIN PIPELINE
+# =========================
+import json
+import os
+import time
+from datetime import datetime
 
+from src.database.pipecone import PineconeDB
 
 supabase_repo = SupabaseRepository()
+pc = PineconeDB()
+index = pc.index
 # =========================
 # STAGE 1: PDF -> Clean Text
 # =========================
@@ -95,21 +103,14 @@ def stage_extract_references(documents, report_id):
 # =========================
 # STAGE 7: Upload to Supabase (only for class_posts, not reports)
 # =========================
-def stage_upload(chunks, post_id=None):
+def stage_upload(chunks, global_summary, post_id=None):
     """Upload chunks vào Supabase. Chỉ chạy khi có post_id hợp lệ (từ class_posts)."""
     if post_id:
-        supabase_repo.upload_to_supabase(chunks, post_id)
+        supabase_repo.upload_to_supabase(chunks,global_summary, post_id)
     else:
         print("⏭️ Bỏ qua upload Supabase (không có post_id từ class_posts)")
 
 
-# =========================
-# MAIN PIPELINE
-# =========================
-import json
-import os
-import time
-from datetime import datetime
 
 
 RESULT_FILE = "pipeline_statistics.json"
@@ -184,7 +185,7 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
     # Stage 5 - Summary + Embedding
     # =========================
 
-    generate_summaries_and_embedding_for_tree(root)
+    root, global_summary = generate_summaries_and_embedding_for_tree(root)
 
     # =========================
     # Stage 6 - Flatten Tree
@@ -193,10 +194,32 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
   
     stage_upload(
         chunks,
+        global_summary , 
         post_id
     )
+    
+    # embedding global_summary lưu vào milvus 
+    # global_summary_embedding = supabase_repo.get_global_summary_embedding_vector(global_summary)
+    global_summary_embedding = pc.embed_text(global_summary)
 
+    response = index.upsert(
+        vectors=[
+            {
+                "id": str(post_id),
+                "values": global_summary_embedding,
+                "metadata": {
+                    "text": global_summary
+                }
+            }
+        ]
+    )
+    if response.get("upserted_count", 0) > 0:
+        print(f"✅ Uploaded global summary embedding ")
+    else:
+        print(f"❌ Failed to upload global summary embedding")
+  
 
+    
     print("✅ DONE PIPELINE")
 
     return chunks
@@ -204,7 +227,21 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
 
 if __name__ == "__main__":
     run_pipeline(
-            pdf_path=f"data/raw_docs/report1.pdf",
+            pdf_path=f"data/raw_docs/report5.pdf",
             report_id=5,
-            post_id=27
+            post_id=30
         )
+    
+    # =========================
+    # test search in pinecone
+    # =========================
+    
+    query = "Đề tài nào sử dụng mô hình CNN "
+    results = pc.semantic_search(query=query, top_k=3)
+    print(
+        json.dumps(
+            results.to_dict(),
+            indent=4,
+            ensure_ascii=False
+        )
+    )

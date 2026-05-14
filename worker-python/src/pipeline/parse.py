@@ -159,7 +159,37 @@ Content:
     response.raise_for_status()
     data = response.json()
     return data.get("summary", "")
-    
+
+
+
+def summarize_document(content):
+    if not content:
+        return ""
+
+    prompt = f"""Bạn là AI tạo global summary cho hệ thống RAG.
+Mục tiêu:
+- Tạo global summary giúp người dùng hiểu nhanh nội dung chính của toàn bộ tài liệu.
+- Tóm tắt ngắn gọn, dễ hiểu, không quá 200 words.
+Yêu cầu:
+- Tập trung vào các điểm chính, kết luận, và insights quan trọng.
+- Không đi vào chi tiết nhỏ, chỉ nêu ra ý chính.
+Content:
+{content}
+"""
+    response = requests.post(
+        f"{LLM_SERVICE_URL}/summary",
+        json={
+            "content": prompt,
+            "max_new_tokens": 512
+        },
+        timeout=LLM_SERVICE_TIMEOUT
+    )
+    response.raise_for_status()
+    data = response.json()
+    return data.get("summary", "")
+
+
+
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
@@ -234,8 +264,25 @@ def generate_summaries_and_embedding_for_tree(
                 future.result()
             except Exception as e:
                 print(f"[THREAD ERROR] {e}")
+        
+        high_level_summaries = []
 
-    return root         
+        for node in candidates:
+            if node.level <= 2 and hasattr(node, "summary"):
+                high_level_summaries.append(node.summary)
+
+        combined = "\n".join(high_level_summaries)
+
+        if combined.strip():
+
+            global_summary = summarize_document(combined)
+            print(f"\n📄 GLOBAL SUMMARY:\n{global_summary}\n")
+
+            # root.global_embedding = embedding_model.encode(
+            #     root.global_summary
+            # )
+
+    return root , global_summary    
             
             
 # =========================
