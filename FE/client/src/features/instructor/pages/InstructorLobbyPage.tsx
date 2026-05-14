@@ -25,9 +25,12 @@ export const InstructorLobbyPage: React.FC = () => {
             try {
               const data = await listReports({ courseId: c.id, limit: 200 });
               const items = data.items || [];
+              const uniqueAuthors = new Set(
+                items.map((r: { author_id?: number }) => r.author_id)
+              );
               return {
                 ...c,
-                reportCount: items.length,
+                reportCount: uniqueAuthors.size,
                 pendingCount: items.filter(
                   (r: { status?: string }) =>
                     r.status === "pending" || r.status === "under_review"
