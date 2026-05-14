@@ -25,3 +25,7 @@ class AnswerRequest(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     post_id: Optional[int] = None
+
+
+class semanticSearchRequest(BaseModel):
+    query: str

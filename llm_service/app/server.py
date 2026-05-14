@@ -19,12 +19,14 @@ from app.schemas.schemas import (
     GenerateRequest,
     SummaryRequest,
     AnswerRequest,
-    ChatRequest
+    ChatRequest,
+    semanticSearchRequest
 )
-
+from app.database.pipecone import PineconeDB
 # Global instances
 llm = LLMModel()
 repo = SupabaseRepository()
+pc = PineconeDB()
 
 # Thread pool for CPU-bound LLM operations
 # Using 1 worker to avoid concurrent GPU/MPS contention on single model
@@ -127,8 +129,14 @@ async def answer(payload: AnswerRequest):
         print(f"🔍 Target node ID: {target_id}")
 
         if not target_id:
+            response = await run_cpu_bound(
+                llm.answer_without_context,
+                payload.message
+            )
+            response = response.strip() if response else "Xin lỗi, tôi không thể tìm thấy thông tin liên quan để trả lời câu hỏi của bạn."
+            
             return {
-                "response": "Xin lỗi, tôi không tìm thấy thông tin này trong báo cáo.",
+                "response": response,
                 "model": LLMConfig.MODEL_NAME
             }
 
@@ -167,6 +175,59 @@ async def answer(payload: AnswerRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
+
+# =========================================================
+# SEMANTIC SEARCH
+# =========================================================
+
+
+# =====================================================
+# SEMANTIC SEARCH API
+# =====================================================
+
+@app.post("/semantic-search")
+async def semantic_search(payload: semanticSearchRequest):
+
+    try:
+
+        query = payload.query.strip()
+
+        if not query:
+            raise HTTPException(
+                status_code=400,
+                detail="query is required"
+            )
+
+        results = pc.semantic_search(
+            query=query,
+        )
+
+        formatted_results = []
+
+        for match in results.matches:
+
+            formatted_results.append({
+                "id": match.id,
+                "score": float(match.score),
+                "text": match.metadata.get("text", "")
+            })
+        
+        print(f"🔍 Semantic search results for '{query}': {len(formatted_results)}")
+        print(f"🔍 Top result: {formatted_results[0] if formatted_results else 'No matches found'}")
+        return {
+            "query": query,
+            "total": len(formatted_results),
+            "matches": formatted_results
+        }
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+        
 
 # =========================================================
 # SUMMARY
