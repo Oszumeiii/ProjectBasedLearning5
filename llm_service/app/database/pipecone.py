@@ -1,21 +1,32 @@
-from pinecone import Pinecone
-import os 
+import os
+import time
+import ssl
+import httpx
+from dotenv import load_dotenv
 from pinecone import Pinecone, ServerlessSpec
+from pinecone.errors.exceptions import PineconeConnectionError
 from sentence_transformers import SentenceTransformer
 from typing import List, Dict, Any, Optional
-import uuid
+import torch
 
-api_key = os.getenv("PINECONE_API_KEY")
+load_dotenv()
+
+CONNECTION_TIMEOUT = 10
+
+
 class PineconeDB:
 
     def __init__(
         self,
-        api_key: str = api_key,
+        api_key: str = None,
         index_name: str = "quickstart",
         dimension: int = 1024,
         cloud: str = "aws",
         region: str = "us-east-1",
+        max_retries: int = 3,
     ):
+        if api_key is None:
+            api_key = os.getenv("PINECONE_API_KEY")
 
         self.index_name = index_name
 
@@ -23,16 +34,16 @@ class PineconeDB:
         # PINECONE CLIENT
         # =========================
 
-        self.pc = Pinecone(api_key=api_key)
+        self.pc = Pinecone(
+            api_key=api_key,
+            timeout=CONNECTION_TIMEOUT,
+        )
 
         # =========================
         # CREATE INDEX IF NOT EXISTS
         # =========================
 
-        existing_indexes = [
-            idx["name"]
-            for idx in self.pc.list_indexes()
-        ]
+        existing_indexes = self._list_indexes_with_retry(max_retries)
 
         if index_name not in existing_indexes:
 
@@ -52,10 +63,29 @@ class PineconeDB:
         # EMBEDDING MODEL
         # =========================
 
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        print(f"Using device: {device}")
+
         self.embedding_model = SentenceTransformer(
             "BAAI/bge-m3",
-            device="mps"
+            device=device
         )
+
+    def _list_indexes_with_retry(self, max_retries: int = 3) -> List[str]:
+        for attempt in range(max_retries):
+            try:
+                return [idx["name"] for idx in self.pc.list_indexes()]
+            except (PineconeConnectionError, httpx.ConnectError, httpx.ConnectTimeout,
+                    ssl.SSLError, OSError, Exception) as e:
+                if attempt < max_retries - 1:
+                    wait = 2 ** (attempt + 1)
+                    print(f"⚠️ Pinecone connection failed (attempt {attempt + 1}/{max_retries}): {type(e).__name__}: {e}")
+                    print(f"   Retrying in {wait}s...")
+                    time.sleep(wait)
+                else:
+                    print(f"❌ Pinecone connection failed after {max_retries} attempts: {type(e).__name__}: {e}")
+                    raise
+        return []
 
     # =====================================================
     # EMBEDDING

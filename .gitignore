@@ -9,3 +9,15 @@ llm_service/model_cache
 .env.local
 .env.*.local
 *.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual env
+venv/
+.venv/
+
+# Env files
+.env

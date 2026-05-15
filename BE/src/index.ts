@@ -30,7 +30,7 @@ async function bootstrap() {
     console.warn('⚠️ MinIO not available — file upload sẽ không hoạt động:', (err as Error).message)
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT,'0.0.0.0', () => {
     console.log(`🚀 App is ready! Listening on http://localhost:${PORT}`)
   })
 }

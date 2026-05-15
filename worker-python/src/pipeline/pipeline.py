@@ -32,8 +32,16 @@ from datetime import datetime
 from src.database.pipecone import PineconeDB
 
 supabase_repo = SupabaseRepository()
-pc = PineconeDB()
-index = pc.index
+pc = None
+index = None
+
+
+def _get_pinecone():
+    global pc, index
+    if pc is None:
+        pc = PineconeDB()
+        index = pc.index
+    return pc, index
 # =========================
 # STAGE 1: PDF -> Clean Text
 # =========================
@@ -198,11 +206,10 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
         post_id
     )
     
-    # embedding global_summary lưu vào milvus 
-    # global_summary_embedding = supabase_repo.get_global_summary_embedding_vector(global_summary)
-    global_summary_embedding = pc.embed_text(global_summary)
+    pc_instance, pc_index = _get_pinecone()
+    global_summary_embedding = pc_instance.embed_text(global_summary)
 
-    response = index.upsert(
+    response = pc_index.upsert(
         vectors=[
             {
                 "id": str(post_id),
@@ -235,11 +242,10 @@ if __name__ == "__main__":
     # =========================
     # test search in pinecone
     # =========================
-    pc = PineconeDB()
-    index = pc.index
+    pc_instance, pc_index = _get_pinecone()
 
     query = "Đề tài nào sử dụng mô hình CNN "
-    results = pc.semantic_search(query=query, top_k=3)
+    results = pc_instance.semantic_search(query=query, top_k=3)
     print(
         json.dumps(
             results.to_dict(),
