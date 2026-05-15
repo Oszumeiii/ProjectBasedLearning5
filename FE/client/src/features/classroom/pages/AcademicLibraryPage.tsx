@@ -679,18 +679,6 @@ export const AcademicLibraryPage = () => {
                       <div className="flex shrink-0 items-center gap-2 md:flex-col md:items-stretch md:gap-2">
                         <button
                           type="button"
-                          title="Xem phân tích AI"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/student/feedback?reportId=${report.id}`);
-                          }}
-                          className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50 px-3 py-2 text-xs font-semibold text-purple-700 transition-colors hover:bg-purple-100"
-                        >
-                          <Sparkles size={13} />
-                          <span className="hidden sm:inline">Summary</span>
-                        </button>
-                        <button
-                          type="button"
                           title="Chat AI với tài liệu"
                           onClick={(e) => {
                             e.stopPropagation();

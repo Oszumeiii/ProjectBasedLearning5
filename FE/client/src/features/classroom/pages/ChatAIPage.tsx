@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 import { Send, Bot, User, FileText, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getReportById, type Report } from "../services/report.service";
@@ -10,6 +11,33 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+}
+
+function formatRagAskError(err: unknown): string {
+  const fallback =
+    "Không thể gửi câu hỏi tới hệ thống RAG. Vui lòng thử lại sau.";
+  if (!axios.isAxiosError(err)) return fallback;
+  const data = err.response?.data;
+  if (!data || typeof data !== "object") {
+    return err.message === "Network Error"
+      ? "Không kết nối được máy chủ. Kiểm tra backend đang chạy."
+      : fallback;
+  }
+  const obj = data as Record<string, unknown>;
+  if (typeof obj.detail === "string") {
+    const d = obj.detail.trim();
+    if (d.startsWith("{")) {
+      try {
+        const inner = JSON.parse(d) as { detail?: unknown };
+        if (typeof inner.detail === "string") return inner.detail;
+      } catch {
+        /* use raw detail string */
+      }
+    }
+    if (d) return d;
+  }
+  if (typeof obj.message === "string" && obj.message) return obj.message;
+  return fallback;
 }
 
 export const ChatAIPage = () => {
@@ -80,7 +108,7 @@ export const ChatAIPage = () => {
       const aiResponse: Message = {
         id: `ai-error-${Date.now()}`,
         role: "assistant",
-        content: "Khong the gui cau hoi toi he thong RAG. Vui long thu lai sau.",
+        content: formatRagAskError(err),
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, aiResponse]);
