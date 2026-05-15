@@ -2,6 +2,7 @@
 
 import asyncio
 import functools
+from typing import Optional
 from concurrent.futures import ThreadPoolExecutor
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
@@ -26,7 +27,14 @@ from app.database.pipecone import PineconeDB
 # Global instances
 llm = LLMModel()
 repo = SupabaseRepository()
-pc = PineconeDB()
+_pc: Optional[PineconeDB] = None
+
+
+def get_pinecone() -> PineconeDB:
+    global _pc
+    if _pc is None:
+        _pc = PineconeDB()
+    return _pc
 
 # Thread pool for CPU-bound LLM operations
 # Using 1 worker to avoid concurrent GPU/MPS contention on single model
@@ -199,7 +207,7 @@ async def semantic_search(payload: semanticSearchRequest):
                 detail="query is required"
             )
 
-        results = pc.semantic_search(
+        results = get_pinecone().semantic_search(
             query=query,
         )
 

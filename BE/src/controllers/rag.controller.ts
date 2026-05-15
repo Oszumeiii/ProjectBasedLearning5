@@ -15,30 +15,8 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
-    console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`);
-
-    // 1. Lấy contexts từ vector search
-    // let contexts: any[] = [];
-    // try {
-    //   const contextResult = await pool.query(
-    //     `SELECT id, report_id, content, page_number, section_title, embedding_score as score
-    //      FROM report_chunks 
-    //      WHERE report_id = $1 
-    //      ORDER BY embedding_score DESC 
-    //      LIMIT 5`,
-    //     [reportId]
-    //   );
-    //   contexts = contextResult.rows.map((row: any) => ({
-    //     id: row.id,
-    //     reportId: row.report_id,
-    //     content: row.content,
-    //     pageNumber: row.page_number,
-    //     sectionTitle: row.section_title,
-    //     score: row.score
-    //   }));
-    // } catch (dbError) {
-    //   console.warn('⚠️ Không thể lấy contexts từ database:', dbError);
-    // }
+    console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`);  
+    
 
     const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000';
     
