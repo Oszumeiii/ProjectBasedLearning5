@@ -1,5 +1,5 @@
 {
-  "id": "6a3d7aae-af50-4745-b3dc-c2c1da70aa15",
+  "id": "838d56ff-117f-4d99-a25d-e14234f590ff",
   "title": "ROOT",
   "level": 0,
   "content": "TRƯỜNG ĐẠI HỌC BÁCH KHOA\nKHOA CÔNG NGHỆ THÔNG TIN\nBÁO CÁO\nPBL4 – DỰ ÁN HỆ THỐNG THÔNG MINH\nTÊN ĐỀ TÀI\nHỆ THỐNG XE THÔNG MINH\nGiảng viên hướng dẫn: GCV.TS. BÙI THỊ THANH THANH\nNHÓM SINH VIÊN THỰC HIỆN LỚP HỌC PHẦN\nHoàng Văn Tấn Đạt 23.99B\nNguyễn Lê Dung 23.99B\nLê Dương Huy 23.99B\nTrần Đắc Đại Việt 23.99B\nĐÀ NẴNG, 12/2025",
@@ -7,7 +7,7 @@
   "path": "",
   "children": [
     {
-      "id": "5e1bd48a-d9c5-400f-98d6-885bdb4cdaa4",
+      "id": "ed7e7ffd-c284-4cc2-9264-1082bf0e9596",
       "title": "TÓM TẮT ĐỒ ÁN",
       "level": 1,
       "content": "Đồ án “Xe thông minh” được thực hiện với mục tiêu xây dựng một mô hình phương\ntiện tự hành có khả năng vận hành an toàn, ổn định và tuân thủ đúng quy tắc giao thông\ntrong môi trường mô phỏng. Vấn đề chính đặt ra là làm sao để hệ thống có thể tự động lái\ntheo line, nhận diện các tín hiệu đèn giao thông (đỏ, vàng, xanh), phát hiện biển báo Stop và\nđưa ra phản ứng tương ứng một cách chính xác theo từng tình huống thực tế mô phỏng. Bên\ncạnh đó, xe cần có khả năng chuyển đổi linh hoạt giữa chế độ tự động và chế độ điều khiển\nthủ công nhằm phục vụ quá trình kiểm thử, đánh giá và đảm bảo độ tin cậy của hệ thống\ntrong nhiều điều kiện hoạt động khác nhau, đồng thời app điều khiển cũng được thiết kế để\nstream video trực tiếp hành trình của xe, giúp người dùng theo dõi quá trình vận hành ngay\nlập tức, mặc dù không hỗ trợ xem lại.\nĐể giải quyết các yêu cầu này, nhóm áp dụng kết hợp nhiều loại cảm biến, trong đó\ncảm biến dò line giúp định hướng và duy trì xe di chuyển chính xác, camera thực hiện xử lý\nảnh và nhận diện tín hiệu giao thông gồm đèn đỏ, vàng, xanh và biển báo Stop, cùng các\nthuật toán phân tích màu sắc và phân loại biển báo theo thời gian thực. Cơ chế điều khiển\nđộng cơ thông qua vi điều khiển ESP/Arduino được tối ưu để phản hồi nhanh, chuyển hướng\nchính xác và duy trì vận tốc ổn định, đồng thời cho phép người dùng can thiệp qua chế độ\nđiều khiển thủ công. Hệ thống được thiết kế mô-đun, giúp dễ dàng điều chỉnh các thông số\nnhư tốc độ, góc lái, ngưỡng nhận diện màu sắc, cũng như mở rộng các chức năng trong\ntương lai. Kết quả cho thấy xe vận hành ổn định, bám line chính xác, phản ứng đúng với ba\ntrạng thái đèn giao thông, nhận diện và dừng chuẩn tại biển Stop, đồng thời chuyển sang chế\nđộ điều khiển thủ công mượt mà. Xe cũng xử lý tốt các tình huống như chuyển hướng khẩn\ncấp khi gặp chướng ngại vật và đồng bộ các tín hiệu từ cảm biến và camera. Thành công của\nđồ án chứng minh tính khả thi của việc tích hợp xử lý ảnh, cảm biến, điều khiển thông minh\nvà giám sát hành trình qua video trực tiếp trong mô hình xe tự hành thu nhỏ, đồng thời mở\nra tiềm năng ứng dụng trong học tập, nghiên cứu, đào tạo kỹ thuật và phát triển các hệ thống\ngiao thông thông minh và xe tự hành.",
@@ -17,7 +17,7 @@
       "embedding": null
     },
     {
-      "id": "0a606278-988a-4cf6-9aec-5ee59ea446f4",
+      "id": "4e6ede76-ba9d-4b04-8e9e-0e6dae8db47e",
       "title": "BẢNG PHÂN CÔNG NHIỆM VỤ",
       "level": 1,
       "content": "Sinh viên thực hiện Các nhiệm vụ Tự đánh giá\nHoàng Văn Tấn Đạt Phụ trách phần cứng và lập trình Đã hoàn thành\nđiều khiển logic cho xe\nNguyễn Lê Dung Phụ trách phần cứng và lập trình Đã hoàn thành\nđiều khiển logic cho xe\nLê Dương Huy Phát triển thuật toán AI và xử lý hình Đã hoàn thành\nảnh cho nhận diện đèn giao thông,\nbiển báo\nTrần Đắc Đại Việt Phát triển ứng dụng điều khiển và Đã hoàn thành\ngiám sát xe, bao gồm stream video\ntrực tiếp\n- Ngoài các nhiệm vụ chuyên môn, nhóm còn thường xuyên tổ chức các buổi trao đổi, hỗ\ntrợ lẫn nhau trong suốt quá trình thực hiện dự án. Trong những buổi này, các thành viên\ncùng nhau thảo luận các vấn đề kỹ thuật, từ lập trình, xử lý cảm biến, thiết kế thuật toán đến\ntinh chỉnh hệ thống điều khiển, nhằm giải quyết các khó khăn phát sinh và tối ưu hóa hiệu\nsuất của mô hình xe. Việc phối hợp chặt chẽ này không chỉ giúp từng thành viên nâng cao\nkiến thức, kỹ năng và kinh nghiệm thực hành, mà còn tạo nên sự đồng bộ trong quá trình\ntriển khai dự án, đảm bảo tiến độ, chất lượng công việc và sự hoàn thiện toàn diện của hệ\nthống. Sự gắn kết và tinh thần hỗ trợ lẫn nhau đã góp phần quan trọng vào thành công chung,\nđồng thời thể hiện rõ nét khả năng làm việc nhóm, kỹ năng giải quyết vấn đề và sự chủ động\ntrong nghiên cứu, phát triển dự án.",
@@ -27,48 +27,129 @@
       "embedding": null
     },
     {
-      "id": "6ee6f1b3-697f-4c6a-b83c-b79b578d0a32",
+      "id": "93dfd9a1-0d5b-4bdd-856a-b6a3e18cd326",
       "title": "DANH MỤC HÌNH ẢNH",
       "level": 1,
       "content": "Hình 1. Mô hình sản phẩm xe ........................................................................................... 4\nHình 2. Hình ảnh Arduino Uno ......................................................................................... 4\nHình 3. Hình ảnh ESP32_CAM ........................................................................................ 5\nHình 4. Hình ảnh Driver L298N ....................................................................................... 5\nHình 5. Động cơ DC bánh răng ........................................................................................ 6\nHình 6. Cảm biến dò line .................................................................................................. 7\nHình 7. Hình ảnh khung xe ............................................................................................... 7\nHình 8. Hình ảnh pin dự phòng ......................................................................................... 8\nHình 9. Nguyên lý hoạt động tônhr thể phần cứng ......................................................... 12\nHình 10. Hình ảnh thu thập dữ liệu ................................................................................. 13\nHình 11. Hình ảnh phân chia dữ liệu .............................................................................. 14\nHình 12. . Log huấn luyện mô hình MobileNetV3 Small ............................................... 20\nHình 13. Biểu đồ Accuracy và Loss của mô hình MobileNetV3 Small ......................... 20\nHình 14. Kết quả khi xe chưa nhận diện được vật thể .................................................... 23\nHình 15. Kết quả khi xe nhận diện biển báo Stop ........................................................... 23\nHình 16. Kết quả khi xe nhận diện đèn giao thông màu Đỏ ........................................... 24\nHình 17. Kết quả khi xe nhận diện đèn giao thông màu Vàng ....................................... 24\nHình 18. Kết quả khi xe nhận diện đèn giao thông màu Xanh ....................................... 24\nHình 19. Sơ đồ nguyên lý hoạt động luồng dữ liệu ........................................................ 26\nHình 20. Giao diện app điều khiển .................................................................................. 28\nHình 21. Mô hình sản phẩm xe (1) ................................................................................. 34\nHình 22. Mô hình sản phẩm xe (2) ................................................................................. 34\nHình 23. Hỉnh ành biển báo ............................................................................................ 35\n\nHình 24. Đèn màu xanh .................................................................................................. 35\nHình 25. Đèn màu vàng .................................................................................................. 35\nHình 26. Đèn màu đỏ ...................................................................................................... 35",
       "summary": "",
       "path": "DANH MỤC HÌNH ẢNH",
+      "children": [],
+      "embedding": null
+    },
+    {
+      "id": "b642fc75-0ebf-44b1-9f86-d1aa128048aa",
+      "title": "1. GIỚI THIỆU",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "1. GIỚI THIỆU",
       "children": [
         {
-          "id": "bd41949a-8a7f-45e5-966e-f42883e1688b",
-          "title": "1. GIỚI THIỆU",
+          "id": "4e1605a0-44c9-41aa-9e7e-53d74c944a74",
+          "title": "1.1. Hiện trạng các sản phẩm tương tự",
           "level": 2,
-          "content": "",
+          "content": "Trên thế giới, các hệ thống xe tự hành đã được nghiên cứu và phát triển rộng rãi, từ\ncác mô hình thu nhỏ dùng trong học tập, nghiên cứu đến các phương tiện tự hành thương\nmại. Nhiều dự án nổi bật như Waymo, Tesla Autopilot, và các mô hình xe giáo dục sử dụng\ncảm biến, camera và thuật toán AI để nhận diện tín hiệu giao thông, điều hướng theo đường\nvà tránh chướng ngại vật. Ở Việt Nam, các mô hình xe tự hành thu nhỏ chủ yếu xuất hiện\ntrong các trường đại học, phòng lab nghiên cứu, hoặc các cuộc thi Robotics; tuy nhiên, số\nlượng mô hình tích hợp đầy đủ các chức năng như nhận diện đèn giao thông, biển báo Stop\nvà vừa chạy tự động vừa có thể điều khiển thủ công vẫn còn hạn chế.",
           "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU",
+          "path": "1. GIỚI THIỆU > 1.1. Hiện trạng các sản phẩm tương tự",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "d7d94a97-d15a-448a-a472-865d7839c0e1",
+          "title": "1.2. Các vấn đề cần giải quyết",
+          "level": 2,
+          "content": "Các sản phẩm hiện tại vẫn gặp một số hạn chế, bao gồm:\n• Khả năng nhận diện đèn giao thông và biển báo còn thiếu chính xác hoặc tốc độ\nxử lý chậm.\n• Chưa tích hợp đồng bộ giữa chế độ tự động và điều khiển thủ công, khiến việc\nchuyển đổi hoạt động chưa linh hoạt.\n• Giám sát quá trình vận hành xe trực tiếp chưa được triển khai rộng rãi, đặc biệt\ntrong các mô hình học tập.\n• Khó mở rộng, nâng cấp hoặc tinh chỉnh các chức năng do kiến trúc hệ thống chưa\ntheo dạng mô-đun.",
+          "summary": "",
+          "path": "1. GIỚI THIỆU > 1.2. Các vấn đề cần giải quyết",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "bcc14279-77e9-4c37-a7e0-e40ba2e7735b",
+          "title": "1.3. Đề xuất giải pháp tổng quan",
+          "level": 2,
+          "content": "Để khắc phục các hạn chế trên, nhóm đề xuất xây dựng mô hình “Xe thông minh”\nvới các giải pháp chính:\n• Sử dụng cảm biến dò line và camera AI để xe có thể tự lái theo đường, nhận diện\nđèn giao thông và biển báo Stop chính xác theo thời gian thực.\n• Triển khai thuật toán xử lý ảnh và phân tích màu sắc, kết hợp với vi điều khiển\nESP/Arduino để điều khiển động cơ, đảm bảo xe phản hồi nhanh và ổn định.\n\n• Thiết kế kiến trúc mô-đun, giúp dễ dàng điều chỉnh các thông số, nâng cấp các\nthuật toán và mở rộng chức năng trong tương lai.\n• Phát triển ứng dụng điều khiển và giám sát, cho phép người dùng điều khiển thủ\ncông và theo dõi video trực tiếp hành trình xe, phục vụ kiểm thử và đánh giá hiệu\nquả hoạt động.\nNhững giải pháp này không chỉ hướng tới việc xây dựng một mô hình xe tự hành\nthu nhỏ hoàn chỉnh, mà còn tạo tiền đề cho việc nghiên cứu, học tập và phát triển các hệ\nthống giao thông thông minh trong tương lai.",
+          "summary": "",
+          "path": "1. GIỚI THIỆU > 1.3. Đề xuất giải pháp tổng quan",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "44c10210-0d46-4cf3-b4a6-95b87c1ee9b9",
+      "title": "2. GIẢI PHÁP",
+      "level": 1,
+      "content": "- Dựa trên yêu cầu của đề tài và các vấn đề đã được đặt ra ở phần Giới thiệu, nhóm\ntiến hành phân tích tổng thể hệ thống nhằm xác định rõ các thành phần chức năng\nvà mối quan hệ giữa chúng. Trên cơ sở đó, nhóm đề xuất một giải pháp tổng thể cho\nhệ thống xe thông minh, được chia thành ba nhóm chính gồm: giải pháp phần cứng\nvà truyền thông, giải pháp trí tuệ nhân tạo/khai thác dữ liệu, và giải pháp phần mềm\nứng dụng.\n- Mỗi nhóm giải pháp đảm nhiệm một vai trò riêng biệt trong hệ thống, từ việc thu\nthập dữ liệu, xử lý và ra quyết định thông minh, cho đến điều khiển và giám sát quá\ntrình vận hành của xe. Đồng thời, các nhóm giải pháp này được thiết kế và triển khai\ntheo hướng liên kết chặt chẽ với nhau, bảo đảm dữ liệu và tín hiệu điều khiển được\ntruyền tải đồng bộ, chính xác và kịp thời. Nhờ đó, hệ thống có thể hoạt động ổn định,\nđáp ứng yêu cầu xử lý thông tin theo thời gian thực và hoàn thành đúng các mục\ntiêu đã đề ra của đề tài.",
+      "summary": "",
+      "path": "2. GIẢI PHÁP",
+      "children": [
+        {
+          "id": "3c2ea2e7-9de0-4574-8ee8-12312a0d80f0",
+          "title": "2.1. Giải pháp phần cứng và truyền thông",
+          "level": 2,
+          "content": "a) Phần cứng\nHệ thống được thiết kế để kết hợp xe line follower với khả năng nhận diện tín hiệu\ngiao thông qua camera AI.\nDanh sách linh kiện chi tiết:\n\nSTT Linh kiện Thông số kỹ thuật chính Chức năng trong hệ thống\n1 Arduino Vi điều khiển Đọc cảm biến line, nhận lệnh điều\nUno R3 ATmega328P, 16 MHz, khiển từ ESP32-CAM qua UART,\n5V, 14 chân digital, 6 chân điều khiển driver L298N và tốc độ\nPWM động cơ.\n2 ESP32- Module ESP32, camera Chụp ảnh môi trường phía trước xe,\nCAM OV2640, WiFi 2.4 GHz, mã hóa JPEG và gửi lên server AI;\nhỗ trợ WebSocket, UART đồng thời nhận lệnh điều khiển từ\nserver và chuyển tiếp cho Arduino.\n3 Driver Mạch cầu H kép, điện áp Nhận tín hiệu PWM và điều khiển\nL298N 5–35V, dòng tối đa ~2A chiều quay của hai động cơ DC, tạo\nlực kéo cho xe di chuyển.\n4 Động cơ DC Điện áp 3–6V, có hộp số Tạo chuyển động cho bánh xe trái và\nbánh răng giảm tốc phải, quyết định tốc độ và khả năng\nleo dốc.\n5 Cảm biến dò Cảm biến hồng ngoại Phát hiện line đen/trắng trên mặt\nline (3x) TCRT5000, ngõ ra digital đường, cung cấp thông tin cho thuật\ntoán bám line trên Arduino.\n6 Khung xe 2 Chất liệu mica/acrylic, 2 Cố định toàn bộ linh kiện và tạo cấu\ntầng tầng, 4 vị trí gắn động cơ trúc cơ khí cho xe.\n7 Pin sạc dự 10000mAh Type-C PD Cung cấp nguồn cho động cơ và/hoặc\nphòng QC 3.0 mạch điều khiển.\n\n- Đây là hình ảnh sản phẩm của toàn dự án.\nHình 1. Mô hình sản phẩm xe\na.1. Arduino Uno/Nano (Motor Controller & Line Follower)\nHình 2. Hình ảnh Arduino Uno\n- Điều khiển động cơ 4 bánh thông qua driver H-Bridge (chân ENA, ENB, IN1–IN4).\n- Nhận tín hiệu từ 3 cảm biến line:\no\nLINE_L (trái), LINE_M (giữa), LINE_R (phải)\no\nGiá trị HIGH = cảm biến nhận diện màu đen (line), LOW = màu nền trắng.\n\n- Các motor hoạt động với các chế độ:\no\nĐi thẳng, lùi, rẽ gắt (spin turn), rẽ nhẹ.\no\nTốc độ tùy chỉnh cho chế độ line follow và điều khiển manual.\na.2. ESP32-CAM\nHình 3. Hình ảnh ESP32_CAM\n- Camera AI Thinker (GPIO cấu hình đầy đủ) để capture hình ảnh.\n- Xử lý truyền dữ liệu hình ảnh qua WiFi tới server AI.\n- Kết nối với Arduino thông qua UART2 (Serial2):\no\nTXD2 (ESP32 gửi lệnh) → RX Arduino\no\nRXD2 (ESP32 nhận) ← TX Arduino (nếu cần mở rộng)\n- Các chân camera được thiết lập chuẩn theo datasheet AI Thinker.\na.3. Driver L298N\nHình 4. Hình ảnh Driver L298N\n\n- Driver cầu H kép dùng để điều khiển hai động cơ DC độc lập.\n- Nhận tín hiệu điều khiển từ Arduino qua các chân:\no\nIN1 – IN4: điều khiển chiều quay động cơ trái/phải.\no\nENA – ENB: nhận tín hiệu PWM để điều chỉnh tốc độ động cơ.\n- Cho phép các chế độ chuyển động:\no\nĐi thẳng, lùi.\no\nRẽ trái, rẽ phải.\no\nDừng khẩn cấp khi nhận lệnh Stop từ AI.\n- Tách biệt phần công suất động cơ và phần điều khiển logic, giúp:\no\nBảo vệ Arduino khỏi dòng điện lớn.\no\nHệ thống hoạt động ổn định và an toàn hơn.\na.4. Động cơ DC bánh răng\nHình 5. Động cơ DC bánh răng\n- Động cơ DC có hộp số giảm tốc, gắn trực tiếp với bánh xe.\n- Hoạt động ở điện áp 3–6V, phù hợp với mô hình xe tự hành thu nhỏ.\n- Hộp số giảm tốc giúp tăng mô-men xoắn và giảm tốc độ quay, đảm bảo xe di chuyển\nmượt và chính xác.\n- Được điều khiển thông qua driver L298N:\no\nĐiều chỉnh tốc độ bằng PWM.\no\nThay đổi chiều quay để thực hiện các thao tác điều hướng.\n\na.5. Cảm biến dò line (3x)\nHình 6. Cảm biến dò line\n- Sử dụng 3 cảm biến hồng ngoại TCRT5000: LINE_L (trái), LINE_M (giữa),\nLINE_R (phải).\n- Nguyên lý hoạt động:\no\nMàu đen (line) → tín hiệu HIGH.\no\nMàu trắng (nền) → tín hiệu LOW.\n- Arduino đọc trạng thái 3 cảm biến để xác định vị trí xe so với line và điều khiển\nhướng di chuyển.\n- Việc sử dụng 3 cảm biến giúp xe bám line chính xác và vận hành ổn định trong chế\nđộ tự động.\na.6. Khung xe 2 tầng\nHình 7. Hình ảnh khung xe\n\n- Khung xe 2 tầng làm từ mica/acrylic, thiết kế chuyên dụng cho xe tự hành thu nhỏ.\n- Tầng dưới dùng để gắn:\no\nĐộng cơ DC và bánh xe.\no\nPin cấp nguồn cho hệ thống.\n- Tầng trên dùng để cố định:\no\nArduino, ESP32-CAM.\no\nDriver L298N và các module điều khiển.\n- Thiết kế 2 tầng giúp:\no\nBố trí linh kiện gọn gàng, khoa học.\no\nGiảm nhiễu dây nối và dễ bảo trì, nâng cấp.\no\nTăng độ cứng và độ ổn định khi xe di chuyển.\na.7. Pin sạc dự phòng 10000mAh Type C PD QC 3.0 22.5W Xiaomi Lipte P16ZM\nHình 8. Hình ảnh pin dự phòng\n- Pin sạc dự phòng dung lượng 10000mAh, dùng làm nguồn cấp chính cho hệ thống\nxe.\n- Hỗ trợ chuẩn Type-C, PD và QC 3.0, cho dòng ra ổn định và công suất cao.\n- Cấp nguồn cho:\n\no\nArduino.\no\nESP32-CAM.\no\nDriver động cơ thông qua module chuyển đổi điện áp.\n- Việc sử dụng pin sạc dự phòng giúp:\no\nDễ sạc, an toàn và tiện lợi.\no\nThời gian vận hành dài.\no\nKhông cần thiết kế mạch nguồn phức tạp.\n- Cách mắc mạch của xe\nb.1. Đấu nối L298N với Arduino\nChân L298N Chân Arduino Chức năng trong Code\n(Uno/Nano)\nENA D5 Điều tốc động cơ A (PWM)\nIN1 D6 Chiều quay A1\nIN2 D7 Chiều quay A2\nIN3 D8 Chiều quay B1\nIN4 D9 Chiều quay B2\nENB D10 Điều tốc động cơ B (PWM)\n12V Pin (+) Acquy Nguồn động cơ (7V - 12V)\nGND GND (Chung) Nối chung với GND Arduino & ESP32\n5V Vin/5V Arduino Cấp nguồn cho mạch điều khiển\n\nLưu ý: Bạn cần tháo 2 jumper (cầu nối nhựa đen) trên chân ENA và ENB của L298N\nthì mới điều tốc (PWM) được.\nb.2. Đấu nối Cảm biến Line (Dò đường) với Arduino\nChân Cảm biến Chân Arduino Chức năng\nOUT (Trái) D3 Sensor Trái (LINE_L)\nOUT (Giữa) D12 Sensor Giữa (LINE_M)\nOUT (Phải) D2 Sensor Phải (LINE_R)\nVCC 5V Nguồn cảm biến\nGND GND Mass chung\nb.3. Đấu nối giao tiếp giữa ESP32-CAM và Arduino\nĐây là phần quan trọng nhất để AI điều khiển xe. Code sử dụng giao tiếp Serial (UART).\n• ESP32 Code: Sử dụng Serial2 với RXD2 = 13 và TXD2 = 1512.\n• Arduino Code: Sử dụng Serial mặc định (Chân 0 và 1)13.\nChân ESP32-CAM Chân Arduino Giải thích\nGPIO 15 (TXD2) D0 (RX) ESP32 gửi lệnh -> Arduino nhận\nGPIO 13 (RXD2) D1 (TX) Arduino gửi phản hồi -> ESP32 nhận\nGND GND BẮT BUỘC phải nối chung mass\n5V / VCC 5V Nguồn nuôi ESP32\n\n- Truyền thông dữ liệu\nHệ thống sử dụng 2 lớp truyền thông:\nc.1. ESP32 ↔ Server AI\n- Giao thức: WebSocket\n- Mục đích:\no\nESP32 gửi hình ảnh (binary JPEG) theo khung hình (10 FPS) về server.\no\nServer gửi lệnh AI (JSON) về ESP32.\n- Cấu trúc lệnh AI trong JSON:\n{\n\"command\": \"S\",\n\"mode\": \"line_follow\",\n\"class\": \"red_light\",\n\"confidence\": 0.98\n}\n- Lợi ích:\no\nTruyền dữ liệu thời gian thực\no\nCho phép AI ra quyết định tức thì dựa trên hình ảnh\nc.2. ESP32 ↔ Arduino\n- Giao thức: UART Serial (Serial2)\n- Tốc độ: 115200 baud\n- Mục đích:\no\nESP32 gửi lệnh AI nhận được từ server xuống Arduino.\no\nArduino nhận lệnh và thực thi motor/line follower.\n- Lệnh đơn giản: 'S', 'A', 'F', 'B', 'L', 'R'\n- Lợi ích:\n\no\nGiao tiếp ổn định, đơn giản\no\nArduino không cần xử lý hình ảnh, giảm tải\n- Nguyên lý hoạt động tổng thể phần cứng\n[AI Server] --WebSocket--> [ESP32-CAM] --UART2--> [Arduino Line Follower] -->\n[Động cơ xe]\nHình 9. Nguyên lý hoạt động tônhr thể phần cứng\n- Cảm biến line liên tục đọc trạng thái mặt đường (đậm/nhạt, đen/trắng) và gửi tín hiệu\ndigital về Arduino. Dựa trên tổ hợp tín hiệu từ ba cảm biến (trái, giữa, phải), Arduino\nxác định xe đang lệch về phía nào so với line và điều chỉnh tốc độ, hướng quay của từng\nbánh thông qua driver L298N.\n- ESP32-CAM định kỳ chụp ảnh phía trước xe, mã hóa JPEG và gửi lên server AI thông\nqua kết nối WiFi và giao thức WebSocket. Sau khi server xử lý và suy diễn mô hình AI,\nkết quả (nhãn lớp và lệnh điều khiển) được gửi trả lại về ESP32-CAM. ESP32-CAM\nchuyển lệnh điều khiển nhận được từ server AI xuống Arduino qua UART.\n- Arduino kết hợp lệnh AI với trạng thái cảm biến line hiện tại để đưa ra quyết định cuối\ncùng (ví dụ: ưu tiên dừng khi gặp đèn đỏ hoặc biển Stop). Lệnh điều khiển được ánh xạ\nthành các mức PWM và tín hiệu logic trên các chân điều khiển driver L298N, từ đó điều\nchỉnh chuyển động của động cơ.\n- Tất cả các thành phần sử dụng chung một mass (GND) để đảm bảo mức logic ổn định,\ntránh hiện tượng nhiễu hoặc sai lệch điện áp gây treo mạch.",
+          "summary": "",
+          "path": "2. GIẢI PHÁP > 2.1. Giải pháp phần cứng và truyền thông",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "0a6303b3-72a6-4e6e-8768-f81f1493543c",
+          "title": "2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu",
+          "level": 2,
+          "content": "- Trong quá trình khảo sát các mô hình AI, nhóm đã nghiên cứu và so sánh nhiều mô\nhình như các mô hình YOLO, ResNet,..\n- Phù hợp với yêu cầu phải đủ nhẹ để chạy realtime với các bài toán không quá phức\ntạp trên các thiết bị không quá mạnh mẽ thì mô hình MobileNet v3 small là lựa\nchọn phù hợp.",
+          "summary": "",
+          "path": "2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu",
           "children": [
             {
-              "id": "b4cabb04-4863-4069-949c-9b8228e84f73",
-              "title": "1.1. Hiện trạng các sản phẩm tương tự",
+              "id": "c4775eab-26ab-4ab1-b7af-2bb1c16b3925",
+              "title": "2.2.1. Thu thập dữ liệu",
               "level": 3,
-              "content": "Trên thế giới, các hệ thống xe tự hành đã được nghiên cứu và phát triển rộng rãi, từ\ncác mô hình thu nhỏ dùng trong học tập, nghiên cứu đến các phương tiện tự hành thương\nmại. Nhiều dự án nổi bật như Waymo, Tesla Autopilot, và các mô hình xe giáo dục sử dụng\ncảm biến, camera và thuật toán AI để nhận diện tín hiệu giao thông, điều hướng theo đường\nvà tránh chướng ngại vật. Ở Việt Nam, các mô hình xe tự hành thu nhỏ chủ yếu xuất hiện\ntrong các trường đại học, phòng lab nghiên cứu, hoặc các cuộc thi Robotics; tuy nhiên, số\nlượng mô hình tích hợp đầy đủ các chức năng như nhận diện đèn giao thông, biển báo Stop\nvà vừa chạy tự động vừa có thể điều khiển thủ công vẫn còn hạn chế.",
+              "content": "- Dữ liệu được phân làm 5 nhãn như sau:\nLớp Nhãn\n0 green\n1 none\n2 red\n3 stopsign\n4 yellow\n- Dữ liệu được thu thập bằng hình ảnh thực tế từ AI Thinker ESP32-CAM:\nHình 10. Hình ảnh thu thập dữ liệu",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU > 1.1. Hiện trạng các sản phẩm tương tự",
+              "path": "2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.1. Thu thập dữ liệu",
               "children": [],
               "embedding": null
             },
             {
-              "id": "faaafe40-07da-4cc5-8bb8-55f595e83f6f",
-              "title": "1.2. Các vấn đề cần giải quyết",
+              "id": "146e95d8-02cb-4f80-bfab-f7ed7d1b6108",
+              "title": "2.2.2. Xử lý dữ liệu",
               "level": 3,
-              "content": "Các sản phẩm hiện tại vẫn gặp một số hạn chế, bao gồm:\n• Khả năng nhận diện đèn giao thông và biển báo còn thiếu chính xác hoặc tốc độ\nxử lý chậm.\n• Chưa tích hợp đồng bộ giữa chế độ tự động và điều khiển thủ công, khiến việc\nchuyển đổi hoạt động chưa linh hoạt.\n• Giám sát quá trình vận hành xe trực tiếp chưa được triển khai rộng rãi, đặc biệt\ntrong các mô hình học tập.\n• Khó mở rộng, nâng cấp hoặc tinh chỉnh các chức năng do kiến trúc hệ thống chưa\ntheo dạng mô-đun.",
+              "content": "- Sử dụng công cụ roboflow (quay góc 90, tăng giảm độ sáng) và cắt ảnh để làm giàu\ndữ liệu.\nHình 11. Hình ảnh phân chia dữ liệu\n- Phân chia dữ liệu: Phân chia dữ liệu ngẫu nhiên theo tỷ lệ 8:2 tương ứng với train\nset, validation set.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU > 1.2. Các vấn đề cần giải quyết",
+              "path": "2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.2. Xử lý dữ liệu",
               "children": [],
               "embedding": null
             },
             {
-              "id": "0297f23b-84fe-45af-a8bd-8b604a551992",
-              "title": "1.3. Đề xuất giải pháp tổng quan",
+              "id": "471c38bf-3090-40e9-84f0-2cce80492b57",
+              "title": "2.2.3. Mô hình MobileNetv3 small",
               "level": 3,
-              "content": "Để khắc phục các hạn chế trên, nhóm đề xuất xây dựng mô hình “Xe thông minh”\nvới các giải pháp chính:\n• Sử dụng cảm biến dò line và camera AI để xe có thể tự lái theo đường, nhận diện\nđèn giao thông và biển báo Stop chính xác theo thời gian thực.\n• Triển khai thuật toán xử lý ảnh và phân tích màu sắc, kết hợp với vi điều khiển\nESP/Arduino để điều khiển động cơ, đảm bảo xe phản hồi nhanh và ổn định.\n\n• Thiết kế kiến trúc mô-đun, giúp dễ dàng điều chỉnh các thông số, nâng cấp các\nthuật toán và mở rộng chức năng trong tương lai.\n• Phát triển ứng dụng điều khiển và giám sát, cho phép người dùng điều khiển thủ\ncông và theo dõi video trực tiếp hành trình xe, phục vụ kiểm thử và đánh giá hiệu\nquả hoạt động.\nNhững giải pháp này không chỉ hướng tới việc xây dựng một mô hình xe tự hành\nthu nhỏ hoàn chỉnh, mà còn tạo tiền đề cho việc nghiên cứu, học tập và phát triển các hệ\nthống giao thông thông minh trong tương lai.",
+              "content": "a) Giới thiệu\n- MobileNetV3 là thế hệ thứ ba của dòng mạng Nơ-ron tích chập (CNN) do Google\nphát triển, được thiết kế chuyên biệt cho các thiết bị di động (mobile) và thiết bị\nnhúng (embedded systems) như Raspberry Pi, điện thoại thông minh, hoặc các mạch\nIoT.\n- Được thiết kế bằng NAS (Network Architecture Search): Thay vì các kỹ sư tự tay\nthiết kế từng lớp mạng như các phiên bản trước, Google đã sử dụng thuật toán NAS\n\n(Tìm kiếm kiến trúc mạng) để tự động tìm ra cấu trúc mạng tối ưu nhất giữa sự cân\nbằng của Độ chính xác (Accuracy) và Độ trễ (Latency).\n- Sử dụng Depthwise Separable Convolutions để làm giảm số lượng phép tính từ đó\ncó thể chạy trên các thiết bị người dùng cuối.\nb) Kiến trúc\n- MobileNetV3-Small là một mạng nơ-ron tích chập sâu (Deep CNN), được tối ưu\nhóa cho tốc độ và hiệu suất trên thiết bị biên\n- Cấu Trúc Tổng Thể của MobileNetV3:\nb.1. Khối Bottleneck ngược (Inverted Residual Bottleneck Block)\n- Đây là khối kiến trúc cốt lõi được thừa hưởng từ MobileNetV2 và được cải tiến.\nKhác với khối Residual Bottleneck truyền thống (giảm chiều sâu -> tích chập -\n> tăng chiều sâu), khối ngược này hoạt động theo trình tự sau:\no\nMở rộng (Expansion): Tăng số lượng kênh (chiều sâu) của tensor đầu vào\nbằng phép tích chập $1 \\times 1$. Đây là bước quan trọng để ánh xạ tính năng\nlên không gian chiều cao hơn.\no\nTích chập Chiều sâu (Depthwise Convolution - DW Conv): Thực hiện tích\nchập KxK(thường là 3x3 hoặc 5x5) cho từng kênh một cách độc lập. Điều\nnày giúp giảm đáng kể chi phí tính toán so với tích chập tiêu chuẩn.\no\nChiếu (Projection/Compression): Giảm số lượng kênh trở lại bằng phép tích\nchập 1x1 thông thường (Pointwise Conv) để nén thông tin và chuẩn bị cho\nkhối tiếp theo.\n- Nếu đầu vào và đầu ra có cùng số kênh và độ phân giải, một kết nối tắt (skip\nconnection) sẽ được thêm vào giữa đầu vào và đầu ra của khối, tương tự như ResNet,\nđể giúp gradient truyền ngược tốt hơn.\nb.2. Kỹ thuật Squeeze-and-Excitation (SE)\n- MobileNetV3 tích hợp các khối SE vào các lớp bottleneck ngược lớn hơn.\n\n- SE Module là một cơ chế chú ý (attention mechanism) nhẹ nhàng, cho phép mạng\nhọc cách tự động xác định kênh nào quan trọng hơn bằng cách gán trọng số (tỷ lệ)\ncho từng kênh tính năng.\n- Nó hoạt động bằng cách:\no\nSqueeze (Ép): Dùng phép gộp trung bình toàn cục (Global Average Pooling\n- GAP) để thu nhỏ tensor WxHxC thành 1x1xC, tóm tắt thông tin của toàn\nbộ kênh.\no\nExcitation (Kích thích): Dùng hai lớp tích chập 1x1 (hoặc lớp fully\nconnected) để tạo ra các trọng số (tỷ lệ) từ 0 đến 1 cho mỗi kênh.\no\nRescale (Điều chỉnh): Nhân các trọng số này với tensor tính năng ban đầu để\nđiều chỉnh độ quan trọng của từng kênh.\nc) Hàm kích hoạt Hard Swish\n- Thay vì sử dụng ReLU6 (như MobileNetV2) hoặc Swish (tốn kém), MobileNetV3\ngiới thiệu hàm Hard Swish để tăng hiệu quả trên thiết bị di động.\n- Công thức Swish:\ntrong đó là hàm sigmoid.\n- Công thức Hard Swish:\n- Là một xấp xỉ tuyến tính của hàm Swish, giúp giảm đáng kể chi phí tính toán vì việc\ntính toán phép nhân ma trận và hàm ReLU6 được tối ưu hóa tốt hơn trên phần cứng\nnhúng so với hàm sigmoid/exponential.\n\nd) Tối ưu hóa các lớp biên (Head and Tail)\n- MobileNetV3 thực hiện tối ưu hóa đặc biệt ở lớp đầu và lớp cuối của mạng:\no\nTối ưu hóa Lớp Đầu (Head): Thay thế tích chập $3 \\times 3$ thông thường ở\nlớp đầu tiên bằng một tổ hợp các lớp hiệu quả hơn.\no\nTối ưu hóa Lớp Cuối (Tail): Lớp trước lớp phân loại (classification layer)\ncuối cùng được thiết kế lại để tránh chi phí tính toán cao không cần thiết. Cụ\nthể, nó di chuyển phép gộp trung bình toàn cục (GAP) đến trước lớp tích chập\n1x1 cuối cùng (thay vì sau), cho phép loại bỏ một số bộ lọc tính năng tốn\nkém, giúp tăng tốc độ đáng kể với tổn thất độ chính xác rất nhỏ.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU > 1.3. Đề xuất giải pháp tổng quan",
+              "path": "2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.3. Mô hình MobileNetv3 small",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "18d904f7-a602-45a6-b164-fef82b35a248",
+              "title": "2.2.4. Huấn luyện",
+              "level": 3,
+              "content": "a) Môi trường huấn luyện\n- Mô hình được huấn luyện trên Google Colab với cấu hình GPU Tesla T4, 15102MiB,\nRAM 12GB.\n- Cấu hình:\no\nIMG_SIZE = 224\no\nBATCH_SIZE = 64\no\nINITIAL_EPOCHS = 6\no\nFINE_TUNE_EPOCHS = 10\no\nLEARNING_RATE = 0.0001\no\nFINE_TUNE_LEARNING_RATE = 0.00001\nb) Quy trình huấn luyện\nb.1. Chuẩn bị và Tiền xử lý Dữ liệu\n- Bước này được thực hiện trong hàm create_datasets và chuẩn bị dữ liệu đầu vào cho\nmô hình:\no\nTải dữ liệu: Tải ảnh từ hai thư mục train và val (validation) trong thư mục\ndataset.\n\no\nTiền xử lý đặc thù: Áp dụng hàm preprocess_input của MobileNetV3 lên tất\ncả các ảnh. Hàm này có nhiệm vụ chuẩn hóa giá trị pixel, đảm bảo dữ liệu\nđầu vào khớp với trọng số ImageNet đã được huấn luyện.\no\nTăng cường dữ liệu (Data Augmentation): Chỉ áp dụng cho tập huấn luyện\n(train_datagen) các kỹ thuật như xoay, dịch chuyển, lật ngang để làm phong\nphú thêm dữ liệu và giảm quá khớp (overfitting).\no\nTạo Batch: Dữ liệu được chia thành các lô (Batch Size = 64) để nạp vào mô\nhình.\nb.2. Thiết lập Mô hình và Đóng băng (Freeze)\n- Bước này được thực hiện trong hàm create_model và chuẩn bị cấu trúc mạng:\no\nTải mô hình cơ sở: Tải kiến trúc MobileNetV3-Small với trọng số đã được\nhuấn luyện trước trên ImageNet (weights=\"imagenet\"), nhưng loại bỏ lớp\nphân loại cuối cùng (include_top=False).\no\nĐóng băng Base Model: Thiết lập base_model.trainable = False. Điều này\nkhóa tất cả các trọng số trong MobileNetV3-Small, biến nó thành một bộ\ntrích xuất đặc trưng cố định (fixed feature extractor).\no\nThêm Lớp Phân loại Tùy chỉnh (Head): Thêm các lớp mới ở cuối mạng để\nphân loại dữ liệu cụ thể của bạn:\n+ GlobalAveragePooling2D: Nén chiều không gian của các đặc trưng.\n+ Dropout(0.3) và Dense(128, activation=\"relu\"): Các lớp ẩn tùy chỉnh\nđể học các đặc trưng cấp cao.\n+ Dense(num_classes, activation=\"softmax\"): Lớp đầu ra cuối cùng để\ndự đoán các lớp.\nb.3. Huấn luyện 2 Giai đoạn:\n- Đây là quy trình huấn luyện chính, tối ưu hóa mô hình qua hai bước:\nb.3.1. Giai đoạn 1: Huấn luyện Lớp Phân loại Mới (Initial Training)\no\nMục tiêu: Huấn luyện nhanh các lớp phân loại tùy chỉnh (Head) đã được thêm\nvào, trong khi trọng số của MobileNetV3 vẫn bị đóng băng.\n\no\nThiết lập: Sử dụng Learning Rate tương đối cao ($10^{-4}$) và huấn luyện\ntrong 6 epochs (INITIAL_EPOCHS).\no\nCallbacks: Theo dõi val_accuracy và val_loss để tự động dừng sớm\n(EarlyStopping), giảm Learning Rate (ReduceLROnPlateau), và lưu lại mô\nhình tốt nhất.\nb.3.2. Giai đoạn 2: Tinh chỉnh (Fine-Tuning)\no\nMục tiêu: Mở khóa các lớp gần cuối của MobileNetV3-Small để tinh chỉnh\ncác đặc trưng cấp cao phù hợp hơn với dữ liệu cụ thể của bạn.\no\nMở khóa có chọn lọc: base_model.trainable = True sau đó đóng băng trở lại\ncác lớp đầu (base_model.layers[:-100]) để chỉ tinh chỉnh các lớp gần đầu ra.\no\nThiết lập: Sử dụng Learning Rate rất nhỏ ($10^{-5}$) và huấn luyện thêm 8\nepochs (FINE_TUNE_EPOCHS). Learning Rate nhỏ giúp tránh làm hỏng\ncác trọng số đã được học trước.\nb.4. Đánh giá và Triển khai (Deployment)\n- Đây là các bước cuối cùng để đo lường hiệu suất và chuẩn bị cho việc sử dụng thực\ntế:\no\nLưu mô hình: Lưu mô hình đã được tinh chỉnh cuối cùng (final_mobilenetv3_\nsmall.keras).\no\nĐánh giá: Sử dụng model.evaluate(val_ds) để đo lường hiệu suất cuối cùng\ntrên tập Validation (Loss và Accuracy).\no\nVẽ Biểu đồ: Vẽ biểu đồ thể hiện sự thay đổi về Accuracy và Loss qua cả hai\ngiai đoạn huấn luyện (Initial và Fine-Tuning).\no\nChuyển đổi TFLite: Sử dụng tf.lite.TFLiteConverter để chuyển đổi mô hình\nsang định dạng TFLite. Bật tối ưu hóa mặc định (tf.lite.Optimize.DEFAULT)\nđể thực hiện Lượng tử hóa (Quantization), giúp giảm kích thước và tăng tốc\nđộ suy luận trên các thiết bị nhúng (như Raspberry Pi).\n\n- Một số hình ảnh mô tả quá trình huấn luyện\nHình 12. . Log huấn luyện mô hình MobileNetV3 Small\nHình 13. Biểu đồ Accuracy và Loss của mô hình MobileNetV3 Small",
+              "summary": "",
+              "path": "2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.4. Huấn luyện",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "8adc0dbe-1d38-43a2-bbff-677ac4d114a8",
+              "title": "2.2.5. Triển khai trên server:",
+              "level": 3,
+              "content": "- AI server sẽ sử dụng FashAPI framework để có thể sử dụng websocket cho tốc độ\ngửi tín hiệu nhanh hơn.\n- Quy trình xử lý:\na) Thu nhận và Phân phối Ảnh (Input Acquisition & Distribution)\nQuy trình bắt đầu trong hàm xử lý WebSocket chính (ws_traffic_light):\n\n- B1: Nhận Frame: ESP32-CAM gửi khung hình JPEG (dữ liệu nhị phân) qua\nWebSocket. Server nhận dữ liệu (await asyncio.wait_for (websocket.receive_bytes\n(), ...)).\n- B2: Giải mã: Khung hình JPEG được giải mã thành ma trận ảnh OpenCV\n(cv2.imdecode), được lưu vào biến toàn cục last_frame.\n- B3: Kiểm tra Tần suất: Server kiểm tra xem đã đến lúc chạy AI chưa (now -\nlast_inference_time) > INFERENCE_INTERVAL, hiện là 50ms).\n- B4:Tạo Tác vụ: Nếu đến lúc, một tác vụ bất đồng bộ (asyncio.create_task (handle_\ninference(frame))) được tạo ra để chạy AI mà không làm tắc nghẽn luồng chính.\nb) Xử lý và Suy luận (Preprocessing & Inference)\n- Tác vụ AI chạy trong hàm handle_inference(frame):\n- Tiền xử lý: Hàm preprocess_image(frame) được gọi:\no\nChuyển ảnh từ BGR sang RGB (cv2.cvtColor(..., cv2.COLOR_BGR2RGB)).\no\nThay đổi kích thước ảnh về 224x224 (IMG_SIZE).\no\nChuyển đổi kiểu dữ liệu sang np.float32.\no\nSuy luận (Inference): Hàm run_inference(img) được gọi (chạy trong loop.run\n_in_executor(None, ...) để tránh chặn luồng):\no\nModel Keras (MobileNetV3-Small) dự đoán lớp (model.predict).\no\nHàm trả về label (ví dụ: \"red\", \"green\", \"none\") và conf (độ tin cậy).\nc) Ra quyết định và Cơ chế Bỏ phiếu (Voting Mechanism)\nKết quả suy luận được xử lý để đảm bảo độ tin cậy và sự ổn định:\n- Ưu tiên Khẩn cấp (Urgent Priority):\no\nNếu mô hình dự đoán là red hoặc stopsign với độ tin cậy cao (>0.7), nó ngay\nlập tức tính toán lệnh (cmd = decide_command(label)) và cập nhật\nlatest_command toàn cục.\no\nCơ chế bỏ phiếu (recent_predictions) bị xóa để đảm bảo phản ứng tức thì.\n- Cơ chế Bỏ phiếu (Voting for Stability):\n\no\nĐối với các lớp khác, kết quả dự đoán (nếu conf > 0.5) được thêm vào hàng\nđợi recent_predictions (cửa sổ 3 frame).\no\nChỉ khi ít nhất 2/3 (tức là 2 trong 3 frame gần nhất) đưa ra cùng một dự đoán,\nkết quả đó mới được coi là ổn định và được chấp nhận.\n- Cập nhật Kết quả: Kết quả ổn định được lưu vào latest_result và latest_command\ntoàn cục.\nd) Tổng hợp Lệnh và Gửi về ESP32 (Command Dispatch)\nPhần này diễn ra trong vòng lặp chính của WebSocket sau khi AI đã cập nhật latest_\nresult và latest_lane_cmd:\n- Phối hợp Lệnh (Command Coordination):\no\nƯu tiên 1 (Traffic Override): Nếu latest_result có lệnh S (Stop) từ AI (đèn\nđỏ/dừng), final_cmd sẽ là S.\no\nƯu tiên 2 (Lane Command): Nếu không có lệnh dừng khẩn cấp từ AI,\nfinal_cmd sẽ là lệnh từ thuật toán phát hiện làn đường (latest_lane_cmd, ví\ndụ: L/R/F).\n- Đóng gói Payload: Tạo đối tượng JSON payload chứa class, command, confidence,\nvà mode.\n- Gửi Lệnh: Payload được gửi đến ESP32 qua WebSocket (await websocket.send\n_json(payload)). ESP32 sau đó sẽ thực hiện lệnh điều khiển động cơ tương ứng.\n- Debug: Ảnh Overlay được tạo ra (overlay_debug) và lưu vào last_overlay để xem\ntrên trình duyệt.\n\n- Đây là hình ảnh kết quả khi xe chưa nhận diện được vật thể\nHình 14. Kết quả khi xe chưa nhận diện được vật thể\n- Đây là hình ảnh kết quả nhận diện biển báo Stop\nHình 15. Kết quả khi xe nhận diện biển báo Stop\n\n- Đây là hình ảnh kết quả khi nhận đèn tín hiệu Đỏ\nHình 16. Kết quả khi xe nhận diện đèn giao thông màu Đỏ\nHình 17. Kết quả khi xe nhận diện đèn giao thông màu Vàng\nHình 18. Kết quả khi xe nhận diện đèn giao thông màu Xanh",
+              "summary": "",
+              "path": "2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.5. Triển khai trên server:",
               "children": [],
               "embedding": null
             }
@@ -76,315 +157,70 @@
           "embedding": null
         },
         {
-          "id": "15fe8dca-939d-44ac-a599-eb8683b82e40",
-          "title": "2. GIẢI PHÁP",
-          "level": 2,
-          "content": "- Dựa trên yêu cầu của đề tài và các vấn đề đã được đặt ra ở phần Giới thiệu, nhóm\ntiến hành phân tích tổng thể hệ thống nhằm xác định rõ các thành phần chức năng\nvà mối quan hệ giữa chúng. Trên cơ sở đó, nhóm đề xuất một giải pháp tổng thể cho\nhệ thống xe thông minh, được chia thành ba nhóm chính gồm: giải pháp phần cứng\nvà truyền thông, giải pháp trí tuệ nhân tạo/khai thác dữ liệu, và giải pháp phần mềm\nứng dụng.\n- Mỗi nhóm giải pháp đảm nhiệm một vai trò riêng biệt trong hệ thống, từ việc thu\nthập dữ liệu, xử lý và ra quyết định thông minh, cho đến điều khiển và giám sát quá\ntrình vận hành của xe. Đồng thời, các nhóm giải pháp này được thiết kế và triển khai\ntheo hướng liên kết chặt chẽ với nhau, bảo đảm dữ liệu và tín hiệu điều khiển được\ntruyền tải đồng bộ, chính xác và kịp thời. Nhờ đó, hệ thống có thể hoạt động ổn định,\nđáp ứng yêu cầu xử lý thông tin theo thời gian thực và hoàn thành đúng các mục\ntiêu đã đề ra của đề tài.",
-          "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP",
-          "children": [
-            {
-              "id": "c5395b91-308f-4f2d-bd18-93c32154729b",
-              "title": "2.1. Giải pháp phần cứng và truyền thông",
-              "level": 3,
-              "content": "a) Phần cứng\nHệ thống được thiết kế để kết hợp xe line follower với khả năng nhận diện tín hiệu\ngiao thông qua camera AI.\nDanh sách linh kiện chi tiết:\n\nSTT Linh kiện Thông số kỹ thuật chính Chức năng trong hệ thống\n1 Arduino Vi điều khiển Đọc cảm biến line, nhận lệnh điều\nUno R3 ATmega328P, 16 MHz, khiển từ ESP32-CAM qua UART,\n5V, 14 chân digital, 6 chân điều khiển driver L298N và tốc độ\nPWM động cơ.\n2 ESP32- Module ESP32, camera Chụp ảnh môi trường phía trước xe,\nCAM OV2640, WiFi 2.4 GHz, mã hóa JPEG và gửi lên server AI;\nhỗ trợ WebSocket, UART đồng thời nhận lệnh điều khiển từ\nserver và chuyển tiếp cho Arduino.\n3 Driver Mạch cầu H kép, điện áp Nhận tín hiệu PWM và điều khiển\nL298N 5–35V, dòng tối đa ~2A chiều quay của hai động cơ DC, tạo\nlực kéo cho xe di chuyển.\n4 Động cơ DC Điện áp 3–6V, có hộp số Tạo chuyển động cho bánh xe trái và\nbánh răng giảm tốc phải, quyết định tốc độ và khả năng\nleo dốc.\n5 Cảm biến dò Cảm biến hồng ngoại Phát hiện line đen/trắng trên mặt\nline (3x) TCRT5000, ngõ ra digital đường, cung cấp thông tin cho thuật\ntoán bám line trên Arduino.\n6 Khung xe 2 Chất liệu mica/acrylic, 2 Cố định toàn bộ linh kiện và tạo cấu\ntầng tầng, 4 vị trí gắn động cơ trúc cơ khí cho xe.\n7 Pin sạc dự 10000mAh Type-C PD Cung cấp nguồn cho động cơ và/hoặc\nphòng QC 3.0 mạch điều khiển.\n\n- Đây là hình ảnh sản phẩm của toàn dự án.\nHình 1. Mô hình sản phẩm xe\na.1. Arduino Uno/Nano (Motor Controller & Line Follower)\nHình 2. Hình ảnh Arduino Uno\n- Điều khiển động cơ 4 bánh thông qua driver H-Bridge (chân ENA, ENB, IN1–IN4).\n- Nhận tín hiệu từ 3 cảm biến line:\no\nLINE_L (trái), LINE_M (giữa), LINE_R (phải)\no\nGiá trị HIGH = cảm biến nhận diện màu đen (line), LOW = màu nền trắng.\n\n- Các motor hoạt động với các chế độ:\no\nĐi thẳng, lùi, rẽ gắt (spin turn), rẽ nhẹ.\no\nTốc độ tùy chỉnh cho chế độ line follow và điều khiển manual.\na.2. ESP32-CAM\nHình 3. Hình ảnh ESP32_CAM\n- Camera AI Thinker (GPIO cấu hình đầy đủ) để capture hình ảnh.\n- Xử lý truyền dữ liệu hình ảnh qua WiFi tới server AI.\n- Kết nối với Arduino thông qua UART2 (Serial2):\no\nTXD2 (ESP32 gửi lệnh) → RX Arduino\no\nRXD2 (ESP32 nhận) ← TX Arduino (nếu cần mở rộng)\n- Các chân camera được thiết lập chuẩn theo datasheet AI Thinker.\na.3. Driver L298N\nHình 4. Hình ảnh Driver L298N\n\n- Driver cầu H kép dùng để điều khiển hai động cơ DC độc lập.\n- Nhận tín hiệu điều khiển từ Arduino qua các chân:\no\nIN1 – IN4: điều khiển chiều quay động cơ trái/phải.\no\nENA – ENB: nhận tín hiệu PWM để điều chỉnh tốc độ động cơ.\n- Cho phép các chế độ chuyển động:\no\nĐi thẳng, lùi.\no\nRẽ trái, rẽ phải.\no\nDừng khẩn cấp khi nhận lệnh Stop từ AI.\n- Tách biệt phần công suất động cơ và phần điều khiển logic, giúp:\no\nBảo vệ Arduino khỏi dòng điện lớn.\no\nHệ thống hoạt động ổn định và an toàn hơn.\na.4. Động cơ DC bánh răng\nHình 5. Động cơ DC bánh răng\n- Động cơ DC có hộp số giảm tốc, gắn trực tiếp với bánh xe.\n- Hoạt động ở điện áp 3–6V, phù hợp với mô hình xe tự hành thu nhỏ.\n- Hộp số giảm tốc giúp tăng mô-men xoắn và giảm tốc độ quay, đảm bảo xe di chuyển\nmượt và chính xác.\n- Được điều khiển thông qua driver L298N:\no\nĐiều chỉnh tốc độ bằng PWM.\no\nThay đổi chiều quay để thực hiện các thao tác điều hướng.\n\na.5. Cảm biến dò line (3x)\nHình 6. Cảm biến dò line\n- Sử dụng 3 cảm biến hồng ngoại TCRT5000: LINE_L (trái), LINE_M (giữa),\nLINE_R (phải).\n- Nguyên lý hoạt động:\no\nMàu đen (line) → tín hiệu HIGH.\no\nMàu trắng (nền) → tín hiệu LOW.\n- Arduino đọc trạng thái 3 cảm biến để xác định vị trí xe so với line và điều khiển\nhướng di chuyển.\n- Việc sử dụng 3 cảm biến giúp xe bám line chính xác và vận hành ổn định trong chế\nđộ tự động.\na.6. Khung xe 2 tầng\nHình 7. Hình ảnh khung xe\n\n- Khung xe 2 tầng làm từ mica/acrylic, thiết kế chuyên dụng cho xe tự hành thu nhỏ.\n- Tầng dưới dùng để gắn:\no\nĐộng cơ DC và bánh xe.\no\nPin cấp nguồn cho hệ thống.\n- Tầng trên dùng để cố định:\no\nArduino, ESP32-CAM.\no\nDriver L298N và các module điều khiển.\n- Thiết kế 2 tầng giúp:\no\nBố trí linh kiện gọn gàng, khoa học.\no\nGiảm nhiễu dây nối và dễ bảo trì, nâng cấp.\no\nTăng độ cứng và độ ổn định khi xe di chuyển.\na.7. Pin sạc dự phòng 10000mAh Type C PD QC 3.0 22.5W Xiaomi Lipte P16ZM\nHình 8. Hình ảnh pin dự phòng\n- Pin sạc dự phòng dung lượng 10000mAh, dùng làm nguồn cấp chính cho hệ thống\nxe.\n- Hỗ trợ chuẩn Type-C, PD và QC 3.0, cho dòng ra ổn định và công suất cao.\n- Cấp nguồn cho:\n\no\nArduino.\no\nESP32-CAM.\no\nDriver động cơ thông qua module chuyển đổi điện áp.\n- Việc sử dụng pin sạc dự phòng giúp:\no\nDễ sạc, an toàn và tiện lợi.\no\nThời gian vận hành dài.\no\nKhông cần thiết kế mạch nguồn phức tạp.\n- Cách mắc mạch của xe\nb.1. Đấu nối L298N với Arduino\nChân L298N Chân Arduino Chức năng trong Code\n(Uno/Nano)\nENA D5 Điều tốc động cơ A (PWM)\nIN1 D6 Chiều quay A1\nIN2 D7 Chiều quay A2\nIN3 D8 Chiều quay B1\nIN4 D9 Chiều quay B2\nENB D10 Điều tốc động cơ B (PWM)\n12V Pin (+) Acquy Nguồn động cơ (7V - 12V)\nGND GND (Chung) Nối chung với GND Arduino & ESP32\n5V Vin/5V Arduino Cấp nguồn cho mạch điều khiển\n\nLưu ý: Bạn cần tháo 2 jumper (cầu nối nhựa đen) trên chân ENA và ENB của L298N\nthì mới điều tốc (PWM) được.\nb.2. Đấu nối Cảm biến Line (Dò đường) với Arduino\nChân Cảm biến Chân Arduino Chức năng\nOUT (Trái) D3 Sensor Trái (LINE_L)\nOUT (Giữa) D12 Sensor Giữa (LINE_M)\nOUT (Phải) D2 Sensor Phải (LINE_R)\nVCC 5V Nguồn cảm biến\nGND GND Mass chung\nb.3. Đấu nối giao tiếp giữa ESP32-CAM và Arduino\nĐây là phần quan trọng nhất để AI điều khiển xe. Code sử dụng giao tiếp Serial (UART).\n• ESP32 Code: Sử dụng Serial2 với RXD2 = 13 và TXD2 = 1512.\n• Arduino Code: Sử dụng Serial mặc định (Chân 0 và 1)13.\nChân ESP32-CAM Chân Arduino Giải thích\nGPIO 15 (TXD2) D0 (RX) ESP32 gửi lệnh -> Arduino nhận\nGPIO 13 (RXD2) D1 (TX) Arduino gửi phản hồi -> ESP32 nhận\nGND GND BẮT BUỘC phải nối chung mass\n5V / VCC 5V Nguồn nuôi ESP32\n\n- Truyền thông dữ liệu\nHệ thống sử dụng 2 lớp truyền thông:\nc.1. ESP32 ↔ Server AI\n- Giao thức: WebSocket\n- Mục đích:\no\nESP32 gửi hình ảnh (binary JPEG) theo khung hình (10 FPS) về server.\no\nServer gửi lệnh AI (JSON) về ESP32.\n- Cấu trúc lệnh AI trong JSON:\n{\n\"command\": \"S\",\n\"mode\": \"line_follow\",\n\"class\": \"red_light\",\n\"confidence\": 0.98\n}\n- Lợi ích:\no\nTruyền dữ liệu thời gian thực\no\nCho phép AI ra quyết định tức thì dựa trên hình ảnh\nc.2. ESP32 ↔ Arduino\n- Giao thức: UART Serial (Serial2)\n- Tốc độ: 115200 baud\n- Mục đích:\no\nESP32 gửi lệnh AI nhận được từ server xuống Arduino.\no\nArduino nhận lệnh và thực thi motor/line follower.\n- Lệnh đơn giản: 'S', 'A', 'F', 'B', 'L', 'R'\n- Lợi ích:\n\no\nGiao tiếp ổn định, đơn giản\no\nArduino không cần xử lý hình ảnh, giảm tải\n- Nguyên lý hoạt động tổng thể phần cứng\n[AI Server] --WebSocket--> [ESP32-CAM] --UART2--> [Arduino Line Follower] -->\n[Động cơ xe]\nHình 9. Nguyên lý hoạt động tônhr thể phần cứng\n- Cảm biến line liên tục đọc trạng thái mặt đường (đậm/nhạt, đen/trắng) và gửi tín hiệu\ndigital về Arduino. Dựa trên tổ hợp tín hiệu từ ba cảm biến (trái, giữa, phải), Arduino\nxác định xe đang lệch về phía nào so với line và điều chỉnh tốc độ, hướng quay của từng\nbánh thông qua driver L298N.\n- ESP32-CAM định kỳ chụp ảnh phía trước xe, mã hóa JPEG và gửi lên server AI thông\nqua kết nối WiFi và giao thức WebSocket. Sau khi server xử lý và suy diễn mô hình AI,\nkết quả (nhãn lớp và lệnh điều khiển) được gửi trả lại về ESP32-CAM. ESP32-CAM\nchuyển lệnh điều khiển nhận được từ server AI xuống Arduino qua UART.\n- Arduino kết hợp lệnh AI với trạng thái cảm biến line hiện tại để đưa ra quyết định cuối\ncùng (ví dụ: ưu tiên dừng khi gặp đèn đỏ hoặc biển Stop). Lệnh điều khiển được ánh xạ\nthành các mức PWM và tín hiệu logic trên các chân điều khiển driver L298N, từ đó điều\nchỉnh chuyển động của động cơ.\n- Tất cả các thành phần sử dụng chung một mass (GND) để đảm bảo mức logic ổn định,\ntránh hiện tượng nhiễu hoặc sai lệch điện áp gây treo mạch.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.1. Giải pháp phần cứng và truyền thông",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "dfbb4446-1679-4c2b-aa04-77f7dcaa7e88",
-              "title": "2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu",
-              "level": 3,
-              "content": "- Trong quá trình khảo sát các mô hình AI, nhóm đã nghiên cứu và so sánh nhiều mô\nhình như các mô hình YOLO, ResNet,..\n- Phù hợp với yêu cầu phải đủ nhẹ để chạy realtime với các bài toán không quá phức\ntạp trên các thiết bị không quá mạnh mẽ thì mô hình MobileNet v3 small là lựa\nchọn phù hợp.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu",
-              "children": [
-                {
-                  "id": "5a15c61c-fc15-4e68-bd0e-7d5f21bbe4e8",
-                  "title": "2.2.1. Thu thập dữ liệu",
-                  "level": 4,
-                  "content": "- Dữ liệu được phân làm 5 nhãn như sau:\nLớp Nhãn\n0 green\n1 none\n2 red\n3 stopsign\n4 yellow\n- Dữ liệu được thu thập bằng hình ảnh thực tế từ AI Thinker ESP32-CAM:\nHình 10. Hình ảnh thu thập dữ liệu",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.1. Thu thập dữ liệu",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "7bbe5cb1-9b67-4963-a6d1-696e9fa1deaf",
-                  "title": "2.2.2. Xử lý dữ liệu",
-                  "level": 4,
-                  "content": "- Sử dụng công cụ roboflow (quay góc 90, tăng giảm độ sáng) và cắt ảnh để làm giàu\ndữ liệu.\nHình 11. Hình ảnh phân chia dữ liệu\n- Phân chia dữ liệu: Phân chia dữ liệu ngẫu nhiên theo tỷ lệ 8:2 tương ứng với train\nset, validation set.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.2. Xử lý dữ liệu",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "3fbd1fb5-9e77-4b4d-a0bf-939ff0b18190",
-                  "title": "2.2.3. Mô hình MobileNetv3 small",
-                  "level": 4,
-                  "content": "a) Giới thiệu\n- MobileNetV3 là thế hệ thứ ba của dòng mạng Nơ-ron tích chập (CNN) do Google\nphát triển, được thiết kế chuyên biệt cho các thiết bị di động (mobile) và thiết bị\nnhúng (embedded systems) như Raspberry Pi, điện thoại thông minh, hoặc các mạch\nIoT.\n- Được thiết kế bằng NAS (Network Architecture Search): Thay vì các kỹ sư tự tay\nthiết kế từng lớp mạng như các phiên bản trước, Google đã sử dụng thuật toán NAS\n\n(Tìm kiếm kiến trúc mạng) để tự động tìm ra cấu trúc mạng tối ưu nhất giữa sự cân\nbằng của Độ chính xác (Accuracy) và Độ trễ (Latency).\n- Sử dụng Depthwise Separable Convolutions để làm giảm số lượng phép tính từ đó\ncó thể chạy trên các thiết bị người dùng cuối.\nb) Kiến trúc\n- MobileNetV3-Small là một mạng nơ-ron tích chập sâu (Deep CNN), được tối ưu\nhóa cho tốc độ và hiệu suất trên thiết bị biên\n- Cấu Trúc Tổng Thể của MobileNetV3:\nb.1. Khối Bottleneck ngược (Inverted Residual Bottleneck Block)\n- Đây là khối kiến trúc cốt lõi được thừa hưởng từ MobileNetV2 và được cải tiến.\nKhác với khối Residual Bottleneck truyền thống (giảm chiều sâu -> tích chập -\n> tăng chiều sâu), khối ngược này hoạt động theo trình tự sau:\no\nMở rộng (Expansion): Tăng số lượng kênh (chiều sâu) của tensor đầu vào\nbằng phép tích chập $1 \\times 1$. Đây là bước quan trọng để ánh xạ tính năng\nlên không gian chiều cao hơn.\no\nTích chập Chiều sâu (Depthwise Convolution - DW Conv): Thực hiện tích\nchập KxK(thường là 3x3 hoặc 5x5) cho từng kênh một cách độc lập. Điều\nnày giúp giảm đáng kể chi phí tính toán so với tích chập tiêu chuẩn.\no\nChiếu (Projection/Compression): Giảm số lượng kênh trở lại bằng phép tích\nchập 1x1 thông thường (Pointwise Conv) để nén thông tin và chuẩn bị cho\nkhối tiếp theo.\n- Nếu đầu vào và đầu ra có cùng số kênh và độ phân giải, một kết nối tắt (skip\nconnection) sẽ được thêm vào giữa đầu vào và đầu ra của khối, tương tự như ResNet,\nđể giúp gradient truyền ngược tốt hơn.\nb.2. Kỹ thuật Squeeze-and-Excitation (SE)\n- MobileNetV3 tích hợp các khối SE vào các lớp bottleneck ngược lớn hơn.\n\n- SE Module là một cơ chế chú ý (attention mechanism) nhẹ nhàng, cho phép mạng\nhọc cách tự động xác định kênh nào quan trọng hơn bằng cách gán trọng số (tỷ lệ)\ncho từng kênh tính năng.\n- Nó hoạt động bằng cách:\no\nSqueeze (Ép): Dùng phép gộp trung bình toàn cục (Global Average Pooling\n- GAP) để thu nhỏ tensor WxHxC thành 1x1xC, tóm tắt thông tin của toàn\nbộ kênh.\no\nExcitation (Kích thích): Dùng hai lớp tích chập 1x1 (hoặc lớp fully\nconnected) để tạo ra các trọng số (tỷ lệ) từ 0 đến 1 cho mỗi kênh.\no\nRescale (Điều chỉnh): Nhân các trọng số này với tensor tính năng ban đầu để\nđiều chỉnh độ quan trọng của từng kênh.\nc) Hàm kích hoạt Hard Swish\n- Thay vì sử dụng ReLU6 (như MobileNetV2) hoặc Swish (tốn kém), MobileNetV3\ngiới thiệu hàm Hard Swish để tăng hiệu quả trên thiết bị di động.\n- Công thức Swish:\ntrong đó là hàm sigmoid.\n- Công thức Hard Swish:\n- Là một xấp xỉ tuyến tính của hàm Swish, giúp giảm đáng kể chi phí tính toán vì việc\ntính toán phép nhân ma trận và hàm ReLU6 được tối ưu hóa tốt hơn trên phần cứng\nnhúng so với hàm sigmoid/exponential.\n\nd) Tối ưu hóa các lớp biên (Head and Tail)\n- MobileNetV3 thực hiện tối ưu hóa đặc biệt ở lớp đầu và lớp cuối của mạng:\no\nTối ưu hóa Lớp Đầu (Head): Thay thế tích chập $3 \\times 3$ thông thường ở\nlớp đầu tiên bằng một tổ hợp các lớp hiệu quả hơn.\no\nTối ưu hóa Lớp Cuối (Tail): Lớp trước lớp phân loại (classification layer)\ncuối cùng được thiết kế lại để tránh chi phí tính toán cao không cần thiết. Cụ\nthể, nó di chuyển phép gộp trung bình toàn cục (GAP) đến trước lớp tích chập\n1x1 cuối cùng (thay vì sau), cho phép loại bỏ một số bộ lọc tính năng tốn\nkém, giúp tăng tốc độ đáng kể với tổn thất độ chính xác rất nhỏ.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.3. Mô hình MobileNetv3 small",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "90e5cadc-75ea-465e-b873-ab475d9789d5",
-                  "title": "2.2.4. Huấn luyện",
-                  "level": 4,
-                  "content": "a) Môi trường huấn luyện\n- Mô hình được huấn luyện trên Google Colab với cấu hình GPU Tesla T4, 15102MiB,\nRAM 12GB.\n- Cấu hình:\no\nIMG_SIZE = 224\no\nBATCH_SIZE = 64\no\nINITIAL_EPOCHS = 6\no\nFINE_TUNE_EPOCHS = 10\no\nLEARNING_RATE = 0.0001\no\nFINE_TUNE_LEARNING_RATE = 0.00001\nb) Quy trình huấn luyện\nb.1. Chuẩn bị và Tiền xử lý Dữ liệu\n- Bước này được thực hiện trong hàm create_datasets và chuẩn bị dữ liệu đầu vào cho\nmô hình:\no\nTải dữ liệu: Tải ảnh từ hai thư mục train và val (validation) trong thư mục\ndataset.\n\no\nTiền xử lý đặc thù: Áp dụng hàm preprocess_input của MobileNetV3 lên tất\ncả các ảnh. Hàm này có nhiệm vụ chuẩn hóa giá trị pixel, đảm bảo dữ liệu\nđầu vào khớp với trọng số ImageNet đã được huấn luyện.\no\nTăng cường dữ liệu (Data Augmentation): Chỉ áp dụng cho tập huấn luyện\n(train_datagen) các kỹ thuật như xoay, dịch chuyển, lật ngang để làm phong\nphú thêm dữ liệu và giảm quá khớp (overfitting).\no\nTạo Batch: Dữ liệu được chia thành các lô (Batch Size = 64) để nạp vào mô\nhình.\nb.2. Thiết lập Mô hình và Đóng băng (Freeze)\n- Bước này được thực hiện trong hàm create_model và chuẩn bị cấu trúc mạng:\no\nTải mô hình cơ sở: Tải kiến trúc MobileNetV3-Small với trọng số đã được\nhuấn luyện trước trên ImageNet (weights=\"imagenet\"), nhưng loại bỏ lớp\nphân loại cuối cùng (include_top=False).\no\nĐóng băng Base Model: Thiết lập base_model.trainable = False. Điều này\nkhóa tất cả các trọng số trong MobileNetV3-Small, biến nó thành một bộ\ntrích xuất đặc trưng cố định (fixed feature extractor).\no\nThêm Lớp Phân loại Tùy chỉnh (Head): Thêm các lớp mới ở cuối mạng để\nphân loại dữ liệu cụ thể của bạn:\n+ GlobalAveragePooling2D: Nén chiều không gian của các đặc trưng.\n+ Dropout(0.3) và Dense(128, activation=\"relu\"): Các lớp ẩn tùy chỉnh\nđể học các đặc trưng cấp cao.\n+ Dense(num_classes, activation=\"softmax\"): Lớp đầu ra cuối cùng để\ndự đoán các lớp.\nb.3. Huấn luyện 2 Giai đoạn:\n- Đây là quy trình huấn luyện chính, tối ưu hóa mô hình qua hai bước:\nb.3.1. Giai đoạn 1: Huấn luyện Lớp Phân loại Mới (Initial Training)\no\nMục tiêu: Huấn luyện nhanh các lớp phân loại tùy chỉnh (Head) đã được thêm\nvào, trong khi trọng số của MobileNetV3 vẫn bị đóng băng.\n\no\nThiết lập: Sử dụng Learning Rate tương đối cao ($10^{-4}$) và huấn luyện\ntrong 6 epochs (INITIAL_EPOCHS).\no\nCallbacks: Theo dõi val_accuracy và val_loss để tự động dừng sớm\n(EarlyStopping), giảm Learning Rate (ReduceLROnPlateau), và lưu lại mô\nhình tốt nhất.\nb.3.2. Giai đoạn 2: Tinh chỉnh (Fine-Tuning)\no\nMục tiêu: Mở khóa các lớp gần cuối của MobileNetV3-Small để tinh chỉnh\ncác đặc trưng cấp cao phù hợp hơn với dữ liệu cụ thể của bạn.\no\nMở khóa có chọn lọc: base_model.trainable = True sau đó đóng băng trở lại\ncác lớp đầu (base_model.layers[:-100]) để chỉ tinh chỉnh các lớp gần đầu ra.\no\nThiết lập: Sử dụng Learning Rate rất nhỏ ($10^{-5}$) và huấn luyện thêm 8\nepochs (FINE_TUNE_EPOCHS). Learning Rate nhỏ giúp tránh làm hỏng\ncác trọng số đã được học trước.\nb.4. Đánh giá và Triển khai (Deployment)\n- Đây là các bước cuối cùng để đo lường hiệu suất và chuẩn bị cho việc sử dụng thực\ntế:\no\nLưu mô hình: Lưu mô hình đã được tinh chỉnh cuối cùng (final_mobilenetv3_\nsmall.keras).\no\nĐánh giá: Sử dụng model.evaluate(val_ds) để đo lường hiệu suất cuối cùng\ntrên tập Validation (Loss và Accuracy).\no\nVẽ Biểu đồ: Vẽ biểu đồ thể hiện sự thay đổi về Accuracy và Loss qua cả hai\ngiai đoạn huấn luyện (Initial và Fine-Tuning).\no\nChuyển đổi TFLite: Sử dụng tf.lite.TFLiteConverter để chuyển đổi mô hình\nsang định dạng TFLite. Bật tối ưu hóa mặc định (tf.lite.Optimize.DEFAULT)\nđể thực hiện Lượng tử hóa (Quantization), giúp giảm kích thước và tăng tốc\nđộ suy luận trên các thiết bị nhúng (như Raspberry Pi).\n\n- Một số hình ảnh mô tả quá trình huấn luyện\nHình 12. . Log huấn luyện mô hình MobileNetV3 Small\nHình 13. Biểu đồ Accuracy và Loss của mô hình MobileNetV3 Small",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.4. Huấn luyện",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "de49844d-19f0-4de0-bfb8-39eb2caad3c5",
-                  "title": "2.2.5. Triển khai trên server:",
-                  "level": 4,
-                  "content": "- AI server sẽ sử dụng FashAPI framework để có thể sử dụng websocket cho tốc độ\ngửi tín hiệu nhanh hơn.\n- Quy trình xử lý:\na) Thu nhận và Phân phối Ảnh (Input Acquisition & Distribution)\nQuy trình bắt đầu trong hàm xử lý WebSocket chính (ws_traffic_light):\n\n- B1: Nhận Frame: ESP32-CAM gửi khung hình JPEG (dữ liệu nhị phân) qua\nWebSocket. Server nhận dữ liệu (await asyncio.wait_for (websocket.receive_bytes\n(), ...)).\n- B2: Giải mã: Khung hình JPEG được giải mã thành ma trận ảnh OpenCV\n(cv2.imdecode), được lưu vào biến toàn cục last_frame.\n- B3: Kiểm tra Tần suất: Server kiểm tra xem đã đến lúc chạy AI chưa (now -\nlast_inference_time) > INFERENCE_INTERVAL, hiện là 50ms).\n- B4:Tạo Tác vụ: Nếu đến lúc, một tác vụ bất đồng bộ (asyncio.create_task (handle_\ninference(frame))) được tạo ra để chạy AI mà không làm tắc nghẽn luồng chính.\nb) Xử lý và Suy luận (Preprocessing & Inference)\n- Tác vụ AI chạy trong hàm handle_inference(frame):\n- Tiền xử lý: Hàm preprocess_image(frame) được gọi:\no\nChuyển ảnh từ BGR sang RGB (cv2.cvtColor(..., cv2.COLOR_BGR2RGB)).\no\nThay đổi kích thước ảnh về 224x224 (IMG_SIZE).\no\nChuyển đổi kiểu dữ liệu sang np.float32.\no\nSuy luận (Inference): Hàm run_inference(img) được gọi (chạy trong loop.run\n_in_executor(None, ...) để tránh chặn luồng):\no\nModel Keras (MobileNetV3-Small) dự đoán lớp (model.predict).\no\nHàm trả về label (ví dụ: \"red\", \"green\", \"none\") và conf (độ tin cậy).\nc) Ra quyết định và Cơ chế Bỏ phiếu (Voting Mechanism)\nKết quả suy luận được xử lý để đảm bảo độ tin cậy và sự ổn định:\n- Ưu tiên Khẩn cấp (Urgent Priority):\no\nNếu mô hình dự đoán là red hoặc stopsign với độ tin cậy cao (>0.7), nó ngay\nlập tức tính toán lệnh (cmd = decide_command(label)) và cập nhật\nlatest_command toàn cục.\no\nCơ chế bỏ phiếu (recent_predictions) bị xóa để đảm bảo phản ứng tức thì.\n- Cơ chế Bỏ phiếu (Voting for Stability):\n\no\nĐối với các lớp khác, kết quả dự đoán (nếu conf > 0.5) được thêm vào hàng\nđợi recent_predictions (cửa sổ 3 frame).\no\nChỉ khi ít nhất 2/3 (tức là 2 trong 3 frame gần nhất) đưa ra cùng một dự đoán,\nkết quả đó mới được coi là ổn định và được chấp nhận.\n- Cập nhật Kết quả: Kết quả ổn định được lưu vào latest_result và latest_command\ntoàn cục.\nd) Tổng hợp Lệnh và Gửi về ESP32 (Command Dispatch)\nPhần này diễn ra trong vòng lặp chính của WebSocket sau khi AI đã cập nhật latest_\nresult và latest_lane_cmd:\n- Phối hợp Lệnh (Command Coordination):\no\nƯu tiên 1 (Traffic Override): Nếu latest_result có lệnh S (Stop) từ AI (đèn\nđỏ/dừng), final_cmd sẽ là S.\no\nƯu tiên 2 (Lane Command): Nếu không có lệnh dừng khẩn cấp từ AI,\nfinal_cmd sẽ là lệnh từ thuật toán phát hiện làn đường (latest_lane_cmd, ví\ndụ: L/R/F).\n- Đóng gói Payload: Tạo đối tượng JSON payload chứa class, command, confidence,\nvà mode.\n- Gửi Lệnh: Payload được gửi đến ESP32 qua WebSocket (await websocket.send\n_json(payload)). ESP32 sau đó sẽ thực hiện lệnh điều khiển động cơ tương ứng.\n- Debug: Ảnh Overlay được tạo ra (overlay_debug) và lưu vào last_overlay để xem\ntrên trình duyệt.\n\n- Đây là hình ảnh kết quả khi xe chưa nhận diện được vật thể\nHình 14. Kết quả khi xe chưa nhận diện được vật thể\n- Đây là hình ảnh kết quả nhận diện biển báo Stop\nHình 15. Kết quả khi xe nhận diện biển báo Stop\n\n- Đây là hình ảnh kết quả khi nhận đèn tín hiệu Đỏ\nHình 16. Kết quả khi xe nhận diện đèn giao thông màu Đỏ\nHình 17. Kết quả khi xe nhận diện đèn giao thông màu Vàng\nHình 18. Kết quả khi xe nhận diện đèn giao thông màu Xanh",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.5. Triển khai trên server:",
-                  "children": [],
-                  "embedding": null
-                }
-              ],
-              "embedding": null
-            },
-            {
-              "id": "6f5390d2-f06f-4b2c-9d01-2a4ca94db24f",
-              "title": "2.3. Giải pháp phần mềm",
-              "level": 3,
-              "content": "",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm",
-              "children": [
-                {
-                  "id": "1bf823f2-ff9c-4828-a479-7e581205832b",
-                  "title": "2.3.1. Tổng quan và Kiến trúc hệ thống",
-                  "level": 4,
-                  "content": "- Phần mềm điều khiển được xây dựng dưới dạng ứng dụng di động (Mobile\nApplication) chạy trên hệ điều hành Android. Ứng dụng đóng vai trò là Client trong\nmô hình Client-Server, thực hiện nhiệm vụ giao tiếp với bộ điều khiển trung tâm\ntrên xe (Server) để gửi tín hiệu điều khiển và nhận dữ liệu giám sát.\n- Kiến trúc phần mềm được thiết kế theo hướng module hóa, tách biệt giữa luồng xử\nlý giao diện (UI Thread) và luồng xử lý mạng (Network Thread) để đảm bảo độ\nmượt mà và phản hồi nhanh (low latency) trong quá trình vận hành.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.1. Tổng quan và Kiến trúc hệ thống",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "9f9f126e-8e94-4ee6-b0c5-6d2459aa72f3",
-                  "title": "2.3.2. Môi trường và Công cụ phát triển",
-                  "level": 4,
-                  "content": "Hệ thống phần mềm được phát triển dựa trên các công cụ và thư viện mã nguồn mở:\n- Ngôn ngữ lập trình: Java (JDK 8+).\n- Môi trường phát triển (IDE): Android Studio.\n- Giao diện người dùng (UI): Xây dựng bằng XML với các thành phần tùy chỉnh\n(Custom Drawables) cho nút bấm và hiển thị video.\n- Thư viện lõi:\no\nOkHttp: Sử dụng để quản lý các kết nối mạng HTTP và WebSocket, đảm\nbảo hiệu năng cao và ổn định.\no\nOrg.json: Đóng gói và xử lý dữ liệu điều khiển theo định dạng JSON.\no\nAndroid SDK: Sử dụng các API cơ bản như BitmapFactory, Base64 để xử\nlý hình ảnh.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.2. Môi trường và Công cụ phát triển",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "cced9241-2eac-4c3f-8296-c873b6f95d9c",
-                  "title": "2.3.3. Giao thức Truyền thông",
-                  "level": 4,
-                  "content": "Để đáp ứng yêu cầu vừa điều khiển chính xác, vừa giám sát hình ảnh liên tục, ứng dụng\nsử dụng kết hợp hai giao thức truyền thông trên nền tảng TCP/IP qua cổng 8000:\na) Giao thức HTTP (RESTful API) - Kênh điều khiển:\n- Được sử dụng để gửi các lệnh điều khiển vận hành và cấu hình chế độ. Giao thức\nnày đảm bảo tính tin cậy của gói tin.\n- Phương thức: POST.\n\n- Định dạng dữ liệu: JSON (JavaScript Object Notation).\n- Các API Endpoint:\no\n/api/control: Gửi lệnh di chuyển (Tiến, Lùi, Trái, Phải, Dừng).\no\n/api/mode: Chuyển đổi chế độ hoạt động (Manual, Auto, Line Follow).\nb) Giao thức WebSocket - Kênh giám sát:\nĐược sử dụng để truyền tải hình ảnh từ camera về điện thoại.\n- Endpoint: /ws/frames.\n- Cơ chế: Thiết lập kết nối hai chiều thời gian thực (Real-time full-duplex). Server\ngửi liên tục các frame ảnh đã được mã hóa Base64, Client nhận và giải mã để hiển\nthị.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.3. Giao thức Truyền thông",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "16adad49-b109-4d3c-b290-d2411aca78f9",
-                  "title": "2.3.4. Sơ đồ Nguyên lý hoạt động",
-                  "level": 4,
-                  "content": "Hình dưới đây mô tả luồng dữ liệu giữa Người dùng, Ứng dụng Android và Xe:\nHình 19. Sơ đồ nguyên lý hoạt động luồng dữ liệu",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.4. Sơ đồ Nguyên lý hoạt động",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "5b95fd12-aa84-40ac-9992-e100369e08c3",
-                  "title": "2.3.5. Các Chức năng và Giải thuật chi tiết",
-                  "level": 4,
-                  "content": "a) Chức năng Kết nối hệ thống:\nNgười dùng nhập địa chỉ IP của xe vào giao diện. Ứng dụng thực hiện lưu địa chỉ\nIP và khởi tạo kết nối WebSocket. Trong tệp cấu hình AndroidManifest.xml, thuộc tính\nandroid:usesCleartextTraffic=\"true\" đã được kích hoạt để cho phép kết nối HTTP tới các\nthiết bị nhúng trong mạng nội bộ.\nb) Chức năng Điều khiển vận hành (Manual Mode):\nĐể đảm bảo an toàn và khả năng phản hồi tức thời, giải thuật điều khiển sử dụng cơ chế\nbắt sự kiện chạm (OnTouchListener) thay vì sự kiện click thông thường:\n- Sự kiện ACTION_DOWN: Khi người dùng nhấn giữ nút, ứng dụng gửi lệnh di\nchuyển tương ứng (Ví dụ: {\"command\": \"F\"} cho lệnh tiến).\n- Sự kiện ACTION_UP: Ngay khi người dùng thả tay, ứng dụng tự động gửi lệnh\ndừng ({\"command\": \"S\"}). Cơ chế này giúp xe dừng lại ngay lập tức khi mất sự\nkiểm soát từ người dùng.\nc) Chức năng Giám sát Camera (Live Streaming):\nQuá trình xử lý hình ảnh được thực hiện bất đồng bộ qua WebSocketListener:\n- Bước 1: Lắng nghe sự kiện onMessage từ WebSocket.\n- Bước 2: Nhận chuỗi dữ liệu ảnh dạng String.\n- Bước 3: Sử dụng Base64.decode để chuyển đổi chuỗi thành mảng byte.\n- Bước 4: Sử dụng BitmapFactory.decodeByteArray để tạo đối tượng hình ảnh\n(Bitmap).\n- Bước 5: Cập nhật lên giao diện ImageView thông qua phương thức runOnUiThread\nđể đảm bảo an toàn luồng (Thread-safety).",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.5. Các Chức năng và Giải thuật chi tiết",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "5cc3e812-7e70-4cb2-a0da-1fe89524b3ce",
-                  "title": "2.3.6. Giao diện người dùng (GUI)khiển",
-                  "level": 4,
-                  "content": "Hình 20. Giao diện app điều khiển",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.6. Giao diện người dùng (GUI)khiển",
-                  "children": [],
-                  "embedding": null
-                }
-              ],
-              "embedding": null
-            }
-          ],
-          "embedding": null
-        },
-        {
-          "id": "8cd11f5f-c956-48d8-b2cf-e19f40046dad",
-          "title": "3. KẾT QUẢ",
+          "id": "fcd02225-32c3-42c1-b18a-68519639bf18",
+          "title": "2.3. Giải pháp phần mềm",
           "level": 2,
           "content": "",
           "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ",
+          "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm",
           "children": [
             {
-              "id": "3aaaffb2-9ccc-4fdf-b596-2ce6273988ea",
-              "title": "3.1. Kết quả triển khai hệ thống",
+              "id": "ea2388d4-3bb0-41d7-9517-a11dd459abe4",
+              "title": "2.3.1. Tổng quan và Kiến trúc hệ thống",
               "level": 3,
-              "content": "- Trong quá trình xây dựng và hoàn thiện đồ án, nhóm đã triển khai thành công toàn bộ\ncác chức năng cốt lõi của hệ thống xe tự hành thông minh. Các chức năng này được đo\nlường thông qua nhiều lần thực nghiệm trong điều kiện thực tế khác nhau nhằm đánh giá\nđộ ổn định, khả năng phản hồi và mức độ tin cậy của hệ thống. Dưới đây là mô tả chi tiết\ntừng chức năng đã đạt được:",
+              "content": "- Phần mềm điều khiển được xây dựng dưới dạng ứng dụng di động (Mobile\nApplication) chạy trên hệ điều hành Android. Ứng dụng đóng vai trò là Client trong\nmô hình Client-Server, thực hiện nhiệm vụ giao tiếp với bộ điều khiển trung tâm\ntrên xe (Server) để gửi tín hiệu điều khiển và nhận dữ liệu giám sát.\n- Kiến trúc phần mềm được thiết kế theo hướng module hóa, tách biệt giữa luồng xử\nlý giao diện (UI Thread) và luồng xử lý mạng (Network Thread) để đảm bảo độ\nmượt mà và phản hồi nhanh (low latency) trong quá trình vận hành.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống",
-              "children": [
-                {
-                  "id": "ab7ff87e-a4dd-4b9c-990c-a4154667cbbc",
-                  "title": "3.1.1. Chức năng bám line tự động",
-                  "level": 4,
-                  "content": "- Hệ thống xe được trang bị ba cảm biến dò line hồng ngoại TCRT5000, cho phép phát\nhiện màu sắc mặt đường và bám theo phần line đen có độ tương phản cao. Thuật toán điều\nhướng được lập trình trên Arduino đọc tín hiệu từ cảm biến theo chu kỳ 10–20ms, sau đó\nđịnh hướng bánh xe như sau:\nTrạng thái cảm biến Hành vi điều khiển\nSensor giữa = đen → trái + phải = trắng Xe đi thẳng\nSensor trái = đen → phải = trắng Rẽ trái\nSensor phải = đen → trái = trắng Rẽ phải\nCả ba cảm biến trắng Mất line → dừng ngắn → hiệu chỉnh tìm\nlại line\n- Kết quả thực nghiệm cho thấy:\n• Xe chạy ổn định trên track đường cong và đường thẳng.\n• Tỷ lệ bám line thành công ~93–96% trong điều kiện ánh sáng phòng.\n• Khi gặp đoạn khuất line (bị đứt, ngã ba), xe có khả năng tự hiệu chỉnh lại vị trí sau\n0.3–1.2 giây.\n➡ Đây là nền tảng quan trọng đảm bảo hệ thống có thể hoạt động ở chế độ Auto hoàn toàn\nmà không có sự can thiệp thủ công.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.1. Chức năng bám line tự động",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "072248b7-be2d-43b0-9e72-76207ecf9e33",
-                  "title": "3.1.2. Nhận diện bảng tín hiệu / đèn giao thông bằng AI",
-                  "level": 4,
-                  "content": "Nhóm đã huấn luyện mô hình MobileNetV3 small để nhận diện 4 loại tín hiệu chính:\n\nNhãn dự đoán Ý nghĩa hành vi\nGreen Cho phép di chuyển\nYellow Giảm tốc / chờ quyết định tiếp theo\nRed Buộc dừng ngay\nStop Sign Dừng 1–2 giây → sau đó tiếp tục\nHình ảnh được truyền từ ESP32-CAM lên server qua WebSocket với tốc độ trung bình\n12–18 FPS, sau đó AI xử lý và gửi lệnh điều khiển xuống Arduino. Qua thử nghiệm thực\ntế:\n• Nhận diện đèn đỏ đúng 97/100 lần\n• Nhận diện biển Stop đúng 92% trong ánh sáng ổn định\n• Thời gian phản hồi trung bình từ camera → AI → bánh xe là 170–250ms, đủ để xử\nlý realtime\n➡ Khi AI phát hiện tín hiệu giao thông, xe ưu tiên quyết định từ AI hơn tín hiệu từ cảm\nbiến line → giúp xử lý đúng luật giao thông mô phỏng.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.2. Nhận diện bảng tín hiệu / đèn giao thông bằng AI",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "330975e7-71dd-48e9-93a8-f6be6fd18f28",
-                  "title": "3.1.3. Điều khiển động cơ thông qua AI & thuật toán nhúng",
-                  "level": 4,
-                  "content": "Arduino đóng vai trò bộ điều khiển cuối, nhận:\n• Lệnh điều hướng từ AI (UART)\n• Tín hiệu môi trường từ cảm biến line\nXe thực hiện điều chỉnh PWM động cơ dựa trên độ cong đường và tình huống giao\nthông. Tốc độ PWM được đặt linh hoạt từ 90–255 để đảm bảo:\nTình huống vận hành PWM áp dụng\nBình thường (lưu thông) 65–85% tốc độ\nGặp line cong mạnh 45–60% tốc độ\nPhát hiện tín hiệu Yellow Giảm còn ~50%\n\nTín hiệu Red/Stop PWM = 0 → Dừng ngay\nHiệu quả đạt được:\n• Xe tăng tốc – giảm tốc mượt, không giật.\n• Không bị rung bánh khi vào cua.\n• Đứng yên hoàn toàn khi gặp đèn đỏ/Stop.\n➡ Điều này chứng minh thuật toán điều khiển đã triển khai ổn định, phản ứng phù hợp\ntheo tình huống giao thông.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.3. Điều khiển động cơ thông qua AI & thuật toán nhúng",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "8fd4bbcf-fe38-4112-b730-1a5ca329c350",
-                  "title": "3.1.4. Gửi – nhận dữ liệu giữa các thiết bị hoạt động ổn định",
-                  "level": 4,
-                  "content": "Hệ thống truyền thông 2 lớp được triển khai:\nThành phần Giao thức\nESP32 → Server AI WebSocket (2 chiều)\nESP32 → Arduino UART 115200bps\nKết quả kiểm tra:\n• Tốc độ gửi ảnh ổn định, độ trễ thấp.\n• Độ cập nhật tín hiệu liên tục, không mất gói nghiêm trọng.\n• Lệnh điều khiển truyền về Arduino chính xác ~98% trong test lab.\n➡ Kênh dữ liệu đảm bảo hệ thống vận hành thời gian thực, không lag, phù hợp mô hình\nIoT phân tán.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.4. Gửi – nhận dữ liệu giữa các thiết bị hoạt động ổn định",
-                  "children": [],
-                  "embedding": null
-                }
-              ],
-              "embedding": null
-            },
-            {
-              "id": "cc991457-dc12-4986-8ec6-6a8e90158024",
-              "title": "3.2. Tập dữ liệu sử dụng cho mô hình AI",
-              "level": 3,
-              "content": "- Tập dữ liệu dùng để huấn luyện mô hình MobileNetV3 small được xây dựng từ hai\nnguồn:\n(1) ảnh tự thu thập bằng ESP32-CAM trong môi trường mô phỏng\n(2) một số ảnh bổ sung từ nguồn dữ liệu mở để tăng sự đa dạng về góc nhìn và ánh sáng.\n\n- Các lớp nhãn gồm: green, yellow, red, stopsign, none. Ảnh gốc có độ phân giải 320×240\nvà được resize về 224×224 trước khi đưa vào mô hình. Ảnh được lưu dưới dạng JPEG, xử\nlý RGB và áp dụng một số kỹ thuật tăng cường dữ liệu nhẹ.\n- Tập dữ liệu được chia theo tỉ lệ: 70% train – 15% validation – 15% test, đảm bảo cân\nbằng giữa các lớp và phản ánh đầy đủ các tình huống giao thông mô phỏng.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.2. Tập dữ liệu sử dụng cho mô hình AI",
+              "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.1. Tổng quan và Kiến trúc hệ thống",
               "children": [],
               "embedding": null
             },
             {
-              "id": "c17dda9c-4392-41f8-8cc9-8dc01082bef9",
-              "title": "3.3. Công cụ, thư viện và môi trường thực nghiệm",
+              "id": "ff9c8677-3762-41f1-93c4-5089592e9c6c",
+              "title": "2.3.2. Môi trường và Công cụ phát triển",
               "level": 3,
-              "content": "- Hệ thống AI sử dụng Python + FastAPI làm server xử lý WebSocket/REST API, kết hợp\nthư viện TensorFlow/Keras cho suy diễn mô hình. OpenCV và NumPy được dùng để xử\nlý ảnh, đặc biệt trong pipeline nhận diện làn đường.\n- ESP32-CAM và Arduino được lập trình bằng Arduino IDE/PlatformIO cùng các thư viện\nArduino Websockets, Arduino Json và esp_camera . Server AI chạy trên máy tính cá nhân\ncó CPU đa nhân; ESP32-CAM kết nối qua WiFi nội bộ; Arduino giao tiếp qua UART với\ntốc độ 115200bps.",
+              "content": "Hệ thống phần mềm được phát triển dựa trên các công cụ và thư viện mã nguồn mở:\n- Ngôn ngữ lập trình: Java (JDK 8+).\n- Môi trường phát triển (IDE): Android Studio.\n- Giao diện người dùng (UI): Xây dựng bằng XML với các thành phần tùy chỉnh\n(Custom Drawables) cho nút bấm và hiển thị video.\n- Thư viện lõi:\no\nOkHttp: Sử dụng để quản lý các kết nối mạng HTTP và WebSocket, đảm\nbảo hiệu năng cao và ổn định.\no\nOrg.json: Đóng gói và xử lý dữ liệu điều khiển theo định dạng JSON.\no\nAndroid SDK: Sử dụng các API cơ bản như BitmapFactory, Base64 để xử\nlý hình ảnh.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.3. Công cụ, thư viện và môi trường thực nghiệm",
+              "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.2. Môi trường và Công cụ phát triển",
               "children": [],
               "embedding": null
             },
             {
-              "id": "21d5f2ad-723b-41c2-a47a-b44a5de83b84",
-              "title": "3.4. Điều kiện tiến hành thực nghiệm",
+              "id": "a012a343-008a-425e-af72-9e6f28f1910b",
+              "title": "2.3.3. Giao thức Truyền thông",
               "level": 3,
-              "content": "- Thử nghiệm được thực hiện chủ yếu trong phòng, trên track mô phỏng gồm đường thẳng,\nđường cong và khu vực đặt biển/đèn tín hiệu. Ánh sáng được giữ ở mức ổn định để đảm\nbảo camera thu được hình ảnh rõ ràng.\n- Trong quá trình vận hành, ESP32-CAM truyền 12–18 FPS; server AI giới hạn tần suất\nsuy diễn ở 50 ms/lần để giảm tải. Ngưỡng nhận diện tín hiệu giao thông đặt ở 0.5, riêng\nnhãn red và stopsign ưu tiên với ngưỡng cao hơn (0.7). Arduino cập nhật PWM động cơ\ntheo lệnh AI hoặc theo cảm biến line tùy chế độ.",
+              "content": "Để đáp ứng yêu cầu vừa điều khiển chính xác, vừa giám sát hình ảnh liên tục, ứng dụng\nsử dụng kết hợp hai giao thức truyền thông trên nền tảng TCP/IP qua cổng 8000:\na) Giao thức HTTP (RESTful API) - Kênh điều khiển:\n- Được sử dụng để gửi các lệnh điều khiển vận hành và cấu hình chế độ. Giao thức\nnày đảm bảo tính tin cậy của gói tin.\n- Phương thức: POST.\n\n- Định dạng dữ liệu: JSON (JavaScript Object Notation).\n- Các API Endpoint:\no\n/api/control: Gửi lệnh di chuyển (Tiến, Lùi, Trái, Phải, Dừng).\no\n/api/mode: Chuyển đổi chế độ hoạt động (Manual, Auto, Line Follow).\nb) Giao thức WebSocket - Kênh giám sát:\nĐược sử dụng để truyền tải hình ảnh từ camera về điện thoại.\n- Endpoint: /ws/frames.\n- Cơ chế: Thiết lập kết nối hai chiều thời gian thực (Real-time full-duplex). Server\ngửi liên tục các frame ảnh đã được mã hóa Base64, Client nhận và giải mã để hiển\nthị.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.4. Điều kiện tiến hành thực nghiệm",
+              "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.3. Giao thức Truyền thông",
               "children": [],
               "embedding": null
             },
             {
-              "id": "b54cd6a7-b655-4c2b-8273-071b3c9f3b17",
-              "title": "3.5. Độ đo đánh giá hiệu suất hệ thống",
+              "id": "305fb493-5977-4e99-b1e1-800f3ff20191",
+              "title": "2.3.4. Sơ đồ Nguyên lý hoạt động",
               "level": 3,
-              "content": "- Mô hình AI nhận diện tín hiệu giao thông đạt độ chính xác cao trên tập test, đặc biệt là\ncác nhãn red và green. Thử nghiệm thực tế cho kết quả:\n• Nhận diện đèn đỏ chính xác 97%,\n\n• Nhận diện biển Stop khoảng 92%.\n- Độ trễ xử lý từ camera → server AI → động cơ dao động 170–250 ms, đủ để xe phản\nứng chính xác trong mô hình thu nhỏ. Kết nối WebSocket hoạt động ổn định, tỉ lệ lệnh\ntruyền sai chỉ khoảng 2%, không ảnh hưởng đến quá trình điều khiển.",
+              "content": "Hình dưới đây mô tả luồng dữ liệu giữa Người dùng, Ứng dụng Android và Xe:\nHình 19. Sơ đồ nguyên lý hoạt động luồng dữ liệu",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.5. Độ đo đánh giá hiệu suất hệ thống",
+              "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.4. Sơ đồ Nguyên lý hoạt động",
               "children": [],
               "embedding": null
             },
             {
-              "id": "bd8ad7ca-0c5d-4b95-b293-6da4f62e6c46",
-              "title": "3.6. Quy trình và điều kiện kiểm thử hệ thống",
+              "id": "5166b887-efeb-4721-8e3d-270e6f46560e",
+              "title": "2.3.5. Các Chức năng và Giải thuật chi tiết",
               "level": 3,
-              "content": "Kiểm thử được chia thành hai giai đoạn:\na) Kiểm thử đơn lẻ:\no\nKiểm tra từng module gồm AI nhận diện, lane detection, truyền thông\nWebSocket, UART và cảm biến line.\no\nĐánh giá bằng các tập ảnh riêng biệt và quan sát log trong server/ ESP32\n/Arduino.\nb) Kiểm thử tích hợp:\no\nXe chạy trên track hoàn chỉnh với các tình huống: bám line, gặp đèn xanh –\nvàng – đỏ, gặp biển Stop.\no\nKiểm thử theo từng chế độ hoạt động: line_follow và manual.\nKết quả cho thấy hệ thống phản ứng đúng hầu hết các tình huống và vận hành trơn tru\ntrong thời gian dài.",
+              "content": "a) Chức năng Kết nối hệ thống:\nNgười dùng nhập địa chỉ IP của xe vào giao diện. Ứng dụng thực hiện lưu địa chỉ\nIP và khởi tạo kết nối WebSocket. Trong tệp cấu hình AndroidManifest.xml, thuộc tính\nandroid:usesCleartextTraffic=\"true\" đã được kích hoạt để cho phép kết nối HTTP tới các\nthiết bị nhúng trong mạng nội bộ.\nb) Chức năng Điều khiển vận hành (Manual Mode):\nĐể đảm bảo an toàn và khả năng phản hồi tức thời, giải thuật điều khiển sử dụng cơ chế\nbắt sự kiện chạm (OnTouchListener) thay vì sự kiện click thông thường:\n- Sự kiện ACTION_DOWN: Khi người dùng nhấn giữ nút, ứng dụng gửi lệnh di\nchuyển tương ứng (Ví dụ: {\"command\": \"F\"} cho lệnh tiến).\n- Sự kiện ACTION_UP: Ngay khi người dùng thả tay, ứng dụng tự động gửi lệnh\ndừng ({\"command\": \"S\"}). Cơ chế này giúp xe dừng lại ngay lập tức khi mất sự\nkiểm soát từ người dùng.\nc) Chức năng Giám sát Camera (Live Streaming):\nQuá trình xử lý hình ảnh được thực hiện bất đồng bộ qua WebSocketListener:\n- Bước 1: Lắng nghe sự kiện onMessage từ WebSocket.\n- Bước 2: Nhận chuỗi dữ liệu ảnh dạng String.\n- Bước 3: Sử dụng Base64.decode để chuyển đổi chuỗi thành mảng byte.\n- Bước 4: Sử dụng BitmapFactory.decodeByteArray để tạo đối tượng hình ảnh\n(Bitmap).\n- Bước 5: Cập nhật lên giao diện ImageView thông qua phương thức runOnUiThread\nđể đảm bảo an toàn luồng (Thread-safety).",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.6. Quy trình và điều kiện kiểm thử hệ thống",
+              "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.5. Các Chức năng và Giải thuật chi tiết",
               "children": [],
               "embedding": null
             },
             {
-              "id": "e024be95-8e4f-4b64-a08e-86b3849e0210",
-              "title": "3.7. Nhận xét chung",
+              "id": "fea0095c-4e26-427d-ac27-7ce80009b1b0",
+              "title": "2.3.6. Giao diện người dùng (GUI)khiển",
               "level": 3,
-              "content": "- Hệ thống đã đáp ứng tốt mục tiêu đặt ra: bám line ổn định, nhận diện tín hiệu giao thông\nchính xác, điều khiển động cơ mượt và đảm bảo độ trễ thấp. Các kênh truyền thông hoạt\nđộng ổn định, ít lỗi.\n- Hạn chế chủ yếu nằm ở điều kiện ánh sáng thay đổi và phụ thuộc vào tốc độ WiFi. Tuy\nnhiên, đây là những vấn đề có thể cải thiện trong các phiên bản sau thông qua tối ưu model,\nbổ sung dữ liệu và nâng cấp phần cứng.",
+              "content": "Hình 20. Giao diện app điều khiển",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.7. Nhận xét chung",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "a5d81a1a-bf46-4c54-bb1c-935ba206dbf2",
-              "title": "3.8. Một số hình ảnh sản phẩm dự án",
-              "level": 3,
-              "content": "a) Hình ảnh sản phẩm xe\nHình 21. Mô hình sản phẩm xe (1)\nHình 22. Mô hình sản phẩm xe (2)\n\nb) Hình ảnh biển báo\nHình 23. Hỉnh ành biển báo\nc) Hình ảnh đèn giao thông\nHình 26. Đèn màu xanh Hình 24. Đèn màu vàng Hình 25. Đèn màu đỏ",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.8. Một số hình ảnh sản phẩm dự án",
-              "children": [],
-              "embedding": null
-            }
-          ],
-          "embedding": null
-        },
-        {
-          "id": "5ffb4093-d2b4-4c98-8baf-33da6a7825b3",
-          "title": "4. KẾT LUẬN",
-          "level": 2,
-          "content": "",
-          "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 4. KẾT LUẬN",
-          "children": [
-            {
-              "id": "e24e58f4-d245-432e-acde-2518a8c2b677",
-              "title": "4.1. Kết luận",
-              "level": 3,
-              "content": "- Sau quá trình nghiên cứu, thiết kế và triển khai hệ thống xe tự hành mô phỏng giao\nthông thông minh, nhóm sinh viên đã hoàn thành hầu hết các yêu cầu của đề tài. Hệ thống\ntích hợp đầy đủ các thành phần: cảm biến bám line, mô hình AI nhận diện tín hiệu giao\nthông, thuật toán điều khiển động cơ, kết nối ESP32–Server–Arduino, cùng khả năng vận\nhành thời gian thực. Các kết quả thực nghiệm cho thấy xe hoạt động ổn định, phản hồi\nnhanh và xử lý chính xác phần lớn các tình huống giao thông mô phỏng.\n- Cụ thể, chức năng bám line đạt độ ổn định cao trên đa dạng loại đường, mô hình AI\nphân loại đèn giao thông đạt độ chính xác trên 92–97%, thời gian suy diễn thấp (~200 ms),\nđảm bảo yêu cầu chạy realtime. Bộ điều khiển động cơ phản ứng mượt mà với thay đổi tốc\nđộ và hướng di chuyển, giúp xe vận hành an toàn khi gặp đèn đỏ hoặc biển Stop. Kênh\ntruyền thông WebSocket và UART hoạt động ổn định, không xuất hiện lỗi đáng kể trong\nquá trình thử nghiệm.\n- Nhìn chung, sản phẩm đã đáp ứng đầy đủ mục tiêu đề ra: xây dựng một hệ thống xe\ntự hành thu nhỏ có khả năng nhận diện tín hiệu giao thông và điều hướng tự động. Tuy còn\nhạn chế về điều kiện ánh sáng và độ phân giải camera, mô hình vẫn đủ chính xác để vận\nhành trong môi trường mô phỏng.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 4. KẾT LUẬN > 4.1. Kết luận",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "2c4726c1-ec57-4dd4-80ec-e8aee7851156",
-              "title": "4.2. Hướng phát triển",
-              "level": 3,
-              "content": "Mặc dù hệ thống xe tự hành thông minh đã đáp ứng tốt các mục tiêu đề ra trong phạm vi\nđồ án, vẫn còn nhiều hướng phát triển tiềm năng nhằm nâng cao độ chính xác, tính ổn định\nvà khả năng ứng dụng thực tế của hệ thống trong tương lai.\n• Mở rộng tập dữ liệu: Trong các phiên bản tiếp theo, tập dữ liệu huấn luyện cho\nmô hình AI có thể được mở rộng bằng cách thu thập thêm hình ảnh trong nhiều điều\nkiện ánh sáng khác nhau (ánh sáng yếu, ánh sáng mạnh, bóng đổ), nhiều góc nhìn\nvà khoảng cách khác nhau. Đồng thời, việc bổ sung thêm các loại biển báo giao\nthông khác (ví dụ: rẽ trái, rẽ phải, cấm đi, giảm tốc) sẽ giúp mô hình tăng khả năng\n\ntổng quát hóa, giảm hiện tượng phụ thuộc vào môi trường mô phỏng cố định và cải\nthiện độ chính xác khi triển khai trong các bối cảnh đa dạng hơn.\n• Nâng cấp phần cứng: Hệ thống hiện tại sử dụng ESP32-CAM kết hợp với server\nAI để xử lý hình ảnh. Trong tương lai, có thể nâng cấp lên các nền tảng tính toán\nmạnh hơn như Raspberry Pi hoặc Jetson Nano để thực hiện suy diễn AI trực tiếp\ntrên xe (edge computing). Việc này giúp giảm độ trễ truyền dữ liệu qua mạng, tăng\ntốc độ phản hồi và nâng cao tính автоном (tự chủ) của hệ thống, đặc biệt trong các\nmôi trường yêu cầu thời gian thực cao.\n• Tối ưu thuật toán lane detection: Thuật toán bám line hiện tại chủ yếu dựa trên\ncảm biến hồng ngoại, phù hợp với các track đơn giản. Trong các phiên bản mở rộng,\ncó thể kết hợp hoặc thay thế bằng các thuật toán lane detection dựa trên xử lý ảnh\nhoặc deep learning, như sử dụng CNN để phát hiện làn đường, hoặc áp dụng các kỹ\nthuật biến đổi phối cảnh (perspective transformation) nhằm cải thiện độ ổn định khi\nxe di chuyển trên các track phức tạp, nhiều khúc cua hoặc giao lộ.\n• Bổ sung thuật toán tránh vật cản: Hiện tại, xe chủ yếu dựa vào line và tín hiệu\ngiao thông để điều hướng. Để tăng tính an toàn và tiệm cận hơn với các hệ thống xe\ntự hành thực tế, hệ thống có thể được trang bị thêm các cảm biến như siêu âm hoặc\nLiDAR nhằm phát hiện vật cản phía trước. Dữ liệu từ các cảm biến này sẽ được tích\nhợp vào thuật toán ra quyết định, cho phép xe giảm tốc hoặc dừng lại khi gặp chướng\nngại vật bất ngờ.\n• Xây dựng giao diện điều khiển & giám sát: Giao diện hiện tại cho phép điều khiển\nvà giám sát cơ bản thông qua ứng dụng di động. Trong tương lai, có thể mở rộng\nthành một nền tảng web hoặc ứng dụng đa thiết bị, cho phép người dùng theo dõi\ntrạng thái xe theo thời gian thực (tốc độ, chế độ hoạt động, trạng thái cảm biến),\nxem camera trực tiếp, cũng như lưu trữ và phân tích lịch sử hành trình. Điều này\nkhông chỉ phục vụ mục đích giám sát mà còn hỗ trợ nghiên cứu, đánh giá và tối ưu\nhệ thống.\n• Tổng kết hướng phát triển: Với thời gian và kinh phí phù hợp, hệ thống có thể mở\nrộng thành một mô hình xe tự hành hoàn chỉnh hơn, tiệm cận những nguyên lý mà\ncác hệ thống xe tự lái thực tế đang sử dụng.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 4. KẾT LUẬN > 4.2. Hướng phát triển",
+              "path": "2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.6. Giao diện người dùng (GUI)khiển",
               "children": [],
               "embedding": null
             }
@@ -395,7 +231,170 @@
       "embedding": null
     },
     {
-      "id": "3c0668e3-c0c1-469c-a26c-f75f0728da00",
+      "id": "74067092-f477-4aed-9c95-6452a48be612",
+      "title": "3. KẾT QUẢ",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "3. KẾT QUẢ",
+      "children": [
+        {
+          "id": "285a0e35-7ae8-4158-8fc5-2dd813132860",
+          "title": "3.1. Kết quả triển khai hệ thống",
+          "level": 2,
+          "content": "- Trong quá trình xây dựng và hoàn thiện đồ án, nhóm đã triển khai thành công toàn bộ\ncác chức năng cốt lõi của hệ thống xe tự hành thông minh. Các chức năng này được đo\nlường thông qua nhiều lần thực nghiệm trong điều kiện thực tế khác nhau nhằm đánh giá\nđộ ổn định, khả năng phản hồi và mức độ tin cậy của hệ thống. Dưới đây là mô tả chi tiết\ntừng chức năng đã đạt được:",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống",
+          "children": [
+            {
+              "id": "5000f0ec-17a0-48f8-9ee9-e8f251e4012b",
+              "title": "3.1.1. Chức năng bám line tự động",
+              "level": 3,
+              "content": "- Hệ thống xe được trang bị ba cảm biến dò line hồng ngoại TCRT5000, cho phép phát\nhiện màu sắc mặt đường và bám theo phần line đen có độ tương phản cao. Thuật toán điều\nhướng được lập trình trên Arduino đọc tín hiệu từ cảm biến theo chu kỳ 10–20ms, sau đó\nđịnh hướng bánh xe như sau:\nTrạng thái cảm biến Hành vi điều khiển\nSensor giữa = đen → trái + phải = trắng Xe đi thẳng\nSensor trái = đen → phải = trắng Rẽ trái\nSensor phải = đen → trái = trắng Rẽ phải\nCả ba cảm biến trắng Mất line → dừng ngắn → hiệu chỉnh tìm\nlại line\n- Kết quả thực nghiệm cho thấy:\n• Xe chạy ổn định trên track đường cong và đường thẳng.\n• Tỷ lệ bám line thành công ~93–96% trong điều kiện ánh sáng phòng.\n• Khi gặp đoạn khuất line (bị đứt, ngã ba), xe có khả năng tự hiệu chỉnh lại vị trí sau\n0.3–1.2 giây.\n➡ Đây là nền tảng quan trọng đảm bảo hệ thống có thể hoạt động ở chế độ Auto hoàn toàn\nmà không có sự can thiệp thủ công.",
+              "summary": "",
+              "path": "3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.1. Chức năng bám line tự động",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "c760fcd8-4311-42f7-bdc2-7d8bec30db12",
+              "title": "3.1.2. Nhận diện bảng tín hiệu / đèn giao thông bằng AI",
+              "level": 3,
+              "content": "Nhóm đã huấn luyện mô hình MobileNetV3 small để nhận diện 4 loại tín hiệu chính:\n\nNhãn dự đoán Ý nghĩa hành vi\nGreen Cho phép di chuyển\nYellow Giảm tốc / chờ quyết định tiếp theo\nRed Buộc dừng ngay\nStop Sign Dừng 1–2 giây → sau đó tiếp tục\nHình ảnh được truyền từ ESP32-CAM lên server qua WebSocket với tốc độ trung bình\n12–18 FPS, sau đó AI xử lý và gửi lệnh điều khiển xuống Arduino. Qua thử nghiệm thực\ntế:\n• Nhận diện đèn đỏ đúng 97/100 lần\n• Nhận diện biển Stop đúng 92% trong ánh sáng ổn định\n• Thời gian phản hồi trung bình từ camera → AI → bánh xe là 170–250ms, đủ để xử\nlý realtime\n➡ Khi AI phát hiện tín hiệu giao thông, xe ưu tiên quyết định từ AI hơn tín hiệu từ cảm\nbiến line → giúp xử lý đúng luật giao thông mô phỏng.",
+              "summary": "",
+              "path": "3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.2. Nhận diện bảng tín hiệu / đèn giao thông bằng AI",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "f7f2f893-3655-40e3-9d0d-47489b84b742",
+              "title": "3.1.3. Điều khiển động cơ thông qua AI & thuật toán nhúng",
+              "level": 3,
+              "content": "Arduino đóng vai trò bộ điều khiển cuối, nhận:\n• Lệnh điều hướng từ AI (UART)\n• Tín hiệu môi trường từ cảm biến line\nXe thực hiện điều chỉnh PWM động cơ dựa trên độ cong đường và tình huống giao\nthông. Tốc độ PWM được đặt linh hoạt từ 90–255 để đảm bảo:\nTình huống vận hành PWM áp dụng\nBình thường (lưu thông) 65–85% tốc độ\nGặp line cong mạnh 45–60% tốc độ\nPhát hiện tín hiệu Yellow Giảm còn ~50%\n\nTín hiệu Red/Stop PWM = 0 → Dừng ngay\nHiệu quả đạt được:\n• Xe tăng tốc – giảm tốc mượt, không giật.\n• Không bị rung bánh khi vào cua.\n• Đứng yên hoàn toàn khi gặp đèn đỏ/Stop.\n➡ Điều này chứng minh thuật toán điều khiển đã triển khai ổn định, phản ứng phù hợp\ntheo tình huống giao thông.",
+              "summary": "",
+              "path": "3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.3. Điều khiển động cơ thông qua AI & thuật toán nhúng",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "caa13a55-6c31-4397-9455-e0b8bacd06f2",
+              "title": "3.1.4. Gửi – nhận dữ liệu giữa các thiết bị hoạt động ổn định",
+              "level": 3,
+              "content": "Hệ thống truyền thông 2 lớp được triển khai:\nThành phần Giao thức\nESP32 → Server AI WebSocket (2 chiều)\nESP32 → Arduino UART 115200bps\nKết quả kiểm tra:\n• Tốc độ gửi ảnh ổn định, độ trễ thấp.\n• Độ cập nhật tín hiệu liên tục, không mất gói nghiêm trọng.\n• Lệnh điều khiển truyền về Arduino chính xác ~98% trong test lab.\n➡ Kênh dữ liệu đảm bảo hệ thống vận hành thời gian thực, không lag, phù hợp mô hình\nIoT phân tán.",
+              "summary": "",
+              "path": "3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.4. Gửi – nhận dữ liệu giữa các thiết bị hoạt động ổn định",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "27cc822e-3fc1-4be9-acea-7cec5f17dcc6",
+          "title": "3.2. Tập dữ liệu sử dụng cho mô hình AI",
+          "level": 2,
+          "content": "- Tập dữ liệu dùng để huấn luyện mô hình MobileNetV3 small được xây dựng từ hai\nnguồn:\n(1) ảnh tự thu thập bằng ESP32-CAM trong môi trường mô phỏng\n(2) một số ảnh bổ sung từ nguồn dữ liệu mở để tăng sự đa dạng về góc nhìn và ánh sáng.\n\n- Các lớp nhãn gồm: green, yellow, red, stopsign, none. Ảnh gốc có độ phân giải 320×240\nvà được resize về 224×224 trước khi đưa vào mô hình. Ảnh được lưu dưới dạng JPEG, xử\nlý RGB và áp dụng một số kỹ thuật tăng cường dữ liệu nhẹ.\n- Tập dữ liệu được chia theo tỉ lệ: 70% train – 15% validation – 15% test, đảm bảo cân\nbằng giữa các lớp và phản ánh đầy đủ các tình huống giao thông mô phỏng.",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.2. Tập dữ liệu sử dụng cho mô hình AI",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "20a5db9f-92f7-4919-92c1-a5003b6bb426",
+          "title": "3.3. Công cụ, thư viện và môi trường thực nghiệm",
+          "level": 2,
+          "content": "- Hệ thống AI sử dụng Python + FastAPI làm server xử lý WebSocket/REST API, kết hợp\nthư viện TensorFlow/Keras cho suy diễn mô hình. OpenCV và NumPy được dùng để xử\nlý ảnh, đặc biệt trong pipeline nhận diện làn đường.\n- ESP32-CAM và Arduino được lập trình bằng Arduino IDE/PlatformIO cùng các thư viện\nArduino Websockets, Arduino Json và esp_camera . Server AI chạy trên máy tính cá nhân\ncó CPU đa nhân; ESP32-CAM kết nối qua WiFi nội bộ; Arduino giao tiếp qua UART với\ntốc độ 115200bps.",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.3. Công cụ, thư viện và môi trường thực nghiệm",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "8dc4348d-47e4-4043-acf3-f1a6739ba9b9",
+          "title": "3.4. Điều kiện tiến hành thực nghiệm",
+          "level": 2,
+          "content": "- Thử nghiệm được thực hiện chủ yếu trong phòng, trên track mô phỏng gồm đường thẳng,\nđường cong và khu vực đặt biển/đèn tín hiệu. Ánh sáng được giữ ở mức ổn định để đảm\nbảo camera thu được hình ảnh rõ ràng.\n- Trong quá trình vận hành, ESP32-CAM truyền 12–18 FPS; server AI giới hạn tần suất\nsuy diễn ở 50 ms/lần để giảm tải. Ngưỡng nhận diện tín hiệu giao thông đặt ở 0.5, riêng\nnhãn red và stopsign ưu tiên với ngưỡng cao hơn (0.7). Arduino cập nhật PWM động cơ\ntheo lệnh AI hoặc theo cảm biến line tùy chế độ.",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.4. Điều kiện tiến hành thực nghiệm",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "12983c6f-96e1-46ae-8c09-07b01cf74901",
+          "title": "3.5. Độ đo đánh giá hiệu suất hệ thống",
+          "level": 2,
+          "content": "- Mô hình AI nhận diện tín hiệu giao thông đạt độ chính xác cao trên tập test, đặc biệt là\ncác nhãn red và green. Thử nghiệm thực tế cho kết quả:\n• Nhận diện đèn đỏ chính xác 97%,\n\n• Nhận diện biển Stop khoảng 92%.\n- Độ trễ xử lý từ camera → server AI → động cơ dao động 170–250 ms, đủ để xe phản\nứng chính xác trong mô hình thu nhỏ. Kết nối WebSocket hoạt động ổn định, tỉ lệ lệnh\ntruyền sai chỉ khoảng 2%, không ảnh hưởng đến quá trình điều khiển.",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.5. Độ đo đánh giá hiệu suất hệ thống",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "5d1e4eca-e561-467e-8630-327eb4c7d388",
+          "title": "3.6. Quy trình và điều kiện kiểm thử hệ thống",
+          "level": 2,
+          "content": "Kiểm thử được chia thành hai giai đoạn:\na) Kiểm thử đơn lẻ:\no\nKiểm tra từng module gồm AI nhận diện, lane detection, truyền thông\nWebSocket, UART và cảm biến line.\no\nĐánh giá bằng các tập ảnh riêng biệt và quan sát log trong server/ ESP32\n/Arduino.\nb) Kiểm thử tích hợp:\no\nXe chạy trên track hoàn chỉnh với các tình huống: bám line, gặp đèn xanh –\nvàng – đỏ, gặp biển Stop.\no\nKiểm thử theo từng chế độ hoạt động: line_follow và manual.\nKết quả cho thấy hệ thống phản ứng đúng hầu hết các tình huống và vận hành trơn tru\ntrong thời gian dài.",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.6. Quy trình và điều kiện kiểm thử hệ thống",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "cc3504ec-6639-4e2c-9464-aee302cb6676",
+          "title": "3.7. Nhận xét chung",
+          "level": 2,
+          "content": "- Hệ thống đã đáp ứng tốt mục tiêu đặt ra: bám line ổn định, nhận diện tín hiệu giao thông\nchính xác, điều khiển động cơ mượt và đảm bảo độ trễ thấp. Các kênh truyền thông hoạt\nđộng ổn định, ít lỗi.\n- Hạn chế chủ yếu nằm ở điều kiện ánh sáng thay đổi và phụ thuộc vào tốc độ WiFi. Tuy\nnhiên, đây là những vấn đề có thể cải thiện trong các phiên bản sau thông qua tối ưu model,\nbổ sung dữ liệu và nâng cấp phần cứng.",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.7. Nhận xét chung",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "a583558f-d25d-467b-a663-1032f516c256",
+          "title": "3.8. Một số hình ảnh sản phẩm dự án",
+          "level": 2,
+          "content": "a) Hình ảnh sản phẩm xe\nHình 21. Mô hình sản phẩm xe (1)\nHình 22. Mô hình sản phẩm xe (2)\n\nb) Hình ảnh biển báo\nHình 23. Hỉnh ành biển báo\nc) Hình ảnh đèn giao thông\nHình 26. Đèn màu xanh Hình 24. Đèn màu vàng Hình 25. Đèn màu đỏ",
+          "summary": "",
+          "path": "3. KẾT QUẢ > 3.8. Một số hình ảnh sản phẩm dự án",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "16ff3924-ac06-41e1-b2c4-53318b36f203",
+      "title": "4. KẾT LUẬN",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "4. KẾT LUẬN",
+      "children": [
+        {
+          "id": "d6d67b3a-8258-4082-be1f-45446d085c39",
+          "title": "4.1. Kết luận",
+          "level": 2,
+          "content": "- Sau quá trình nghiên cứu, thiết kế và triển khai hệ thống xe tự hành mô phỏng giao\nthông thông minh, nhóm sinh viên đã hoàn thành hầu hết các yêu cầu của đề tài. Hệ thống\ntích hợp đầy đủ các thành phần: cảm biến bám line, mô hình AI nhận diện tín hiệu giao\nthông, thuật toán điều khiển động cơ, kết nối ESP32–Server–Arduino, cùng khả năng vận\nhành thời gian thực. Các kết quả thực nghiệm cho thấy xe hoạt động ổn định, phản hồi\nnhanh và xử lý chính xác phần lớn các tình huống giao thông mô phỏng.\n- Cụ thể, chức năng bám line đạt độ ổn định cao trên đa dạng loại đường, mô hình AI\nphân loại đèn giao thông đạt độ chính xác trên 92–97%, thời gian suy diễn thấp (~200 ms),\nđảm bảo yêu cầu chạy realtime. Bộ điều khiển động cơ phản ứng mượt mà với thay đổi tốc\nđộ và hướng di chuyển, giúp xe vận hành an toàn khi gặp đèn đỏ hoặc biển Stop. Kênh\ntruyền thông WebSocket và UART hoạt động ổn định, không xuất hiện lỗi đáng kể trong\nquá trình thử nghiệm.\n- Nhìn chung, sản phẩm đã đáp ứng đầy đủ mục tiêu đề ra: xây dựng một hệ thống xe\ntự hành thu nhỏ có khả năng nhận diện tín hiệu giao thông và điều hướng tự động. Tuy còn\nhạn chế về điều kiện ánh sáng và độ phân giải camera, mô hình vẫn đủ chính xác để vận\nhành trong môi trường mô phỏng.",
+          "summary": "",
+          "path": "4. KẾT LUẬN > 4.1. Kết luận",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "b90054c9-6710-4071-8275-ca189d3f0c4d",
+          "title": "4.2. Hướng phát triển",
+          "level": 2,
+          "content": "Mặc dù hệ thống xe tự hành thông minh đã đáp ứng tốt các mục tiêu đề ra trong phạm vi\nđồ án, vẫn còn nhiều hướng phát triển tiềm năng nhằm nâng cao độ chính xác, tính ổn định\nvà khả năng ứng dụng thực tế của hệ thống trong tương lai.\n• Mở rộng tập dữ liệu: Trong các phiên bản tiếp theo, tập dữ liệu huấn luyện cho\nmô hình AI có thể được mở rộng bằng cách thu thập thêm hình ảnh trong nhiều điều\nkiện ánh sáng khác nhau (ánh sáng yếu, ánh sáng mạnh, bóng đổ), nhiều góc nhìn\nvà khoảng cách khác nhau. Đồng thời, việc bổ sung thêm các loại biển báo giao\nthông khác (ví dụ: rẽ trái, rẽ phải, cấm đi, giảm tốc) sẽ giúp mô hình tăng khả năng\n\ntổng quát hóa, giảm hiện tượng phụ thuộc vào môi trường mô phỏng cố định và cải\nthiện độ chính xác khi triển khai trong các bối cảnh đa dạng hơn.\n• Nâng cấp phần cứng: Hệ thống hiện tại sử dụng ESP32-CAM kết hợp với server\nAI để xử lý hình ảnh. Trong tương lai, có thể nâng cấp lên các nền tảng tính toán\nmạnh hơn như Raspberry Pi hoặc Jetson Nano để thực hiện suy diễn AI trực tiếp\ntrên xe (edge computing). Việc này giúp giảm độ trễ truyền dữ liệu qua mạng, tăng\ntốc độ phản hồi và nâng cao tính автоном (tự chủ) của hệ thống, đặc biệt trong các\nmôi trường yêu cầu thời gian thực cao.\n• Tối ưu thuật toán lane detection: Thuật toán bám line hiện tại chủ yếu dựa trên\ncảm biến hồng ngoại, phù hợp với các track đơn giản. Trong các phiên bản mở rộng,\ncó thể kết hợp hoặc thay thế bằng các thuật toán lane detection dựa trên xử lý ảnh\nhoặc deep learning, như sử dụng CNN để phát hiện làn đường, hoặc áp dụng các kỹ\nthuật biến đổi phối cảnh (perspective transformation) nhằm cải thiện độ ổn định khi\nxe di chuyển trên các track phức tạp, nhiều khúc cua hoặc giao lộ.\n• Bổ sung thuật toán tránh vật cản: Hiện tại, xe chủ yếu dựa vào line và tín hiệu\ngiao thông để điều hướng. Để tăng tính an toàn và tiệm cận hơn với các hệ thống xe\ntự hành thực tế, hệ thống có thể được trang bị thêm các cảm biến như siêu âm hoặc\nLiDAR nhằm phát hiện vật cản phía trước. Dữ liệu từ các cảm biến này sẽ được tích\nhợp vào thuật toán ra quyết định, cho phép xe giảm tốc hoặc dừng lại khi gặp chướng\nngại vật bất ngờ.\n• Xây dựng giao diện điều khiển & giám sát: Giao diện hiện tại cho phép điều khiển\nvà giám sát cơ bản thông qua ứng dụng di động. Trong tương lai, có thể mở rộng\nthành một nền tảng web hoặc ứng dụng đa thiết bị, cho phép người dùng theo dõi\ntrạng thái xe theo thời gian thực (tốc độ, chế độ hoạt động, trạng thái cảm biến),\nxem camera trực tiếp, cũng như lưu trữ và phân tích lịch sử hành trình. Điều này\nkhông chỉ phục vụ mục đích giám sát mà còn hỗ trợ nghiên cứu, đánh giá và tối ưu\nhệ thống.\n• Tổng kết hướng phát triển: Với thời gian và kinh phí phù hợp, hệ thống có thể mở\nrộng thành một mô hình xe tự hành hoàn chỉnh hơn, tiệm cận những nguyên lý mà\ncác hệ thống xe tự lái thực tế đang sử dụng.",
+          "summary": "",
+          "path": "4. KẾT LUẬN > 4.2. Hướng phát triển",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "5c161c96-5f26-4c2f-9e14-11df37750177",
       "title": "TÀI LIỆU THAM KHẢO",
       "level": 1,
       "content": "[1] Arduino.vn, http://arduino.vn/bai-viet/415-hoc-arduino-qua-du-lam-xe-dieu-khien-tu-\nxa-phan-1-tong-quan, 22-5-2014.\n[2] Hướng dẫn cách lắp xe điều khiển, https://www.youtube.com/watch?v=kX5sV0433fM\n[3]Tham khảo dự án xe,\nhttps://www.studocu.vn/vn/document/truong-dai-hoc-bach-khoa-ha-noi/do-an-thiet-\nke/do-an-tot-nghiep-thiet-ke-he-thong-xe-tu-hanh-tu-dong/127729587\n[4] Nghiên cứu và phát triển xe tự hành ứng dụng AI, https://jst-haui.vn/media/30/uffile-\nupload-no-title30638.pdf\n[5] MobileNetV, https://keras.io/api/applications/mobilenet/\n[6] Youtube hướng dẫn học Model AI, https://www.youtube.com/watch?v=dMh7 kroj\nLIE&l ist=PLpkFduNMb9uInRPXI-2CtNDq4DYXm9cUK",

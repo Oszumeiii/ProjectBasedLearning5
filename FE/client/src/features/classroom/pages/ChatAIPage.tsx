@@ -33,7 +33,7 @@ export const ChatAIPage = () => {
           {
             id: "welcome",
             role: "assistant",
-            content: `Xin chao! Toi la tro ly AI cho tai lieu "${data.title}". Ban co the hoi toi bat ky cau hoi gi ve noi dung bao cao nay.`,
+            content: `Xin chào! Tôi là trợ lý AI cho tài liệu "${data.title}". Bạn có thể hỏi tôi bất kỳ câu hỏi gì về nội dung báo cáo này.`,
             timestamp: new Date(),
           },
         ]);

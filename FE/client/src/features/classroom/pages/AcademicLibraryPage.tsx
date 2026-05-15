@@ -21,12 +21,16 @@ import {
   Users,
   ChevronDown,
   X,
+  Brain,
+  Zap,
 } from "lucide-react";
 import {
   listReports,
   type Report,
   type ListReportsParams,
   downloadReportInBrowser,
+  semanticSearchReports,
+  type SemanticMatch,
 } from "../services/report.service";
 
 /* ─── Constants ─── */
@@ -132,10 +136,59 @@ export const AcademicLibraryPage = () => {
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  const [isSemanticMode, setIsSemanticMode] = useState(false);
+  const [semanticMatches, setSemanticMatches] = useState<SemanticMatch[]>([]);
+  const [semanticLoading, setSemanticLoading] = useState(false);
+  const [semanticQuery, setSemanticQuery] = useState("");
+  const [allReports, setAllReports] = useState<Report[]>([]);
+
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(search), 400);
-    return () => clearTimeout(timer);
-  }, [search]);
+    if (!isSemanticMode) {
+      const timer = setTimeout(() => setDebouncedSearch(search), 400);
+      return () => clearTimeout(timer);
+    }
+  }, [search, isSemanticMode]);
+
+  const fetchAllReports = useCallback(async () => {
+    try {
+      const data = await listReports({ status: "approved", limit: 200 });
+      setAllReports(data.items || []);
+    } catch (err) {
+      console.error("Failed to load all reports", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAllReports();
+  }, [fetchAllReports]);
+
+  const handleSemanticSearch = useCallback(async () => {
+    const query = search.trim();
+    if (!query) return;
+
+    setSemanticLoading(true);
+    setSemanticQuery(query);
+    try {
+      const result = await semanticSearchReports(query);
+      setSemanticMatches(result.matches || []);
+
+      const matchedIds = new Set(result.matches.map((m) => String(m.id)));
+      const scoreMap = new Map(result.matches.map((m) => [String(m.id), m.score]));
+
+      const matched = allReports
+        .filter((r) => matchedIds.has(String(r.id)))
+        .sort((a, b) => (scoreMap.get(String(b.id)) ?? 0) - (scoreMap.get(String(a.id)) ?? 0));
+
+      setReports(matched);
+    } catch (err) {
+      console.error("Semantic search failed", err);
+      setSemanticMatches([]);
+      setReports([]);
+    } finally {
+      setSemanticLoading(false);
+      setLoading(false);
+    }
+  }, [search, allReports]);
 
   const fetchReports = useCallback(async () => {
     setLoading(true);
@@ -165,8 +218,27 @@ export const AcademicLibraryPage = () => {
   }, [debouncedSearch, sort, fileTypeFilter, reportTypeFilter, academicYearFilter, semesterFilter, departmentFilter]);
 
   useEffect(() => {
-    fetchReports();
-  }, [fetchReports]);
+    if (!isSemanticMode) {
+      fetchReports();
+    }
+  }, [fetchReports, isSemanticMode]);
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && isSemanticMode) {
+      e.preventDefault();
+      handleSemanticSearch();
+    }
+  };
+
+  const toggleSearchMode = () => {
+    const nextMode = !isSemanticMode;
+    setIsSemanticMode(nextMode);
+    setSemanticMatches([]);
+    setSemanticQuery("");
+    if (!nextMode) {
+      setDebouncedSearch(search);
+    }
+  };
 
   const activeFilterCount = [reportTypeFilter, academicYearFilter, semesterFilter, departmentFilter].filter(
     (f) => f !== "all"
@@ -199,26 +271,92 @@ export const AcademicLibraryPage = () => {
         </header>
 
         {/* Search */}
-        <div className="mb-4">
-          <div className="relative">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Tìm kiếm theo tiêu đề, tác giả, GVHD, từ khóa..."
-              className="w-full rounded-xl border border-[#E5E7EB] bg-white py-3 pl-11 pr-4 text-sm text-[#0F172A] shadow-sm placeholder:text-slate-400 transition-all focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/15"
-            />
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 hover:text-slate-700"
-              >
-                Xóa
-              </button>
-            )}
+        <div className="mb-4 space-y-2">
+          <div className="relative flex items-center gap-2">
+            <div className="relative flex-1">
+              {isSemanticMode ? (
+                <Brain size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-500" />
+              ) : (
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+              )}
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                placeholder={
+                  isSemanticMode
+                    ? "Mô tả nội dung bạn muốn tìm, VD: \"đề tài sử dụng CNN để nhận dạng\"..."
+                    : "Tìm kiếm theo tiêu đề, tác giả, GVHD, từ khóa..."
+                }
+                className={`w-full rounded-xl border bg-white py-3 pl-11 pr-20 text-sm text-[#0F172A] shadow-sm placeholder:text-slate-400 transition-all focus:outline-none focus:ring-2 ${
+                  isSemanticMode
+                    ? "border-purple-200 focus:border-purple-400 focus:ring-purple-100"
+                    : "border-[#E5E7EB] focus:border-brand/40 focus:ring-brand/15"
+                }`}
+              />
+              <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1.5">
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch("");
+                      if (isSemanticMode) {
+                        setSemanticMatches([]);
+                        setSemanticQuery("");
+                        setReports(allReports);
+                      }
+                    }}
+                    className="text-xs font-medium text-slate-400 hover:text-slate-700"
+                  >
+                    Xóa
+                  </button>
+                )}
+                {isSemanticMode && search.trim() && (
+                  <button
+                    type="button"
+                    onClick={handleSemanticSearch}
+                    disabled={semanticLoading}
+                    className="inline-flex items-center gap-1 rounded-lg bg-purple-600 px-2.5 py-1 text-[11px] font-semibold text-white transition-colors hover:bg-purple-700 disabled:opacity-50"
+                  >
+                    {semanticLoading ? (
+                      <div className="h-3 w-3 animate-spin rounded-full border-[1.5px] border-white border-t-transparent" />
+                    ) : (
+                      <Zap size={11} />
+                    )}
+                    Tìm
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={toggleSearchMode}
+              title={isSemanticMode ? "Chuyển sang tìm kiếm thường" : "Chuyển sang tìm kiếm AI thông minh"}
+              className={`flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-3 text-xs font-semibold transition-all ${
+                isSemanticMode
+                  ? "border-purple-300 bg-purple-600 text-white shadow-md shadow-purple-200 hover:bg-purple-700"
+                  : "border-[#E5E7EB] bg-white text-slate-500 shadow-sm hover:border-purple-200 hover:text-purple-600"
+              }`}
+            >
+              <Brain size={16} />
+              <span className="hidden sm:inline">{isSemanticMode ? "AI Search" : "AI Search"}</span>
+            </button>
           </div>
+
+          {isSemanticMode && (
+            <div className="flex items-center gap-2 rounded-lg border border-purple-100 bg-purple-50/50 px-3 py-2">
+              <Sparkles size={14} className="shrink-0 text-purple-500" />
+              <p className="text-xs text-purple-700">
+                <span className="font-semibold">Tìm kiếm AI:</span> Mô tả nội dung bạn muốn tìm bằng ngôn ngữ tự nhiên, rồi nhấn{" "}
+                <kbd className="rounded border border-purple-200 bg-white px-1.5 py-0.5 text-[10px] font-bold text-purple-800">
+                  Enter
+                </kbd>{" "}
+                hoặc nút <span className="font-semibold">Tìm</span>. Hệ thống sẽ tìm các tài liệu có nội dung liên quan nhất.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Filters */}
@@ -332,29 +470,58 @@ export const AcademicLibraryPage = () => {
         </div>
 
         {/* Content */}
-        {loading ? (
+        {loading || semanticLoading ? (
           <div className="flex items-center justify-center py-24">
-            <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-brand border-t-transparent" />
-            <span className="ml-3 text-sm text-slate-500">Đang tìm kiếm...</span>
+            <div className={`h-8 w-8 animate-spin rounded-full border-[3px] border-t-transparent ${semanticLoading ? "border-purple-500" : "border-brand"}`} />
+            <span className="ml-3 text-sm text-slate-500">
+              {semanticLoading ? "AI đang tìm kiếm nội dung liên quan..." : "Đang tìm kiếm..."}
+            </span>
           </div>
         ) : reports.length === 0 ? (
           <div className="py-24 text-center">
-            <BookOpen size={48} className="mx-auto mb-4 text-slate-300" />
-            <p className="mb-1 text-lg font-medium text-slate-500">
-              {search || activeFilterCount > 0
-                ? "Không tìm thấy báo cáo phù hợp"
-                : "Chưa có báo cáo công khai nào"}
-            </p>
-            {(search || activeFilterCount > 0) && (
-              <p className="text-sm text-slate-400">Thử từ khóa khác hoặc xóa bộ lọc</p>
+            {isSemanticMode && semanticQuery ? (
+              <>
+                <Brain size={48} className="mx-auto mb-4 text-purple-200" />
+                <p className="mb-1 text-lg font-medium text-slate-500">
+                  Không tìm thấy tài liệu liên quan
+                </p>
+                <p className="text-sm text-slate-400">
+                  Thử mô tả lại nội dung theo cách khác hoặc dùng tìm kiếm thường
+                </p>
+              </>
+            ) : (
+              <>
+                <BookOpen size={48} className="mx-auto mb-4 text-slate-300" />
+                <p className="mb-1 text-lg font-medium text-slate-500">
+                  {search || activeFilterCount > 0
+                    ? "Không tìm thấy báo cáo phù hợp"
+                    : isSemanticMode
+                    ? "Nhập mô tả nội dung và nhấn Enter để tìm kiếm AI"
+                    : "Chưa có báo cáo công khai nào"}
+                </p>
+                {(search || activeFilterCount > 0) && !isSemanticMode && (
+                  <p className="text-sm text-slate-400">Thử từ khóa khác hoặc xóa bộ lọc</p>
+                )}
+              </>
             )}
           </div>
         ) : (
           <>
-            <p className="mb-4 text-xs font-medium text-slate-400">
-              {reports.length} kết quả
-              {search && <> cho &ldquo;{search}&rdquo;</>}
-            </p>
+            <div className="mb-4 flex items-center gap-2">
+              <p className="text-xs font-medium text-slate-400">
+                {reports.length} kết quả
+                {isSemanticMode && semanticQuery ? (
+                  <> cho tìm kiếm AI &ldquo;{semanticQuery}&rdquo;</>
+                ) : (
+                  search && <> cho &ldquo;{search}&rdquo;</>
+                )}
+              </p>
+              {isSemanticMode && semanticMatches.length > 0 && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-purple-200 bg-purple-50 px-2 py-0.5 text-[10px] font-semibold text-purple-700">
+                  <Brain size={10} /> Semantic Search
+                </span>
+              )}
+            </div>
 
             <div className="space-y-3">
               {reports.map((report, idx) => {
@@ -364,6 +531,7 @@ export const AcademicLibraryPage = () => {
                 const authorDisplay = report.student_code
                   ? `${report.author_name} (${report.student_code})`
                   : report.author_name;
+                const matchScore = semanticMatches.find((m) => String(m.id) === String(report.id))?.score;
 
                 return (
                   <div
@@ -406,6 +574,12 @@ export const AcademicLibraryPage = () => {
                           <h3 className="text-base font-bold text-[#0F172A] transition-colors group-hover:text-brand md:text-lg">
                             {report.title}
                           </h3>
+                          {isSemanticMode && matchScore != null && (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-purple-200 bg-purple-50 px-2 py-0.5 text-[10px] font-bold text-purple-700">
+                              <Zap size={9} />
+                              {(matchScore * 100).toFixed(0)}% liên quan
+                            </span>
+                          )}
                           {rYear && (
                             <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">
                               {rYear}
