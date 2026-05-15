@@ -276,3 +276,20 @@ export const getReportMembers = async (id: number): Promise<ReportMember[]> => {
   const response = await axiosInstance.get(`/reports/${id}/members`);
   return response.data.items;
 };
+
+export interface SemanticMatch {
+  id: string;
+  score: number;
+  text: string;
+}
+
+export interface SemanticSearchResult {
+  query: string;
+  matches: SemanticMatch[];
+  total: number;
+}
+
+export const semanticSearchReports = async (query: string): Promise<SemanticSearchResult> => {
+  const response = await axiosInstance.post("/rag/search", { query });
+  return response.data;
+};
