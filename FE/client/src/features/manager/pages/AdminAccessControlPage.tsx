@@ -6,7 +6,6 @@ import { Layers, Shield, Users, Info, Eye } from "lucide-react";
 const ROLE_LABEL: Record<string, string> = {
   student: "Sinh viên",
   lecturer: "Giảng viên",
-  manager: "Quản lý",
   admin: "Quản trị viên",
 };
 
@@ -44,7 +43,7 @@ export const AdminAccessControlPage = () => {
     "import",
   ];
 
-  const roles = ["student", "lecturer", "manager", "admin"] as const;
+  const roles = ["student", "lecturer", "admin"] as const;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 max-w-5xl">
@@ -80,55 +79,11 @@ export const AdminAccessControlPage = () => {
               cho các role khác.
             </li>
             <li>
-              <strong className="text-ink-heading">Quản lý</strong> — vận hành dữ liệu (lớp, báo cáo),
-              có thể được ủy quyền xem danh sách người dùng hoặc không.
-            </li>
-            <li>
               <strong className="text-ink-heading">Giảng viên / Sinh viên</strong> — không vào trang
               này; quyền module được minh họa ở bảng dưới cho tài liệu nghiệp vụ.
             </li>
           </ul>
         </div>
-      </div>
-
-      <div className="space-y-4 rounded-xl border border-app-line bg-app-card p-6 shadow-whisper">
-        <h3 className="flex items-center gap-2 text-sm font-bold text-amber-800">
-          <Users size={18} /> Ủy quyền cho tài khoản Quản lý
-        </h3>
-        <p className="text-xs text-ink-muted">
-          Khi bật, menu tương ứng sẽ xuất hiện ở giao diện{" "}
-          <span className="font-mono text-ink-heading">/manager</span> sau khi đăng nhập vai trò Quản
-          lý.
-        </p>
-        <label
-          className={`flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-inset p-4 ${isAdmin ? "cursor-pointer hover:border-amber-300" : "opacity-90"}`}
-        >
-          <span className="text-sm text-ink-body">
-            Cho phép Quản lý xem trang <strong>Người dùng</strong> (danh sách, không xóa / không đổi
-            quyền hệ thống)
-          </span>
-          <input
-            type="checkbox"
-            disabled={!isAdmin}
-            checked={access.managerCanViewUsers}
-            onChange={(e) => setManagerCanViewUsers(e.target.checked)}
-            className="h-5 w-5 rounded border-app-line text-brand focus:ring-brand disabled:opacity-50"
-          />
-        </label>
-        <label
-          className={`flex items-center justify-between gap-4 rounded-lg border border-app-line bg-app-inset p-4 ${isAdmin ? "cursor-pointer hover:border-amber-300" : "opacity-90"}`}
-        >
-          <span className="text-sm text-ink-body">
-            Cho phép Quản lý xem trang <strong>Phân quyền</strong> (chỉ đọc — khuyến nghị tắt)
-          </span>
-          <input
-            type="checkbox"
-            disabled={!isAdmin}
-            checked={access.managerCanViewAccessSettings}
-            onChange={(e) => setManagerCanViewAccessSettings(e.target.checked)}
-            className="h-5 w-5 rounded border-app-line text-brand focus:ring-brand disabled:opacity-50"
-          />
-        </label>
       </div>
 
       <div>

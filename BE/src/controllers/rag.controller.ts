@@ -31,10 +31,13 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
 
     if (!response.ok) {
       const detail = await response.text()
+      console.error(`❌ LLM Service error (${response.status}): ${detail}`)
       res.status(response.status).json({
-        message: 'Lỗi từ LLM Service',
+        message: response.status === 404
+          ? 'Tài liệu chưa có dữ liệu phù hợp để trả lời. Có thể tài liệu đang được xử lý hoặc chưa index xong.'
+          : 'Lỗi từ LLM Service',
         detail,
-      });
+      })
       return
     }
 
@@ -47,21 +50,13 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
     });
 
   } catch (error: any) {
-    console.error('❌ Lỗi khi gọi LLM Service:', error.message);
-
-    if (error.response) {
-      res.status(error.response.status).json({
-        message: 'Lỗi từ LLM Service',
-        detail: error.response.data.detail
-      });
-    } else {
-      res.status(500).json({
-        message: 'Không thể kết nối đến dịch vụ AI. Vui lòng thử lại sau.',
-        error: error.message
-      });
-    }
+    console.error('❌ Lỗi khi gọi LLM Service:', error.message)
+    res.status(500).json({
+      message: 'Không thể kết nối đến dịch vụ AI. Vui lòng thử lại sau.',
+      error: error.message
+    })
   }
-};
+}
 
 
 

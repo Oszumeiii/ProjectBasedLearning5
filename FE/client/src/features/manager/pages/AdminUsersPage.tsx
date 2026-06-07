@@ -146,7 +146,6 @@ export const AdminUsersPage = () => {
             <option value="">Tất cả</option>
             <option value="student">Sinh viên</option>
             <option value="lecturer">Giảng viên</option>
-            <option value="manager">Quản lý</option>
             <option value="admin">Admin</option>
           </select>
         </div>

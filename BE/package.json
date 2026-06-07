@@ -13,7 +13,8 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "example:users": "tsx src/examples/query-users.ts",
-    "seed:assignments": "node seed-assignment-data.cjs"
+    "seed:assignments": "node seed-assignment-data.cjs",
+    "seed:pdf-reports": "node seed-reports-from-pdf-files.cjs"
   },
   "keywords": [],
   "author": "",
