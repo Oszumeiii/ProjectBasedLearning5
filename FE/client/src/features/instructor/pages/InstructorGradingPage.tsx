@@ -5,14 +5,12 @@ import {
   GraduationCap,
   Loader2,
   Search,
-  Sparkles,
   Download,
   ChevronRight,
   BookOpen,
   User,
   Calendar,
   MessageSquare,
-  ShieldAlert,
   Save,
   ExternalLink,
   CheckCircle,
@@ -22,12 +20,10 @@ import {
 } from "lucide-react";
 import {
   listReports,
-  checkReportPlagiarism,
   patchReportReviewNote,
   updateReportStatus,
   downloadReportInBrowser,
   type Report,
-  type PlagiarismCheckResult,
 } from "../../classroom/services/report.service";
 import { getMyCourses, type Course } from "../../classroom/services/course.service";
 
@@ -88,8 +84,6 @@ export const InstructorGradingPage: React.FC = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [reviewDraft, setReviewDraft] = useState("");
   const [savingNote, setSavingNote] = useState(false);
-  const [plagiarismLoading, setPlagiarismLoading] = useState(false);
-  const [plagiarismResult, setPlagiarismResult] = useState<PlagiarismCheckResult | null>(null);
   const [statusUpdating, setStatusUpdating] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ text: string; type: "success" | "error" | "info" } | null>(null);
   const lastHydratedReportId = useRef<number | null>(null);
@@ -140,7 +134,6 @@ export const InstructorGradingPage: React.FC = () => {
     if (selectedId == null) {
       lastHydratedReportId.current = null;
       setReviewDraft("");
-      setPlagiarismResult(null);
       return;
     }
     const r = reports.find((x) => x.id === selectedId);
@@ -148,28 +141,12 @@ export const InstructorGradingPage: React.FC = () => {
     if (lastHydratedReportId.current !== selectedId) {
       lastHydratedReportId.current = selectedId;
       setReviewDraft(r.review_note ?? "");
-      setPlagiarismResult(null);
       setStatusMessage(null);
     }
   }, [selectedId, reports]);
 
   const applySearch = () => {
     setSearchApplied(searchInput);
-  };
-
-  const runPlagiarismCheck = async () => {
-    if (!selected) return;
-    setPlagiarismLoading(true);
-    setPlagiarismResult(null);
-    try {
-      const res = await checkReportPlagiarism(selected.id);
-      setPlagiarismResult(res);
-    } catch (e) {
-      console.error(e);
-      alert("Không chạy được kiểm tra RAG. Thử lại sau.");
-    } finally {
-      setPlagiarismLoading(false);
-    }
   };
 
   const handleStatusUpdate = async (newStatus: "approved" | "revision_needed" | "rejected") => {
@@ -219,8 +196,7 @@ export const InstructorGradingPage: React.FC = () => {
             trung tâm nhận xét báo cáo sinh viên
           </h2>
           <p className="mt-1 max-w-xl text-sm text-ink-muted">
-            Danh sách báo cáo sinh viên đã nộp, lọc theo lớp, kiểm tra trùng lặp nội dung (RAG nội bộ) và
-            ghi nhận xét.
+            Danh sách báo cáo sinh viên đã nộp, lọc theo lớp và ghi nhận xét.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -389,92 +365,6 @@ export const InstructorGradingPage: React.FC = () => {
               </div>
 
               <div className="flex-1 overflow-y-auto p-5 space-y-6">
-                {/* RAG / đạo văn */}
-                <div className="rounded-xl border border-app-line bg-app-inset p-4">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-2">
-                      <ShieldAlert className="text-amber-400" size={20} />
-                      <div>
-                        <h4 className="text-sm font-bold text-ink-heading">Kiểm tra trùng lặp (RAG nội bộ)</h4>
-                        <p className="text-[11px] text-ink-muted mt-0.5">
-                          So khớp nội dung văn bản đã trích xuất với các báo cáo khác trong cùng lớp.
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      disabled={plagiarismLoading}
-                      onClick={() => void runPlagiarismCheck()}
-                      className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand px-3 py-2 text-xs font-bold text-white hover:bg-brand-hover disabled:opacity-50"
-                    >
-                      {plagiarismLoading ? (
-                        <Loader2 size={14} className="animate-spin" />
-                      ) : (
-                        <Sparkles size={14} />
-                      )}
-                      {plagiarismLoading ? "Đang chạy…" : "Chạy kiểm tra"}
-                    </button>
-                  </div>
-                  {plagiarismResult && (
-                    <div className="mt-3 space-y-3 text-xs">
-                      {plagiarismResult.message && !plagiarismResult.analyzed && (
-                        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
-                          {plagiarismResult.message}
-                        </p>
-                      )}
-                      {plagiarismResult.analyzed && (
-                        <>
-                          <p
-                            className={`rounded-lg px-3 py-2 border ${
-                              (plagiarismResult.maxSimilarityPercent ?? 0) >= 40
-                                ? "border-red-200 bg-red-50 text-red-800"
-                                : (plagiarismResult.maxSimilarityPercent ?? 0) >= 25
-                                  ? "border-amber-200 bg-amber-50 text-amber-900"
-                                  : "border-emerald-200 bg-emerald-50 text-emerald-900"
-                            }`}
-                          >
-                            <span className="font-bold">Kết luận: </span>
-                            {plagiarismResult.summary}
-                            {typeof plagiarismResult.comparedCount === "number" && (
-                              <span className="ml-1 text-ink-muted">
-                                (Đã so {plagiarismResult.comparedCount} báo cáo trong lớp)
-                              </span>
-                            )}
-                          </p>
-                          {plagiarismResult.matches.length > 0 ? (
-                            <ul className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
-                              {plagiarismResult.matches.map((m) => (
-                                <li
-                                  key={m.reportId}
-                                  className="flex items-center justify-between gap-2 bg-app-card border border-app-line rounded-lg px-3 py-2"
-                                >
-                                  <div className="min-w-0">
-                                    <p className="text-ink-heading font-medium truncate">{m.title}</p>
-                                    <p className="text-[10px] text-ink-muted">{m.authorName}</p>
-                                  </div>
-                                  <span
-                                    className={`shrink-0 font-mono font-bold ${
-                                      m.similarityPercent >= 40
-                                        ? "text-red-400"
-                                        : m.similarityPercent >= 25
-                                          ? "text-amber-400"
-                                          : "text-ink-muted"
-                                    }`}
-                                  >
-                                    {m.similarityPercent}%
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p className="text-ink-muted">Không có cặp trùng lặp đáng kể trong tập đã quét.</p>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-
                 {/* Nhận xét */}
                 <div className="rounded-xl border border-app-line bg-app-inset p-4">
                   <div className="flex items-center gap-2 mb-2">
