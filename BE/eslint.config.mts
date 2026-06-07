@@ -13,6 +13,7 @@ import tseslint from "typescript-eslint";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 
 export default [
+  { ignores: ["**/node_modules/**", "**/dist/**"] },
   { files: ["**/*.{js,mjs,cjs,ts}"] },
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,

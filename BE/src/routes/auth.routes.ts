@@ -4,6 +4,7 @@ import {
   activate,
   changePassword,
   forgotPassword,
+  register,
   login,
   logout,
   logoutAll,
@@ -16,6 +17,7 @@ import {
 const router = Router()
 
 // ─── Công khai ───
+router.post('/register', register)
 router.post('/login', login)
 router.post('/refresh', refresh)
 router.post('/logout', logout)

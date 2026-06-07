@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.glass-panel {
+  background: rgba(28, 31, 39, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.role-card:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}

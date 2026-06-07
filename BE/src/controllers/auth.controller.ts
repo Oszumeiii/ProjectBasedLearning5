@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express'
-import bcrypt from 'bcryptjs'
+import * as bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import pool from '../config/db'
+
 import {
   ACTIVATION_TOKEN_HOURS,
   AUTH_LOCK_DURATION_MINUTES,
@@ -40,10 +41,7 @@ function deviceInfo(req: Request): string | null {
   return (req.headers['user-agent'] as string) ?? null
 }
 
-async function createRefreshToken(
-  userId: number,
-  req: Request
-): Promise<string> {
+async function createRefreshToken(userId: number, req: Request): Promise<string> {
   const plain = randomToken()
   const hashed = hashToken(plain)
   const ip = clientIp(req)
@@ -57,7 +55,57 @@ async function createRefreshToken(
 
   return plain
 }
+//----------------------------------REGISTER-----------------------------------
+export const register = async (req: Request, res: Response) => {
+  try {
+    const { email, password, full_name, student_code, role, gender, major, class_name } = req.body
 
+    // 1. Kiểm tra email tồn tại
+    const userExists = await pool.query('SELECT id FROM users WHERE email = $1', [email])
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ message: 'Email đã được đăng ký!' })
+    }
+
+    // 2. Hash mật khẩu (Dùng bcrypt)
+    const passwordHash = await bcrypt.hash(password, 10)
+
+    // 3. Tạo activation token (Theo cấu trúc DB của bạn)
+    const activationToken = crypto.randomBytes(32).toString('hex')
+
+    // 4. Insert vào DB
+    const sql = `
+      INSERT INTO users (
+        email, password_hash, full_name, student_code, 
+        role, gender, major, class_name, 
+        activation_token, account_status, source
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pending_activation', 'manual')
+      RETURNING id, email, full_name;
+    `
+
+    const values = [
+      email,
+      passwordHash,
+      full_name,
+      student_code || null,
+      role || 'student',
+      gender || 'other',
+      major || null,
+      class_name || null,
+      activationToken
+    ]
+
+    const result = await pool.query(sql, values)
+
+    res.status(201).json({
+      message: 'Đăng ký thành công!',
+      user: result.rows[0],
+      activation_token: activationToken // Trả về để bạn test dễ dàng
+    })
+  } catch (error: any) {
+    console.error('Database Error:', error.message)
+    res.status(500).json({ message: 'Lỗi server!', error: error.message })
+  }
+}
 // ─────────────────────── LOGIN ───────────────────────
 
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -82,16 +130,29 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' })
     }
 
-    if (result.rows.length === 0) { genericAuthError(); return }
-
-    const user = result.rows[0] as {
-      id: number; full_name: string; email: string; major: string | null
-      password_hash: string | null; role: UserRole; is_active: boolean
-      account_status: string; failed_login_count: number
-      locked_until: Date | string | null; deleted_at: Date | string | null
+    if (result.rows.length === 0) {
+      genericAuthError()
+      return
     }
 
-    if (user.deleted_at != null) { genericAuthError(); return }
+    const user = result.rows[0] as {
+      id: number
+      full_name: string
+      email: string
+      major: string | null
+      password_hash: string | null
+      role: UserRole
+      is_active: boolean
+      account_status: string
+      failed_login_count: number
+      locked_until: Date | string | null
+      deleted_at: Date | string | null
+    }
+
+    if (user.deleted_at != null) {
+      genericAuthError()
+      return
+    }
 
     if (user.locked_until != null && new Date(user.locked_until) > new Date()) {
       res.status(423).json({
@@ -101,8 +162,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     if (user.account_status !== ACTIVE_ACCOUNT) {
-      const msg = accountStatusMessage[user.account_status]
-        ?? 'Tài khoản không thể đăng nhập. Liên hệ quản trị.'
+      const msg = accountStatusMessage[user.account_status] ?? 'Tài khoản không thể đăng nhập. Liên hệ quản trị.'
       res.status(403).json({ message: msg })
       return
     }
@@ -160,9 +220,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       accessToken,
       refreshToken,
       user: {
-        id: user.id, full_name: user.full_name, email: user.email,
-        major: user.major, role: user.role,
-        account_status: user.account_status, is_active: user.is_active
+        id: user.id,
+        full_name: user.full_name,
+        email: user.email,
+        major: user.major,
+        role: user.role,
+        account_status: user.account_status,
+        is_active: user.is_active
       }
     })
   } catch (error) {
@@ -199,9 +263,17 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
     }
 
     const row = result.rows[0] as {
-      id: number; user_id: number; expires_at: Date | string; is_revoked: boolean
-      email: string; role: UserRole; full_name: string; major: string | null
-      account_status: string; is_active: boolean; deleted_at: Date | string | null
+      id: number
+      user_id: number
+      expires_at: Date | string
+      is_revoked: boolean
+      email: string
+      role: UserRole
+      full_name: string
+      major: string | null
+      account_status: string
+      is_active: boolean
+      deleted_at: Date | string | null
     }
 
     if (row.is_revoked) {
@@ -220,10 +292,7 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Token rotation: revoke cũ, tạo mới
-    await pool.query(
-      'UPDATE refresh_tokens SET is_revoked = TRUE, revoked_at = NOW() WHERE id = $1',
-      [row.id]
-    )
+    await pool.query('UPDATE refresh_tokens SET is_revoked = TRUE, revoked_at = NOW() WHERE id = $1', [row.id])
 
     const newAccessToken = createToken(row.user_id, row.email, row.role)
     const newRefreshToken = await createRefreshToken(row.user_id, req)
@@ -232,9 +301,13 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
       user: {
-        id: row.user_id, full_name: row.full_name, email: row.email,
-        major: row.major, role: row.role,
-        account_status: row.account_status, is_active: row.is_active
+        id: row.user_id,
+        full_name: row.full_name,
+        email: row.email,
+        major: row.major,
+        role: row.role,
+        account_status: row.account_status,
+        is_active: row.is_active
       }
     })
   } catch (error) {
@@ -272,7 +345,10 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 
 export const logoutAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    if (!req.user) { res.status(401).json({ message: 'Unauthorized' }); return }
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
 
     const result = await pool.query(
       `UPDATE refresh_tokens SET is_revoked = TRUE, revoked_at = NOW()
@@ -292,7 +368,10 @@ export const logoutAll = async (req: Request, res: Response): Promise<void> => {
 
 export const me = async (req: Request, res: Response): Promise<void> => {
   try {
-    if (!req.user) { res.status(401).json({ message: 'Unauthorized' }); return }
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
 
     const result = await pool.query(
       `SELECT id, full_name, email, major, role, account_status, is_active,
@@ -341,8 +420,12 @@ export const activate = async (req: Request, res: Response): Promise<void> => {
     }
 
     const user = result.rows[0] as {
-      id: number; full_name: string; email: string; role: UserRole
-      account_status: string; activation_expires_at: Date | string | null
+      id: number
+      full_name: string
+      email: string
+      role: UserRole
+      account_status: string
+      activation_expires_at: Date | string | null
     }
 
     if (user.account_status !== 'pending_activation') {
@@ -372,8 +455,12 @@ export const activate = async (req: Request, res: Response): Promise<void> => {
       accessToken,
       refreshToken: refreshTk,
       user: {
-        id: user.id, full_name: user.full_name, email: user.email,
-        role: user.role, account_status: 'active', is_active: true
+        id: user.id,
+        full_name: user.full_name,
+        email: user.email,
+        role: user.role,
+        account_status: 'active',
+        is_active: true
       }
     })
   } catch (error) {
@@ -387,7 +474,10 @@ export const activate = async (req: Request, res: Response): Promise<void> => {
 export const requestActivation = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email } = req.body as { email?: string }
-    if (!email?.trim()) { res.status(400).json({ message: 'email là bắt buộc' }); return }
+    if (!email?.trim()) {
+      res.status(400).json({ message: 'email là bắt buộc' })
+      return
+    }
 
     const safeMsg = 'Nếu email tồn tại trong hệ thống, bạn sẽ nhận được email kích hoạt.'
     const emailNorm = email.trim().toLowerCase()
@@ -427,7 +517,10 @@ export const requestActivation = async (req: Request, res: Response): Promise<vo
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email } = req.body as { email?: string }
-    if (!email?.trim()) { res.status(400).json({ message: 'email là bắt buộc' }); return }
+    if (!email?.trim()) {
+      res.status(400).json({ message: 'email là bắt buộc' })
+      return
+    }
 
     const safeMsg = 'Nếu email tồn tại, bạn sẽ nhận được liên kết đặt lại mật khẩu.'
     const emailNorm = email.trim().toLowerCase()
@@ -438,10 +531,16 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
       [emailNorm]
     )
 
-    if (result.rows.length === 0) { res.json({ message: safeMsg }); return }
+    if (result.rows.length === 0) {
+      res.json({ message: safeMsg })
+      return
+    }
 
     const user = result.rows[0] as {
-      id: number; full_name: string; account_status: string; is_active: boolean
+      id: number
+      full_name: string
+      account_status: string
+      is_active: boolean
     }
 
     if (user.account_status !== ACTIVE_ACCOUNT || !user.is_active) {
@@ -495,7 +594,9 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
     }
 
     const user = result.rows[0] as {
-      id: number; email: string; role: UserRole
+      id: number
+      email: string
+      role: UserRole
       password_reset_expires_at: Date | string | null
     }
 
@@ -531,10 +632,14 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
 
 export const changePassword = async (req: Request, res: Response): Promise<void> => {
   try {
-    if (!req.user) { res.status(401).json({ message: 'Unauthorized' }); return }
+    if (!req.user) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
 
     const { currentPassword, newPassword } = req.body as {
-      currentPassword?: string; newPassword?: string
+      currentPassword?: string
+      newPassword?: string
     }
 
     if (!currentPassword || !newPassword) {
@@ -546,10 +651,9 @@ export const changePassword = async (req: Request, res: Response): Promise<void>
       return
     }
 
-    const result = await pool.query(
-      'SELECT password_hash FROM users WHERE id = $1 AND deleted_at IS NULL',
-      [req.user.id]
-    )
+    const result = await pool.query('SELECT password_hash FROM users WHERE id = $1 AND deleted_at IS NULL', [
+      req.user.id
+    ])
 
     if (result.rows.length === 0) {
       res.status(404).json({ message: 'User not found' })

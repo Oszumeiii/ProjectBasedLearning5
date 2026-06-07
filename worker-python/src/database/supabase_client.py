@@ -1,0 +1,154 @@
+
+import os
+from supabase import create_client, Client
+from dotenv import load_dotenv
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+class SupabaseRepository:
+    def __init__(self):
+        load_dotenv()
+        url = os.getenv("SUPABASE_URL")
+        key = os.getenv("SUPABASE_KEY")
+        if not url or not key:
+            raise ValueError("Thiếu cấu hình SUPABASE_URL hoặc SUPABASE_KEY")
+        self.client: Client = create_client(url, key)
+        self.report_table = "reports"
+        self.table_name = "nodes"
+        # Load model only once
+        self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
+    def search_nodes_by_vector(self, report_id: int, query: str, limit: int = 10):
+        """
+        Tìm kiếm nodes dựa trên embedding vector của query.
+        Sử dụng pgvector trong Supabase để thực hiện tìm kiếm gần đúng.
+        """
+        try:
+            # Giả sử bạn đã có một hàm để chuyển query thành vector (embedding)
+            query_vector = self.get_embedding_vector(query)
+            
+            # Thực hiện truy vấn pgvector với filter report_id
+            response = self.client.rpc(
+                "search_nodes_by_vector", 
+                {
+                    "report_id": report_id,
+                    "query_vector": query_vector,
+                    "limit": limit
+                }
+            ).execute()
+            
+            return response.data
+        except Exception as e:
+            print(f"❌ Error searching nodes by vector: {e}")
+            return None
+    
+
+    def get_embedding_vector(self, text: str):
+        """
+        Sinh embedding vector cho text sử dụng SentenceTransformer.
+        Trả về list[float] để lưu vào Supabase (pgvector).
+        """
+        if not text or not isinstance(text, str):
+            return None
+        embedding = self.embedding_model.encode(text)
+        return embedding.tolist()
+    
+    
+    # Hàm cập nhật embedding cho summary doc 
+    def update_doc_summary(self, report_id: int , summary :str):
+        """
+        Cập nhật summary cho một report đã tồn tại.
+        """
+        try:
+            response = self.client.table(self.report_table).update({"summary": summary}).eq("id", report_id).execute()
+            return response
+        except Exception as e:
+            print(f"❌ Error updating node embedding: {e}")
+            return None
+        
+
+    def insert_report_nodes(self, flat_chunks, post_id: int):
+        """
+        Đẩy dữ liệu chunks từ worker lên database, tự động sinh embedding cho từng node (dùng summary hoặc content).
+        """
+        data = []
+        for idx, chunk in enumerate(flat_chunks):
+            # Ưu tiên summary, fallback content
+            text_for_embedding = chunk.get("summary") or chunk.get("content") or ""
+            embedding = self.get_embedding_vector(text_for_embedding)
+            data.append({
+                "post_id": post_id,
+                "title": chunk.get("title"),
+                "summary": chunk.get("summary"),
+                "content": chunk.get("content"),
+                "path": chunk.get("path"),
+                "level": chunk.get("level"),
+                "node_order": idx,
+                "embedding": embedding
+            })
+        try:
+            return self.client.table(self.table_name).insert(data).execute()
+        except Exception as e:
+            print(f"❌ Error inserting nodes: {e}")
+            return None
+
+    def get_nodes_and_summary_node_by_post(self, post_id: int):
+        """Fetch toàn bộ cấu trúc báo cáo (dùng cho hiển thị mục lục/nội dung)"""
+        try:
+            return self.client.table(self.table_name)\
+                .select("*")\
+                .eq("post_id", post_id)\
+                .order("node_order")\
+                .execute().data()
+                
+        except Exception as e:
+            print(f"❌ Error fetching nodes: {e}")
+            return None
+
+    
+    def upload_to_supabase(self, flat_chunks, global_summary, report_id=None):
+        post_id_value = report_id if report_id is not None else 0
+        data_to_insert = []
+        for idx, chunk in enumerate(flat_chunks):
+            embedding = chunk.get("embedding")
+            data_to_insert.append({
+                "post_id": post_id_value,
+                "title": chunk.get("title"),
+                "summary": chunk.get("summary"),
+                "content": chunk.get("content"),
+                "path": chunk.get("path"),
+                "level": chunk.get("level"),
+                "node_order": idx,
+                "embedding": embedding  
+            })
+
+        try:
+            response = self.client.table("nodes") \
+                .insert(data_to_insert) \
+                .execute()
+
+            if hasattr(response, "data"):
+                print("Inserted rows:", len(response.data))
+
+            if hasattr(response, "error") and response.error:
+                print("SUPABASE ERROR:", response.error)
+
+            if not response.data:
+                print("❌ Không có row nào được insert")
+                return None
+            
+            update_doc_summary_response = self.update_doc_summary(report_id, global_summary)
+            if update_doc_summary_response and hasattr(update_doc_summary_response, "error") and update_doc_summary_response.error:
+                print("❌ Lỗi khi cập nhật summary cho report:", update_doc_summary_response.error)
+            else:
+                print("✅ Cập nhật summary cho report thành công")
+    
+
+            print(f"✅ Upload thành công {len(response.data)} rows")
+
+            return response
+
+        except Exception as e:
+            print(f"❌ Lỗi khi insert vào Supabase: {e}")
+            return None
+        

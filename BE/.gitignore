@@ -51,3 +51,4 @@ coverage/
 # Supabase local 
 # ======================
 .supabase/
+.claude/

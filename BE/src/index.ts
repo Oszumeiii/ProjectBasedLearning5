@@ -1,6 +1,9 @@
 import app from './app'
 import { testConnection } from './config/db'
 import { PORT } from './config/env'
+import { connectRedis } from './config/redis'
+import { startScheduler } from './jobs/scheduler'
+import { ensureBucket } from './services/storage.service'
 
 const name: string = 'Project Based Learning 5'
 console.log(`Welcome to ${name}`)
@@ -12,7 +15,22 @@ async function bootstrap() {
     process.exit(1)
   }
 
-  app.listen(PORT, () => {
+  try {
+    await connectRedis()
+  } catch (err) {
+    console.warn('⚠️ Redis not available — queue processing sẽ không hoạt động:', (err as Error).message)
+  }
+
+  startScheduler()
+
+  try {
+    await ensureBucket()
+    console.log('✅ MinIO bucket ready')
+  } catch (err) {
+    console.warn('⚠️ MinIO not available — file upload sẽ không hoạt động:', (err as Error).message)
+  }
+
+  app.listen(PORT,'0.0.0.0', () => {
     console.log(`🚀 App is ready! Listening on http://localhost:${PORT}`)
   })
 }

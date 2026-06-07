@@ -1,0 +1,6 @@
+.env
+.env/local
+.env.*.local
+# LLM model cache
+llm_service/model_cache
+.env/
