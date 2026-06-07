@@ -27,15 +27,6 @@ const ROLE_OPTIONS: RoleOption[] = [
     activeText: "peer-checked:text-mint",
   },
   {
-    value: "manager",
-    label: "Quản lý",
-    icon: "supervisor_account",
-    activeColor: "peer-checked:border-ink-body",
-    activeBg: "peer-checked:bg-app-inset",
-    activeRing: "peer-checked:shadow-[0_0_0_1px_rgb(51,65,85)]",
-    activeText: "peer-checked:text-ink-heading",
-  },
-  {
     value: "admin",
     label: "Quản trị",
     icon: "admin_panel_settings",
@@ -48,7 +39,7 @@ const ROLE_OPTIONS: RoleOption[] = [
 
 const RoleSelector = ({ selectedRole, onChange }: RoleSelectorProps) => {
   return (
-    <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="mb-8 grid grid-cols-3 gap-3">
       {ROLE_OPTIONS.map((role) => (
         <label key={role.value} className="group cursor-pointer">
           <input

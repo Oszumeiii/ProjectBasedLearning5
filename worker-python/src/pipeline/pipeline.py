@@ -200,30 +200,36 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
     # =========================
     chunks = stage_flatten_tree(root)
   
+    # Dùng report_id làm khóa vector/metadata nếu không có post_id (luồng nộp báo cáo qua worker).
+    embed_key = post_id if post_id is not None else report_id
+
     stage_upload(
         chunks,
-        global_summary , 
-        post_id
+        global_summary,
+        embed_key,
     )
-    
+
     pc_instance, pc_index = _get_pinecone()
     global_summary_embedding = pc_instance.embed_text(global_summary)
 
-    response = pc_index.upsert(
-        vectors=[
-            {
-                "id": str(post_id),
-                "values": global_summary_embedding,
-                "metadata": {
-                    "text": global_summary
-                }
-            }
-        ]
-    )
-    if response.get("upserted_count", 0) > 0:
-        print(f"✅ Uploaded global summary embedding ")
+    if embed_key is None:
+        print("⏭️ Bỏ qua Pinecone (thiếu report_id và post_id)")
     else:
-        print(f"❌ Failed to upload global summary embedding")
+        response = pc_index.upsert(
+            vectors=[
+                {
+                    "id": str(embed_key),
+                    "values": global_summary_embedding,
+                    "metadata": {
+                        "text": global_summary
+                    }
+                }
+            ]
+        )
+        if response.get("upserted_count", 0) > 0:
+            print(f"✅ Uploaded global summary embedding ")
+        else:
+            print(f"❌ Failed to upload global summary embedding")
   
 
     

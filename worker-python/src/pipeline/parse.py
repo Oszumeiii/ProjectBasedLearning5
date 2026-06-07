@@ -212,7 +212,7 @@ def process_node(node):
         node.embedding = None
 
         print(
-            f"[WARN] Failed {node.path}: {exc}"
+            f"❌ Failed to summarize/embed {node.path}: {exc}"
         )
 
     return node
@@ -264,7 +264,15 @@ def generate_summaries_and_embedding_for_tree(
                 future.result()
             except Exception as e:
                 print(f"[THREAD ERROR] {e}")
-        
+
+        failed_embeddings = sum(
+            1 for node in candidates
+            if getattr(node, "embedding", None) is None
+        )
+        print(
+            f"Embedding summary: {len(candidates) - failed_embeddings}/{len(candidates)} nodes ready, {failed_embeddings} failed"
+        )
+
         high_level_summaries = []
 
         for node in candidates:

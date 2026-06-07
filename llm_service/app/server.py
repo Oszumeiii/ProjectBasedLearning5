@@ -109,22 +109,30 @@ def get_summary_for_node(nodes):
 @app.post("/answer")
 async def answer(payload: AnswerRequest):
     try:
-        nodes = repo.get_nodes_by_post(payload.post_id)
-        nodes = nodes.data if nodes else []
-        
+        nodes_response = repo.get_nodes_by_post(payload.post_id)
+        nodes = nodes_response.data if nodes_response else []
+        print(f"🔍 Total nodes for post_id={payload.post_id}: {len(nodes)}")
+
+        if not nodes:
+            return {
+                "response": "Tài liệu này chưa được xử lý hoặc chưa có dữ liệu để trả lời. Vui lòng thử lại sau.",
+                "model": LLMConfig.MODEL_NAME
+            }
+
         vector_response = repo.search_nodes_by_vector(
             report_id=payload.post_id,
             query=payload.message,
             limit=10
         )
-        
+
         candidate_nodes = vector_response.data if vector_response else []
-        
+        print(f"🔍 Vector candidates for post_id={payload.post_id}: {len(candidate_nodes)}")
+
         if not candidate_nodes:
-            raise HTTPException(
-                status_code=404,
-                detail="Không tìm thấy thông tin liên quan trong Vector DB"
+            print(
+                f"⚠️ Vector search returned empty for post_id={payload.post_id}, falling back to all nodes"
             )
+            candidate_nodes = nodes
 
         summary_candidates = get_summary_for_node(candidate_nodes)
         
@@ -180,8 +188,11 @@ async def answer(payload: AnswerRequest):
 
     except ValidationError as e:
         raise HTTPException(status_code=400, detail=e.errors())
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"❌ /answer internal error: {e!r}")
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 
@@ -220,7 +231,7 @@ async def semantic_search(payload: semanticSearchRequest):
                 "score": float(match.score),
                 "text": match.metadata.get("text", "")
             })
-        
+            
         print(f"🔍 Semantic search results for '{query}': {len(formatted_results)}")
         print(f"🔍 Top result: {formatted_results[0] if formatted_results else 'No matches found'}")
         return {
