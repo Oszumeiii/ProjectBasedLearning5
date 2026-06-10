@@ -368,6 +368,8 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
       )`)
     }
 
+    const userId = req.user.id
+
     const joins = `
       FROM reports r
       LEFT JOIN users u ON u.id = r.author_id
@@ -375,7 +377,10 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
       LEFT JOIN projects p ON p.id = r.project_id
       LEFT JOIN users sup ON sup.id = COALESCE(p.supervisor_id, c.lecturer_id)
       LEFT JOIN users rv ON rv.id = r.reviewed_by
-      LEFT JOIN report_ratings rr ON rr.report_id = r.id`
+      LEFT JOIN report_ratings rr ON rr.report_id = r.id
+      LEFT JOIN favorites fv ON fv.report_id = r.id AND fv.user_id = $${params.length + 1}`
+
+    params.push(userId)
 
     const where = `WHERE ${conds.join(' AND ')}`
 
@@ -404,12 +409,13 @@ export const listReports = async (req: Request, res: Response): Promise<void> =>
                 sup.full_name AS supervisor_name,
                 rv.full_name AS reviewer_name,
                 COALESCE(AVG(rr.rating), 0) AS avg_rating,
-                COUNT(DISTINCT rr.id)::int AS rating_count
+                COUNT(DISTINCT rr.id)::int AS rating_count,
+                (fv.id IS NOT NULL) AS is_favorited
          ${joins}
          ${where}
          GROUP BY r.id, u.full_name, u.email, u.student_code, u.class_name,
                   u.department, u.major, c.name, c.code, c.course_type,
-                  c.semester, c.academic_year, p.title, sup.full_name, rv.full_name
+                  c.semester, c.academic_year, p.title, sup.full_name, rv.full_name, fv.id
          ${orderBy}
          LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
         [...params, limitNum, offset]
@@ -432,6 +438,7 @@ export const getReportById = async (req: Request, res: Response): Promise<void> 
     if (!req.user) { res.status(401).json({ message: 'Unauthorized' }); return }
 
     const id = Number(req.params.id)
+    const userId = req.user.id
 
     const result = await pool.query(
       `SELECT r.*,
@@ -439,15 +446,17 @@ export const getReportById = async (req: Request, res: Response): Promise<void> 
               c.name AS course_name, c.code AS course_code,
               rv.full_name AS reviewer_name,
               COALESCE(AVG(rr.rating), 0) AS avg_rating,
-              COUNT(rr.id)::int AS rating_count
+              COUNT(DISTINCT rr.id)::int AS rating_count,
+              (fv.id IS NOT NULL) AS is_favorited
        FROM reports r
        LEFT JOIN users u ON u.id = r.author_id
        LEFT JOIN courses c ON c.id = r.course_id
        LEFT JOIN users rv ON rv.id = r.reviewed_by
        LEFT JOIN report_ratings rr ON rr.report_id = r.id
+       LEFT JOIN favorites fv ON fv.report_id = r.id AND fv.user_id = $2
        WHERE r.id = $1 AND r.deleted_at IS NULL
-       GROUP BY r.id, u.full_name, u.email, c.name, c.code, rv.full_name`,
-      [id]
+       GROUP BY r.id, u.full_name, u.email, c.name, c.code, rv.full_name, fv.id`,
+      [id, userId]
     )
 
     if (result.rows.length === 0) { res.status(404).json({ message: 'Report not found' }); return }
