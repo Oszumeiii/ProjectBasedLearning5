@@ -42,6 +42,7 @@ export interface Report {
   semester?: string | null;
   avg_rating?: number;
   rating_count?: number;
+  is_favorited?: boolean;
   created_at: string;
   updated_at: string;
   summary: string;
@@ -270,6 +271,44 @@ export const addFavorite = async (id: number) => {
 
 export const removeFavorite = async (id: number) => {
   const response = await axiosInstance.delete(`/reports/${id}/favorite`);
+  return response.data;
+};
+
+export interface RatingItem {
+  id: number;
+  user_id: number;
+  report_id: number;
+  rating: number;
+  comment: string | null;
+  reviewer_name: string;
+  created_at: string;
+}
+
+export interface RatingsResponse {
+  avgRating: number;
+  count: number;
+  items: RatingItem[];
+}
+
+export const getRatings = async (id: number): Promise<RatingsResponse> => {
+  const response = await axiosInstance.get(`/reports/${id}/ratings`);
+  return response.data;
+};
+
+export const upsertRating = async (
+  id: number,
+  rating: number,
+  comment?: string
+) => {
+  const response = await axiosInstance.put(`/reports/${id}/ratings`, {
+    rating,
+    comment,
+  });
+  return response.data;
+};
+
+export const getMyFavorites = async (): Promise<{ items: Report[] }> => {
+  const response = await axiosInstance.get("/users/me/favorites");
   return response.data;
 };
 
