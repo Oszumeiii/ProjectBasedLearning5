@@ -27,3 +27,19 @@ export const askRagQA = async (body: {
   });
   return response.data;
 };
+
+export interface ReportSummaryResponse {
+  reportId: number;
+  title: string;
+  summary: string;
+}
+
+export const getReportSummary = async (
+  reportId: number
+): Promise<ReportSummaryResponse> => {
+  const response = await axiosInstance.post<ReportSummaryResponse>(
+    "/rag/summary",
+    { reportId }
+  );
+  return response.data;
+};

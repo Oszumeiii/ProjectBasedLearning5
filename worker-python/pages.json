@@ -1,74 +1,84 @@
 {
-  "id": "e9e0dc37-7404-4d24-a362-a13906eee920",
+  "id": "cedfc678-4fb0-4ae6-8d48-cddbed39a7e2",
   "title": "ROOT",
   "level": 0,
-  "content": "TRƯỜNG ĐẠI HỌC BÁCH KHOA\nKHOA CÔNG NGHỆ THÔNG TIN\nBÁO CÁO\nPBL4 – DỰ ÁN HỆ THỐNG THÔNG MINH\nTÊN ĐỀ TÀI\nHỆ THỐNG XE THÔNG MINH\nGiảng viên hướng dẫn: GCV.TS. BÙI THỊ THANH THANH\nNHÓM SINH VIÊN THỰC HIỆN LỚP HỌC PHẦN\nHoàng Văn Tấn Đạt 23.99B\nNguyễn Lê Dung 23.99B\nLê Dương Huy 23.99B\nTrần Đắc Đại Việt 23.99B\nĐÀ NẴNG, 12/2025",
+  "content": "TRƯỜNG ĐẠI HỌC BÁCH KHOA\nKHOA CÔNG NGHỆ THÔNG TIN\nBÁO CÁO\nPBL5: ĐỒ ÁN CÔNG NGHỆ PHẦN MỀM\nỨNG DỤNG MÔ HÌNH RAG TRONG TRIỂN KHAI HỆ THỐNG WEB\nQUẢN LÝ, TRUY VẤN BÁO CÁO ĐỒ ÁN VÀ NCKH CỦA SINH VIÊN\nThành Viên Nhóm\nMã SV Tên thành viên Lớp\n102230072 Trần Văn Huấn 23T_Nhat2\n102230092 Phan Thanh Nhật 23T_Nhat2\n102230076 Hồ Khang Hy 23T_Nhat2\nGiảng viên hướng dẫn: TS. Phạm Minh Tuấn\nĐÀ NẴNG, 06/2025",
   "summary": "",
   "path": "",
   "children": [
     {
-      "id": "9a3ac2d3-f0e7-4c51-a1c2-768f64d1f562",
-      "title": "TÓM TẮT ĐỒ ÁN",
+      "id": "1cf75fdc-d70c-451c-a624-526ba92fe7f2",
+      "title": "DANH MỤC BẢNG",
       "level": 1,
-      "content": "Đồ án “Xe thông minh” được thực hiện với mục tiêu xây dựng một mô hình phương\ntiện tự hành có khả năng vận hành an toàn, ổn định và tuân thủ đúng quy tắc giao thông\ntrong môi trường mô phỏng. Vấn đề chính đặt ra là làm sao để hệ thống có thể tự động lái\ntheo line, nhận diện các tín hiệu đèn giao thông (đỏ, vàng, xanh), phát hiện biển báo Stop và\nđưa ra phản ứng tương ứng một cách chính xác theo từng tình huống thực tế mô phỏng. Bên\ncạnh đó, xe cần có khả năng chuyển đổi linh hoạt giữa chế độ tự động và chế độ điều khiển\nthủ công nhằm phục vụ quá trình kiểm thử, đánh giá và đảm bảo độ tin cậy của hệ thống\ntrong nhiều điều kiện hoạt động khác nhau, đồng thời app điều khiển cũng được thiết kế để\nstream video trực tiếp hành trình của xe, giúp người dùng theo dõi quá trình vận hành ngay\nlập tức, mặc dù không hỗ trợ xem lại.\nĐể giải quyết các yêu cầu này, nhóm áp dụng kết hợp nhiều loại cảm biến, trong đó\ncảm biến dò line giúp định hướng và duy trì xe di chuyển chính xác, camera thực hiện xử lý\nảnh và nhận diện tín hiệu giao thông gồm đèn đỏ, vàng, xanh và biển báo Stop, cùng các\nthuật toán phân tích màu sắc và phân loại biển báo theo thời gian thực. Cơ chế điều khiển\nđộng cơ thông qua vi điều khiển ESP/Arduino được tối ưu để phản hồi nhanh, chuyển hướng\nchính xác và duy trì vận tốc ổn định, đồng thời cho phép người dùng can thiệp qua chế độ\nđiều khiển thủ công. Hệ thống được thiết kế mô-đun, giúp dễ dàng điều chỉnh các thông số\nnhư tốc độ, góc lái, ngưỡng nhận diện màu sắc, cũng như mở rộng các chức năng trong\ntương lai. Kết quả cho thấy xe vận hành ổn định, bám line chính xác, phản ứng đúng với ba\ntrạng thái đèn giao thông, nhận diện và dừng chuẩn tại biển Stop, đồng thời chuyển sang chế\nđộ điều khiển thủ công mượt mà. Xe cũng xử lý tốt các tình huống như chuyển hướng khẩn\ncấp khi gặp chướng ngại vật và đồng bộ các tín hiệu từ cảm biến và camera. Thành công của\nđồ án chứng minh tính khả thi của việc tích hợp xử lý ảnh, cảm biến, điều khiển thông minh\nvà giám sát hành trình qua video trực tiếp trong mô hình xe tự hành thu nhỏ, đồng thời mở\nra tiềm năng ứng dụng trong học tập, nghiên cứu, đào tạo kỹ thuật và phát triển các hệ thống\ngiao thông thông minh và xe tự hành.",
+      "content": "Hình 1: Khảo sát thực tế tại trường học. ....................................................................................2\nBảng 1: Danh sách yêu cầu chức năng .....................................................................................20\nBảng 2: Danh sách yêu cầu phi chức năng ...............................................................................22\nBảng 3: Danh sách các tác nhân của dự án...............................................................................23\nBảng 4: Danh sách các usecase của chương trình ....................................................................24\nBảng 5. Mô tả các bảng trong cơ sở dữ liệu .............................................................................46\nBảng 6. Công nghệ sử dụng trong hệ thống .............................................................................51",
       "summary": "",
-      "path": "TÓM TẮT ĐỒ ÁN",
+      "path": "DANH MỤC BẢNG",
       "children": [],
       "embedding": null
     },
     {
-      "id": "fc34cf7b-82dc-4364-9998-7f0cadb2dff7",
-      "title": "BẢNG PHÂN CÔNG NHIỆM VỤ",
-      "level": 1,
-      "content": "Sinh viên thực hiện Các nhiệm vụ Tự đánh giá\nHoàng Văn Tấn Đạt Phụ trách phần cứng và lập trình Đã hoàn thành\nđiều khiển logic cho xe\nNguyễn Lê Dung Phụ trách phần cứng và lập trình Đã hoàn thành\nđiều khiển logic cho xe\nLê Dương Huy Phát triển thuật toán AI và xử lý hình Đã hoàn thành\nảnh cho nhận diện đèn giao thông,\nbiển báo\nTrần Đắc Đại Việt Phát triển ứng dụng điều khiển và Đã hoàn thành\ngiám sát xe, bao gồm stream video\ntrực tiếp\n- Ngoài các nhiệm vụ chuyên môn, nhóm còn thường xuyên tổ chức các buổi trao đổi, hỗ\ntrợ lẫn nhau trong suốt quá trình thực hiện dự án. Trong những buổi này, các thành viên\ncùng nhau thảo luận các vấn đề kỹ thuật, từ lập trình, xử lý cảm biến, thiết kế thuật toán đến\ntinh chỉnh hệ thống điều khiển, nhằm giải quyết các khó khăn phát sinh và tối ưu hóa hiệu\nsuất của mô hình xe. Việc phối hợp chặt chẽ này không chỉ giúp từng thành viên nâng cao\nkiến thức, kỹ năng và kinh nghiệm thực hành, mà còn tạo nên sự đồng bộ trong quá trình\ntriển khai dự án, đảm bảo tiến độ, chất lượng công việc và sự hoàn thiện toàn diện của hệ\nthống. Sự gắn kết và tinh thần hỗ trợ lẫn nhau đã góp phần quan trọng vào thành công chung,\nđồng thời thể hiện rõ nét khả năng làm việc nhóm, kỹ năng giải quyết vấn đề và sự chủ động\ntrong nghiên cứu, phát triển dự án.",
-      "summary": "",
-      "path": "BẢNG PHÂN CÔNG NHIỆM VỤ",
-      "children": [],
-      "embedding": null
-    },
-    {
-      "id": "9cd7df17-522c-4d63-9948-9763b874ae46",
+      "id": "06b1633e-98a0-4ef5-a006-0f1d238a929d",
       "title": "DANH MỤC HÌNH ẢNH",
       "level": 1,
-      "content": "Hình 1. Mô hình sản phẩm xe ........................................................................................... 4\nHình 2. Hình ảnh Arduino Uno ......................................................................................... 4\nHình 3. Hình ảnh ESP32_CAM ........................................................................................ 5\nHình 4. Hình ảnh Driver L298N ....................................................................................... 5\nHình 5. Động cơ DC bánh răng ........................................................................................ 6\nHình 6. Cảm biến dò line .................................................................................................. 7\nHình 7. Hình ảnh khung xe ............................................................................................... 7\nHình 8. Hình ảnh pin dự phòng ......................................................................................... 8\nHình 9. Nguyên lý hoạt động tônhr thể phần cứng ......................................................... 12\nHình 10. Hình ảnh thu thập dữ liệu ................................................................................. 13\nHình 11. Hình ảnh phân chia dữ liệu .............................................................................. 14\nHình 12. . Log huấn luyện mô hình MobileNetV3 Small ............................................... 20\nHình 13. Biểu đồ Accuracy và Loss của mô hình MobileNetV3 Small ......................... 20\nHình 14. Kết quả khi xe chưa nhận diện được vật thể .................................................... 23\nHình 15. Kết quả khi xe nhận diện biển báo Stop ........................................................... 23\nHình 16. Kết quả khi xe nhận diện đèn giao thông màu Đỏ ........................................... 24\nHình 17. Kết quả khi xe nhận diện đèn giao thông màu Vàng ....................................... 24\nHình 18. Kết quả khi xe nhận diện đèn giao thông màu Xanh ....................................... 24\nHình 19. Sơ đồ nguyên lý hoạt động luồng dữ liệu ........................................................ 26\nHình 20. Giao diện app điều khiển .................................................................................. 28\nHình 21. Mô hình sản phẩm xe (1) ................................................................................. 34\nHình 22. Mô hình sản phẩm xe (2) ................................................................................. 34\nHình 23. Hỉnh ành biển báo ............................................................................................ 35\n\nHình 24. Đèn màu xanh .................................................................................................. 35\nHình 25. Đèn màu vàng .................................................................................................. 35\nHình 26. Đèn màu đỏ ...................................................................................................... 35",
+      "content": "Hình 1: Khảo sát thực tế tại trường học. ....................................................................................2\nHình 2: Kiến trúc Retrieval-Augmented Generation (RAG) ......................................................9\nHình 3:Embedding model BGE-M3 .........................................................................................10\nHình 4 : Sơ đồ tiền xử lý tài liệu ( Preprocessing ) ..................................................................17\nHình 5 : Sơ đồ truy xuất và tạo câu trả lời (Retrieval & Generation Pipeline). .......................18\nHình 6: Sơ đồ usecase tổng quát của dự án ..............................................................................26\nHình 7: Biểu đồ hoạt động UC001 “Đăng nhập hệ thống DUTSTUDY và phân quyền người\ndùng “ .......................................................................................................................................35\nHình 8: Biểu đồ hoạt động UC002 “Tạo lớp học phần”..........................................................36\nHình 9: Biểu đồ hoạt động UC003 “Nộp báo cáo theo lớp học phần” .....................................37\nHình 10:Biểu đồ hoạt động UC004 “Duyệt và đánh giá báo cáo của giảng viên” ...................37\nHình 11:Biểu đồ hoạt động UC005 “Tra cứu và tham khảo báo cáo ” ....................................38\nHình 12:Biểu đồ hoạt động UC005 “Truy vấn hỏi đáp báo cáo sinh viên” .............................39\nHình 13: Biểu đồ trình tự đăng nhập hệ thống và phân quyền người dùng .............................40\nHình 14: Biểu đồ trình tự tạo lớp học phần .............................................................................41\nHình 15: Biểu đồ trình tự nộp báo cáo theo lớp học phần .......................................................41\nHình 16: Biểu đồ trình tự duyệt và đánh giá báo cáo của giảng viên .......................................42\nHình 17: Biểu đồ trình tự tra cứu và tham khảo báo cáo ..........................................................43\nHình 18: Biểu đồ trình tự truy vấn hỏi đáp thông tin tài liệu ...................................................44\nHình 19: Cơ sở dữ liệu tổng quát .............................................................................................45\nHình 20: Mô hình kiến trúc monolith .......................................................................................48\nHình 21: Kiến trúc tổng quát hệ thống .....................................................................................48\nHình 22: Giao diện trang đăng nhập hệ thống ..........................................................................53\nHình 23: Giao diện trang Dashboard (sinh viên) ......................................................................54\nHình 24: Giao diện Dashboard (giảng viên) .............................................................................54\nHình 25: Giao diện Dashboard (admin) ...................................................................................55\nHình 26: Giao diện trang danh sách lớp học phần (sinh viên) .................................................55\nHình 27: Giao diện trang danh sách lớp học phần (giảng viên) ...............................................56\nHình 28: Giao diện trang chi tiết lớp học phần (sinh viên) ......................................................56\nHình 29: Giao diện trang chi tiết lớp học phần (giảng viên) ....................................................57\nHình 30: Giao diện trang nộp báo cáo (sinh viên) ....................................................................57\nHình 31: Giao diện trang quản lý và nhận xét báo cáo (giảng viên) ........................................58\nHình 32: Giao diện trang tài liệu tham khảo (sinh viên) ..........................................................58\n\nHình 33: Giao diện trang chatbot AI ........................................................................................59\nHình 34: Giao diện trang quản lý người dùng ..........................................................................60\nHình 35: Sơ đồ triển khai .........................................................................................................60",
       "summary": "",
       "path": "DANH MỤC HÌNH ẢNH",
+      "children": [],
+      "embedding": null
+    },
+    {
+      "id": "4df6a7d9-90d0-4cb0-94be-5f7c70b9304e",
+      "title": "GIỚI THIỆU",
+      "level": 1,
+      "content": "Trong kỷ nguyên chuyển đổi số giáo dục, việc ứng dụng công nghệ thông tin để tối ưu\nhóa quy trình dạy và học tại các trường đại học đã trở thành một xu hướng tất yếu.\nĐặc biệt, đối với các khối ngành kỹ thuật và công nghệ, các học phần đồ án và dự án\ntheo mô hình học tập qua dự án (Project-Based Learning - PBL) đóng vai trò cốt lõi.\nĐây là môi trường giúp sinh viên cọ xát thực tế, phát triển tư duy giải quyết vấn đề và\nlà thước đo chính xác nhất cho năng lực chuyên môn trước khi tốt nghiệp.\nTuy nhiên, qua khảo sát thực tế quy trình vận hành các học phần dự án hiện nay, công\ntác quản lý và khai thác tài nguyên học liệu đang phải đối mặt với hai thách thức, bất\ncập lớn:\nThứ nhất, gánh nặng trong quản lý lớp học và tương tác: Hiện tại, giảng viên\nthường phải dành nhiều thời gian cho các tác vụ hành chính thủ công như quản lý\ndanh sách lớp, chia nhóm sinh viên và thu thập bài nộp cuối kỳ thông qua các kênh rời\nrạc (như Email, Zalo, Google Drive). Phương thức lưu trữ phân tán này không chỉ gây\nkhó khăn cho giảng viên trong việc theo dõi tiến độ, chấm điểm trực quan mà còn\ntiềm ẩn nguy cơ cao về thất lạc dữ liệu và thiếu tính đồng bộ.\nThứ hai, sự lãng phí tài nguyên tri thức số: Hàng năm, có hàng ngàn báo cáo\nnghiên cứu, đồ án xuất sắc của sinh viên được nghiệm thu và đánh giá cao. Tuy nhiên,\nsau khi kết thúc học phần, các tài liệu này thường bị lưu trữ tĩnh dưới dạng các \"file\nchết\" (PDF/Word) trong các kho dữ liệu cục bộ hoặc ổ cứng cá nhân. Sinh viên khóa\nsau hoàn toàn thiếu công cụ để tiếp cận, tham khảo hoặc kế thừa một cách hệ thống.\nHệ quả là hiện tượng trùng lặp ý tưởng giữa các khóa diễn ra phổ biến, gây lãng phí\nthời gian, công sức và tri thức của cả người dạy lẫn người học.\nNhận thức được những hạn chế trên, đề tài \" Xây dựng hệ thống web quản lý báo\ncáo đồ án và NCKH của sinh viên .” được nghiên cứu và xây dựng nhằm mang lại\nmột giải pháp toàn diện và triệt để.\nHệ thống không chỉ dừng lại ở việc mô phỏng một không gian quản lý lớp học trực\ntuyến trực quan, khoa học (tương tự các nền tảng LMS hiện đại), mà còn tạo ra bước\nđột phá bằng cách tích hợp sâu công nghệ Trí tuệ nhân tạo (AI). Trong tương lai ,\nthông qua kiến trúc RAG (Retrieval-Augmented Generation) [20] và cơ sở dữ liệu\nvector, hệ thống thiết lập một quy trình tự động hóa khép kín: Ngay khi một báo cáo\nxuất sắc được giảng viên phê duyệt, AI sẽ lập tức phân tích, trích xuất và số hóa tài\nliệu vào thư viện chung. Từ đó, cho phép sinh viên toàn trường thực hiện truy vấn ngữ\nnghĩa (Semantic Search) bằng ngôn ngữ tự nhiên và tương tác, hỏi đáp trực tiếp trên\nnội dung tài liệu (Interactive Q&A).\nDự án kỳ vọng sẽ thay đổi hoàn toàn cách thức quản lý học phần dự án truyền thống,\nđồng thời chuyển hóa các tệp dữ liệu tĩnh thành một kho tri thức động có tính kế thừa\ncao, thúc đẩy phong trào nghiên cứu khoa học và học tập chủ động trong môi trường\nhọc đường.",
+      "summary": "",
+      "path": "GIỚI THIỆU",
+      "children": [],
+      "embedding": null
+    },
+    {
+      "id": "154f19d1-d56d-45b7-b166-b4378a6115d0",
+      "title": "MỞ ĐẦU",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "MỞ ĐẦU",
       "children": [
         {
-          "id": "22fbb03f-df7b-4745-8052-7dc74a060b93",
-          "title": "1. GIỚI THIỆU",
+          "id": "4596cc56-55a9-4919-b37c-5d6a59f9e402",
+          "title": "1. Lý do chọn đề tài",
+          "level": 2,
+          "content": "Bối cảnh của đề tài (Dựa trên số liệu khảo sát thực tế)\nĐể có cơ sở thực tiễn khách quan phục vụ cho việc định hình các chức năng cốt lõi\ncủa hệ thống, nhóm nghiên cứu đã tiến hành một cuộc khảo sát thực tế đối với sinh\nviên trong trường về thực trạng tiếp cận nguồn tài liệu và học liệu chính thống.\nTheo kết quả ghi nhận từ dữ liệu khảo sát với 134 lượt phản hồi cho câu hỏi yêu cầu\nđánh giá về việc tìm kiếm tài liệu tham khảo đúng chuyên ngành và lớp học phần tại\ntrường hiện nay, số liệu đã chỉ ra những bất cập vô cùng nghiêm trọng. Cụ thể, mức\nđộ khó khăn chiếm tỷ lệ gần như tuyệt đối khi có tới 52,9% sinh viên phản hồi việc\ntìm kiếm tài liệu là \"Rất khó khăn\" (tương ứng vùng màu xanh dương trên biểu đồ) và\n35,3% đánh giá ở mức \"Khó khăn\" (vùng màu đỏ). Như vậy, tổng cộng có tới 88,2%\nsinh viên được khảo sát đang gặp áp lực lớn và chưa tìm được phương thức hiệu quả\nđể tiếp cận các nguồn đồ án hay báo cáo mẫu đúng chuyên ngành.\nTrái ngược với sự khó khăn đó, tỷ lệ sinh viên có thể tiếp cận tài liệu dễ dàng lại nằm\nở mức tối thiểu. Chỉ có vỏn vẹn 8,8% người tham gia khảo sát đánh giá ở mức \"Bình\nthường\" (vùng màu vàng) và một tỷ lệ rất nhỏ, khoảng 3%, cảm thấy \"Dễ dàng\". Đáng\nchú ý, kết quả hoàn toàn không ghi nhận bất kỳ một phản hồi nào đánh giá việc tìm\nkiếm tài liệu là \"Rất dễ dàng\".\nHình 1: Khảo sát thực tế tại trường học.\nBiểu đồ là minh chứng rõ nét nhất cho thấy sự đứt gãy trong việc lưu trữ và chia sẻ tri\nthức giữa các khóa học trực thuộc nhà trường. Tài liệu sinh viên cần thì rất nhiều,\nnhưng công cụ để tiếp cận lại hầu như không có. Điều này khẳng định việc xây dựng\nnền tảng DUTSTUDY là một yêu cầu mang tính bắt buộc và vô cùng cấp thiết, nhằm\ngiải quyết triệt để bài toán tìm kiếm tài liệu cho 88,2% sinh viên đang loay hoay hiện\nnay.",
+          "summary": "",
+          "path": "MỞ ĐẦU > 1. Lý do chọn đề tài",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "3e6ef9a1-9934-4202-8acd-e9854b225b66",
+          "title": "2. Mục đích và Mục tiêu của đề tài",
           "level": 2,
           "content": "",
           "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU",
+          "path": "MỞ ĐẦU > 2. Mục đích và Mục tiêu của đề tài",
           "children": [
             {
-              "id": "e9002882-3adf-4737-961f-298771f68bde",
-              "title": "1.1. Hiện trạng các sản phẩm tương tự",
+              "id": "64d12277-d82f-4280-a976-290c0dc5689e",
+              "title": "2.1. Mục đích đề tài",
               "level": 3,
-              "content": "Trên thế giới, các hệ thống xe tự hành đã được nghiên cứu và phát triển rộng rãi, từ\ncác mô hình thu nhỏ dùng trong học tập, nghiên cứu đến các phương tiện tự hành thương\nmại. Nhiều dự án nổi bật như Waymo, Tesla Autopilot, và các mô hình xe giáo dục sử dụng\ncảm biến, camera và thuật toán AI để nhận diện tín hiệu giao thông, điều hướng theo đường\nvà tránh chướng ngại vật. Ở Việt Nam, các mô hình xe tự hành thu nhỏ chủ yếu xuất hiện\ntrong các trường đại học, phòng lab nghiên cứu, hoặc các cuộc thi Robotics; tuy nhiên, số\nlượng mô hình tích hợp đầy đủ các chức năng như nhận diện đèn giao thông, biển báo Stop\nvà vừa chạy tự động vừa có thể điều khiển thủ công vẫn còn hạn chế.",
+              "content": "Mục đích cốt lõi của dự án DUTSTUDY nhằm xây dựng một hệ sinh thái giáo dục số\ntoàn diện, giúp tối ưu hóa công tác quản lý lớp học phần định hướng dự án (PBL) và\nhiện đại hóa cách thức khai thác tài nguyên học liệu tại trường đại học. Dự án tập\ntrung vào việc chuyển đổi các báo cáo đồ án xuất sắc từ \"tài nguyên tĩnh\" thành một\n\"kho tri thức kế thừa động\", hỗ trợ sinh viên tự học, tự nghiên cứu hiệu quả thông qua\nviệc xây dựng một bộ máy tìm kiếm nâng cao (Search Engine).",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU > 1.1. Hiện trạng các sản phẩm tương tự",
+              "path": "MỞ ĐẦU > 2. Mục đích và Mục tiêu của đề tài > 2.1. Mục đích đề tài",
               "children": [],
               "embedding": null
             },
             {
-              "id": "2fd3e40d-b574-4cce-8d3e-6442f8bd52c8",
-              "title": "1.2. Các vấn đề cần giải quyết",
+              "id": "5c12534a-3dc1-4fff-8456-0f11a9d09818",
+              "title": "2.2. Mục tiêu đề tài",
               "level": 3,
-              "content": "Các sản phẩm hiện tại vẫn gặp một số hạn chế, bao gồm:\n• Khả năng nhận diện đèn giao thông và biển báo còn thiếu chính xác hoặc tốc độ\nxử lý chậm.\n• Chưa tích hợp đồng bộ giữa chế độ tự động và điều khiển thủ công, khiến việc\nchuyển đổi hoạt động chưa linh hoạt.\n• Giám sát quá trình vận hành xe trực tiếp chưa được triển khai rộng rãi, đặc biệt\ntrong các mô hình học tập.\n• Khó mở rộng, nâng cấp hoặc tinh chỉnh các chức năng do kiến trúc hệ thống chưa\ntheo dạng mô-đun.",
+              "content": "Về mặt chức năng, hệ thống hướng tới việc xây dựng một không gian cộng tác\ntrực quan và toàn diện. Phân hệ Quản lý Lớp học được thiết kế để hỗ trợ giảng viên dễ\ndàng điều phối lớp học, giao bài tập và đặc biệt là khả năng nhập liệu danh sách sinh\nviên số lượng lớn thông qua tệp CSV bằng các tiến trình xử lý ngầm. Bên cạnh đó,\nphân hệ Đánh giá và Phê duyệt tích hợp công cụ chấm điểm và nhận xét trực tuyến, đi\nkèm với cơ chế bộ lọc một chạm giúp giảng viên phê duyệt báo cáo vào thư viện.\nThao tác này sẽ tự động phân quyền và chuyển đổi trạng thái tài liệu từ không gian\nlưu trữ nội bộ sang trạng thái chia sẻ công khai toàn trường.\nVề khía cạnh kỹ thuật, dự án tập trung thiết kế và tối ưu hóa hệ quản trị cơ sở dữ liệu\nquan hệ, kết hợp chặt chẽ với cấu trúc lập chỉ mục toàn văn và quản lý siêu dữ liệu\nchuyên sâu. Mục tiêu cốt lõi là đảm bảo hiệu năng hệ thống luôn ở mức tối ưu, duy trì\nthời gian phản hồi dưới ba giây đối với các truy vấn tìm kiếm phức tạp và bộ lọc dữ\nliệu đa tầng. Đồng thời, kiến trúc hệ thống cũng đặt ra yêu cầu thiết lập hàng rào bảo\nmật tuyệt đối cho mọi tài liệu chưa được phê duyệt, đảm bảo tính riêng tư cho dữ liệu\nnội bộ của từng lớp học phần.\nVề mặt vận hành, hệ thống đặt kỳ vọng mang lại những giá trị thực tiễn đo lường\nđược cho cả hoạt động giảng dạy lẫn học tập. Giải pháp này dự kiến sẽ giúp giảng\nviên giảm thiểu ít nhất bảy mươi phần trăm thời gian xử lý thủ công đối với các tác vụ\nhành chính truyền thống. Đối với người học, nền tảng cam kết giải quyết triệt để bài\ntoán khó khăn trong việc tìm kiếm tài liệu tham khảo chuyên ngành, trực tiếp hỗ trợ\ncho hơn tám mươi tám phần trăm sinh viên theo như số liệu đã được thống kê từ các\nđợt khảo sát thực tế.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU > 1.2. Các vấn đề cần giải quyết",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "f99042ca-177b-4c1f-aa24-2e9eda6f61fe",
-              "title": "1.3. Đề xuất giải pháp tổng quan",
-              "level": 3,
-              "content": "Để khắc phục các hạn chế trên, nhóm đề xuất xây dựng mô hình “Xe thông minh”\nvới các giải pháp chính:\n• Sử dụng cảm biến dò line và camera AI để xe có thể tự lái theo đường, nhận diện\nđèn giao thông và biển báo Stop chính xác theo thời gian thực.\n• Triển khai thuật toán xử lý ảnh và phân tích màu sắc, kết hợp với vi điều khiển\nESP/Arduino để điều khiển động cơ, đảm bảo xe phản hồi nhanh và ổn định.\n\n• Thiết kế kiến trúc mô-đun, giúp dễ dàng điều chỉnh các thông số, nâng cấp các\nthuật toán và mở rộng chức năng trong tương lai.\n• Phát triển ứng dụng điều khiển và giám sát, cho phép người dùng điều khiển thủ\ncông và theo dõi video trực tiếp hành trình xe, phục vụ kiểm thử và đánh giá hiệu\nquả hoạt động.\nNhững giải pháp này không chỉ hướng tới việc xây dựng một mô hình xe tự hành\nthu nhỏ hoàn chỉnh, mà còn tạo tiền đề cho việc nghiên cứu, học tập và phát triển các hệ\nthống giao thông thông minh trong tương lai.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 1. GIỚI THIỆU > 1.3. Đề xuất giải pháp tổng quan",
+              "path": "MỞ ĐẦU > 2. Mục đích và Mục tiêu của đề tài > 2.2. Mục tiêu đề tài",
               "children": [],
               "embedding": null
             }
@@ -76,315 +86,40 @@
           "embedding": null
         },
         {
-          "id": "e7cec3b4-7a01-444e-bf03-9fdc60673ace",
-          "title": "2. GIẢI PHÁP",
+          "id": "88cc631c-75f0-4406-ba4d-7daf28b60632",
+          "title": "3. Phạm vi và đối tượng của đề tài",
           "level": 2,
-          "content": "- Dựa trên yêu cầu của đề tài và các vấn đề đã được đặt ra ở phần Giới thiệu, nhóm\ntiến hành phân tích tổng thể hệ thống nhằm xác định rõ các thành phần chức năng\nvà mối quan hệ giữa chúng. Trên cơ sở đó, nhóm đề xuất một giải pháp tổng thể cho\nhệ thống xe thông minh, được chia thành ba nhóm chính gồm: giải pháp phần cứng\nvà truyền thông, giải pháp trí tuệ nhân tạo/khai thác dữ liệu, và giải pháp phần mềm\nứng dụng.\n- Mỗi nhóm giải pháp đảm nhiệm một vai trò riêng biệt trong hệ thống, từ việc thu\nthập dữ liệu, xử lý và ra quyết định thông minh, cho đến điều khiển và giám sát quá\ntrình vận hành của xe. Đồng thời, các nhóm giải pháp này được thiết kế và triển khai\ntheo hướng liên kết chặt chẽ với nhau, bảo đảm dữ liệu và tín hiệu điều khiển được\ntruyền tải đồng bộ, chính xác và kịp thời. Nhờ đó, hệ thống có thể hoạt động ổn định,\nđáp ứng yêu cầu xử lý thông tin theo thời gian thực và hoàn thành đúng các mục\ntiêu đã đề ra của đề tài.",
+          "content": "Đối tượng nghiên cứu và phạm vi triển khai của dự án được xác định rõ ràng\nnhằm đảm bảo tính tập trung và hoàn thành đúng tiến độ đề ra. Về đối tượng tác động,\nhệ thống hướng trực tiếp đến ba nhóm người dùng chính trong môi trường đại học bao\ngồm sinh viên, những người cần không gian nộp bài, theo dõi tiến độ và khai thác học\nliệu; giảng viên, những người trực tiếp quản lý lớp học phần, đánh giá và phê duyệt\ncác công trình chất lượng; cùng đội ngũ quản trị viên chịu trách nhiệm vận hành hệ\nthống và giám sát tài nguyên tri thức. Đối tượng dữ liệu được nghiên cứu là toàn bộ\ncác công trình nghiên cứu khoa học, báo cáo học phần dự án (PBL) và đồ án tốt\nnghiệp của sinh viên.\nVề phạm vi chức năng, hệ thống tập trung hoàn toàn vào việc tối ưu hóa các nghiệp vụ\nquản lý lớp học phần, luồng chấm điểm, phê duyệt của giảng viên và đặc biệt là phân\nhệ Thư viện số thông minh ứng dụng mô hình RAG cùng công nghệ tìm kiếm ngữ\nnghĩa. Dự án chủ động loại trừ các tính năng phát trực tuyến video bài giảng thời gian\nthực hay các phân hệ quản lý hành chính chuyên sâu của nhà trường như học phí và\nlịch học. Trong phạm vi định dạng dữ liệu, bộ máy trích xuất và lập chỉ mục văn bản\nphục vụ cho cơ sở dữ liệu vector chỉ tập trung bóc tách nội dung ký tự thô cùng siêu\ndữ liệu của các tệp tin phổ biến bao gồm .pdf và .docx, hoàn toàn không áp dụng cho\ncác tệp tin đa phương tiện hay mã nguồn thuần. Cuối cùng, về phạm vi triển khai, hệ\nthống được xây dựng hoàn chỉnh dưới dạng một ứng dụng Web có khả năng vận hành\nthực tế trên môi trường Internet, sử dụng nguồn dữ liệu thử nghiệm nội bộ từ các học\nphần dự án và đề tài nghiên cứu khoa học mẫu của sinh viên để đánh giá toàn diện\nhiệu năng của mô hình.",
           "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP",
-          "children": [
-            {
-              "id": "bc5f8269-aaa9-4deb-a773-88da376c57e1",
-              "title": "2.1. Giải pháp phần cứng và truyền thông",
-              "level": 3,
-              "content": "a) Phần cứng\nHệ thống được thiết kế để kết hợp xe line follower với khả năng nhận diện tín hiệu\ngiao thông qua camera AI.\nDanh sách linh kiện chi tiết:\n\nSTT Linh kiện Thông số kỹ thuật chính Chức năng trong hệ thống\n1 Arduino Vi điều khiển Đọc cảm biến line, nhận lệnh điều\nUno R3 ATmega328P, 16 MHz, khiển từ ESP32-CAM qua UART,\n5V, 14 chân digital, 6 chân điều khiển driver L298N và tốc độ\nPWM động cơ.\n2 ESP32- Module ESP32, camera Chụp ảnh môi trường phía trước xe,\nCAM OV2640, WiFi 2.4 GHz, mã hóa JPEG và gửi lên server AI;\nhỗ trợ WebSocket, UART đồng thời nhận lệnh điều khiển từ\nserver và chuyển tiếp cho Arduino.\n3 Driver Mạch cầu H kép, điện áp Nhận tín hiệu PWM và điều khiển\nL298N 5–35V, dòng tối đa ~2A chiều quay của hai động cơ DC, tạo\nlực kéo cho xe di chuyển.\n4 Động cơ DC Điện áp 3–6V, có hộp số Tạo chuyển động cho bánh xe trái và\nbánh răng giảm tốc phải, quyết định tốc độ và khả năng\nleo dốc.\n5 Cảm biến dò Cảm biến hồng ngoại Phát hiện line đen/trắng trên mặt\nline (3x) TCRT5000, ngõ ra digital đường, cung cấp thông tin cho thuật\ntoán bám line trên Arduino.\n6 Khung xe 2 Chất liệu mica/acrylic, 2 Cố định toàn bộ linh kiện và tạo cấu\ntầng tầng, 4 vị trí gắn động cơ trúc cơ khí cho xe.\n7 Pin sạc dự 10000mAh Type-C PD Cung cấp nguồn cho động cơ và/hoặc\nphòng QC 3.0 mạch điều khiển.\n\n- Đây là hình ảnh sản phẩm của toàn dự án.\nHình 1. Mô hình sản phẩm xe\na.1. Arduino Uno/Nano (Motor Controller & Line Follower)\nHình 2. Hình ảnh Arduino Uno\n- Điều khiển động cơ 4 bánh thông qua driver H-Bridge (chân ENA, ENB, IN1–IN4).\n- Nhận tín hiệu từ 3 cảm biến line:\no\nLINE_L (trái), LINE_M (giữa), LINE_R (phải)\no\nGiá trị HIGH = cảm biến nhận diện màu đen (line), LOW = màu nền trắng.\n\n- Các motor hoạt động với các chế độ:\no\nĐi thẳng, lùi, rẽ gắt (spin turn), rẽ nhẹ.\no\nTốc độ tùy chỉnh cho chế độ line follow và điều khiển manual.\na.2. ESP32-CAM\nHình 3. Hình ảnh ESP32_CAM\n- Camera AI Thinker (GPIO cấu hình đầy đủ) để capture hình ảnh.\n- Xử lý truyền dữ liệu hình ảnh qua WiFi tới server AI.\n- Kết nối với Arduino thông qua UART2 (Serial2):\no\nTXD2 (ESP32 gửi lệnh) → RX Arduino\no\nRXD2 (ESP32 nhận) ← TX Arduino (nếu cần mở rộng)\n- Các chân camera được thiết lập chuẩn theo datasheet AI Thinker.\na.3. Driver L298N\nHình 4. Hình ảnh Driver L298N\n\n- Driver cầu H kép dùng để điều khiển hai động cơ DC độc lập.\n- Nhận tín hiệu điều khiển từ Arduino qua các chân:\no\nIN1 – IN4: điều khiển chiều quay động cơ trái/phải.\no\nENA – ENB: nhận tín hiệu PWM để điều chỉnh tốc độ động cơ.\n- Cho phép các chế độ chuyển động:\no\nĐi thẳng, lùi.\no\nRẽ trái, rẽ phải.\no\nDừng khẩn cấp khi nhận lệnh Stop từ AI.\n- Tách biệt phần công suất động cơ và phần điều khiển logic, giúp:\no\nBảo vệ Arduino khỏi dòng điện lớn.\no\nHệ thống hoạt động ổn định và an toàn hơn.\na.4. Động cơ DC bánh răng\nHình 5. Động cơ DC bánh răng\n- Động cơ DC có hộp số giảm tốc, gắn trực tiếp với bánh xe.\n- Hoạt động ở điện áp 3–6V, phù hợp với mô hình xe tự hành thu nhỏ.\n- Hộp số giảm tốc giúp tăng mô-men xoắn và giảm tốc độ quay, đảm bảo xe di chuyển\nmượt và chính xác.\n- Được điều khiển thông qua driver L298N:\no\nĐiều chỉnh tốc độ bằng PWM.\no\nThay đổi chiều quay để thực hiện các thao tác điều hướng.\n\na.5. Cảm biến dò line (3x)\nHình 6. Cảm biến dò line\n- Sử dụng 3 cảm biến hồng ngoại TCRT5000: LINE_L (trái), LINE_M (giữa),\nLINE_R (phải).\n- Nguyên lý hoạt động:\no\nMàu đen (line) → tín hiệu HIGH.\no\nMàu trắng (nền) → tín hiệu LOW.\n- Arduino đọc trạng thái 3 cảm biến để xác định vị trí xe so với line và điều khiển\nhướng di chuyển.\n- Việc sử dụng 3 cảm biến giúp xe bám line chính xác và vận hành ổn định trong chế\nđộ tự động.\na.6. Khung xe 2 tầng\nHình 7. Hình ảnh khung xe\n\n- Khung xe 2 tầng làm từ mica/acrylic, thiết kế chuyên dụng cho xe tự hành thu nhỏ.\n- Tầng dưới dùng để gắn:\no\nĐộng cơ DC và bánh xe.\no\nPin cấp nguồn cho hệ thống.\n- Tầng trên dùng để cố định:\no\nArduino, ESP32-CAM.\no\nDriver L298N và các module điều khiển.\n- Thiết kế 2 tầng giúp:\no\nBố trí linh kiện gọn gàng, khoa học.\no\nGiảm nhiễu dây nối và dễ bảo trì, nâng cấp.\no\nTăng độ cứng và độ ổn định khi xe di chuyển.\na.7. Pin sạc dự phòng 10000mAh Type C PD QC 3.0 22.5W Xiaomi Lipte P16ZM\nHình 8. Hình ảnh pin dự phòng\n- Pin sạc dự phòng dung lượng 10000mAh, dùng làm nguồn cấp chính cho hệ thống\nxe.\n- Hỗ trợ chuẩn Type-C, PD và QC 3.0, cho dòng ra ổn định và công suất cao.\n- Cấp nguồn cho:\n\no\nArduino.\no\nESP32-CAM.\no\nDriver động cơ thông qua module chuyển đổi điện áp.\n- Việc sử dụng pin sạc dự phòng giúp:\no\nDễ sạc, an toàn và tiện lợi.\no\nThời gian vận hành dài.\no\nKhông cần thiết kế mạch nguồn phức tạp.\n- Cách mắc mạch của xe\nb.1. Đấu nối L298N với Arduino\nChân L298N Chân Arduino Chức năng trong Code\n(Uno/Nano)\nENA D5 Điều tốc động cơ A (PWM)\nIN1 D6 Chiều quay A1\nIN2 D7 Chiều quay A2\nIN3 D8 Chiều quay B1\nIN4 D9 Chiều quay B2\nENB D10 Điều tốc động cơ B (PWM)\n12V Pin (+) Acquy Nguồn động cơ (7V - 12V)\nGND GND (Chung) Nối chung với GND Arduino & ESP32\n5V Vin/5V Arduino Cấp nguồn cho mạch điều khiển\n\nLưu ý: Bạn cần tháo 2 jumper (cầu nối nhựa đen) trên chân ENA và ENB của L298N\nthì mới điều tốc (PWM) được.\nb.2. Đấu nối Cảm biến Line (Dò đường) với Arduino\nChân Cảm biến Chân Arduino Chức năng\nOUT (Trái) D3 Sensor Trái (LINE_L)\nOUT (Giữa) D12 Sensor Giữa (LINE_M)\nOUT (Phải) D2 Sensor Phải (LINE_R)\nVCC 5V Nguồn cảm biến\nGND GND Mass chung\nb.3. Đấu nối giao tiếp giữa ESP32-CAM và Arduino\nĐây là phần quan trọng nhất để AI điều khiển xe. Code sử dụng giao tiếp Serial (UART).\n• ESP32 Code: Sử dụng Serial2 với RXD2 = 13 và TXD2 = 1512.\n• Arduino Code: Sử dụng Serial mặc định (Chân 0 và 1)13.\nChân ESP32-CAM Chân Arduino Giải thích\nGPIO 15 (TXD2) D0 (RX) ESP32 gửi lệnh -> Arduino nhận\nGPIO 13 (RXD2) D1 (TX) Arduino gửi phản hồi -> ESP32 nhận\nGND GND BẮT BUỘC phải nối chung mass\n5V / VCC 5V Nguồn nuôi ESP32\n\n- Truyền thông dữ liệu\nHệ thống sử dụng 2 lớp truyền thông:\nc.1. ESP32 ↔ Server AI\n- Giao thức: WebSocket\n- Mục đích:\no\nESP32 gửi hình ảnh (binary JPEG) theo khung hình (10 FPS) về server.\no\nServer gửi lệnh AI (JSON) về ESP32.\n- Cấu trúc lệnh AI trong JSON:\n{\n\"command\": \"S\",\n\"mode\": \"line_follow\",\n\"class\": \"red_light\",\n\"confidence\": 0.98\n}\n- Lợi ích:\no\nTruyền dữ liệu thời gian thực\no\nCho phép AI ra quyết định tức thì dựa trên hình ảnh\nc.2. ESP32 ↔ Arduino\n- Giao thức: UART Serial (Serial2)\n- Tốc độ: 115200 baud\n- Mục đích:\no\nESP32 gửi lệnh AI nhận được từ server xuống Arduino.\no\nArduino nhận lệnh và thực thi motor/line follower.\n- Lệnh đơn giản: 'S', 'A', 'F', 'B', 'L', 'R'\n- Lợi ích:\n\no\nGiao tiếp ổn định, đơn giản\no\nArduino không cần xử lý hình ảnh, giảm tải\n- Nguyên lý hoạt động tổng thể phần cứng\n[AI Server] --WebSocket--> [ESP32-CAM] --UART2--> [Arduino Line Follower] -->\n[Động cơ xe]\nHình 9. Nguyên lý hoạt động tônhr thể phần cứng\n- Cảm biến line liên tục đọc trạng thái mặt đường (đậm/nhạt, đen/trắng) và gửi tín hiệu\ndigital về Arduino. Dựa trên tổ hợp tín hiệu từ ba cảm biến (trái, giữa, phải), Arduino\nxác định xe đang lệch về phía nào so với line và điều chỉnh tốc độ, hướng quay của từng\nbánh thông qua driver L298N.\n- ESP32-CAM định kỳ chụp ảnh phía trước xe, mã hóa JPEG và gửi lên server AI thông\nqua kết nối WiFi và giao thức WebSocket. Sau khi server xử lý và suy diễn mô hình AI,\nkết quả (nhãn lớp và lệnh điều khiển) được gửi trả lại về ESP32-CAM. ESP32-CAM\nchuyển lệnh điều khiển nhận được từ server AI xuống Arduino qua UART.\n- Arduino kết hợp lệnh AI với trạng thái cảm biến line hiện tại để đưa ra quyết định cuối\ncùng (ví dụ: ưu tiên dừng khi gặp đèn đỏ hoặc biển Stop). Lệnh điều khiển được ánh xạ\nthành các mức PWM và tín hiệu logic trên các chân điều khiển driver L298N, từ đó điều\nchỉnh chuyển động của động cơ.\n- Tất cả các thành phần sử dụng chung một mass (GND) để đảm bảo mức logic ổn định,\ntránh hiện tượng nhiễu hoặc sai lệch điện áp gây treo mạch.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.1. Giải pháp phần cứng và truyền thông",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "97616f8b-a6f4-4019-98f3-b92205d08aa2",
-              "title": "2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu",
-              "level": 3,
-              "content": "- Trong quá trình khảo sát các mô hình AI, nhóm đã nghiên cứu và so sánh nhiều mô\nhình như các mô hình YOLO, ResNet,..\n- Phù hợp với yêu cầu phải đủ nhẹ để chạy realtime với các bài toán không quá phức\ntạp trên các thiết bị không quá mạnh mẽ thì mô hình MobileNet v3 small là lựa\nchọn phù hợp.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu",
-              "children": [
-                {
-                  "id": "2dd29689-e5d8-4a6b-ab5d-a2ed345aabc7",
-                  "title": "2.2.1. Thu thập dữ liệu",
-                  "level": 4,
-                  "content": "- Dữ liệu được phân làm 5 nhãn như sau:\nLớp Nhãn\n0 green\n1 none\n2 red\n3 stopsign\n4 yellow\n- Dữ liệu được thu thập bằng hình ảnh thực tế từ AI Thinker ESP32-CAM:\nHình 10. Hình ảnh thu thập dữ liệu",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.1. Thu thập dữ liệu",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "74fcac77-4930-455f-8508-2210e725aabc",
-                  "title": "2.2.2. Xử lý dữ liệu",
-                  "level": 4,
-                  "content": "- Sử dụng công cụ roboflow (quay góc 90, tăng giảm độ sáng) và cắt ảnh để làm giàu\ndữ liệu.\nHình 11. Hình ảnh phân chia dữ liệu\n- Phân chia dữ liệu: Phân chia dữ liệu ngẫu nhiên theo tỷ lệ 8:2 tương ứng với train\nset, validation set.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.2. Xử lý dữ liệu",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "e26054cf-90d2-4156-be56-f0c6104af3e4",
-                  "title": "2.2.3. Mô hình MobileNetv3 small",
-                  "level": 4,
-                  "content": "a) Giới thiệu\n- MobileNetV3 là thế hệ thứ ba của dòng mạng Nơ-ron tích chập (CNN) do Google\nphát triển, được thiết kế chuyên biệt cho các thiết bị di động (mobile) và thiết bị\nnhúng (embedded systems) như Raspberry Pi, điện thoại thông minh, hoặc các mạch\nIoT.\n- Được thiết kế bằng NAS (Network Architecture Search): Thay vì các kỹ sư tự tay\nthiết kế từng lớp mạng như các phiên bản trước, Google đã sử dụng thuật toán NAS\n\n(Tìm kiếm kiến trúc mạng) để tự động tìm ra cấu trúc mạng tối ưu nhất giữa sự cân\nbằng của Độ chính xác (Accuracy) và Độ trễ (Latency).\n- Sử dụng Depthwise Separable Convolutions để làm giảm số lượng phép tính từ đó\ncó thể chạy trên các thiết bị người dùng cuối.\nb) Kiến trúc\n- MobileNetV3-Small là một mạng nơ-ron tích chập sâu (Deep CNN), được tối ưu\nhóa cho tốc độ và hiệu suất trên thiết bị biên\n- Cấu Trúc Tổng Thể của MobileNetV3:\nb.1. Khối Bottleneck ngược (Inverted Residual Bottleneck Block)\n- Đây là khối kiến trúc cốt lõi được thừa hưởng từ MobileNetV2 và được cải tiến.\nKhác với khối Residual Bottleneck truyền thống (giảm chiều sâu -> tích chập -\n> tăng chiều sâu), khối ngược này hoạt động theo trình tự sau:\no\nMở rộng (Expansion): Tăng số lượng kênh (chiều sâu) của tensor đầu vào\nbằng phép tích chập $1 \\times 1$. Đây là bước quan trọng để ánh xạ tính năng\nlên không gian chiều cao hơn.\no\nTích chập Chiều sâu (Depthwise Convolution - DW Conv): Thực hiện tích\nchập KxK(thường là 3x3 hoặc 5x5) cho từng kênh một cách độc lập. Điều\nnày giúp giảm đáng kể chi phí tính toán so với tích chập tiêu chuẩn.\no\nChiếu (Projection/Compression): Giảm số lượng kênh trở lại bằng phép tích\nchập 1x1 thông thường (Pointwise Conv) để nén thông tin và chuẩn bị cho\nkhối tiếp theo.\n- Nếu đầu vào và đầu ra có cùng số kênh và độ phân giải, một kết nối tắt (skip\nconnection) sẽ được thêm vào giữa đầu vào và đầu ra của khối, tương tự như ResNet,\nđể giúp gradient truyền ngược tốt hơn.\nb.2. Kỹ thuật Squeeze-and-Excitation (SE)\n- MobileNetV3 tích hợp các khối SE vào các lớp bottleneck ngược lớn hơn.\n\n- SE Module là một cơ chế chú ý (attention mechanism) nhẹ nhàng, cho phép mạng\nhọc cách tự động xác định kênh nào quan trọng hơn bằng cách gán trọng số (tỷ lệ)\ncho từng kênh tính năng.\n- Nó hoạt động bằng cách:\no\nSqueeze (Ép): Dùng phép gộp trung bình toàn cục (Global Average Pooling\n- GAP) để thu nhỏ tensor WxHxC thành 1x1xC, tóm tắt thông tin của toàn\nbộ kênh.\no\nExcitation (Kích thích): Dùng hai lớp tích chập 1x1 (hoặc lớp fully\nconnected) để tạo ra các trọng số (tỷ lệ) từ 0 đến 1 cho mỗi kênh.\no\nRescale (Điều chỉnh): Nhân các trọng số này với tensor tính năng ban đầu để\nđiều chỉnh độ quan trọng của từng kênh.\nc) Hàm kích hoạt Hard Swish\n- Thay vì sử dụng ReLU6 (như MobileNetV2) hoặc Swish (tốn kém), MobileNetV3\ngiới thiệu hàm Hard Swish để tăng hiệu quả trên thiết bị di động.\n- Công thức Swish:\ntrong đó là hàm sigmoid.\n- Công thức Hard Swish:\n- Là một xấp xỉ tuyến tính của hàm Swish, giúp giảm đáng kể chi phí tính toán vì việc\ntính toán phép nhân ma trận và hàm ReLU6 được tối ưu hóa tốt hơn trên phần cứng\nnhúng so với hàm sigmoid/exponential.\n\nd) Tối ưu hóa các lớp biên (Head and Tail)\n- MobileNetV3 thực hiện tối ưu hóa đặc biệt ở lớp đầu và lớp cuối của mạng:\no\nTối ưu hóa Lớp Đầu (Head): Thay thế tích chập $3 \\times 3$ thông thường ở\nlớp đầu tiên bằng một tổ hợp các lớp hiệu quả hơn.\no\nTối ưu hóa Lớp Cuối (Tail): Lớp trước lớp phân loại (classification layer)\ncuối cùng được thiết kế lại để tránh chi phí tính toán cao không cần thiết. Cụ\nthể, nó di chuyển phép gộp trung bình toàn cục (GAP) đến trước lớp tích chập\n1x1 cuối cùng (thay vì sau), cho phép loại bỏ một số bộ lọc tính năng tốn\nkém, giúp tăng tốc độ đáng kể với tổn thất độ chính xác rất nhỏ.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.3. Mô hình MobileNetv3 small",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "cea47d9c-0357-4081-9d59-8c3197d7bff8",
-                  "title": "2.2.4. Huấn luyện",
-                  "level": 4,
-                  "content": "a) Môi trường huấn luyện\n- Mô hình được huấn luyện trên Google Colab với cấu hình GPU Tesla T4, 15102MiB,\nRAM 12GB.\n- Cấu hình:\no\nIMG_SIZE = 224\no\nBATCH_SIZE = 64\no\nINITIAL_EPOCHS = 6\no\nFINE_TUNE_EPOCHS = 10\no\nLEARNING_RATE = 0.0001\no\nFINE_TUNE_LEARNING_RATE = 0.00001\nb) Quy trình huấn luyện\nb.1. Chuẩn bị và Tiền xử lý Dữ liệu\n- Bước này được thực hiện trong hàm create_datasets và chuẩn bị dữ liệu đầu vào cho\nmô hình:\no\nTải dữ liệu: Tải ảnh từ hai thư mục train và val (validation) trong thư mục\ndataset.\n\no\nTiền xử lý đặc thù: Áp dụng hàm preprocess_input của MobileNetV3 lên tất\ncả các ảnh. Hàm này có nhiệm vụ chuẩn hóa giá trị pixel, đảm bảo dữ liệu\nđầu vào khớp với trọng số ImageNet đã được huấn luyện.\no\nTăng cường dữ liệu (Data Augmentation): Chỉ áp dụng cho tập huấn luyện\n(train_datagen) các kỹ thuật như xoay, dịch chuyển, lật ngang để làm phong\nphú thêm dữ liệu và giảm quá khớp (overfitting).\no\nTạo Batch: Dữ liệu được chia thành các lô (Batch Size = 64) để nạp vào mô\nhình.\nb.2. Thiết lập Mô hình và Đóng băng (Freeze)\n- Bước này được thực hiện trong hàm create_model và chuẩn bị cấu trúc mạng:\no\nTải mô hình cơ sở: Tải kiến trúc MobileNetV3-Small với trọng số đã được\nhuấn luyện trước trên ImageNet (weights=\"imagenet\"), nhưng loại bỏ lớp\nphân loại cuối cùng (include_top=False).\no\nĐóng băng Base Model: Thiết lập base_model.trainable = False. Điều này\nkhóa tất cả các trọng số trong MobileNetV3-Small, biến nó thành một bộ\ntrích xuất đặc trưng cố định (fixed feature extractor).\no\nThêm Lớp Phân loại Tùy chỉnh (Head): Thêm các lớp mới ở cuối mạng để\nphân loại dữ liệu cụ thể của bạn:\n+ GlobalAveragePooling2D: Nén chiều không gian của các đặc trưng.\n+ Dropout(0.3) và Dense(128, activation=\"relu\"): Các lớp ẩn tùy chỉnh\nđể học các đặc trưng cấp cao.\n+ Dense(num_classes, activation=\"softmax\"): Lớp đầu ra cuối cùng để\ndự đoán các lớp.\nb.3. Huấn luyện 2 Giai đoạn:\n- Đây là quy trình huấn luyện chính, tối ưu hóa mô hình qua hai bước:\nb.3.1. Giai đoạn 1: Huấn luyện Lớp Phân loại Mới (Initial Training)\no\nMục tiêu: Huấn luyện nhanh các lớp phân loại tùy chỉnh (Head) đã được thêm\nvào, trong khi trọng số của MobileNetV3 vẫn bị đóng băng.\n\no\nThiết lập: Sử dụng Learning Rate tương đối cao ($10^{-4}$) và huấn luyện\ntrong 6 epochs (INITIAL_EPOCHS).\no\nCallbacks: Theo dõi val_accuracy và val_loss để tự động dừng sớm\n(EarlyStopping), giảm Learning Rate (ReduceLROnPlateau), và lưu lại mô\nhình tốt nhất.\nb.3.2. Giai đoạn 2: Tinh chỉnh (Fine-Tuning)\no\nMục tiêu: Mở khóa các lớp gần cuối của MobileNetV3-Small để tinh chỉnh\ncác đặc trưng cấp cao phù hợp hơn với dữ liệu cụ thể của bạn.\no\nMở khóa có chọn lọc: base_model.trainable = True sau đó đóng băng trở lại\ncác lớp đầu (base_model.layers[:-100]) để chỉ tinh chỉnh các lớp gần đầu ra.\no\nThiết lập: Sử dụng Learning Rate rất nhỏ ($10^{-5}$) và huấn luyện thêm 8\nepochs (FINE_TUNE_EPOCHS). Learning Rate nhỏ giúp tránh làm hỏng\ncác trọng số đã được học trước.\nb.4. Đánh giá và Triển khai (Deployment)\n- Đây là các bước cuối cùng để đo lường hiệu suất và chuẩn bị cho việc sử dụng thực\ntế:\no\nLưu mô hình: Lưu mô hình đã được tinh chỉnh cuối cùng (final_mobilenetv3_\nsmall.keras).\no\nĐánh giá: Sử dụng model.evaluate(val_ds) để đo lường hiệu suất cuối cùng\ntrên tập Validation (Loss và Accuracy).\no\nVẽ Biểu đồ: Vẽ biểu đồ thể hiện sự thay đổi về Accuracy và Loss qua cả hai\ngiai đoạn huấn luyện (Initial và Fine-Tuning).\no\nChuyển đổi TFLite: Sử dụng tf.lite.TFLiteConverter để chuyển đổi mô hình\nsang định dạng TFLite. Bật tối ưu hóa mặc định (tf.lite.Optimize.DEFAULT)\nđể thực hiện Lượng tử hóa (Quantization), giúp giảm kích thước và tăng tốc\nđộ suy luận trên các thiết bị nhúng (như Raspberry Pi).\n\n- Một số hình ảnh mô tả quá trình huấn luyện\nHình 12. . Log huấn luyện mô hình MobileNetV3 Small\nHình 13. Biểu đồ Accuracy và Loss của mô hình MobileNetV3 Small",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.4. Huấn luyện",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "827f8209-df22-476d-9007-49d31b2989e2",
-                  "title": "2.2.5. Triển khai trên server:",
-                  "level": 4,
-                  "content": "- AI server sẽ sử dụng FashAPI framework để có thể sử dụng websocket cho tốc độ\ngửi tín hiệu nhanh hơn.\n- Quy trình xử lý:\na) Thu nhận và Phân phối Ảnh (Input Acquisition & Distribution)\nQuy trình bắt đầu trong hàm xử lý WebSocket chính (ws_traffic_light):\n\n- B1: Nhận Frame: ESP32-CAM gửi khung hình JPEG (dữ liệu nhị phân) qua\nWebSocket. Server nhận dữ liệu (await asyncio.wait_for (websocket.receive_bytes\n(), ...)).\n- B2: Giải mã: Khung hình JPEG được giải mã thành ma trận ảnh OpenCV\n(cv2.imdecode), được lưu vào biến toàn cục last_frame.\n- B3: Kiểm tra Tần suất: Server kiểm tra xem đã đến lúc chạy AI chưa (now -\nlast_inference_time) > INFERENCE_INTERVAL, hiện là 50ms).\n- B4:Tạo Tác vụ: Nếu đến lúc, một tác vụ bất đồng bộ (asyncio.create_task (handle_\ninference(frame))) được tạo ra để chạy AI mà không làm tắc nghẽn luồng chính.\nb) Xử lý và Suy luận (Preprocessing & Inference)\n- Tác vụ AI chạy trong hàm handle_inference(frame):\n- Tiền xử lý: Hàm preprocess_image(frame) được gọi:\no\nChuyển ảnh từ BGR sang RGB (cv2.cvtColor(..., cv2.COLOR_BGR2RGB)).\no\nThay đổi kích thước ảnh về 224x224 (IMG_SIZE).\no\nChuyển đổi kiểu dữ liệu sang np.float32.\no\nSuy luận (Inference): Hàm run_inference(img) được gọi (chạy trong loop.run\n_in_executor(None, ...) để tránh chặn luồng):\no\nModel Keras (MobileNetV3-Small) dự đoán lớp (model.predict).\no\nHàm trả về label (ví dụ: \"red\", \"green\", \"none\") và conf (độ tin cậy).\nc) Ra quyết định và Cơ chế Bỏ phiếu (Voting Mechanism)\nKết quả suy luận được xử lý để đảm bảo độ tin cậy và sự ổn định:\n- Ưu tiên Khẩn cấp (Urgent Priority):\no\nNếu mô hình dự đoán là red hoặc stopsign với độ tin cậy cao (>0.7), nó ngay\nlập tức tính toán lệnh (cmd = decide_command(label)) và cập nhật\nlatest_command toàn cục.\no\nCơ chế bỏ phiếu (recent_predictions) bị xóa để đảm bảo phản ứng tức thì.\n- Cơ chế Bỏ phiếu (Voting for Stability):\n\no\nĐối với các lớp khác, kết quả dự đoán (nếu conf > 0.5) được thêm vào hàng\nđợi recent_predictions (cửa sổ 3 frame).\no\nChỉ khi ít nhất 2/3 (tức là 2 trong 3 frame gần nhất) đưa ra cùng một dự đoán,\nkết quả đó mới được coi là ổn định và được chấp nhận.\n- Cập nhật Kết quả: Kết quả ổn định được lưu vào latest_result và latest_command\ntoàn cục.\nd) Tổng hợp Lệnh và Gửi về ESP32 (Command Dispatch)\nPhần này diễn ra trong vòng lặp chính của WebSocket sau khi AI đã cập nhật latest_\nresult và latest_lane_cmd:\n- Phối hợp Lệnh (Command Coordination):\no\nƯu tiên 1 (Traffic Override): Nếu latest_result có lệnh S (Stop) từ AI (đèn\nđỏ/dừng), final_cmd sẽ là S.\no\nƯu tiên 2 (Lane Command): Nếu không có lệnh dừng khẩn cấp từ AI,\nfinal_cmd sẽ là lệnh từ thuật toán phát hiện làn đường (latest_lane_cmd, ví\ndụ: L/R/F).\n- Đóng gói Payload: Tạo đối tượng JSON payload chứa class, command, confidence,\nvà mode.\n- Gửi Lệnh: Payload được gửi đến ESP32 qua WebSocket (await websocket.send\n_json(payload)). ESP32 sau đó sẽ thực hiện lệnh điều khiển động cơ tương ứng.\n- Debug: Ảnh Overlay được tạo ra (overlay_debug) và lưu vào last_overlay để xem\ntrên trình duyệt.\n\n- Đây là hình ảnh kết quả khi xe chưa nhận diện được vật thể\nHình 14. Kết quả khi xe chưa nhận diện được vật thể\n- Đây là hình ảnh kết quả nhận diện biển báo Stop\nHình 15. Kết quả khi xe nhận diện biển báo Stop\n\n- Đây là hình ảnh kết quả khi nhận đèn tín hiệu Đỏ\nHình 16. Kết quả khi xe nhận diện đèn giao thông màu Đỏ\nHình 17. Kết quả khi xe nhận diện đèn giao thông màu Vàng\nHình 18. Kết quả khi xe nhận diện đèn giao thông màu Xanh",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.2. Giải pháp Trí tuệ nhân tạo / Khoa học dữ liệu > 2.2.5. Triển khai trên server:",
-                  "children": [],
-                  "embedding": null
-                }
-              ],
-              "embedding": null
-            },
-            {
-              "id": "bd9dcf3a-a8a6-4b65-89de-f68fce4a6862",
-              "title": "2.3. Giải pháp phần mềm",
-              "level": 3,
-              "content": "",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm",
-              "children": [
-                {
-                  "id": "47803575-9d56-4313-97ef-0eb876e6d7f3",
-                  "title": "2.3.1. Tổng quan và Kiến trúc hệ thống",
-                  "level": 4,
-                  "content": "- Phần mềm điều khiển được xây dựng dưới dạng ứng dụng di động (Mobile\nApplication) chạy trên hệ điều hành Android. Ứng dụng đóng vai trò là Client trong\nmô hình Client-Server, thực hiện nhiệm vụ giao tiếp với bộ điều khiển trung tâm\ntrên xe (Server) để gửi tín hiệu điều khiển và nhận dữ liệu giám sát.\n- Kiến trúc phần mềm được thiết kế theo hướng module hóa, tách biệt giữa luồng xử\nlý giao diện (UI Thread) và luồng xử lý mạng (Network Thread) để đảm bảo độ\nmượt mà và phản hồi nhanh (low latency) trong quá trình vận hành.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.1. Tổng quan và Kiến trúc hệ thống",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "148902fc-4ec4-413b-92a8-653833156afa",
-                  "title": "2.3.2. Môi trường và Công cụ phát triển",
-                  "level": 4,
-                  "content": "Hệ thống phần mềm được phát triển dựa trên các công cụ và thư viện mã nguồn mở:\n- Ngôn ngữ lập trình: Java (JDK 8+).\n- Môi trường phát triển (IDE): Android Studio.\n- Giao diện người dùng (UI): Xây dựng bằng XML với các thành phần tùy chỉnh\n(Custom Drawables) cho nút bấm và hiển thị video.\n- Thư viện lõi:\no\nOkHttp: Sử dụng để quản lý các kết nối mạng HTTP và WebSocket, đảm\nbảo hiệu năng cao và ổn định.\no\nOrg.json: Đóng gói và xử lý dữ liệu điều khiển theo định dạng JSON.\no\nAndroid SDK: Sử dụng các API cơ bản như BitmapFactory, Base64 để xử\nlý hình ảnh.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.2. Môi trường và Công cụ phát triển",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "39788ca0-3293-45fa-8dc7-4a65a5679c1a",
-                  "title": "2.3.3. Giao thức Truyền thông",
-                  "level": 4,
-                  "content": "Để đáp ứng yêu cầu vừa điều khiển chính xác, vừa giám sát hình ảnh liên tục, ứng dụng\nsử dụng kết hợp hai giao thức truyền thông trên nền tảng TCP/IP qua cổng 8000:\na) Giao thức HTTP (RESTful API) - Kênh điều khiển:\n- Được sử dụng để gửi các lệnh điều khiển vận hành và cấu hình chế độ. Giao thức\nnày đảm bảo tính tin cậy của gói tin.\n- Phương thức: POST.\n\n- Định dạng dữ liệu: JSON (JavaScript Object Notation).\n- Các API Endpoint:\no\n/api/control: Gửi lệnh di chuyển (Tiến, Lùi, Trái, Phải, Dừng).\no\n/api/mode: Chuyển đổi chế độ hoạt động (Manual, Auto, Line Follow).\nb) Giao thức WebSocket - Kênh giám sát:\nĐược sử dụng để truyền tải hình ảnh từ camera về điện thoại.\n- Endpoint: /ws/frames.\n- Cơ chế: Thiết lập kết nối hai chiều thời gian thực (Real-time full-duplex). Server\ngửi liên tục các frame ảnh đã được mã hóa Base64, Client nhận và giải mã để hiển\nthị.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.3. Giao thức Truyền thông",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "0618a9a6-5a87-45cb-83fd-041ae9318cd0",
-                  "title": "2.3.4. Sơ đồ Nguyên lý hoạt động",
-                  "level": 4,
-                  "content": "Hình dưới đây mô tả luồng dữ liệu giữa Người dùng, Ứng dụng Android và Xe:\nHình 19. Sơ đồ nguyên lý hoạt động luồng dữ liệu",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.4. Sơ đồ Nguyên lý hoạt động",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "93b5ec34-772f-4e15-afd3-fc60324bff2c",
-                  "title": "2.3.5. Các Chức năng và Giải thuật chi tiết",
-                  "level": 4,
-                  "content": "a) Chức năng Kết nối hệ thống:\nNgười dùng nhập địa chỉ IP của xe vào giao diện. Ứng dụng thực hiện lưu địa chỉ\nIP và khởi tạo kết nối WebSocket. Trong tệp cấu hình AndroidManifest.xml, thuộc tính\nandroid:usesCleartextTraffic=\"true\" đã được kích hoạt để cho phép kết nối HTTP tới các\nthiết bị nhúng trong mạng nội bộ.\nb) Chức năng Điều khiển vận hành (Manual Mode):\nĐể đảm bảo an toàn và khả năng phản hồi tức thời, giải thuật điều khiển sử dụng cơ chế\nbắt sự kiện chạm (OnTouchListener) thay vì sự kiện click thông thường:\n- Sự kiện ACTION_DOWN: Khi người dùng nhấn giữ nút, ứng dụng gửi lệnh di\nchuyển tương ứng (Ví dụ: {\"command\": \"F\"} cho lệnh tiến).\n- Sự kiện ACTION_UP: Ngay khi người dùng thả tay, ứng dụng tự động gửi lệnh\ndừng ({\"command\": \"S\"}). Cơ chế này giúp xe dừng lại ngay lập tức khi mất sự\nkiểm soát từ người dùng.\nc) Chức năng Giám sát Camera (Live Streaming):\nQuá trình xử lý hình ảnh được thực hiện bất đồng bộ qua WebSocketListener:\n- Bước 1: Lắng nghe sự kiện onMessage từ WebSocket.\n- Bước 2: Nhận chuỗi dữ liệu ảnh dạng String.\n- Bước 3: Sử dụng Base64.decode để chuyển đổi chuỗi thành mảng byte.\n- Bước 4: Sử dụng BitmapFactory.decodeByteArray để tạo đối tượng hình ảnh\n(Bitmap).\n- Bước 5: Cập nhật lên giao diện ImageView thông qua phương thức runOnUiThread\nđể đảm bảo an toàn luồng (Thread-safety).",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.5. Các Chức năng và Giải thuật chi tiết",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "8539ae85-239c-4feb-aab1-44d7520598c3",
-                  "title": "2.3.6. Giao diện người dùng (GUI)khiển",
-                  "level": 4,
-                  "content": "Hình 20. Giao diện app điều khiển",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 2. GIẢI PHÁP > 2.3. Giải pháp phần mềm > 2.3.6. Giao diện người dùng (GUI)khiển",
-                  "children": [],
-                  "embedding": null
-                }
-              ],
-              "embedding": null
-            }
-          ],
+          "path": "MỞ ĐẦU > 3. Phạm vi và đối tượng của đề tài",
+          "children": [],
           "embedding": null
         },
         {
-          "id": "0481aedc-93b2-4f76-b150-e8b42894afd1",
-          "title": "3. KẾT QUẢ",
+          "id": "9b3f7c17-20c4-499c-a5db-a612dae5deed",
+          "title": "4. Phương pháp nghiên cứu",
           "level": 2,
-          "content": "",
+          "content": "Để hiện thực hóa mục tiêu đề ra cho dự án, các phương pháp nghiên cứu được\nkết hợp một cách chặt chẽ từ lý thuyết đến thực nghiệm kỹ thuật phần mềm.\nĐầu tiên, phương pháp nghiên cứu lý thuyết và tài liệu được áp dụng để hệ thống hóa\ntoàn bộ kiến thức nền tảng về kiến trúc ứng dụng Web hiện đại, cơ chế bất đồng bộ\ncủa Node.js[3], và hệ quản trị cơ sở dữ liệu quan hệ PostgreSQL[6] (Supabase) [16].\nĐặc biệt, phương pháp này tập trung chuyên sâu vào việc phân tích các công trình\nkhoa học tiên tiến về xử lý ngôn ngữ tự nhiên (NLP), nguyên lý hoạt động của các mô\nhình ngôn ngữ lớn (LLMs), kỹ thuật chuyển đổi văn bản thành Vector Embedding, và\ncấu trúc của mô hình RAG (Retrieval-Augmented Generation) [20] cùng các thuật\ntoán tìm kiếm khoảng cách ngữ nghĩa (như Cosine Similarity).\n\nTiếp theo, phương pháp phân tích và thiết kế hệ thống được sử dụng nhằm khảo sát\nnhu cầu thực tế của giảng viên và sinh viên trong quy trình quản lý lớp học phần cũng\nnhư khai thác học liệu. Từ đó, xây dựng các biểu đồ luồng dữ liệu, xác định các yêu\ncầu chức năng, phi chức năng và thiết kế cấu trúc cơ sở dữ liệu tối ưu với các bảng\nliên kết chặt chẽ, tích hợp sẵn extension pgvector[8] cho các tác vụ xử lý AI.\nSau khi hoàn thiện bản thiết kế, phương pháp thực nghiệm và phát triển phần mềm\nđược triển khai thông qua việc trực tiếp lập trình toàn bộ hệ thống bằng ngôn ngữ\nTypeScript[2], sử dụng framework Express.js[4] cho Backend và ReactJS cho\nFrontend. Quy trình này bao gồm việc xây dựng các bộ lọc bóc tách văn bản thô từ\nfile .pdf/.docx, thuật toán chia nhỏ dữ liệu (Chunking), tích hợp API kết nối với mô\nhình ngôn ngữ lớn để thử nghiệm thực tế luồng xử lý RAG ngầm.\nCuối cùng, phương pháp kiểm thử và đánh giá được thực hiện dựa trên các tập dữ liệu\nbáo cáo mẫu của các học phần dự án (PBL). Hệ thống được đưa vào vận hành thử\nnghiệm trong môi trường Internet thực tế nhằm đánh giá độ chính xác của các câu trả\nlời do AI tổng hợp, đo lường tốc độ phản hồi của bộ máy tìm kiếm ngữ nghĩa, và kiểm\ntra tính ổn định của các tính năng cốt lõi như Import danh sách qua file CSV hay\nluồng phê duyệt tài liệu của giảng viên, bảo đảm hệ thống đạt chất lượng cao nhất khi\nđưa vào ứng dụng thực tiễn.",
           "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ",
-          "children": [
-            {
-              "id": "d216692e-2ce8-47a8-8552-f15c5fcdbe66",
-              "title": "3.1. Kết quả triển khai hệ thống",
-              "level": 3,
-              "content": "- Trong quá trình xây dựng và hoàn thiện đồ án, nhóm đã triển khai thành công toàn bộ\ncác chức năng cốt lõi của hệ thống xe tự hành thông minh. Các chức năng này được đo\nlường thông qua nhiều lần thực nghiệm trong điều kiện thực tế khác nhau nhằm đánh giá\nđộ ổn định, khả năng phản hồi và mức độ tin cậy của hệ thống. Dưới đây là mô tả chi tiết\ntừng chức năng đã đạt được:",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống",
-              "children": [
-                {
-                  "id": "198d5abe-0596-4c1f-8655-646077d65e04",
-                  "title": "3.1.1. Chức năng bám line tự động",
-                  "level": 4,
-                  "content": "- Hệ thống xe được trang bị ba cảm biến dò line hồng ngoại TCRT5000, cho phép phát\nhiện màu sắc mặt đường và bám theo phần line đen có độ tương phản cao. Thuật toán điều\nhướng được lập trình trên Arduino đọc tín hiệu từ cảm biến theo chu kỳ 10–20ms, sau đó\nđịnh hướng bánh xe như sau:\nTrạng thái cảm biến Hành vi điều khiển\nSensor giữa = đen → trái + phải = trắng Xe đi thẳng\nSensor trái = đen → phải = trắng Rẽ trái\nSensor phải = đen → trái = trắng Rẽ phải\nCả ba cảm biến trắng Mất line → dừng ngắn → hiệu chỉnh tìm\nlại line\n- Kết quả thực nghiệm cho thấy:\n• Xe chạy ổn định trên track đường cong và đường thẳng.\n• Tỷ lệ bám line thành công ~93–96% trong điều kiện ánh sáng phòng.\n• Khi gặp đoạn khuất line (bị đứt, ngã ba), xe có khả năng tự hiệu chỉnh lại vị trí sau\n0.3–1.2 giây.\n➡ Đây là nền tảng quan trọng đảm bảo hệ thống có thể hoạt động ở chế độ Auto hoàn toàn\nmà không có sự can thiệp thủ công.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.1. Chức năng bám line tự động",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "4a9dcb63-ea95-43f2-9fea-9b584377af3e",
-                  "title": "3.1.2. Nhận diện bảng tín hiệu / đèn giao thông bằng AI",
-                  "level": 4,
-                  "content": "Nhóm đã huấn luyện mô hình MobileNetV3 small để nhận diện 4 loại tín hiệu chính:\n\nNhãn dự đoán Ý nghĩa hành vi\nGreen Cho phép di chuyển\nYellow Giảm tốc / chờ quyết định tiếp theo\nRed Buộc dừng ngay\nStop Sign Dừng 1–2 giây → sau đó tiếp tục\nHình ảnh được truyền từ ESP32-CAM lên server qua WebSocket với tốc độ trung bình\n12–18 FPS, sau đó AI xử lý và gửi lệnh điều khiển xuống Arduino. Qua thử nghiệm thực\ntế:\n• Nhận diện đèn đỏ đúng 97/100 lần\n• Nhận diện biển Stop đúng 92% trong ánh sáng ổn định\n• Thời gian phản hồi trung bình từ camera → AI → bánh xe là 170–250ms, đủ để xử\nlý realtime\n➡ Khi AI phát hiện tín hiệu giao thông, xe ưu tiên quyết định từ AI hơn tín hiệu từ cảm\nbiến line → giúp xử lý đúng luật giao thông mô phỏng.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.2. Nhận diện bảng tín hiệu / đèn giao thông bằng AI",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "589d0022-69a4-49e0-ac7d-9f4e501ae38a",
-                  "title": "3.1.3. Điều khiển động cơ thông qua AI & thuật toán nhúng",
-                  "level": 4,
-                  "content": "Arduino đóng vai trò bộ điều khiển cuối, nhận:\n• Lệnh điều hướng từ AI (UART)\n• Tín hiệu môi trường từ cảm biến line\nXe thực hiện điều chỉnh PWM động cơ dựa trên độ cong đường và tình huống giao\nthông. Tốc độ PWM được đặt linh hoạt từ 90–255 để đảm bảo:\nTình huống vận hành PWM áp dụng\nBình thường (lưu thông) 65–85% tốc độ\nGặp line cong mạnh 45–60% tốc độ\nPhát hiện tín hiệu Yellow Giảm còn ~50%\n\nTín hiệu Red/Stop PWM = 0 → Dừng ngay\nHiệu quả đạt được:\n• Xe tăng tốc – giảm tốc mượt, không giật.\n• Không bị rung bánh khi vào cua.\n• Đứng yên hoàn toàn khi gặp đèn đỏ/Stop.\n➡ Điều này chứng minh thuật toán điều khiển đã triển khai ổn định, phản ứng phù hợp\ntheo tình huống giao thông.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.3. Điều khiển động cơ thông qua AI & thuật toán nhúng",
-                  "children": [],
-                  "embedding": null
-                },
-                {
-                  "id": "ee02ffa5-a9ef-4045-90ed-38e8e8b222a6",
-                  "title": "3.1.4. Gửi – nhận dữ liệu giữa các thiết bị hoạt động ổn định",
-                  "level": 4,
-                  "content": "Hệ thống truyền thông 2 lớp được triển khai:\nThành phần Giao thức\nESP32 → Server AI WebSocket (2 chiều)\nESP32 → Arduino UART 115200bps\nKết quả kiểm tra:\n• Tốc độ gửi ảnh ổn định, độ trễ thấp.\n• Độ cập nhật tín hiệu liên tục, không mất gói nghiêm trọng.\n• Lệnh điều khiển truyền về Arduino chính xác ~98% trong test lab.\n➡ Kênh dữ liệu đảm bảo hệ thống vận hành thời gian thực, không lag, phù hợp mô hình\nIoT phân tán.",
-                  "summary": "",
-                  "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.1. Kết quả triển khai hệ thống > 3.1.4. Gửi – nhận dữ liệu giữa các thiết bị hoạt động ổn định",
-                  "children": [],
-                  "embedding": null
-                }
-              ],
-              "embedding": null
-            },
-            {
-              "id": "f2f891fa-1848-4438-b2eb-b7ede4ec5cfa",
-              "title": "3.2. Tập dữ liệu sử dụng cho mô hình AI",
-              "level": 3,
-              "content": "- Tập dữ liệu dùng để huấn luyện mô hình MobileNetV3 small được xây dựng từ hai\nnguồn:\n(1) ảnh tự thu thập bằng ESP32-CAM trong môi trường mô phỏng\n(2) một số ảnh bổ sung từ nguồn dữ liệu mở để tăng sự đa dạng về góc nhìn và ánh sáng.\n\n- Các lớp nhãn gồm: green, yellow, red, stopsign, none. Ảnh gốc có độ phân giải 320×240\nvà được resize về 224×224 trước khi đưa vào mô hình. Ảnh được lưu dưới dạng JPEG, xử\nlý RGB và áp dụng một số kỹ thuật tăng cường dữ liệu nhẹ.\n- Tập dữ liệu được chia theo tỉ lệ: 70% train – 15% validation – 15% test, đảm bảo cân\nbằng giữa các lớp và phản ánh đầy đủ các tình huống giao thông mô phỏng.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.2. Tập dữ liệu sử dụng cho mô hình AI",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "1a6617cb-7690-4ccc-b4c7-7cefb376e991",
-              "title": "3.3. Công cụ, thư viện và môi trường thực nghiệm",
-              "level": 3,
-              "content": "- Hệ thống AI sử dụng Python + FastAPI làm server xử lý WebSocket/REST API, kết hợp\nthư viện TensorFlow/Keras cho suy diễn mô hình. OpenCV và NumPy được dùng để xử\nlý ảnh, đặc biệt trong pipeline nhận diện làn đường.\n- ESP32-CAM và Arduino được lập trình bằng Arduino IDE/PlatformIO cùng các thư viện\nArduino Websockets, Arduino Json và esp_camera . Server AI chạy trên máy tính cá nhân\ncó CPU đa nhân; ESP32-CAM kết nối qua WiFi nội bộ; Arduino giao tiếp qua UART với\ntốc độ 115200bps.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.3. Công cụ, thư viện và môi trường thực nghiệm",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "b310302f-f22a-4872-9bbb-7cd3c4ea4d5c",
-              "title": "3.4. Điều kiện tiến hành thực nghiệm",
-              "level": 3,
-              "content": "- Thử nghiệm được thực hiện chủ yếu trong phòng, trên track mô phỏng gồm đường thẳng,\nđường cong và khu vực đặt biển/đèn tín hiệu. Ánh sáng được giữ ở mức ổn định để đảm\nbảo camera thu được hình ảnh rõ ràng.\n- Trong quá trình vận hành, ESP32-CAM truyền 12–18 FPS; server AI giới hạn tần suất\nsuy diễn ở 50 ms/lần để giảm tải. Ngưỡng nhận diện tín hiệu giao thông đặt ở 0.5, riêng\nnhãn red và stopsign ưu tiên với ngưỡng cao hơn (0.7). Arduino cập nhật PWM động cơ\ntheo lệnh AI hoặc theo cảm biến line tùy chế độ.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.4. Điều kiện tiến hành thực nghiệm",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "ff081a9d-d207-4020-86e6-aa54b09866c3",
-              "title": "3.5. Độ đo đánh giá hiệu suất hệ thống",
-              "level": 3,
-              "content": "- Mô hình AI nhận diện tín hiệu giao thông đạt độ chính xác cao trên tập test, đặc biệt là\ncác nhãn red và green. Thử nghiệm thực tế cho kết quả:\n• Nhận diện đèn đỏ chính xác 97%,\n\n• Nhận diện biển Stop khoảng 92%.\n- Độ trễ xử lý từ camera → server AI → động cơ dao động 170–250 ms, đủ để xe phản\nứng chính xác trong mô hình thu nhỏ. Kết nối WebSocket hoạt động ổn định, tỉ lệ lệnh\ntruyền sai chỉ khoảng 2%, không ảnh hưởng đến quá trình điều khiển.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.5. Độ đo đánh giá hiệu suất hệ thống",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "6d744e07-e395-42e9-933c-fe15f4e07bc3",
-              "title": "3.6. Quy trình và điều kiện kiểm thử hệ thống",
-              "level": 3,
-              "content": "Kiểm thử được chia thành hai giai đoạn:\na) Kiểm thử đơn lẻ:\no\nKiểm tra từng module gồm AI nhận diện, lane detection, truyền thông\nWebSocket, UART và cảm biến line.\no\nĐánh giá bằng các tập ảnh riêng biệt và quan sát log trong server/ ESP32\n/Arduino.\nb) Kiểm thử tích hợp:\no\nXe chạy trên track hoàn chỉnh với các tình huống: bám line, gặp đèn xanh –\nvàng – đỏ, gặp biển Stop.\no\nKiểm thử theo từng chế độ hoạt động: line_follow và manual.\nKết quả cho thấy hệ thống phản ứng đúng hầu hết các tình huống và vận hành trơn tru\ntrong thời gian dài.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.6. Quy trình và điều kiện kiểm thử hệ thống",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "b65a1040-db1a-45d4-b1e2-6588fab962e2",
-              "title": "3.7. Nhận xét chung",
-              "level": 3,
-              "content": "- Hệ thống đã đáp ứng tốt mục tiêu đặt ra: bám line ổn định, nhận diện tín hiệu giao thông\nchính xác, điều khiển động cơ mượt và đảm bảo độ trễ thấp. Các kênh truyền thông hoạt\nđộng ổn định, ít lỗi.\n- Hạn chế chủ yếu nằm ở điều kiện ánh sáng thay đổi và phụ thuộc vào tốc độ WiFi. Tuy\nnhiên, đây là những vấn đề có thể cải thiện trong các phiên bản sau thông qua tối ưu model,\nbổ sung dữ liệu và nâng cấp phần cứng.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.7. Nhận xét chung",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "38bc4648-6421-459e-8d43-38e120be4420",
-              "title": "3.8. Một số hình ảnh sản phẩm dự án",
-              "level": 3,
-              "content": "a) Hình ảnh sản phẩm xe\nHình 21. Mô hình sản phẩm xe (1)\nHình 22. Mô hình sản phẩm xe (2)\n\nb) Hình ảnh biển báo\nHình 23. Hỉnh ành biển báo\nc) Hình ảnh đèn giao thông\nHình 26. Đèn màu xanh Hình 24. Đèn màu vàng Hình 25. Đèn màu đỏ",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 3. KẾT QUẢ > 3.8. Một số hình ảnh sản phẩm dự án",
-              "children": [],
-              "embedding": null
-            }
-          ],
+          "path": "MỞ ĐẦU > 4. Phương pháp nghiên cứu",
+          "children": [],
           "embedding": null
         },
         {
-          "id": "ddf49010-5335-43bf-a395-d925f185dee7",
-          "title": "4. KẾT LUẬN",
+          "id": "fd51d8bf-d8b2-4cee-ba50-89b20f7f8f7f",
+          "title": "5. Kết quả đạt được",
           "level": 2,
-          "content": "",
+          "content": "Sau một quá trình nghiên cứu lý thuyết nghiêm túc và triển khai thực nghiệm kỹ thuật,\ndự án đã hoàn thành toàn bộ các mục tiêu đề ra và đạt được các kết quả cụ thể về cả\nmặt công nghệ lẫn mặt ứng dụng thực tiễn.\nVề mặt xây dựng hệ thống quản lý, phân hệ quản lý lớp học phần đã vận hành ổn định\nvà đồng bộ thời gian thực, cho phép giảng viên dễ dàng khởi tạo lớp học, cấp mã tham\ngia và tối ưu hóa thời gian quản lý hành chính thông qua bộ lọc xử lý tự động nhập\ndanh sách sinh viên bằng file CSV. Luồng nghiệp vụ đánh giá cũng được khép kín\nmột cách khoa học khi giảng viên có thể chấm điểm, nhận xét trực tiếp và thực hiện\ncơ chế phê duyệt các báo cáo xuất sắc từ trạng thái nội bộ lớp học sang trạng thái phát\nhành toàn trường chỉ với một thao tác click chuột.\nVề mặt ứng dụng trí tuệ nhân tạo – kết quả cốt lõi của đề tài, mô hình RAG\n(Retrieval-Augmented Generation) đã được triển khai thành công trên nền tảng\nBackend Node.js/TypeScript[2] kết hợp với cơ sở dữ liệu Postgres hỗ trợ extension\npgvector[8]. Tiến trình xử lý ngầm hoạt động mượt mà khi tự động bóc tách chính xác\ndữ liệu ký tự thô từ các định dạng tệp tin .pdf v .docx, thực hiện chia nhỏ văn bản và\n\nchuyển đổi thành các chuỗi số Vector Embedding để lưu trữ tập trung. Đặc biệt, giao\ndiện tương tác hỏi đáp trực tiếp (Chat với PDF) hoạt động ổn định, trợ lý AI có khả\nnăng truy quét ngữ cảnh tốt, tổng hợp câu trả lời chính xác, ngắn gọn dựa trên chính\nnội dung của bài báo cáo được cung cấp mà không xảy ra hiện tượng ảo tưởng thông\ntin.\nTựu chung lại, sản phẩm web application hoàn chỉnh này đã được thử nghiệm thực tế\nthành công trên môi trường Internet. Dự án không chỉ giải quyết triệt để bài toán quản\nlý lớp học trực tuyến mà còn số hóa thành công nguồn tài nguyên học liệu tĩnh từ các\nhọc phần dự án (PBL) và đề tài nghiên cứu khoa học mẫu của sinh viên, mở ra một\nkho tri thức động có tính kế thừa cao và có giá trị áp dụng thực tiễn lớn trong môi\ntrường đại học.\n6.Cấu trúc báo cáo\nBáo cáo được tổ chức thành phần mở đầu, bốn chương nội dung chính, phần kết luận\nvà tài liệu tham khảo. Phần mở đầu trình bày lý do chọn đề tài, mục tiêu, phạm vi và\nđối tượng nghiên cứu, phương pháp nghiên cứu, kết quả đạt được và cấu trúc của báo\ncáo. Phần này giúp người đọc nắm được bối cảnh, định hướng và các đóng góp chính\ncủa đề tài.\nChương 1 trình bày cơ sở lý thuyết liên quan đến đề tài. Nội dung chương bao gồm\ntổng quan về kiến trúc ứng dụng Web hiện đại, cơ chế bất đồng bộ hiệu năng cao của\nNode.js[3], hệ quản trị cơ sở dữ liệu quan hệ PostgreSQL, lý thuyết xử lý ngôn ngữ tự\nnhiên (NLP), kiến trúc mô hình ngôn ngữ lớn (LLMs), kỹ thuật chuyển đổi văn bản\nthành không gian số thông qua Vector Embedding, và nguyên lý hoạt động của mô\nhình Tạo lập tăng cường tra cứu (Retrieval-Augmented Generation - RAG) cùng các\nthuật toán đo khoảng cách toán học phục vụ tìm kiếm dữ liệu ngữ nghĩa.\nChương 2 trình bày phương pháp đề xuất. Chương này mô tả chi tiết quy trình xây\ndựng bộ lọc bóc tách dữ liệu ký tự thô từ các định dạng tệp tin phổ biến bao gồm .pdf\nvà .docx, thuật toán chia nhỏ văn bản thành các đoạn ngữ cảnh tối ưu (Chunking\nPipeline), phương pháp nhúng thông tin bằng Embedding Model, quy trình thiết lập\nlưu trữ và tính toán độ tương đồng (Cosine Similarity) trong cơ sở dữ liệu vector.\nNgoài ra, chương này cũng trình bày cơ chế tối ưu Prompt cấu trúc, luồng tích hợp",
           "summary": "",
-          "path": "DANH MỤC HÌNH ẢNH > 4. KẾT LUẬN",
+          "path": "MỞ ĐẦU > 5. Kết quả đạt được",
           "children": [
             {
-              "id": "9fa51a75-1d0b-4394-8eda-7ccaaf15cf1a",
-              "title": "4.1. Kết luận",
+              "id": "cb5382e0-3da4-483d-a914-0142a27ed2f7",
+              "title": "API",
               "level": 3,
-              "content": "- Sau quá trình nghiên cứu, thiết kế và triển khai hệ thống xe tự hành mô phỏng giao\nthông thông minh, nhóm sinh viên đã hoàn thành hầu hết các yêu cầu của đề tài. Hệ thống\ntích hợp đầy đủ các thành phần: cảm biến bám line, mô hình AI nhận diện tín hiệu giao\nthông, thuật toán điều khiển động cơ, kết nối ESP32–Server–Arduino, cùng khả năng vận\nhành thời gian thực. Các kết quả thực nghiệm cho thấy xe hoạt động ổn định, phản hồi\nnhanh và xử lý chính xác phần lớn các tình huống giao thông mô phỏng.\n- Cụ thể, chức năng bám line đạt độ ổn định cao trên đa dạng loại đường, mô hình AI\nphân loại đèn giao thông đạt độ chính xác trên 92–97%, thời gian suy diễn thấp (~200 ms),\nđảm bảo yêu cầu chạy realtime. Bộ điều khiển động cơ phản ứng mượt mà với thay đổi tốc\nđộ và hướng di chuyển, giúp xe vận hành an toàn khi gặp đèn đỏ hoặc biển Stop. Kênh\ntruyền thông WebSocket và UART hoạt động ổn định, không xuất hiện lỗi đáng kể trong\nquá trình thử nghiệm.\n- Nhìn chung, sản phẩm đã đáp ứng đầy đủ mục tiêu đề ra: xây dựng một hệ thống xe\ntự hành thu nhỏ có khả năng nhận diện tín hiệu giao thông và điều hướng tự động. Tuy còn\nhạn chế về điều kiện ánh sáng và độ phân giải camera, mô hình vẫn đủ chính xác để vận\nhành trong môi trường mô phỏng.",
+              "content": "(Interactive Q&A) không bị sai lệch dữ liệu, cùng phương pháp đánh giá hiệu năng\nthực nghiệm của mô hình.\n\nChương 3 trình bày phân tích và thiết kế hệ thống. Nội dung bao gồm yêu cầu chức\nnăng, yêu cầu phi chức năng, tác nhân hệ thống, ca sử dụng (Use Case), biểu đồ use\ncase, đặc tả use case, biểu đồ tuần tự (Sequence Diagram), kiến trúc phân lớp tổng\nquát và thiết kế cấu trúc cơ sở dữ liệu quan hệ tích hợp extension pgvector[8]. Chương\nnày làm rõ cách hệ thống được tổ chức để hỗ trợ các chức năng quản lý lớp học phần,\nsinh mã Class Code, tự động Import danh sách sinh viên qua file CSV, luồng chấm\nđiểm và phê duyệt báo cáo xuất sắc của giảng viên, cùng phân hệ Thư viện số thông\nminh.\nChương 4 trình bày quá trình xây dựng hệ thống. Chương này mô tả các công nghệ sử\ndụng, môi trường thực nghiệm, xây dựng Backend API bằng ngôn ngữ TypeScript[2]\nvà framework Express.js[4], phát triển giao diện người dùng Frontend bằng ReactJS,\ntích hợp AI Service (RAG Engine & LLM), kết nối cơ sở dữ liệu, kiểm thử chức năng\nvà triển khai demo thực tế trên môi trường Internet. Các kết quả giao diện và kiểm thử\nthực tế được trình bày trực quan để minh họa cho hoạt động của hệ thống.\nPhần kết luận tổng hợp các kết quả đã đạt được về mặt quản lý giáo dục trực tuyến lẫn\nứng dụng trí tuệ nhân tạo, nêu ra những hạn chế còn tồn tại và đề xuất hướng phát\ntriển trong tương lai. Các hướng phát triển bao gồm mở rộng khả năng đọc hiểu cấu\ntrúc tài liệu chứa hình ảnh hay công thức phức tạp, tối ưu hóa thuật toán phân mảnh\ndữ liệu, và nghiên cứu tích hợp các mô hình ngôn ngữ lớn chạy nội bộ (Local LLM\nthông qua Ollama) nhằm bảo mật dữ liệu học liệu tuyệt đối và tiết kiệm chi phí vận\nhành cho nhà trường.",
               "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 4. KẾT LUẬN > 4.1. Kết luận",
-              "children": [],
-              "embedding": null
-            },
-            {
-              "id": "d6ee9d5a-7fdb-4ef8-927b-f1a5eb3ffbca",
-              "title": "4.2. Hướng phát triển",
-              "level": 3,
-              "content": "Mặc dù hệ thống xe tự hành thông minh đã đáp ứng tốt các mục tiêu đề ra trong phạm vi\nđồ án, vẫn còn nhiều hướng phát triển tiềm năng nhằm nâng cao độ chính xác, tính ổn định\nvà khả năng ứng dụng thực tế của hệ thống trong tương lai.\n• Mở rộng tập dữ liệu: Trong các phiên bản tiếp theo, tập dữ liệu huấn luyện cho\nmô hình AI có thể được mở rộng bằng cách thu thập thêm hình ảnh trong nhiều điều\nkiện ánh sáng khác nhau (ánh sáng yếu, ánh sáng mạnh, bóng đổ), nhiều góc nhìn\nvà khoảng cách khác nhau. Đồng thời, việc bổ sung thêm các loại biển báo giao\nthông khác (ví dụ: rẽ trái, rẽ phải, cấm đi, giảm tốc) sẽ giúp mô hình tăng khả năng\n\ntổng quát hóa, giảm hiện tượng phụ thuộc vào môi trường mô phỏng cố định và cải\nthiện độ chính xác khi triển khai trong các bối cảnh đa dạng hơn.\n• Nâng cấp phần cứng: Hệ thống hiện tại sử dụng ESP32-CAM kết hợp với server\nAI để xử lý hình ảnh. Trong tương lai, có thể nâng cấp lên các nền tảng tính toán\nmạnh hơn như Raspberry Pi hoặc Jetson Nano để thực hiện suy diễn AI trực tiếp\ntrên xe (edge computing). Việc này giúp giảm độ trễ truyền dữ liệu qua mạng, tăng\ntốc độ phản hồi và nâng cao tính автоном (tự chủ) của hệ thống, đặc biệt trong các\nmôi trường yêu cầu thời gian thực cao.\n• Tối ưu thuật toán lane detection: Thuật toán bám line hiện tại chủ yếu dựa trên\ncảm biến hồng ngoại, phù hợp với các track đơn giản. Trong các phiên bản mở rộng,\ncó thể kết hợp hoặc thay thế bằng các thuật toán lane detection dựa trên xử lý ảnh\nhoặc deep learning, như sử dụng CNN để phát hiện làn đường, hoặc áp dụng các kỹ\nthuật biến đổi phối cảnh (perspective transformation) nhằm cải thiện độ ổn định khi\nxe di chuyển trên các track phức tạp, nhiều khúc cua hoặc giao lộ.\n• Bổ sung thuật toán tránh vật cản: Hiện tại, xe chủ yếu dựa vào line và tín hiệu\ngiao thông để điều hướng. Để tăng tính an toàn và tiệm cận hơn với các hệ thống xe\ntự hành thực tế, hệ thống có thể được trang bị thêm các cảm biến như siêu âm hoặc\nLiDAR nhằm phát hiện vật cản phía trước. Dữ liệu từ các cảm biến này sẽ được tích\nhợp vào thuật toán ra quyết định, cho phép xe giảm tốc hoặc dừng lại khi gặp chướng\nngại vật bất ngờ.\n• Xây dựng giao diện điều khiển & giám sát: Giao diện hiện tại cho phép điều khiển\nvà giám sát cơ bản thông qua ứng dụng di động. Trong tương lai, có thể mở rộng\nthành một nền tảng web hoặc ứng dụng đa thiết bị, cho phép người dùng theo dõi\ntrạng thái xe theo thời gian thực (tốc độ, chế độ hoạt động, trạng thái cảm biến),\nxem camera trực tiếp, cũng như lưu trữ và phân tích lịch sử hành trình. Điều này\nkhông chỉ phục vụ mục đích giám sát mà còn hỗ trợ nghiên cứu, đánh giá và tối ưu\nhệ thống.\n• Tổng kết hướng phát triển: Với thời gian và kinh phí phù hợp, hệ thống có thể mở\nrộng thành một mô hình xe tự hành hoàn chỉnh hơn, tiệm cận những nguyên lý mà\ncác hệ thống xe tự lái thực tế đang sử dụng.",
-              "summary": "",
-              "path": "DANH MỤC HÌNH ẢNH > 4. KẾT LUẬN > 4.2. Hướng phát triển",
+              "path": "MỞ ĐẦU > 5. Kết quả đạt được > API",
               "children": [],
               "embedding": null
             }
@@ -395,10 +130,653 @@
       "embedding": null
     },
     {
-      "id": "c4a2d6fb-badb-4c3c-8451-0c91787fd315",
+      "id": "b423a1d4-4152-43df-9336-b6f6c2defe04",
+      "title": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT",
+      "children": [
+        {
+          "id": "3b0605d4-336e-48b0-822b-6727e1202075",
+          "title": "1.1 Tổng quan về hệ thống quản lý báo cáo và nghiên cứu khoa học",
+          "level": 2,
+          "content": "",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.1 Tổng quan về hệ thống quản lý báo cáo và nghiên cứu khoa học",
+          "children": [
+            {
+              "id": "c4160326-86a8-433c-8fc4-71a8e11d415e",
+              "title": "1.1.2 Đặc điểm của tài liệu học thuật",
+              "level": 3,
+              "content": "Các báo cáo đồ án, khóa luận tốt nghiệp và công trình nghiên cứu khoa học của\nsinh viên thường có những đặc điểm riêng biệt so với các loại tài liệu thông thường.\nTrước hết, khối lượng dữ liệu được tích lũy qua nhiều năm học là rất lớn, bao gồm nhiều\nlĩnh vực chuyên môn khác nhau, tạo nên một kho tri thức đa dạng và phong phú. Nội\ndung của các tài liệu này thường mang tính chuyên ngành cao, sử dụng nhiều thuật ngữ\nkỹ thuật và kiến thức chuyên sâu liên quan đến từng lĩnh vực nghiên cứu. Bên cạnh đó,\ncấu trúc của tài liệu học thuật thường khá phức tạp với nhiều chương, mục, bảng biểu,\nhình ảnh và tài liệu tham khảo, đòi hỏi hệ thống quản lý phải có khả năng xử lý và lưu\ntrữ hiệu quả. Ngoài giá trị học thuật, các tài liệu này còn mang tính kế thừa cao khi sinh\nviên và giảng viên thường xuyên sử dụng các nghiên cứu trước đó làm cơ sở tham khảo\ncho những đề tài mới. Chính những đặc điểm này làm cho việc quản lý và khai thác\nthông tin từ tài liệu học thuật trở nên phức tạp hơn, đồng thời đặt ra yêu cầu về các giải\npháp tìm kiếm và truy xuất thông tin thông minh.",
+              "summary": "",
+              "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.1 Tổng quan về hệ thống quản lý báo cáo và nghiên cứu khoa học > 1.1.2 Đặc điểm của tài liệu học thuật",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "859010a4-1b8b-4ce3-acc9-e83a84799dbd",
+              "title": "1.1.3 Hạn chế của các hệ thống truyền thống",
+              "level": 3,
+              "content": "Hiện nay, phần lớn các hệ thống quản lý tài liệu học thuật vẫn sử dụng cơ chế\ntìm kiếm dựa trên từ khóa (Keyword Search), trong đó kết quả được xác định thông qua\nviệc so khớp trực tiếp các từ xuất hiện trong câu truy vấn với nội dung được lập chỉ mục\ntrong tài liệu. Mặc dù phương pháp này có ưu điểm là dễ triển khai, tốc độ xử lý nhanh\nvà không yêu cầu tài nguyên tính toán lớn, nhưng vẫn tồn tại nhiều hạn chế khi áp dụng\nvào môi trường học thuật. Cụ thể, hệ thống không có khả năng hiểu được ngữ nghĩa\nthực sự của câu hỏi, dẫn đến việc bỏ sót nhiều tài liệu có nội dung liên quan nhưng sử\ndụng cách diễn đạt khác với từ khóa được nhập vào. Ngoài ra, phương pháp tìm kiếm\ntheo từ khóa gặp khó khăn trong việc xử lý các trường hợp từ đồng nghĩa, từ viết tắt\nhoặc các thuật ngữ chuyên ngành khác nhau nhưng cùng biểu thị một khái niệm. Hệ\nthống cũng không hỗ trợ suy luận ngữ cảnh và thường yêu cầu người dùng phải biết\nchính xác từ khóa xuất hiện trong tài liệu mới có thể tìm kiếm hiệu quả. Những hạn chế\nnày làm giảm khả năng khai thác tri thức từ kho tài liệu học thuật, đặc biệt khi số lượng\nbáo cáo và công trình nghiên cứu ngày càng gia tăng. Do đó, việc ứng dụng các công\nnghệ tìm kiếm ngữ nghĩa kết hợp với trí tuệ nhân tạo đang trở thành xu hướng quan\n\ntrọng nhằm nâng cao hiệu quả quản lý, truy xuất và khai thác tri thức trong các hệ thống\nquản lý báo cáo và nghiên cứu khoa học hiện đại.",
+              "summary": "",
+              "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.1 Tổng quan về hệ thống quản lý báo cáo và nghiên cứu khoa học > 1.1.3 Hạn chế của các hệ thống truyền thống",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "5e66e734-1b34-45cb-83d5-0b89c07980c7",
+          "title": "1.2 Retrieval-Augmented Generation (RAG)",
+          "level": 2,
+          "content": "Retrieval-Augmented Generation (RAG) [20] là một kiến trúc trí tuệ nhân tạo\nđược đề xuất nhằm kết hợp khả năng truy xuất thông tin từ nguồn dữ liệu bên ngoài với\nkhả năng sinh ngôn ngữ tự nhiên của các mô hình ngôn ngữ lớn. Khác với các mô hình\nngôn ngữ truyền thống vốn chỉ dựa trên tri thức được học trong quá trình huấn luyện,\nRAG cho phép hệ thống truy cập và khai thác các nguồn dữ liệu cập nhật theo thời gian\nthực hoặc dữ liệu riêng của tổ chức. Cách tiếp cận này giúp nâng cao độ chính xác của\ncâu trả lời, đồng thời giảm thiểu hiện tượng sinh thông tin không chính xác do mô hình\ntự suy diễn.\nNguyên lý hoạt động của RAG được chia thành hai giai đoạn chính là truy xuất thông\ntin và sinh câu trả lời. Trong giai đoạn đầu tiên, các tài liệu trong kho tri thức được\nchuyển đổi thành vector embedding và lưu trữ trong cơ sở dữ liệu vector. Khi người\ndùng gửi một câu hỏi, hệ thống sẽ sử dụng mô hình embedding để chuyển đổi câu hỏi\nthành vector có cùng không gian biểu diễn với dữ liệu đã lưu trữ. Sau đó, cơ chế truy\nxuất sẽ tìm kiếm những đoạn văn bản có mức độ tương đồng cao nhất với nội dung câu\nhỏi. Các đoạn văn bản này được xem là ngữ cảnh liên quan và được chuyển đến mô\nhình ngôn ngữ lớn ở giai đoạn tiếp theo. Tại đây, mô hình sẽ sử dụng thông tin được\ntruy xuất để tổng hợp và sinh ra câu trả lời phù hợp với nội dung tài liệu.\nHình 2: Kiến trúc Retrieval-Augmented Generation (RAG)",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.2 Retrieval-Augmented Generation (RAG)",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "648ff3ca-7de8-403b-8aae-5b5efdbe9b08",
+          "title": "1.3 Embedding Model BGE-M3",
+          "level": 2,
+          "content": "Embedding là kỹ thuật chuyển đổi dữ liệu văn bản thành các vector số thực nhằm\nbiểu diễn ý nghĩa ngữ nghĩa của nội dung trong không gian nhiều chiều. Các vector\nembedding cho phép hệ thống đánh giá mức độ tương đồng giữa các văn bản dựa trên\ný nghĩa thay vì chỉ dựa trên sự xuất hiện của từ khóa. Đây là nền tảng quan trọng của\ncác hệ thống Semantic Search và Retrieval-Augmented Generation.\nTrong đề tài này, mô hình BGE-M3 được sử dụng để sinh embedding cho nội dung báo\ncáo và câu truy vấn của người dùng. BGE-M3 là mô hình embedding đa ngôn ngữ được\nphát triển bởi BAAI với khả năng hỗ trợ hơn một trăm ngôn ngữ khác nhau, trong đó\ncó tiếng Việt. Mô hình được huấn luyện nhằm tối ưu cho các tác vụ truy xuất thông tin,\ntìm kiếm ngữ nghĩa và hỏi đáp tài liệu. Nhờ khả năng hiểu ngữ cảnh tốt, BGE-M3 có\nthể tạo ra các vector biểu diễn có tính khái quát cao, giúp hệ thống xác định được sự\ntương đồng giữa các văn bản ngay cả khi chúng sử dụng những từ ngữ khác nhau để\ndiễn đạt cùng một ý nghĩa.\nTrong quá trình xây dựng hệ thống, BGE-M3 được sử dụng để chuyển đổi nội dung của\ncác báo cáo sau khi được chia thành các đoạn nhỏ thành vector embedding trước khi\nlưu trữ vào Milvus. Đồng thời, mô hình cũng được sử dụng để chuyển đổi câu hỏi của\nngười dùng thành vector truy vấn. Việc sử dụng cùng một mô hình embedding cho cả\ndữ liệu và truy vấn giúp đảm bảo tính nhất quán trong không gian biểu diễn và nâng cao\nchất lượng tìm kiếm ngữ nghĩa.\nHình 3:Embedding model BGE-M3",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.3 Embedding Model BGE-M3",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "71092d9e-ecdd-40bc-b8d6-7bda04f6fbc3",
+          "title": "1.4 Vector Database",
+          "level": 2,
+          "content": "Trong các hệ thống Semantic Search và Retrieval-Augmented Generation, dữ\nliệu văn bản sau khi được xử lý sẽ được biểu diễn dưới dạng vector có số chiều lớn.\nViệc lưu trữ và truy xuất hiệu quả các vector này là nhiệm vụ của cơ sở dữ liệu vector\n\n(Vector Database). Khác với cơ sở dữ liệu quan hệ truyền thống vốn được thiết kế để\nxử lý dữ liệu dạng bảng, Vector Database được tối ưu hóa cho việc tìm kiếm các vector\ncó độ tương đồng cao trong không gian nhiều chiều.\nTrong đề tài này, Milvus được lựa chọn làm cơ sở dữ liệu vector chính. Milvus là một\nhệ quản trị cơ sở dữ liệu vector mã nguồn mở được thiết kế để hỗ trợ các ứng dụng trí\ntuệ nhân tạo quy mô lớn. Hệ thống cung cấp nhiều thuật toán tìm kiếm lân cận gần nhất,\ncho phép thực hiện truy vấn trên hàng triệu vector với độ trễ thấp. Ngoài khả năng mở\nrộng tốt, Milvus còn hỗ trợ triển khai phân tán và tích hợp thuận lợi với các framework\nxây dựng hệ thống RAG hiện đại.\nBên cạnh Milvus, hệ thống còn sử dụng Supabase[16] để lưu trữ dữ liệu nghiệp vụ và\nmetadata của tài liệu. Supabase được xây dựng trên PostgreSQL[6] và cung cấp nhiều\ntính năng như quản lý người dùng, xác thực, lưu trữ tệp và API tự động. Trong kiến trúc\ncủa đề tài, Supabase chịu trách nhiệm quản lý thông tin báo cáo, thông tin người dùng\nvà các dữ liệu liên quan đến nghiệp vụ, trong khi Milvus tập trung xử lý các vector\nembedding phục vụ truy vấn ngữ nghĩa. Sự kết hợp giữa hai nền tảng này giúp tận dụng\nđược ưu điểm của cả cơ sở dữ liệu quan hệ và cơ sở dữ liệu vector.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.4 Vector Database",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "e92df5d6-e05e-45e9-91f6-a931aa2fbd97",
+          "title": "1.5 Large Language Model – Qwen2-7B-Instruct",
+          "level": 2,
+          "content": "Mô hình ngôn ngữ lớn (Large Language Model - LLM) là thành phần chịu trách\nnhiệm phân tích ngữ cảnh và sinh câu trả lời trong kiến trúc RAG. Các mô hình này\nđược huấn luyện trên lượng dữ liệu văn bản khổng lồ nhằm học được cấu trúc ngôn\nngữ, kiến thức tổng quát và khả năng suy luận trong nhiều lĩnh vực khác nhau.\nĐối với đề tài này, mô hình Qwen2-7B-Instruct[15] được lựa chọn làm thành phần sinh\ncâu trả lời. Đây là mô hình mã nguồn mở do Alibaba Cloud phát triển với khoảng bảy\ntỷ tham số. Qwen2-7B-Instruct được tối ưu hóa cho các tác vụ hội thoại và làm theo chỉ\ndẫn, cho phép mô hình phản hồi chính xác hơn đối với các yêu cầu được mô tả bằng\nngôn ngữ tự nhiên. Bên cạnh đó, mô hình còn hỗ trợ nhiều ngôn ngữ và có khả năng xử\nlý ngữ cảnh dài, phù hợp với đặc thù của các tài liệu học thuật.\nTrong hệ thống được đề xuất, Qwen2-7B-Instruct[15] không trực tiếp truy cập cơ sở dữ\nliệu mà nhận đầu vào từ thành phần Retrieval. Các đoạn văn bản được truy xuất từ\nMilvus sẽ được kết hợp với câu hỏi của người dùng để tạo thành ngữ cảnh hoàn chỉnh.\nDựa trên thông tin này, mô hình tiến hành phân tích và sinh ra câu trả lời phù hợp với\nnội dung của báo cáo. Cách tiếp cận này giúp giảm đáng kể hiện tượng Hallucination\n\nvà đảm bảo rằng các câu trả lời được tạo ra dựa trên nguồn tài liệu thực tế có trong hệ\nthống.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.5 Large Language Model – Qwen2-7B-Instruct",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "4f410d82-6002-49c5-ba59-608f72ca5e50",
+          "title": "1.6 React ( Frontend )",
+          "level": 2,
+          "content": "React là thư viện JavaScript mã nguồn mở được phát triển bởi Meta Platforms\nnhằm hỗ trợ xây dựng giao diện người dùng cho các ứng dụng web hiện đại theo mô\nhình Component-Based Architecture. React cho phép chia giao diện thành các thành\nphần độc lập, có khả năng tái sử dụng và quản lý riêng biệt, giúp giảm độ phức tạp trong\nquá trình phát triển phần mềm. Bên cạnh đó, React sử dụng cơ chế Virtual DOM để tối\nưu hóa quá trình cập nhật giao diện, chỉ thực hiện thay đổi trên những thành phần thực\nsự bị ảnh hưởng khi dữ liệu thay đổi, từ đó nâng cao hiệu năng xử lý của ứng dụng.\nTrong đề tài này, React được sử dụng để xây dựng giao diện người dùng cho hệ thống\nquản lý báo cáo và nghiên cứu khoa học của sinh viên, cung cấp các chức năng như\nđăng nhập, quản lý báo cáo, tìm kiếm tài liệu và tương tác với hệ thống hỏi đáp dựa trên\nmô hình RAG. Việc lựa chọn React không chỉ giúp giao diện trở nên trực quan, linh\nhoạt và dễ sử dụng mà còn hỗ trợ tích hợp hiệu quả với các dịch vụ Backend được phát\ntriển bằng Node.js và FastAPI [12] trong kiến trúc tổng thể của hệ thống.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.6 React ( Frontend )",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "370452a7-6601-4303-aeac-e336bd010c06",
+          "title": "1.7 Node.js (Backend )",
+          "level": 2,
+          "content": "Node.js[3] là môi trường thực thi JavaScript phía máy chủ được xây dựng trên\nnền tảng V8 JavaScript Engine của Google, cho phép phát triển các ứng dụng web có\nhiệu năng cao và khả năng xử lý đồng thời nhiều yêu cầu trong thời gian thực. Khác với\ncác mô hình xử lý truyền thống sử dụng đa luồng, Node.js áp dụng kiến trúc hướng sự\nkiện (Event-Driven) và cơ chế I/O bất đồng bộ (Non-Blocking I/O), giúp tối ưu việc sử\ndụng tài nguyên hệ thống và nâng cao khả năng mở rộng của ứng dụng. Trong đề tài\nnày, Node.js được sử dụng để xây dựng tầng Backend chịu trách nhiệm xử lý các nghiệp\nvụ chính của hệ thống như quản lý người dùng, xác thực và phân quyền tài khoản, quản\nlý báo cáo đồ án, nghiên cứu khoa học, tiếp nhận yêu cầu từ giao diện React và điều\nphối dữ liệu giữa các thành phần trong hệ thống. Ngoài ra, Node.js còn đóng vai trò như\nmột API Gateway kết nối với các dịch vụ trí tuệ nhân tạo được triển khai bằng FastAPI,\ngiúp tách biệt logic nghiệp vụ với các tác vụ xử lý AI nhằm tăng tính linh hoạt và khả\nnăng bảo trì của hệ thống. Với hiệu năng cao, cộng đồng phát triển lớn, hệ sinh thái thư\nviện phong phú và khả năng tích hợp tốt với các công nghệ hiện đại, Node.js[3] là lựa\nchọn phù hợp để xây dựng tầng dịch vụ cho hệ thống quản lý báo cáo và nghiên cứu\nkhoa học của sinh viên tích hợp mô hình Retrieval-Augmented Generation (RAG) [20].",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.7 Node.js (Backend )",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "875cfa3d-4550-4268-a6c7-cc051b6482c4",
+          "title": "1.8 FastAPI",
+          "level": 2,
+          "content": "FastAPI[12] là một framework phát triển Web API hiện đại dành cho ngôn ngữ\nPython, được thiết kế nhằm xây dựng các dịch vụ có hiệu năng cao, dễ mở rộng và hỗ\ntrợ xử lý bất đồng bộ. FastAPI tận dụng khả năng của Python Type Hints để tự động\nkiểm tra kiểu dữ liệu, sinh tài liệu API và hỗ trợ phát triển ứng dụng một cách nhanh\nchóng. Trong đề tài này, FastAPI được sử dụng để triển khai các dịch vụ trí tuệ nhân\ntạo, bao gồm xử lý tài liệu, sinh vector embedding bằng mô hình BGE-M3, truy xuất\ndữ liệu từ cơ sở dữ liệu vector Milvus và giao tiếp với mô hình ngôn ngữ lớn Qwen2-\n7B-Instruct nhằm thực hiện chức năng hỏi đáp dựa trên kiến trúc RAG. Việc tách riêng\ncác tác vụ AI thành một dịch vụ độc lập giúp hệ thống dễ dàng bảo trì, nâng cấp và mở\nrộng trong tương lai. Bên cạnh đó, FastAPI[12] còn hỗ trợ tốt cho việc triển khai các\nmô hình học máy và học sâu nhờ khả năng tích hợp trực tiếp với các thư viện Python\nphổ biến như PyTorch, Transformers và LangChain, giúp tối ưu quá trình xây dựng hệ\nthống trí tuệ nhân tạo trong đề tài.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.8 FastAPI",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "261d1cf4-62a7-4024-8703-5886a4f555b2",
+          "title": "1.9 Redis",
+          "level": 2,
+          "content": "Redis[9] là hệ quản trị cơ sở dữ liệu dạng Key-Value hoạt động trên bộ nhớ (In-\nMemory Database), được sử dụng rộng rãi trong các hệ thống yêu cầu tốc độ truy xuất\ndữ liệu cao. Nhờ khả năng đọc và ghi dữ liệu với độ trễ rất thấp, Redis thường được sử\ndụng làm bộ nhớ đệm (Cache), hệ thống lưu trữ phiên đăng nhập hoặc trung gian truyền\ntải thông điệp giữa các dịch vụ. Trong hệ thống quản lý báo cáo và nghiên cứu khoa\nhọc của sinh viên, Redis được sử dụng để lưu trữ tạm thời các dữ liệu thường xuyên\nđược truy cập, giảm số lượng truy vấn trực tiếp đến cơ sở dữ liệu chính và cải thiện hiệu\nnăng xử lý của hệ thống. Ngoài ra, Redis còn đóng vai trò là thành phần trung gian hỗ\ntrợ cơ chế hàng đợi xử lý bất đồng bộ, giúp phân phối và quản lý các tác vụ liên quan\nđến xử lý tài liệu, sinh embedding và truy vấn mô hình ngôn ngữ lớn. Việc ứng dụng\nRedis không chỉ giúp tăng tốc độ phản hồi mà còn nâng cao khả năng mở rộng và ổn\nđịnh của hệ thống khi phải phục vụ nhiều người dùng đồng thời.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.9 Redis",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "0c535746-3408-4705-9314-bfc35ae401a7",
+          "title": "1.10 Queue",
+          "level": 2,
+          "content": "Queue hay hàng đợi là cơ chế xử lý bất đồng bộ được sử dụng để quản lý và phân\nphối các tác vụ cần thực hiện trong hệ thống. Thay vì xử lý trực tiếp các công việc có\nthời gian thực thi dài trên luồng chính, hệ thống sẽ đưa các nhiệm vụ vào hàng đợi và\ngiao cho các Worker xử lý ở chế độ nền. Trong đề tài này, Queue được sử dụng để xử\n\nlý các tác vụ như đọc nội dung tài liệu PDF, chia nhỏ văn bản, sinh embedding bằng\nmô hình BGE-M3 và thực hiện truy vấn mô hình Qwen2-7B-Instruct[15]. Các tác vụ\nnày thường tiêu tốn nhiều tài nguyên tính toán và có thể làm giảm hiệu năng của hệ\nthống nếu được xử lý đồng bộ. Bằng cách kết hợp Queue với Redis và các Worker được\ntriển khai bằng FastAPI, hệ thống có thể xử lý nhiều yêu cầu đồng thời mà vẫn đảm bảo\ntốc độ phản hồi cho người dùng. Cách tiếp cận này giúp tăng khả năng chịu tải, giảm\nnguy cơ nghẽn hệ thống và tạo điều kiện thuận lợi cho việc mở rộng quy mô triển khai\ntrong tương lai.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.10 Queue",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "22c2f135-a947-4ddf-8b6a-1e22368179cd",
+          "title": "1.11 Docker",
+          "level": 2,
+          "content": "Docker[11] là nền tảng mã nguồn mở hỗ trợ đóng gói, triển khai và vận hành\nứng dụng thông qua công nghệ Containerization. Thay vì cài đặt trực tiếp các thành\nphần phần mềm trên máy chủ, Docker cho phép đóng gói toàn bộ mã nguồn, thư viện\nphụ thuộc và môi trường thực thi vào các container độc lập, đảm bảo tính nhất quán\ngiữa các môi trường phát triển, kiểm thử và triển khai thực tế. Trong đề tài này, Docker\nđược sử dụng để triển khai các thành phần của hệ thống như React Frontend, Node.js[3]\nBackend, FastAPI AI Service, Redis[9] và Milvus dưới dạng các container riêng biệt.\nViệc áp dụng Docker giúp đơn giản hóa quá trình cài đặt, giảm các vấn đề liên quan\nđến sự khác biệt môi trường và hỗ trợ triển khai hệ thống một cách nhanh chóng trên\nnhiều nền tảng khác nhau. Ngoài ra, Docker còn tạo điều kiện thuận lợi cho việc mở\nrộng hệ thống theo kiến trúc Microservice, giúp các thành phần có thể được nâng cấp\nhoặc thay thế độc lập mà không ảnh hưởng đến toàn bộ ứng dụng. Với những ưu điểm\nvề tính linh hoạt, khả năng di động và hiệu quả trong quản lý hạ tầng, Docker[11] là\ncông nghệ phù hợp để triển khai hệ thống quản lý báo cáo và nghiên cứu khoa học của\nsinh viên tích hợp mô hình RAG.",
+          "summary": "",
+          "path": "CHƯƠNG 1: CƠ SỞ LÝ THUYẾT > 1.11 Docker",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "d7e99a67-e038-4550-8d8f-5228223b2628",
+      "title": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT",
+      "children": [
+        {
+          "id": "58b252f7-e4b2-4c3f-abfa-6dc990c1f4e3",
+          "title": "2.1 Phát biểu bài toán",
+          "level": 2,
+          "content": "Trong môi trường đại học, các báo cáo học tập, đồ án tốt nghiệp và công trình\nnghiên cứu khoa học của sinh viên được tạo ra với số lượng lớn qua từng năm học. Mặc\ndù các tài liệu này chứa đựng nhiều tri thức có giá trị phục vụ học tập và nghiên cứu,\nphần lớn vẫn được lưu trữ dưới dạng các tệp tin rời rạc hoặc nằm trong các hệ thống\nquản lý chỉ hỗ trợ chức năng lưu trữ và tìm kiếm cơ bản. Điều này khiến sinh viên gặp\nnhiều khó khăn trong việc tiếp cận các tài liệu liên quan, kế thừa kết quả nghiên cứu\ntrước đó hoặc tìm kiếm thông tin phục vụ quá trình thực hiện đề tài. Bên cạnh đó, giảng\nviên cũng gặp khó khăn trong việc quản lý, kiểm duyệt và đánh giá số lượng lớn báo\ncáo được nộp mỗi học kỳ.\nCác hệ thống tìm kiếm truyền thống chủ yếu sử dụng cơ chế Keyword Search nên không\nthể hiểu được ý nghĩa thực sự của câu hỏi người dùng, dẫn đến khả năng truy xuất tri\nthức còn hạn chế khi tài liệu sử dụng các cách diễn đạt khác nhau. Ngoài ra, việc chỉ\ncung cấp danh sách tài liệu liên quan chưa đáp ứng được nhu cầu khai thác tri thức trực\ntiếp từ nội dung báo cáo. Xuất phát từ những hạn chế trên, đề tài hướng tới xây dựng\nmột nền tảng quản lý báo cáo và nghiên cứu khoa học dành cho sinh viên và giảng viên,\nđồng thời tích hợp mô hình Retrieval-Augmented Generation nhằm hỗ trợ truy vấn và\nhỏi đáp thông minh trên kho tri thức học thuật của nhà trường.",
+          "summary": "",
+          "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT > 2.1 Phát biểu bài toán",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "4e59113a-bb27-4370-9cd4-f0c3c24c678e",
+          "title": "2.2 Giải pháp đề xuất",
+          "level": 2,
+          "content": "Để giải quyết bài toán khai thác tri thức từ các báo cáo học thuật, đề tài đề xuất\nxây dựng nền tảng DUTSTUDY kết hợp giữa hệ thống quản lý tài liệu và kiến trúc\nRetrieval-Augmented Generation. Khác với các hệ thống RAG thông thường chỉ tập\ntrung vào việc hỏi đáp tài liệu, hệ thống được thiết kế theo hướng tích hợp toàn bộ quy\ntrình quản lý học thuật bao gồm sinh viên tải lên báo cáo, giảng viên kiểm duyệt nội\ndung, lưu trữ tập trung và khai thác tri thức thông qua giao diện hỏi đáp bằng ngôn ngữ\ntự nhiên.\nĐiểm nổi bật của giải pháp là việc xây dựng kho tri thức từ các báo cáo đã được giảng\nviên phê duyệt nhằm đảm bảo chất lượng nguồn dữ liệu đầu vào. Thay vì sử dụng\nphương pháp Chunking cố định theo số lượng token như nhiều hệ thống RAG hiện nay,\nnghiên cứu đề xuất tổ chức dữ liệu dựa trên cấu trúc Section của tài liệu như Giới\nthiệu, Phương pháp nghiên cứu, Kết quả thực nghiệm hoặc Kết luận. Cách tiếp cận này\n\ngiúp bảo toàn tính liên kết học thuật và ngữ cảnh của nội dung. Sau quá trình Semantic\nRetrieval bằng mô hình Embedding, hệ thống tiếp tục áp dụng cơ chế LLM Re-\nranking để đánh giá lại các Section được truy xuất nhằm lựa chọn những ngữ cảnh\nphù hợp nhất trước khi sinh phản hồi. Sự kết hợp giữa quản lý học thuật, truy xuất ngữ\nnghĩa và tái xếp hạng bằng mô hình ngôn ngữ lớn tạo nên một giải pháp toàn diện cho\nbài toán lưu trữ, kế thừa và khai thác tri thức trong môi trường đại học.",
+          "summary": "",
+          "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT > 2.2 Giải pháp đề xuất",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "6eeff0f0-ce5a-4b98-b98b-9b77a9fb527b",
+          "title": "2.3 Kiến trúc Hierarchical RAG",
+          "level": 2,
+          "content": "Kiến trúc RAG của hệ thống được xây dựng theo mô hình nhiều tầng gồm tầng\nquản lý tài liệu, tầng xử lý tri thức và tầng sinh phản hồi. Tại tầng dữ liệu, các báo cáo\nsau khi được giảng viên phê duyệt sẽ được phân tích cấu trúc và chuyển đổi thành các\nNode tương ứng với từng Section của tài liệu. Các Node này được biểu diễn dưới dạng\nvector thông qua mô hình BGE-M3 và lưu trữ trong cơ sở dữ liệu vector Milvus.\nKhi người dùng gửi câu hỏi, hệ thống sử dụng mô hình Embedding để chuyển đổi truy\nvấn thành vector ngữ nghĩa và thực hiện tìm kiếm Semantic Retrieval trên Milvus nhằm\nlấy ra tập các Section có mức độ liên quan cao nhất. Sau đó, cơ chế LLM Re-ranking\nđược sử dụng để tái đánh giá các kết quả Retrieval dựa trên khả năng đọc hiểu ngữ cảnh\ncủa mô hình ngôn ngữ lớn. Các Section có độ phù hợp cao nhất được đưa vào Prompt\ncùng với câu hỏi người dùng và chuyển tới mô hình Qwen2-7B-Instruct[15] để sinh\nphản hồi cuối cùng. Kiến trúc này giúp giảm hiện tượng nhiễu ngữ cảnh, hạn chế thông\ntin ảo giác và nâng cao độ chính xác của hệ thống hỏi đáp.",
+          "summary": "",
+          "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT > 2.3 Kiến trúc Hierarchical RAG",
+          "children": [
+            {
+              "id": "b9b2f37e-613d-449a-9feb-9cc335347c41",
+              "title": "2.3.1 Quy trình xử lý tài liệu",
+              "level": 3,
+              "content": "Quy trình xử lý tài liệu bắt đầu khi sinh viên tải báo cáo hoặc công trình nghiên\ncứu khoa học lên hệ thống. Sau khi được giảng viên kiểm duyệt và phê duyệt, tài liệu\nsẽ được đưa vào kho tri thức phục vụ cho quá trình truy xuất và hỏi đáp. Hệ thống thực\nhiện trích xuất văn bản từ tệp PDF hoặc DOCX, đồng thời phân tích cấu trúc tài liệu\nnhằm xác định các Section chính và các tiểu mục liên quan.\nThay vì chia văn bản thành các đoạn cố định dựa trên số lượng token, nghiên cứu lựa\nchọn phương pháp xây dựng Node theo từng Section hoàn chỉnh của báo cáo. Mỗi Node\nđược xem là một đơn vị tri thức độc lập chứa đầy đủ ngữ cảnh học thuật của một nội\ndung cụ thể. Sau khi được tạo ra, các Node được chuyển đổi thành vector embedding\nthông qua mô hình BGE-M3 và lưu trữ trong Milvus cùng với các metadata như tên đề\ntài, tác giả, giảng viên hướng dẫn và lĩnh vực nghiên cứu. Cách tổ chức dữ liệu này giúp\n\ncải thiện chất lượng truy xuất và hỗ trợ hiệu quả cho các bước Retrieval cũng như Re-\nranking trong hệ thống RAG.\nHình 4 : Sơ đồ tiền xử lý tài liệu ( Preprocessing )",
+              "summary": "",
+              "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT > 2.3 Kiến trúc Hierarchical RAG > 2.3.1 Quy trình xử lý tài liệu",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "24f6accb-5447-4fcc-995d-dc76f3035ce3",
+              "title": "2.3.2 Quy trình truy vấn và hỏi đáp",
+              "level": 3,
+              "content": "Khi người dùng đặt câu hỏi trên giao diện hệ thống, truy vấn được gửi đến dịch\nvụ xử lý trí tuệ nhân tạo để thực hiện quá trình truy xuất và sinh phản hồi. Đầu tiên, câu\nhỏi được chuyển đổi thành vector embedding bằng mô hình BGE-M3. Vector truy vấn\nnày được sử dụng để tìm kiếm các Section có độ tương đồng ngữ nghĩa cao nhất trong\ncơ sở dữ liệu Milvus. Kết quả trả về là tập Top-K Section liên quan đến nội dung câu\nhỏi.\nTiếp theo, hệ thống thực hiện bước LLM Re-ranking nhằm đánh giá lại toàn bộ các\nSection trong tập Top-K. Mô hình ngôn ngữ lớn sẽ đọc hiểu đồng thời câu hỏi và nội\ndung từng Section để xác định mức độ phù hợp thực sự thay vì chỉ dựa vào khoảng cách\nvector. Các Section có điểm đánh giá cao nhất sẽ được lựa chọn làm ngữ cảnh đầu vào\ncho Qwen2-7B-Instruct[15]. Dựa trên các thông tin này, mô hình tổng hợp nội dung và\nsinh ra câu trả lời hoàn chỉnh cho người dùng. Cơ chế này giúp tăng độ chính xác truy\n\nxuất, giảm nhiễu ngữ cảnh và cải thiện chất lượng phản hồi so với các hệ thống Retrieval\nchỉ sử dụng Embedding.\nHình 5 : Sơ đồ truy xuất và tạo câu trả lời (Retrieval & Generation Pipeline).",
+              "summary": "",
+              "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT > 2.3 Kiến trúc Hierarchical RAG > 2.3.2 Quy trình truy vấn và hỏi đáp",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "737167b1-d4b6-4a07-86de-13bee9a4adeb",
+          "title": "2.4 Thuật toán và luồng xử lý",
+          "level": 2,
+          "content": "Luồng xử lý của hệ thống được triển khai theo kiến trúc dịch vụ độc lập gồm\nReact Frontend, Node.js[3] Backend, FastAPI[12] AI Service, Redis Queue, Milvus và\nmô hình Qwen2-7B-Instruct. Đối với luồng xây dựng tri thức, báo cáo sau khi được\ngiảng viên phê duyệt sẽ trải qua các bước phân tích cấu trúc, tạo Section Node, sinh\nembedding và lưu trữ vào Milvus. Đối với luồng hỏi đáp, người dùng gửi câu hỏi từ\ngiao diện React, yêu cầu được chuyển qua Node.js và FastAPI để thực hiện Semantic\nRetrieval trên Milvus. Sau khi nhận được tập Top-K Section, hệ thống tiến hành LLM\nRe-ranking, xây dựng Prompt và gửi tới Qwen2-7B-Instruct[15] để sinh phản hồi cuối\ncùng.\n\nĐặc biệt, Redis[9] Queue được sử dụng để xử lý bất đồng bộ các tác vụ tốn nhiều tài\nnguyên như indexing tài liệu, sinh embedding và cập nhật kho tri thức. Điều này giúp\ngiảm tải cho hệ thống, tăng khả năng mở rộng và đảm bảo tốc độ phản hồi khi có nhiều\nngười dùng truy cập đồng thời. Thông qua việc kết hợp quản lý học thuật, Semantic\nRetrieval, Section-Based Indexing và LLM Re-ranking, hệ thống tạo ra một nền tảng\nhỗ trợ lưu trữ, kế thừa và khai thác tri thức học thuật hiệu quả cho sinh viên và giảng\nviên.",
+          "summary": "",
+          "path": "CHƯƠNG 2: PHƯƠNG PHÁP ĐỀ XUẤT > 2.4 Thuật toán và luồng xử lý",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "aa3f8a53-2978-45a3-8889-4bdab9e1c5ff",
+      "title": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG",
+      "children": [
+        {
+          "id": "2e835887-6f56-4e53-a6d0-e77eea30c4c8",
+          "title": "3.1 Tổng quan hệ thống",
+          "level": 2,
+          "content": "Hệ thống quản lý và truy vấn báo cáo đồ án ứng dụng mô hình RAG được xây dựng\ntheo kiến trúc phân tầng, kết hợp giữa nền tảng LMS truyền thống và bộ máy số hóa tri\nthức thông minh dựa trên AI. Hệ thống gồm ba thành phần tương tác chặt chẽ qua\nRESTful API: Giao diện người dùng (ReactJS/TypeScript) [1] cung cấp không gian lớp\nhọc và thư viện số với màn hình chia đôi độc đáo để vừa đọc tài liệu vừa chat; Máy chủ\nxử lý (Node.js/Express) [4] điều phối xác thực JWT, quản lý lớp học và vận hành engine\nRAG; và Cơ sở dữ liệu (PostgreSQL + pgvector[8]) lưu trữ song song dữ liệu có cấu\ntrúc lẫn các chuỗi vector ngữ nghĩa.\nSự vận hành của hệ thống dựa trên hai luồng dữ liệu cốt lõi:\nLuồng lập chỉ mục (Indexing Pipeline): Khi đồ án được giảng viên phê duyệt vào thư\nviện, hệ thống chạy ngầm để bóc tách văn bản, chia nhỏ thành các phân đoạn ngữ cảnh\n(khoảng 500 ký tự) và gọi API nhúng chúng thành vector để lưu vào PostgreSQL[6].\nLuồng truy vấn (RAG Pipeline): Khi người dùng đặt câu hỏi, hệ thống tính toán\nkhoảng cách vector (Cosine Similarity) để tìm các đoạn văn bản có độ tương đồng ngữ\nnghĩa cao nhất. Các đoạn văn này được đóng gói làm ngữ cảnh (Prompt) gửi tới mô\nhình ngôn ngữ lớn (LLM) để tạo ra câu trả lời chính xác, khách quan, không bị ảo tưởng\nthông tin và có trích dẫn nguồn trang trực quan cho sinh viên đối chiếu.",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.1 Tổng quan hệ thống",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "c9d8e37c-4b9c-4020-86c4-b2d1fdcc0985",
+          "title": "3.2 Phân tích yêu cầu chức năng và phi chức năng",
+          "level": 2,
+          "content": "Yêu cầu chức năng mô tả các chức năng chính mà hệ thống cần cung cấp cho người\ndùng. Dựa trên mục tiêu đề tài, hệ thống cần đáp ứng các yêu cầu sau:\nBảng 1: Danh sách yêu cầu chức năng\nSTT Mã yêu cầu Tên Yêu Cầu Mô Tả Chi Tiết\nHệ thống phải cho phép người dùng (Sinh viên, Giảng viên,\nQuản trị viên) đăng nhập vào hệ thống bằng tài khoản email\nXác thực đăng trường và mật khẩu. Mã hóa mật khẩu bằng bcryptjs và cấp phát\n1 FR_01 nhập accessToken qua JWT để bảo mật.\nHệ thống phải hỗ trợ các tài khoản được tạo tự động từ file CSV\nKích hoạt tài tiến hành đổi mật khẩu và kích hoạt tài khoản (active) trong lần\n2 FR_02 khoản mới đầu tiên đăng nhập.\n\nKhởi tạo lớp Hệ thống phải cho phép Giảng viên tạo lớp học phần mới bằng\n3 FR_03 học phần cách điền thông tin: Tên lớp, Mã môn học, Học kỳ và Năm học.\nNgay khi lớp học phần được khởi tạo, hệ thống phải tự động\nTự động sinh sinh ngẫu nhiên một chuỗi ký tự duy nhất (6-8 ký tự) làm mã\nmã Class lớp và cho phép Giảng viên bật/tắt trạng thái hoạt động của mã\n4 FR_04 Code này.\nHệ thống phải cho phép Sinh viên nhập mã lớp để gia nhập lớp\nTham gia lớp học phần. Hệ thống cần kiểm tra tính hợp lệ của mã trực thời\n5 FR_05 học bằng mã (Real-time) trước khi ghi nhận thành viên.\nHệ thống phải cho phép Giảng viên tải lên file .csv chứa danh\nsách sinh viên (student_code, email, full_name). Hệ thống tự\nNhập danh động kiểm tra: nếu tài khoản đã tồn tại thì thêm vào lớp; nếu\nsách lớp bằng chưa thì tạo tài khoản ở trạng thái chờ kích hoạt rồi đưa vào lớp\n6 FR_06 file CSV học.\nHệ thống phải cho phép Giảng viên tạo các cột mốc nộp báo cáo\nTạo mốc tiến (Milestones/Assignments) kèm theo mô tả, yêu cầu định dạng\n7 FR_07 độ bài tập tệp tin và thời gian hạn định (Deadline).\nHệ thống phải cho phép Sinh viên tải các tệp tin báo cáo tiến độ\nNộp báo cáo hoặc đồ án hoàn chỉnh lên hệ thống dưới định dạng quy định\n8 FR_08 học phần (.pdf, .docx) trước khi hết hạn.\nHệ thống phải cung cấp giao diện cho Giảng viên theo dõi danh\nĐánh giá và sách nộp bài, xem nội dung tệp tin trực tuyến và tiến hành nhập\n9 FR_09 Chấm điểm điểm số, lời nhận xét cho từng sinh viên/nhóm sinh viên.\nHệ thống phải cung cấp tính năng cho Giảng viên phê duyệt\nPhê duyệt tài (Approve) các báo cáo xuất sắc. Hành động này sẽ chuyển trạng\nliệu vào Thư thái tài liệu từ nội bộ (private) sang phát hành toàn trường\n10 FR_10 viện (public).\nKhi tài liệu được phê duyệt, hệ thống phải chạy ngầm tiến trình\nBóc tách và (Background Job) để trích xuất văn bản thô từ file .pdf/.docx và\nPhân mảnh thực hiện chia nhỏ nội dung thành các đoạn ngữ cảnh tối ưu\n11 FR_11 văn bản (Chunking Pipeline).\nHệ thống phải gọi API mô hình nhúng (Embedding Model) để\nchuyển đổi các đoạn văn bản đã chia nhỏ thành các chuỗi vector\nSố hóa và Lưu nhiều chiều và lưu trữ trực tiếp vào bảng report_embeddings\n12 FR_12 trữ Vector trong PostgreSQL[6] bằng extension pgvector[8].\nHệ thống phải cung cấp giao diện chia đôi màn hình: một bên\nHỏi đáp tương hiển thị nội dung PDF báo cáo, một bên là khung chat bot AI.\ntác tài liệu Hệ thống tự động truy quét các đoạn văn bản liên quan trong file\n(Chat với làm ngữ cảnh (Prompt) phối hợp với mô hình ngôn ngữ lớn\n13 FR_14 PDF) (LLM) để trả lời các câu hỏi chuyên sâu của sinh viên.\n\nTrích dẫn Hệ thống phải hiển thị chính xác số trang hoặc đoạn văn bản gốc\nnguồn tài liệu được AI sử dụng làm căn cứ trả lời câu hỏi, giúp sinh viên dễ\n14 FR_15 gốc dàng đối chiếu trực quan.",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.2 Phân tích yêu cầu chức năng và phi chức năng",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "e23c828a-c79c-4566-bda0-dfb631c3b2d6",
+          "title": "3.3 Yêu cầu phi chức năng",
+          "level": 2,
+          "content": "Yêu cầu phi chức năng mô tả các tiêu chí về chất lượng, hiệu năng, bảo mật và khả\nnăng mở rộng của hệ thống\nBảng 2: Danh sách yêu cầu phi chức năng\nSTT Mã Yêu Cầu Tên Yêu Cầu Mô Tả Chi Tiết\nCác thao tác cơ bản (chuyển trang, tải danh sách lớp,\nđăng nhập) phải có thời gian phản hồi dưới 2 giây.\n1 NFR_01 Hiệu năng Web Giao diện tải mượt mà không bị giật lag.\nTốc độ phản hồi của tính năng tìm kiếm ngữ nghĩa\nvà Chatbot AI (Chat với PDF) phải trả về kết quả\ntrong vòng 3 đến 7 giây (tính cả độ trễ khi gọi API\n2 NFR_02 Tốc độ AI/RAG của LLM bên thứ 3).",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Yêu cầu phi chức năng",
+          "children": [
+            {
+              "id": "6cc9e87f-8352-49cf-98af-635bcf6b12ca",
+              "title": "API",
+              "level": 3,
+              "content": "người dùng phải băm (hashing) trước khi lưu. Hệ\nBảo mật hệ thống phải chống được các lỗi bảo mật cơ bản như\n3 NFR_03 thống SQL Injection, XSS.\nCác khóa bảo mật quan trọng (OpenAI API Key,\nGemini API Key, Secret Key của JWT) tuyệt đối\nBảo mật API không được hard-code, phải lưu trữ an toàn trong\n4 NFR_04 Key biến môi trường (.env).\nGiao diện phải thiết kế đáp ứng (Responsive), hoạt\nđộng tốt trên cả PC, Laptop và Máy tính bảng. Đặc\nbiệt không gian chia đôi màn hình đọc PDF và Chat\n5 NFR_05 Trải nghiệm UI AI phải trực quan.\nCơ sở dữ liệu PostgreSQL[6] phải được đánh chỉ mục\n(Index) tối ưu cho extension pgvector[8], đảm bảo tốc\nKhả năng mở độ truy vấn khoảng cách vector không bị chậm đi khi\n6 NFR_06 rộng số lượng báo cáo lên tới hàng nghìn file.\n\nHệ thống Backend (Node.js[3]) phải có cơ chế tự\nđộng bắt lỗi và tự khởi động lại (restart) khi gặp sự\n7 NFR_07 Tính sẵn sàng cố, đảm bảo dịch vụ luôn sẵn sàng 24/7.\nHệ thống đọc và bóc tách dữ liệu phải xử lý trơn tru\ncác định dạng chuẩn yêu cầu là .pdf và .docx mà\n8 NFR_08 Tính tương thích không làm hỏng cấu trúc ký tự thô.",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Yêu cầu phi chức năng > API",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "b7580bfc-70b2-4f3a-9589-75a6d2948e96",
+          "title": "3.4 Use Case Diagram",
+          "level": 2,
+          "content": "Hệ thống có các tác nhân chính sau:\nBảng 3: Danh sách các tác nhân của dự án\nSTT Tác nhân (Actor) Vai trò hệ thống\nLà đối tượng sử dụng hệ thống để tham gia các lớp học\nphần (thông qua mã lớp), theo dõi tiến độ và nộp các báo\ncáo/đồ án. Đồng thời, đây là người khai thác chính phân\nhệ Thư viện số thông minh để tìm kiếm ngữ nghĩa và trực\ntiếp hỏi đáp chuyên sâu với các tài liệu bằng trợ lý AI\n1 Sinh viên (RAG).\nLà đối tượng vận hành các nghiệp vụ quản lý giáo dục.\nCó toàn quyền khởi tạo lớp học, nạp tự động danh sách\nsinh viên bằng file CSV, thiết lập các mốc nộp bài\n(Milestones). Đặc biệt, giảng viên đóng vai trò là \"người\ngác cổng\" tri thức: thực hiện chấm điểm, nhận xét và phê\n2 Giảng viên duyệt các báo cáo xuất sắc đưa vào kho học liệu chung.\nLà đối tượng quản lý cấp cao nhất của hệ thống. Chịu\ntrách nhiệm giám sát toàn bộ hoạt động, quản lý tài\nkhoản người dùng, kiểm soát tài nguyên lưu trữ của cơ sở\ndữ liệu (bao gồm cả dữ liệu Vector) và cấu hình các tham\nQuản trị viên số kết nối hệ thống cốt lõi (như API Key của LLM, thông\n3 (Admin) số server).\nTác nhân tự động: Đóng vai trò thực thi các tác vụ tính\ntoán nặng không cần sự can thiệp của con người. Chịu\nHệ thống xử lý trách nhiệm tự động bóc tách file .pdf/.docx, chia nhỏ\nngầm văn bản (Chunking), gọi API nhúng Vector và kết nối với\n(System/Background các mô hình ngôn ngữ lớn (LLM) để xử lý luồng tìm\n4 Worker) kiếm và hỏi đáp.\n\nBảng 4: Danh sách các usecase của chương trình\nTác nhân\nSTT Mã UC Tên usecase Mô tả Usecase tương tác Độ phức tạp\nSinh viên,\nĐăng nhập bằng tài Người dùng đăng nhập hệ thống bằng Giảng viên,\n1 UC001 khoản Microsoft tài khoản Microsoft do trường cấp. Admin Trung bình\nSinh viên,\nNgười dùng đăng xuất khỏi hệ thống Giảng viên,\n2 UC002 Đăng xuất sau khi sử dụng. Admin Thấp\nGiảng viên tạo lớp học phần để quản lý\n3 UC003 Tạo lớp học phần tài liệu và sinh viên. Giảng viên Trung bình\nTham gia lớp học Sinh viên tham gia lớp học phần bằng\n4 UC004 phần mã lớp do giảng viên cung cấp. Sinh viên Thấp\nSinh viên nộp tệp tin báo cáo vào các\n5 UC005 Nộp báo cáo lớp học phần mà mình đang tham gia. Sinh viên Trung bình\nSinh viên xem hoặc truy cập đọc trực\n6 UC006 Xem báo cáo tuyến các báo cáo học tập trên nền tảng. Sinh viên Thấp\nNgười dùng tải tài liệu (file PDF, Sinh viên,\n7 UC007 Tải xuống báo cáo Word) về thiết bị cá nhân. Giảng viên Thấp\nNgười dùng tìm kiếm tài liệu theo các\nTra cứu và tham trường thông tin cơ bản như từ khóa, Sinh viên,\n8 UC008 khảo báo cáo tên đồ án hoặc môn học. Giảng viên Trung bình\nQuản lý lớp học Giảng viên chỉnh sửa thông tin hoặc\n9 UC009 phần xóa lớp học phần đã tạo. Giảng viên Trung bình\nQuản lý sinh viên Giảng viên thêm mới hoặc xóa sinh\n10 UC010 trong lớp viên khỏi danh sách lớp học phần. Giảng viên Trung bình\nGiảng viên chấm điểm, nhận xét đối với\nDuyệt và đánh giá báo cáo của sinh viên và thực hiện lệnh\n11 UC011 báo cáo phê duyệt. Giảng viên Trung bình\nSau khi được phê duyệt, báo cáo sẽ\nđược hệ thống chuyển đổi trạng thái và\n12 UC012 Công khai báo cáo công khai vào thư viện chung. Giảng viên Thấp\n\nGiảng viên tạo các yêu cầu nộp báo\nTạo mốc nộp bài cáo, quy định định dạng file và thời\n13 UC013 (Assignment) gian hết hạn (Deadline). Giảng viên Trung bình\nGiảng viên tải file CSV để tự động\nImport danh sách thêm hàng loạt sinh viên vào lớp học\n14 UC014 sinh viên phần. Giảng viên Trung bình\nNgười dùng đặt câu hỏi trực tiếp với\nfile báo cáo PDF. Trợ lý AI đọc nội\nTruy vấn hỏi đáp dung, trích xuất ngữ cảnh và tổng hợp Sinh viên,\n15 UC015 báo cáo câu trả lời chuẩn xác. Giảng viên Cao\nAdmin thêm, sửa, xóa, khóa hoặc phân\nQuản lý người quyền cho các tài khoản trong toàn bộ\n16 UC016 dùng hệ thống. Admin Trung bình\nAdmin giám sát, ẩn hoặc xóa triệt để\nQuản lý kho tài các báo cáo vi phạm khỏi Thư viện số\n17 UC017 liệu chung. Admin Trung bình\n\nBiểu đồ use case tổng quát thể hiện các chức năng chính mà từng tác nhân có thể thực\nhiện.\nHình 6: Sơ đồ usecase tổng quát của dự án",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Use Case Diagram",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "a53cfcf5-5557-4ef8-874c-e1fe6e690a7c",
+          "title": "3.5 Đặc tả usecase quan trọng",
+          "level": 2,
+          "content": "- Đặc tả use case UC001 “Đăng nhập hệ thống DUTSTUDY và Phân quyền người dùng”\nMã Use case UC001 Tên Use case Đăng nhập hệ thống DUTSTUDY và\nPhân quyền người dùng\nTác nhân Người dùng ( Sinh viên / Giảng viên )\nMô tả Người dùng đăng nhập qua tài khoản Microsoft của trường để xác thực\ndanh tính và được cấp quyền sử dụng các chức năng theo vai trò .\nTiền điều kiện Người dùng có tài khoản Microsoft của trường cấp .\nLuồng sự kiện STT Thực hiện bởi Hành động\nchính\n1. N gười dùng Truy cập trang DUTSTUDY và chọn\n(Thành công)\n(Sinh viên / “Đăng nhập bằng tài khoản Microsoft”\nGiảng viên)\n2. H ệ thống Chuyển hướng người dùng đến cổng xác\nthực Microsoft Identity Platform\n3. N gười dùng Nhập thông tin tài khoản Microsoft\n(username, password)\n4. M icrosoft Xác thực thông tin và chuyển hướng về\nDUTSTUDY kèm Access Token (JWT)\n5. H ệ thống Xác thực token: kiểm tra chữ ký, thời hạn,\nissuer\n6. H ệ thống Trích xuất thông tin người dùng (email, ID)\ntừ token\n7. H ệ thống Xác định vai trò người dùng và cấp quyền\ntruy cập tương ứng\n8. H ệ thống Hiển thị giao diện chính theo quyền của\nngười dùng\nLuồng sự kiện thay STT Thực hiện bởi Hành động\nthế\n3a. Microsoft Nếu thông tin đăng nhập sai, hiển thị lỗi\n“Tài khoản hoặc mật khẩu không đúng” và\nyêu cầu đăng nhập lại\n5a Hệ thống Nếu token không hợp lệ hoặc hết hạn,\nthông báo “Truy cập bị từ chối” và quay lại\ntrang đăng nhập\n7a Hệ thống Nếu người dùng chưa có quyền truy cập,\nhiển thị thông báo “Truy cập bị từ chối”\nHậu điều kiện\n- Người dùng đã được xác thực và có quyền truy cập các chức năng\ntương ứng với vai trò.\n- Nếu thất bại, người dùng vẫn ở trang đăng nhập và chưa có quyền truy\ncập.\n\n* Dữ liệu đầu vào của thông tin cá nhân gồm các trường dữ liệu sau:\nSTT Trường dữ liệu Mô tả Bắt buộc? Điều kiện hợp lệ Ví dụ\n1. Email Email sinh Có Chỉ được đăng nhập bằng email của 102230099\nviên / giảng trường: @sv1.dut.\nviên - Sinh viên: @sv1.dut.udn.vn udn.vn\n- Giảng viên: @gv.dut.udn.vn\n2. Password Mật khẩu của Có Ít nhất 8 ký tự, chứa chữ hoa, chữ ToiLa12#\nngười dùng thường, số và ký tự đặc biệt $\nĐặc tả use case UC003 “Tạo lớp học phần”\nMã Use case UC003 Tên Use case Tạo lớp học phần\nTác nhân Giảng viên\nMô tả Giảng viên khởi tạo lớp học để sinh viên tham gia vào lớp học , làm tiền\nđề cho việc nộp báo cáo , sinh mã lớp để sinh viên có thể tham gia.\nTiền điều kiện - Giảng viên đã được cấp tài khoản để đăng nhập.\n- Giảng viên đăng nhập thành công\n.\nLuồng sự kiện STT Thực hiện bởi Hành động\nchính\n1. Giảng viên Chọn chức năng “Quản lý lớp học phần”\n(Thành công)\n2. Giảng viên Chọn “Tạo lớp học phần mới”\n3. Hệ thống Hiển thị form nhập thông tin lớp\n4. Giảng viên Nhập thông tin lớp học phần: Tên môn\nhọc, mã lớp, học kỳ, năm học\n5. Giảng viên N hấn “Tạo lớp”\n6. Hệ thống Kiểm tra tính hợp lệ dữ liệu\n7. Hệ thống Lưu thông tin lớp học phần vào database\n8. Hệ thống Hiển thị thông báo tạo lớp thành công + mã\nlớp\n9. Giảng viên Xem danh sách các lớp học phần đã tạo\nLuồng sự kiện thay STT Thực hiện bởi Hành động\nthế\n6a Hệ thống Nếu thông tin nhập thiếu sai định dạng , hệ\nthống hiển thị lỗi , quay lại bước 4\n6b Hệ thống Nếu Mã lớp đã tồn tại , hệ thống yêu cầu\nnhập mã lớp khác\n7a Hệ thống Nếu lưu Database thất bại , hiển thị thông\nbáo lỗi , không tạo lớp và cho phép thao tác\nlại\nHậu điều kiện - Giảng viên có thể quản lý lớp học phần đã tạo.\n- Hệ thống lưu trữ danh sách lớp học phần và thành viên tương ứng.\n\n* Dữ liệu đầu vào của thông tin cá nhân gồm các trường dữ liệu sau:\nSTT Trường dữ liệu Mô tả Bắt buộc? Điều kiện hợp lệ Ví dụ\n1. course_id Mã định danh Có Chỉ chứa ký tự chữ, số; không PBL23.99a\nlớp học phần trùng với các lớp đã tồn tại\n2. course_name Tên môn học Có Không để trống; có thể chứa PBL4\nchữ, số, ký tự đặc biệt\n3. academy_term Học kỳ và Có Định dạng: HKx_YYYY- HK1_2025-\nnăm học YYYY (ví dụ: HK1_2025- 2026\n2026)\n4. enrollment_code Mã lớp để Có Chỉ chứa chữ, số; độ dài 6-10 ABC123\nsinh viên tự ký tự\nđăng ký\n5. lecturer_ID Liên kết tới tài Có Phải là ID hợp lệ đã tồn tại GV102\nkhoản giảng trong hệ thống giảng viên\nviên tạo lớp\nĐặc tả use case UC005 “Nộp báo cáo theo lớp học phần”\nMã Use case UC005 Tên Use case Nộp báo cáo theo lớp học\nphần\nTác nhân Sinh viên\nMô tả Sinh viên nộp báo cáo vào lớp học phần đã tham gia bằng cách tải lên file\n(PDF) và nhập thông tin mô tả. Hệ thống kiểm tra và lưu trữ báo cáo.\nTiền điều kiện - Sinh viên đã đăng nhập hệ thống.\n- Sinh viên đã tham gia lớp học phần..\nLuồng sự kiện chính STT Thực hiện bởi Hành động\n(Thành công)\n1 Sinh viên Chọn lớp học phần đã tham gia\n2 Hệ thống Kiểm tra quyền truy cập của sinh viên\n3 Hệ thống Hiển thị form nộp báo cáo\n4 Sinh viên Upload file PDF và nhập mô tả báo cáo\n5 Sinh viên Nhấn “Nộp báo cáo”\n6 Hệ thống Kiểm tra dung lượng và định dạng file\n7 Hệ thống Lưu file\n8 Hệ thống Lưu metadata (mô tả, thời gian, sinh viên,\nlớp , link báo cáo, trạng thái )\n9 Hệ thống Cập nhật trạng thái báo cáo là \"Chờ duyệt\"\n10 Hệ thống Thông báo nộp báo cáo thành công\nLuồng sự kiện thay STT Thực hiện bởi Hành động\nthế\n2a. Hệ thống Nếu sinh viên chưa tham gia lớp học phần,\nthông báo “Bạn chưa có quyền nộp báo\ncáo cho lớp này”\n6a. Hệ thống Nếu file sai định dạng hoặc vượt dung\nlượng cho phép, thông báo lỗi và yêu cầu\n\nsinh viên tải lại file khác\n6b Hệ thống Nếu báo cáo trễ hạn nộp , hiển thị thông\nbáo .\n7a Hệ thống Nếu lưu file thất bại do lỗi hệ thống, thông\nbáo lỗi và yêu cầu thực hiện lại .\n8a Hệ thống Nếu lưu file metadata thất bại do lỗi hệ\nthống, thông báo lỗi và yêu cầu thực hiện\nlại .\nHậu điều kiện - File báo cáo và thông tin metadata đã được lưu trong hệ thống.\n- Trạng thái báo cáo được cập nhật “Chờ duyệt”.\n- Sinh viên nhận được thông báo kết quả thao tác\n* Dữ liệu đầu vào của thông tin cá nhân gồm các trường dữ liệu sau:\nSTT Trường dữ liệu Mô tả Bắt buộc? Điều kiện hợp lệ Ví dụ\n1. r eport_id Mã định danh Có Chỉ chứa chữ và số, BC20260406_00\nduy nhất cho báo không trùng với các 1\ncáo báo cáo đã tồn tại\n2. ti tle Tên đề tài đồ án Có Không để trống, tối Xây dựng hệ\nhoặc báo cáo đa 200 ký tự thống quản lý\nlớp\n3. fi le_Path Đường dẫn lưu Có File tồn tại, đúng định /uploads/BC202\nfile trên máy chủ dạng cho phép (PDF, 60406_001.pdf\nDOCX, ZIP…), dung\nlượng ≤ 20MB\n4. c reated_at Thời điểm sinh Có Không được trước 2026-04-06\nviên nộp báo cáo ngày tạo lớp, không 10:30\nvượt quá thời hạn nộp\nquy định\n5. st atus Trạng thái của Có Giá trị Enum: “Chờ Chờ duyệt\nbáo cáo duyệt”, “Đã duyệt”,\n“Yêu cầu sửa”\n6. c ourse_id Liên kết tới mã có Phải là khoá học hợp PBL23.99a\nkhoá học lệ đã tồn tại trong hệ\nthống\n7. st udent_id Liên kết tới mã Có Phải là MSSV hợp lệ 102230099\nsinh viên nộp đã tồn tại trong hệ\nbáo cáo thống\n\nĐặc tả use case UC011 “Duyệt và đánh giá báo cáo”\nMã Use case UC0011 Tên Use case Duyệt và đánh giá báo cáo\nTác nhân Giảng viên\nMô tả Giảng viên xem danh sách các báo cáo do sinh viên nộp trong lớp học phần\nphụ trách, sau đó duyệt hoặc từ chối báo cáo và đưa ra đánh giá.\nTiền điều kiện - Giảng viên đã đăng nhập hệ thống.\n- Giảng viên phụ trách ít nhất một lớp học phần.\nLuồng sự kiện STT Thực hiện bởi Hành động\nchính\n1 Giảng viên Chọn lớp học phần mình phụ trách\n(Thành công)\n2 Hệ thống Hiển thị danh sách các báo cáo chờ duyệt\n3 Giảng viên Chọn một báo cáo từ danh sách\n4 Hệ thống Hiển thị nội dung báo cáo (file, mô tả, thông\ntin sinh viên)\n5 Giảng viên Thực hiện duyệt hoặc từ chối báo cáo\n6 Giảng viên Nhận xét báo cáo sinh viên\n7 Hệ thống Cập nhật trạng thái báo cáo (“Đã duyệt”\nhoặc “Yêu cầu sửa”) và lưu lý do nếu có\n8 Hệ thống Gửi thông báo kết quả cho sinh viên\nLuồng sự kiện thay STT Thực hiện bởi Hành động\nthế\n6a. Giảng viên Nếu chọn từ chối báo cáo, phải nhập lý do\ntừ chối\n7a. Hệ thống Nếu lưu trạng thái hoặc lý do thất bại do lỗi\nhệ thống, thông báo lỗi và yêu cầu thực\nhiện lại\n8a. Hệ thống Nếu sinh viên không nhận thông báo (lỗi hệ\nthống), ghi log và thông báo cho giảng viên\nHậu điều kiện - Báo cáo được cập nhật trạng thái “Đã duyệt” hoặc “Yêu cầu sửa”.\n- Lý do từ chối được lưu (nếu có).\n- Sinh viên nhận thông báo về kết quả đánh giá.\n* Dữ liệu đầu vào của thông tin cá nhân gồm các trường dữ liệu sau:\nST\nTrường dữ liệu Mô tả Bắt buộc? Điều kiện hợp lệ Ví dụ\nT\n1 lecturer_id Mã định danh Có Phải là ID giảng viên hợp lệ GV102\ngiảng viên thực đã tồn tại trong hệ thống\nhiện duyệt\n2 repord_id Mã định danh báo Có Phải là ID báo cáo hợp lệ đã BC2026040\ncáo cần duyệt được sinh viên nộp 6_001\n3 status Trạng thái đánh giá Có Giá trị Enum: “Approved” Approved _001\nbáo cáo (Đã duyệt) hoặc “Rejected”\n(Từ chối)\n4 feedback Nhận xét của giảng Không Tối đa 500 ký tự Báo cáo tốt,\n\nviên về báo cáo đầy đủ nội\ndung\n5 reason Lý do từ chối báo Không Chỉ nhập nếu trangthai= Thiếu phần\ncáo (nếu có) rejected, tối đa 300 ký tự kết luận\n6 evaluation_score Điểm đánh giá báo Có Số thực từ 0 đến 10 hoặc 8.5\ncáo theo thang điểm quy định\n7 evaluated_at Thời điểm giảng Có Không được trước ngày nộp 2026-04-06\nviên thực hiện đánh báo cáo, định dạng Datetime 14:30\ngiá\nĐặc tả use case UC008 “Tra cứu và tham khảo báo cáo”\nMã Use case UC008 Tên Use case Tra cứu và tham khảo báo\ncáo\nTác nhân - Sinh viên\n- Giảng viên\nMô tả Cho phép người dùng tìm kiếm, xem và tải về các báo cáo đã được giảng\nviên duyệt để phục vụ học tập và tham khảo\nTiền điều kiện - Người dùng đã đăng nhập hệ thống.\n- Báo cáo phải đã được duyệt để hiển thị trong thư viện DUTSTUDY .\nLuồng sự kiện STT Thực hiện bởi Hành động\nchính\n1 Giảng viên / Truy cập trang thư viện báo cáo\n(Thành công)\nSinh viên\n2 Giảng viên / Nhập từ khóa tìm kiếm\nSinh viên\n3 Giảng viên / Lọc kết quả theo: tên báo cáo, môn học, lớp\nSinh viên học phần, giảng viên hướng dẫn\n4 Hệ thống Truy vấn cơ sở dữ liệu dựa trên từ khóa và\nbộ lọc\n5 Giảng viên / Hiển thị danh sách báo cáo phù hợp\nSinh viên\n6 Giảng viên / Chọn báo cáo để xem trực tiếp hoặc tải về\nSinh viên\nLuồng sự kiện thay STT Thực hiện bởi Hành động\nthế\n3a Hệ thống Nếu không tìm thấy báo cáo phù hợp, hiển\nthị thông báo: “Không tìm thấy báo cáo phù\nhợp”\n6a Giảng viên / Nếu file báo cáo lỗi hoặc không thể tải về,\nSinh viên thông báo lỗi và yêu cầu thử lại\nHậu điều kiện - Người dùng có thể xem hoặc tải về các báo cáo đã được duyệt.\n- Thông tin tìm kiếm được ghi nhận để cải thiện hiệu quả tra cứu trong\ncác lần tiếp theo.\n\n* Dữ liệu đầu vào của thông tin cá nhân gồm các trường dữ liệu sau:\nSTT Trường dữ liệu Mô tả Bắt buộc? Điều kiện hợp lệ Ví dụ\n1 report_id Mã định danh Có Không trùng với các BC20260406_001\nduy nhất của báo báo cáo đã tồn tại\ncáo\n2 Title Tên đề tài báo Có Không để trống, tối đa Xây dựng hệ thống\ncáo 200 ký tự quản lý báo cáo đồ án\nsinh viên\n3 course_name Tên môn học Có Không để trống PBL4\ncủa báo cáo\n4 course_id Mã lớp học phần Có Phải là lớp hợp lệ trong PBL23.99\nmà báo cáo hệ thống\nthuộc về\n5 lecturer_id_ Mã giảng viên Có Phải là giảng viên hợp GV102\nhướng dẫn/đánh lệ đã tồn tại\ngiá báo cáo\n6 student_id Mã sinh viên Có Phải là sinh viên hợp lệ 102230099\nnộp báo cáo đã tồn tại\n7 status Trạng thái duyệt Có Giá trị Enum: Approved\nbáo cáo “Approved” (Đã\nduyệt) hoặc “Rejected”\n8 file_path Đường dẫn lưu Có File tồn tại, đúng định /uploads/BC2026040\nfile trên máy chủ dạng (PDF, DOCX, 6_001.pdf\nZIP…)\n9 submitted_at Ngày sinh viên Có Không vượt quá hạn 2026-04-06 10:30\nnộp báo cáo nộp quy định\n10 feedback Nhận xét của Không Tối đa 500 ký tự Báo cáo tốt, đầy đủ\ngiảng viên (nếu nội dung\ncó)\nĐặc tả use case UC015 “Truy vấn hỏi đáp báo cáo”\nMã Use case UC015 Tên Use case Truy vấn hỏi đáp báo cáo\nTác nhân - Sinh viên\n- Giảng viên\nMô tả - Người dùng đặt câu hỏi trực tiếp trên giao diện đọc báo cáo. Hệ thống\nsử dụng công nghệ RAG để trích xuất ngữ cảnh từ cơ sở dữ liệu Vector\nvà dùng LLM để sinh câu trả lời chính xác, kèm theo trích dẫn.\nTiền điều kiện - Người dùng đang mở giao diện chi tiết của một báo cáo. Báo cáo này\nđã được bóc tách và nhúng Vector thành công vào CSDL.\nLuồng sự kiện STT Thực hiện bởi Hành động\nchính\n1 Người dùng Nhập nội dung câu hỏi vào khung Chatbox\n(Thành công)\nbên cạnh tài liệu và bấm nút \"Gửi\".\n2 Hệ thống Tiếp nhận input, vô hiệu hóa nút gửi\n(Frontend) (loading) và gọi API gửi câu hỏi cùng\nreport_id lên Backend.\n\n3 Hệ thống Gọi dịch vụ/API Embedding để biến đổi\n(Backend) câu hỏi của người dùng thành một chuỗi\nVector (Query Vector).\nThực thi truy vấn Cosine Similarity để tìm\nkiếm các đoạn văn bản (Chunks) trong DB\n4.\nHệ thống có khoảng cách Vector gần nhất với Query\n(Database) Vector của report_id tương ứng.\n5.\nHệ thống Trích xuất nội dung Text của các Chunks\n(Backend) tìm được để làm ngữ cảnh (Context).\nLắp ráp Context và Câu hỏi của người\n6.\nHệ thống dùng vào một kịch bản Prompt hệ thống\n(Backend) đã định nghĩa sẵn.\nLuồng sự kiện thay STT\nthế Thực hiện bởi Hành động\nNếu người dùng gửi tin nhắn rỗng hoặc\n1a. Hệ thống chỉ chứa khoảng trắng, hệ thống chặn gửi\n(Frontend) và yêu cầu nhập nội dung.\nNếu không tìm thấy Chunk nào có độ\ntương đồng vượt quá ngưỡng tối thiểu\n(Threshold), Backend chuyển sang kịch\nbản prompt từ chối. LLM sẽ trả lời: \"Dựa\n4a. Hệ thống trên nội dung tài liệu, không có đủ thông\n(Backend) tin để trả lời câu hỏi này.\"\nHậu điều kiện - Hệ thống hiển thị câu trả lời chính xác cho người dùng.\n- Lịch sử đoạn chat được lưu tạm thời trên giao diện (hoặc lưu vào\nDB tùy cấu hình) để duy trì ngữ cảnh cho các câu hỏi tiếp theo.\n* Dữ liệu đầu vào của thông tin cá nhân gồm các trường dữ liệu sau:\nSTT Trường dữ liệu Mô tả Bắt buộc? Điều kiện hợp lệ Ví dụ\nKhông rỗng, không chứa\nCâu truy vấn các lệnh Thuật toán phân\nbằng ngôn ngữ jailbreak/prompt tích tĩnh dùng\nNội dung câu tự nhiên của injection lộ liễu. Tối đa trong báo cáo là\n1. hỏi (Message) người dùng Có 1000 ký tự. gì?\nMã định danh Phải là chuỗi ID/UUID 550e8400-e29b-\nID Báo cáo của tài liệu đang hợp lệ tồn tại trong hệ 41d4-a716-\n2. (Report ID) xem Có thống 446655440000",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.5 Đặc tả usecase quan trọng",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "db3896f8-318c-4a83-82ca-33d4efd1e73c",
+          "title": "3.3 Activity Diagram",
+          "level": 2,
+          "content": "",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Activity Diagram",
+          "children": [
+            {
+              "id": "4c4de23e-dacb-4425-97a3-f36351506136",
+              "title": "3.3.1 UC001 - Đăng nhập hệ thống DUTSTUDY và phân quyền người dùng",
+              "level": 3,
+              "content": "Hình 7: Biểu đồ hoạt động UC001 “Đăng nhập hệ thống DUTSTUDY và phân quyền\nngười dùng “",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Activity Diagram > 3.3.1 UC001 - Đăng nhập hệ thống DUTSTUDY và phân quyền người dùng",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "3b9ad6aa-bd22-4274-ade6-425ad15c318a",
+              "title": "3.3.2 UC003 - Tạo lớp học phần ( Giảng viên )",
+              "level": 3,
+              "content": "Hình 8: Biểu đồ hoạt động UC002 “Tạo lớp học phần”",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Activity Diagram > 3.3.2 UC003 - Tạo lớp học phần ( Giảng viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "e72c0317-5d8d-42aa-9746-9383ff858d31",
+              "title": "3.3.3 UC005 - Nộp báo cáo theo lớp học phần ( Sinh viên )",
+              "level": 3,
+              "content": "Hình 9: Biểu đồ hoạt động UC003 “Nộp báo cáo theo lớp học phần”",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Activity Diagram > 3.3.3 UC005 - Nộp báo cáo theo lớp học phần ( Sinh viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "5887fa9e-157b-4d92-8837-3e3b9ef1e2f5",
+              "title": "3.3.4 UC011 - Duyệt và đánh giá báo cáo ( Giảng viên )",
+              "level": 3,
+              "content": "Hình 10:Biểu đồ hoạt động UC004 “Duyệt và đánh giá báo cáo của giảng viên”",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Activity Diagram > 3.3.4 UC011 - Duyệt và đánh giá báo cáo ( Giảng viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "dda8fd9d-0a0c-4235-903d-9d1f8330a947",
+              "title": "3.3.5 UC008 - Tra cứu và tham khảo báo cáo ( Sinh viên / Giảng viên )",
+              "level": 3,
+              "content": "Hình 11:Biểu đồ hoạt động UC005 “Tra cứu và tham khảo báo cáo ”\n\n3.3.6 UC015 – Truy vấn hỏi đáp báo cáo sinh viên ( Sinh viên / Giảng\nviên )\nHình 12:Biểu đồ hoạt động UC005 “Truy vấn hỏi đáp báo cáo sinh viên”",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.3 Activity Diagram > 3.3.5 UC008 - Tra cứu và tham khảo báo cáo ( Sinh viên / Giảng viên )",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "545389a5-db22-44fe-af44-4ba98f0d1192",
+          "title": "3.4 Sequence Diagram",
+          "level": 2,
+          "content": "",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram",
+          "children": [
+            {
+              "id": "e8b52d6e-d1e2-4191-b021-07b027aa20ee",
+              "title": "3.4.1 UC001 - Đăng nhập hệ thống DUTSTUDY và phân quyền người dùng",
+              "level": 3,
+              "content": "Hình 13: Biểu đồ trình tự đăng nhập hệ thống và phân quyền người dùng",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram > 3.4.1 UC001 - Đăng nhập hệ thống DUTSTUDY và phân quyền người dùng",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "fff1371e-e8f5-4741-88f3-45f775f81c2e",
+              "title": "3.4.2 UC003 - Tạo lớp học phần ( Giảng viên )",
+              "level": 3,
+              "content": "Hình 14: Biểu đồ trình tự tạo lớp học phần",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram > 3.4.2 UC003 - Tạo lớp học phần ( Giảng viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "87fe1625-583d-4aa5-a988-948a63440468",
+              "title": "3.4.3 UC005 - Nộp báo cáo theo lớp học phần ( Sinh viên )",
+              "level": 3,
+              "content": "Hình 15: Biểu đồ trình tự nộp báo cáo theo lớp học phần",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram > 3.4.3 UC005 - Nộp báo cáo theo lớp học phần ( Sinh viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "e3dd2e6c-fa90-4fe9-8583-7b12da689d3d",
+              "title": "3.4.4 UC011 - Duyệt và đánh giá báo cáo ( Giảng viên )",
+              "level": 3,
+              "content": "Hình 16: Biểu đồ trình tự duyệt và đánh giá báo cáo của giảng viên",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram > 3.4.4 UC011 - Duyệt và đánh giá báo cáo ( Giảng viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "390507d8-b665-4372-ae1e-321b1405147d",
+              "title": "3.4.5 UC008 - Tra cứu và tham khảo báo cáo ( Sinh viên / Giảng viên )",
+              "level": 3,
+              "content": "Hình 17: Biểu đồ trình tự tra cứu và tham khảo báo cáo",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram > 3.4.5 UC008 - Tra cứu và tham khảo báo cáo ( Sinh viên / Giảng viên )",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "6615b787-2ef7-4a6e-a2c6-da2aee296bed",
+              "title": "3.4.6 UC015 – Truy vấn hỏi đáp thông tin tài liệu ( Sinh viên / Giảng viên )",
+              "level": 3,
+              "content": "Hình 18: Biểu đồ trình tự truy vấn hỏi đáp thông tin tài liệu",
+              "summary": "",
+              "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.4 Sequence Diagram > 3.4.6 UC015 – Truy vấn hỏi đáp thông tin tài liệu ( Sinh viên / Giảng viên )",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "d417bbcd-5d4d-4075-a540-1b3038d94c6a",
+          "title": "3.5 Thiết kế cơ sở dữ liệu",
+          "level": 2,
+          "content": "Cơ sở dữ liệu của hệ thống được thiết kế nhằm lưu trữ thông tin người dùng, học\nphần, bài tập, báo cáo, bài nộp, tiến độ đồ án, thông báo và dữ liệu phục vụ RAG.\nPostgreSQL[6] được sử dụng làm hệ quản trị cơ sở dữ liệu chính do hỗ trợ tốt dữ liệu\nquan hệ, truy vấn phức tạp, chỉ mục tìm kiếm và khả năng mở rộng.\nThiết kế cơ sở dữ liệu hướng đến việc hỗ trợ đầy đủ workflow của hệ thống Project\nBased Learning: quản lý người dùng theo vai trò, quản lý lớp học phần, quản lý sinh\nviên tham gia lớp, giao bài tập, nộp báo cáo, xử lý tài liệu, đánh giá báo cáo, lưu lịch\nsử phiên bản, quản lý thông báo và hỗ trợ tìm kiếm ngữ nghĩa.\nHình 19: Cơ sở dữ liệu tổng quát\n\nBảng 5. Mô tả các bảng trong cơ sở dữ liệu\nSTT Tên bảng Mô tả dữ liệu lưu trữ\n1 users Lưu trữ thông tin tài khoản người dùng như họ\ntên, email, mật khẩu đã mã hóa, vai trò, trạng thái\ntài khoản, mã sinh viên, lớp, khoa và thông tin\ngiảng viên\n2 refresh_tokens Lưu trữ refresh token phục vụ cơ chế đăng nhập,\ngia hạn phiên và đăng xuất khỏi nhiều thiết bị\n3 user_import_batches Lưu lịch sử các lần import danh sách sinh viên\nhoặc giảng viên từ file CSV, bao gồm số dòng\nthành công, thất bại và chi tiết lỗi\n4 courses Lưu thông tin lớp học phần / đồ án / khóa luận,\nbao gồm mã lớp, học kỳ, năm học, loại lớp, giảng\nviên phụ trách, mã tham gia và thời hạn nộp bài\n5 course_lecturers Lưu danh sách giảng viên tham gia một lớp học\nphần với các vai trò khác nhau như hướng dẫn,\nphản biện hoặc thành viên hội đồng\n6 enrollments Lưu thông tin sinh viên đăng ký tham gia lớp học\nphần, bao gồm trạng thái tham gia\n7 evaluation_criteria Lưu các tiêu chí chấm điểm cho từng lớp học\nphần, bao gồm tên tiêu chí, trọng số phần trăm,\nđiểm tối đa và thứ tự hiển thị\n8 projects Lưu thông tin đồ án của sinh viên như tên đề tài,\nmô tả, giảng viên hướng dẫn, trạng thái thực\nhiện, thời gian bắt đầu và kết thúc\n9 Research_paper Lưu thông tin bài nghiên cứu khoa học của sinh\nviên, bao gồm tiêu đề, tóm tắt, từ khóa, tạp chí,\nDOI và trạng thái xuất bản\n10 mentorships Lưu mối quan hệ hướng dẫn giữa giảng viên và\nsinh viên, gắn với đồ án hoặc lớp học phần cụ\nthể, bao gồm thời gian và trạng thái\n11 progress_tracking Lưu các mốc tiến độ (milestone) của đồ án, bao\ngồm tên mốc, mô tả, hạn chót, trạng thái hoàn\nthành và người xác nhận\n12 reports Lưu báo cáo sinh viên nộp vào hệ thống, bao\ngồm file đính kèm, trạng thái duyệt, trạng thái\nembedding RAG, người phê duyệt, lượt xem và\nphạm vi hiển thị\n13 report_versions Lưu lịch sử các phiên bản nộp lại của một báo\ncáo, bao gồm nội dung, file, hash và tóm tắt thay\nđổi so với lần trước\n14 report_chunks Lưu các đoạn văn bản đã chia nhỏ từ báo cáo\nkèm vector embedding phục vụ tìm kiếm ngữ\nnghĩa RAG, bao gồm vị trí trang và section\n\n15 report_references Lưu danh mục tài liệu tham khảo được trích xuất\ntừ báo cáo, bao gồm tiêu đề, tác giả, năm xuất\nbản, nguồn và URL\n16 report_ratings Lưu đánh giá sao (1–5) của người dùng đối với\nbáo cáo, mỗi người chỉ đánh giá một lần cho mỗi\nbáo cáo\n17 favorites Lưu danh sách báo cáo được người dùng đánh\ndấu yêu thích để truy cập nhanh sau này\n18 Feedback Lưu nhận xét và đánh giá của giảng viên đối với\nbáo cáo sinh viên, bao gồm điểm tổng, điểm theo\ntừng tiêu chí và chế độ riêng tư\n19 assignments Lưu bài tập và đầu việc giảng viên giao cho lớp,\nbao gồm loại bài tập, hạn nộp, file đính kèm và\nchính sách nộp trễ\n20 assignment_submissions Lưu bài nộp của sinh viên cho từng bài tập, bao\ngồm trạng thái nộp, nhận xét của giảng viên và số\nlần nộp\n21 class_posts Lưu bài đăng thông báo trong lớp học phần, bao\ngồm nội dung, file đính kèm, trạng thái ghim và\ntác giả\n22 class_post_comments Lưu bình luận của người dùng trên các bài đăng\ntrong lớp học phần\n23 Notifications Lưu thông báo hệ thống gửi đến người dùng như\nduyệt báo cáo, nhận phản hồi, cảnh báo đạo văn,\nbao gồm trạng thái đã đọc và kênh gửi\n24 rag_query_logs Lưu lịch sử truy vấn AI của người dùng, bao gồm\ncâu hỏi, vector embedding, kết quả trả về, thời\ngian xử lý và phản hồi chất lượng",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.5 Thiết kế cơ sở dữ liệu",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "1293c7b1-b29d-47c8-bfbc-7e021006ac60",
+          "title": "3.6 Thiết kế kiến trúc hệ thống",
+          "level": 2,
+          "content": "Hệ thống được thiết kế theo hướng tách thành nhiều service độc lập nhằm dễ phát\ntriển, kiểm thử, triển khai và mở rộng. Mỗi service đảm nhiệm một nhóm chức năng\nriêng, trong đó Backend API đóng vai trò trung tâm điều phối request giữa Frontend,\ncơ sở dữ liệu, dịch vụ lưu trữ file, hàng đợi xử lý và các dịch vụ AI.\n\n- Kiến trúc sử dụng cho dự án này :\nHình 20: Mô hình kiến trúc monolith\n- Kiến trúc tổng quát của hệ thống\nHình 21: Kiến trúc tổng quát hệ thống",
+          "summary": "",
+          "path": "CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG > 3.6 Thiết kế kiến trúc hệ thống",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "1eab16c3-e99c-45a1-b19c-047372d5d9f1",
+      "title": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG",
+      "children": [
+        {
+          "id": "8039cd7f-6d82-4e77-bac4-3c724802a32e",
+          "title": "4.1 Giới thiệu hệ thống",
+          "level": 2,
+          "content": "DUTSTUDY là hệ thống web hỗ trợ quản lý học phần, báo cáo học thuật và hỏi đáp tài\nliệu dựa trên kỹ thuật Retrieval-Augmented Generation. Hệ thống được xây dựng nhằm\nhỗ trợ quá trình học tập theo mô hình Project Based Learning, trong đó sinh viên có thể\ntham gia lớp học, nhận bài tập, nộp báo cáo, theo dõi phản hồi từ giảng viên và khai\nthác trợ lý AI để tra cứu nội dung tài liệu đã nộp.\nKhác với các hệ thống quản lý học tập thông thường chỉ tập trung vào việc giao bài và\nnộp bài, hệ thống trong đề tài còn tích hợp thêm quy trình xử lý báo cáo học thuật bằng\nAI. Khi sinh viên hoặc giảng viên tải lên tài liệu như PDF hoặc DOCX, hệ thống lưu\ntrữ file, đưa tài liệu vào hàng đợi xử lý, trích xuất nội dung, tóm tắt các phần quan trọng\nvà tạo embedding phục vụ tìm kiếm ngữ nghĩa. Nhờ đó, người dùng có thể đặt câu hỏi\ntrực tiếp trên nội dung báo cáo và nhận câu trả lời dựa trên ngữ cảnh tài liệu.\nHệ thống gồm các nhóm chức năng chính: quản lý người dùng, quản lý học phần, quản\nlý bài tập, nộp báo cáo, quản lý thư viện học thuật, xử lý tài liệu, tìm kiếm ngữ nghĩa,\nhỏi đáp AI, quản lý thông báo và thống kê hệ thống. Với vai trò sinh viên, người dùng\ncó thể xem các lớp đã tham gia, truy cập chi tiết lớp học, xem bài tập, nộp báo cáo, xem\nphản hồi và sử dụng chức năng hỏi đáp AI. Với vai trò giảng viên, người dùng có thể\nquản lý lớp học, tạo bài tập, theo dõi bài nộp, nhận xét và chấm điểm báo cáo. Với vai\ntrò quản lý hoặc quản trị viên, người dùng có thể quản lý tài khoản, import danh sách\nsinh viên/giảng viên, quản lý học phần, quản lý báo cáo và xem thống kê tổng quan.\nVề kiến trúc, hệ thống được chia thành nhiều thành phần để thuận tiện cho phát triển,\ntriển khai và mở rộng. Frontend cung cấp giao diện tương tác cho người dùng. Backend",
+          "summary": "",
+          "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.1 Giới thiệu hệ thống",
+          "children": [
+            {
+              "id": "53a69f3b-90a2-4318-9ef0-d3e31d01a82c",
+              "title": "API",
+              "level": 3,
+              "content": "dịch vụ liên quan. Worker Python đảm nhiệm việc xử lý tài liệu như trích xuất nội dung\nPDF, xây dựng cấu trúc tài liệu, tạo tóm tắt và embedding. LLM Service cung cấp các",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.1 Giới thiệu hệ thống > API",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "6269cf11-4818-4db3-8d2c-0bfaad21e139",
+              "title": "API",
+              "level": 3,
+              "content": "ra, hệ thống sử dụng Redis[9] làm hàng đợi xử lý và MinIO[10] làm nơi lưu trữ file.\nTrong hệ thống, frontend không gọi trực tiếp các dịch vụ xử lý AI mà thông qua\nBackend API. Cách thiết kế này giúp backend kiểm soát xác thực, phân quyền, trạng\nthái báo cáo và dữ liệu người dùng trước khi chuyển request sang các service nội bộ.\nĐồng thời, các thông tin nhạy cảm như cấu hình kết nối cơ sở dữ liệu, dịch vụ lưu trữ,\nmô hình AI và API key được bảo vệ ở phía server thay vì đưa lên frontend.\n\nLuồng sử dụng chính của hệ thống bắt đầu từ việc sinh viên đăng nhập, tham gia học\nphần, mở bài tập và nộp báo cáo. Sau khi báo cáo được tải lên, backend lưu file vào\nMinIO, tạo bản ghi báo cáo trong cơ sở dữ liệu và đẩy job vào Redis[9] queue. Worker\nPython nhận job, tải file từ MinIO[10], trích xuất nội dung tài liệu, tạo cây cấu trúc nội\ndung, sinh tóm tắt và embedding. Khi quá trình xử lý hoàn tất, người dùng có thể tìm\nkiếm báo cáo trong thư viện học thuật hoặc đặt câu hỏi với trợ lý AI dựa trên nội dung\nđã được xử lý.\nNhư vậy, hệ thống đã kết hợp được ba hướng xử lý trong cùng một nền tảng: quản lý\nhọc phần và báo cáo, xử lý tài liệu học thuật tự động, và hỗ trợ hỏi đáp thông minh bằng\nkỹ thuật RAG.",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.1 Giới thiệu hệ thống > API",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "8161fb34-586b-4936-be9d-eb49e7de5a75",
+          "title": "4.2 Công nghệ và môi trường sử dụng",
+          "level": 2,
+          "content": "Để xây dựng hệ thống, đề tài sử dụng các công nghệ phù hợp với từng thành phần trong\nkiến trúc. Frontend được xây dựng bằng React[1], TypeScript và TailwindCSS[5] nhằm\ntạo giao diện web hiện đại, dễ mở rộng và có khả năng tái sử dụng component. Axios\nđược sử dụng để giao tiếp với backend thông qua REST API, đồng thời hỗ trợ cơ chế\ntự động gắn JWT token và refresh token khi phiên đăng nhập hết hạn.\nBackend được xây dựng bằng Node.js[3], ExpressJS[4] và TypeScript[2]. Backend đảm\nnhiệm các chức năng nghiệp vụ chính như xác thực người dùng, phân quyền theo vai\ntrò, quản lý học phần, quản lý bài tập, quản lý báo cáo, xử lý nộp file, tạo thông báo và\ngọi các dịch vụ AI. PostgreSQL[6] được sử dụng làm hệ quản trị cơ sở dữ liệu chính để\nlưu trữ thông tin người dùng, học phần, bài tập, báo cáo, phiên nộp bài, đánh giá và dữ\nliệu liên quan đến RAG.\nHệ thống sử dụng MinIO[10] để lưu trữ các file người dùng tải lên như báo cáo PDF,\ntài liệu DOCX và file đính kèm trong lớp học. Redis[9] được sử dụng làm hàng đợi xử\nlý bất đồng bộ, giúp backend không phải xử lý trực tiếp các tác vụ nặng như trích xuất\nPDF hoặc tạo embedding. Khi có báo cáo mới, backend đẩy job vào Redis queue, sau\nđó worker Python sẽ nhận job và xử lý ở nền.\nLLM Service được xây dựng bằng FastAPI[12] và Python. Service này tích hợp\nOllama[13] với mô hình Qwen2.5[15] nhằm phục vụ các chức năng tóm tắt nội dung,\nlựa chọn node liên quan và sinh câu trả lời cho truy vấn của người dùng. Worker Python\nsử dụng các thư viện xử lý tài liệu như pdfplumber để trích xuất nội dung PDF, sau đó\nxây dựng cây nội dung, tóm tắt từng phần và tạo embedding phục vụ tìm kiếm ngữ\nnghĩa.\n\nNgoài ra, hệ thống được đóng gói và triển khai bằng Docker[11] Compose. Các service\nnhư frontend, backend, Redis, MinIO[10] và worker có thể được khởi chạy độc lập,\ngiúp quá trình phát triển và kiểm thử thuận tiện hơn.\nBảng 6. Công nghệ sử dụng trong hệ thống\nSTT Thành phần hệ thống Công nghệ sử dụng Vai trò công nghệ\n1 Frontend React, TypeScript Xây dựng giao diện\nngười dùng dạng\nSingle Page\nApplication\n2 UI Framework TailwindCSS[5], Lucide Thiết kế giao diện,\nReact icon và bố cục trực\nquan\n3 Backend API Node.js, ExpressJS, Xử lý API, nghiệp\nTypeScript vụ, xác thực và phân\nquyền\n4 Database PostgreSQL Lưu trữ dữ liệu người\ndùng, học phần, báo\ncáo và bài nộp\n5 Authentication JWT, Refresh Token Xác thực phiên đăng\nnhập và bảo vệ API\n6 File Storage MinIO Lưu trữ file báo cáo,\ntài liệu và file đính\nkèm\n7 Queue Service Redis Quản lý hàng đợi xử\nlý tài liệu bất đồng bộ\n8 AI Service FastAPI, Python Cung cấp API tóm\ntắt, tìm kiếm và hỏi\nđáp AI\n9 LLM runtime Ollama, Qwen2.5 Sinh phản hồi ngôn\nngữ tự nhiên cho\nchức năng AI\n10 PDF Processing pdfplumber Trích xuất nội dung\ntừ tài liệu PDF\n11 RAG/ Vector Search Supabase/Pinecone[18], Lưu trữ và tìm kiếm\nEmbedding ngữ nghĩa theo nội\ndung tài liệu\n12 Container Docker, Docker Compose Đóng gói và triển\nkhai các service trong\nhệ thống\n\nBảng 7. Môi trường thực nghiệm và xây dựng hệ thống\nSTT Thành phần môi Môi trường chi tiết Ghi chú\ntrường\n1 Hệ điều hành phát triển Windows 10 / Windows Môi trường phát triển\n11 cục bộ\n2 Ngôn ngữ frontend TypeScript Tăng khả năng kiểm\nsoát kiểu dữ liệu\n3 Ngôn ngữ backend TypeScript Xây dựng API có cấu\ntrúc rõ ràng\n4 Ngôn ngữ xử lý AI Python Xử lý tài liệu, gọi\nLLM và tạo\nembedding\n5 Framework frontend React Xây dựng giao diện\nngười dùng\n6 Framework backend ExpressJS Xây dựng RESTful",
+          "summary": "",
+          "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.2 Công nghệ và môi trường sử dụng",
+          "children": [
+            {
+              "id": "02c2984d-2507-49b4-b8cc-4f260e77cf2c",
+              "title": "API",
+              "level": 3,
+              "content": "7 Framework AI service FastAPI Xây dựng API bất\nđồng bộ cho AI\n8 Cơ sở dữ liệu PostgreSQL Lưu trữ dữ liệu\nnghiệp vụ chính\n9 Lưu trữ file MinIO Lưu file báo cáo và\ntài liệu\n10 Hàng đợi xử lý Redis Điều phối job xử lý\ntài liệu\n11 Công cụ triển khai Docker Compose Docker Compose\nKhởi chạy nhiều\nservice cùng lúc\n12 Công cụ quản lý mã Git / GitHub Quản lý phiên bản\nnguồn mã nguồn",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.2 Công nghệ và môi trường sử dụng > API",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "a98cdd71-def9-47dc-8955-8c82876b7a60",
+          "title": "4.3 Giao diện hệ thống",
+          "level": 2,
+          "content": "Giao diện hệ thống được thiết kế theo hướng trực quan, dễ sử dụng và phù hợp với quy\ntrình học tập theo mô hình Project Based Learning. Các màn hình quan trọng của hệ\nthống gồm: giao diện đăng nhập, giao diện trang chủ theo vai trò, giao diện danh sách\nhọc phần, giao diện chi tiết lớp học, giao diện nộp báo cáo, giao diện quản lý bài tập,\ngiao diện thư viện học thuật, giao diện hỏi đáp AI, giao diện chấm điểm và giao diện\nquản trị người dùng.",
+          "summary": "",
+          "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống",
+          "children": [
+            {
+              "id": "b8f22584-b266-41f3-8aa2-f61881ab87e3",
+              "title": "4.3.1. Giao diện đăng nhập",
+              "level": 3,
+              "content": "Giao diện đăng nhập cho phép người dùng nhập email và mật khẩu để truy cập hệ thống.\nSau khi đăng nhập thành công, backend trả về access token, refresh token và thông tin\nngười dùng. Frontend lưu token để sử dụng cho các request tiếp theo. Tùy theo vai trò\ncủa người dùng, hệ thống điều hướng đến giao diện phù hợp như trang sinh viên, trang\ngiảng viên, trang quản lý hoặc trang quản trị.\nHình 22: Giao diện trang đăng nhập hệ thống",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.1. Giao diện đăng nhập",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "eac8d6ad-83d2-4d79-8685-fd057825ecfa",
+              "title": "4.3.2. Giao diện trang chủ / Dashboard",
+              "level": 3,
+              "content": "Sau khi đăng nhập, người dùng được chuyển đến trang chủ tương ứng với vai trò. Với\nsinh viên, giao diện hiển thị các lớp học đã tham gia, bài tập cần hoàn thành và các\nthông báo mới. Với giảng viên, giao diện hiển thị danh sách lớp đang phụ trách, bài nộp\ncần chấm và tiến độ của sinh viên. Với quản lý hoặc quản trị viên, dashboard cung cấp\nthông tin tổng quan về số lượng người dùng, học phần, báo cáo và hoạt động của hệ\nthống.\n\n- Sinh viên :\nHình 23: Giao diện trang Dashboard (sinh viên)\n- Giảng viên :\nHình 24: Giao diện Dashboard (giảng viên)\n\n- Admin :\nHình 25: Giao diện Dashboard (admin)",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.2. Giao diện trang chủ / Dashboard",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "48b4aa74-a97c-4a54-9950-c348b932f6c9",
+              "title": "4.3.3. Giao diện danh sách học phần",
+              "level": 3,
+              "content": "Giao diện danh sách học phần hiển thị các lớp học phần hiện có trong hệ thống. Mỗi\nhọc phần gồm tên lớp, mã học phần, học kỳ, năm học, giảng viên phụ trách và số lượng\nsinh viên tham gia. Sinh viên có thể xem các lớp đã tham gia hoặc nhập mã để tham gia\nlớp mới. Giảng viên và quản lý có thể tạo mới, chỉnh sửa hoặc xóa học phần nếu có\nquyền.\n- Sinh viên :\nHình 26: Giao diện trang danh sách lớp học phần (sinh viên)\n\n- Giảng viên :\nHình 27: Giao diện trang danh sách lớp học phần (giảng viên)",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.3. Giao diện danh sách học phần",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "3aab5b1a-06b8-4b74-b637-d1ada05d0cc8",
+              "title": "4.3.4. Giao diện chi tiết lớp học",
+              "level": 3,
+              "content": "Khi người dùng chọn một học phần, hệ thống hiển thị giao diện chi tiết lớp học. Giao\ndiện này gồm các thông báo trong lớp, danh sách bài tập, tài liệu học tập, bài đăng của\ngiảng viên và danh sách sinh viên. Sinh viên có thể xem yêu cầu bài tập, bình luận trong\nlớp và thực hiện nộp báo cáo. Giảng viên có thể tạo bài tập mới, đăng thông báo và theo\ndõi tình trạng nộp bài của sinh viên.\n- Sinh viên :\nHình 28: Giao diện trang chi tiết lớp học phần (sinh viên)\n\n- Giảng viên :\nHình 29: Giao diện trang chi tiết lớp học phần (giảng viên)",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.4. Giao diện chi tiết lớp học",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "a6001fd1-9123-457f-a6e6-760dfe62a500",
+              "title": "4.3.5. Giao diện nộp báo cáo",
+              "level": 3,
+              "content": "Giao diện nộp báo cáo cho phép sinh viên nhập tiêu đề, mô tả nội dung và tải lên file\nbáo cáo. Hệ thống hỗ trợ các định dạng tài liệu như PDF hoặc DOCX. Sau khi sinh viên\nnộp báo cáo, backend lưu file vào MinIO[10], tạo bản ghi báo cáo trong cơ sở dữ liệu\nvà đưa tài liệu vào hàng đợi xử lý. Trạng thái xử lý báo cáo được cập nhật để người\ndùng biết tài liệu đang chờ xử lý, đang xử lý, hoàn tất hoặc bị lỗi.\nHình 30: Giao diện trang nộp báo cáo (sinh viên)",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.5. Giao diện nộp báo cáo",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "96c1157f-eb65-400d-90e8-703cca1c2dc8",
+              "title": "4.3.6. Giao diện quản lý và nhận xét bài nộp",
+              "level": 3,
+              "content": "Giao diện nhận xét dành cho giảng viên cho phép xem danh sách bài nộp của sinh viên\ntheo từng bài tập. Giảng viên có thể mở chi tiết bài nộp, tải file báo cáo, xem trạng thái\nxử lý tài liệu, ghi nhận xét. Giao diện này giúp giảng viên theo dõi tiến độ học tập, đánh\ngiá chất lượng báo cáo và phản hồi trực tiếp cho sinh viên.\nHình 31: Giao diện trang quản lý và nhận xét báo cáo (giảng viên)",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.6. Giao diện quản lý và nhận xét bài nộp",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "a085c2e0-c57c-49ad-8100-4da3f3407a22",
+              "title": "4.3.7. Giao diện thư viện học thuật",
+              "level": 3,
+              "content": "Giao diện thư viện học thuật cho phép người dùng tra cứu các báo cáo đã được công\nkhai hoặc các tài liệu mà người dùng có quyền truy cập. Người dùng có thể tìm kiếm\ntheo tiêu đề, từ khóa, năm học, loại báo cáo hoặc lĩnh vực nghiên cứu. Mỗi báo cáo hiển\nthị các thông tin cơ bản như tiêu đề, tác giả, mô tả, trạng thái, lượt xem và tài liệu tham\nkhảo nếu đã được hệ thống trích xuất.\nHình 32: Giao diện trang tài liệu tham khảo (sinh viên)",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.7. Giao diện thư viện học thuật",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "3621e76a-f8f2-46a2-b2cf-fb77f805b155",
+              "title": "4.3.8. Giao diện hỏi đáp AI",
+              "level": 3,
+              "content": "Giao diện hỏi đáp AI cho phép người dùng đặt câu hỏi liên quan đến nội dung tài liệu.\nKhi người dùng gửi câu hỏi, frontend chuyển request đến backend, backend gọi LLM\nService để tìm kiếm các phần nội dung liên quan và sinh câu trả lời dựa trên ngữ cảnh\ntài liệu. Giao diện hiển thị câu hỏi, câu trả lời và có thể mở rộng để hiển thị nguồn tham\nchiếu tương ứng trong báo cáo.\nHình 33: Giao diện trang chatbot AI",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.8. Giao diện hỏi đáp AI",
+              "children": [],
+              "embedding": null
+            },
+            {
+              "id": "a346f3f7-120e-4287-8f62-e7e7677a9ee2",
+              "title": "4.3.9. Giao diện quản lý người dùng",
+              "level": 3,
+              "content": "Giao diện quản lý người dùng dành cho quản lý và quản trị viên. Chức năng này cho\nphép xem danh sách tài khoản, lọc theo vai trò, tìm kiếm theo tên hoặc email, tạo tài\nkhoản mới, cập nhật trạng thái tài khoản và import danh sách sinh viên/giảng viên từ\nfile CSV. Đây là giao diện quan trọng trong quá trình vận hành hệ thống ở môi trường\ntrường học.\n\nHình 34: Giao diện trang quản lý người dùng",
+              "summary": "",
+              "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.3 Giao diện hệ thống > 4.3.9. Giao diện quản lý người dùng",
+              "children": [],
+              "embedding": null
+            }
+          ],
+          "embedding": null
+        },
+        {
+          "id": "2a1d7bb2-0ade-40d3-b12d-326a3f46db4d",
+          "title": "4.4 Sơ đồ triển khai hệ thống",
+          "level": 2,
+          "content": "Hình 35: Sơ đồ triển khai",
+          "summary": "",
+          "path": "CHƯƠNG 4: XÂY DỰNG HỆ THỐNG > 4.4 Sơ đồ triển khai hệ thống",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "c04bcc22-ce73-4f61-8a61-c3806fa9c96c",
+      "title": "KẾT LUẬN",
+      "level": 1,
+      "content": "",
+      "summary": "",
+      "path": "KẾT LUẬN",
+      "children": [
+        {
+          "id": "a9e2850a-3f5c-4ec1-8276-412ff98133e3",
+          "title": "1. Kết quả đạt được",
+          "level": 2,
+          "content": "Trong quá trình thực hiện đề tài, hệ thống DUTSTUDY đã được xây dựng với mục tiêu\nhỗ trợ quản lý học phần, quản lý báo cáo học thuật và tích hợp chức năng hỏi đáp tài\nliệu dựa trên kỹ thuật Retrieval-Augmented Generation. Hệ thống không chỉ cung cấp\ncác chức năng quản lý học tập cơ bản mà còn bổ sung quy trình xử lý tài liệu tự động,\ngiúp người dùng khai thác nội dung báo cáo một cách hiệu quả hơn.\nTrước hết, đề tài đã xây dựng được hệ thống web gồm frontend, backend, cơ sở dữ liệu,\ndịch vụ lưu trữ file, hàng đợi xử lý, worker xử lý tài liệu và dịch vụ AI. Frontend được\nphát triển bằng React[1], TypeScript và TailwindCSS[5], cung cấp giao diện cho nhiều\nnhóm người dùng như sinh viên, giảng viên, quản lý và quản trị viên. Backend được\nxây dựng bằng Node.js[3], ExpressJS[4] và TypeScript[2], đảm nhiệm việc xác thực,\nphân quyền và xử lý các nghiệp vụ chính của hệ thống.\nHệ thống đã triển khai được cơ chế xác thực người dùng bằng JWT và refresh token.\nNgười dùng sau khi đăng nhập được phân quyền theo vai trò, bao gồm student, lecturer,\nmanager và admin. Mỗi vai trò có các chức năng riêng phù hợp với quy trình sử dụng\nthực tế. Sinh viên có thể tham gia học phần, xem bài tập, nộp báo cáo và sử dụng chức\nnăng hỏi đáp AI. Giảng viên có thể quản lý lớp học, tạo bài tập, xem bài nộp, nhận xét\nvà chấm điểm. Quản lý và quản trị viên có thể quản lý người dùng, học phần, báo cáo\nvà theo dõi thống kê hệ thống.\nVề chức năng quản lý học phần, hệ thống đã hỗ trợ tạo học phần, quản lý danh sách\nsinh viên tham gia, thêm giảng viên phụ trách, tạo tiêu chí đánh giá và theo dõi thông\ntin lớp học. Sinh viên có thể tham gia lớp thông qua mã học phần hoặc được giảng\nviên/quản lý thêm vào lớp. Đây là nền tảng để hệ thống tổ chức các hoạt động học tập\ntheo mô hình Project Based Learning.\nVề chức năng bài tập và nộp báo cáo, hệ thống đã hỗ trợ giảng viên tạo bài tập, đính\nkèm tài liệu, thiết lập hạn nộp và theo dõi bài nộp của sinh viên. Sinh viên có thể nộp\nbáo cáo kèm file PDF hoặc DOCX. Sau khi nộp, hệ thống lưu file vào MinIO, tạo bản\nghi báo cáo trong PostgreSQL[6] và đưa tài liệu vào hàng đợi xử lý. Giảng viên có thể\nxem bài nộp, ghi nhận xét và cập nhật điểm cho sinh viên.\nMột kết quả quan trọng của đề tài là xây dựng được quy trình xử lý tài liệu bất đồng bộ.\nBackend sử dụng Redis[9] để đẩy job xử lý báo cáo vào hàng đợi. Python Worker lắng\nnghe hàng đợi, tải file từ MinIO[10], trích xuất nội dung PDF, làm sạch văn bản, phát\nhiện cấu trúc tài liệu, tạo cây nội dung, sinh tóm tắt và embedding. Cách thiết kế này\n\ngiúp các tác vụ nặng không làm chậm backend chính, đồng thời giúp hệ thống có thể\nmở rộng worker trong tương lai.\nHệ thống cũng đã tích hợp LLM Service phục vụ các tác vụ AI như tóm tắt nội dung,\nlựa chọn phần tài liệu liên quan và sinh câu trả lời theo ngữ cảnh. LLM Service được\nxây dựng bằng FastAPI và sử dụng Ollama[13] với mô hình Qwen2.5[15]. Việc tách\nriêng LLM Service giúp hệ thống dễ thay đổi mô hình, kiểm soát tài nguyên và mở rộng\ncác chức năng AI sau này.\nĐề tài đã xây dựng được chức năng hỏi đáp tài liệu dựa trên RAG. Khi người dùng đặt\ncâu hỏi, hệ thống gửi request đến backend, backend gọi LLM Service để tìm nội dung\nliên quan trong tài liệu đã xử lý và sinh câu trả lời. Chức năng này giúp người dùng tra\ncứu nhanh nội dung báo cáo thay vì phải đọc thủ công toàn bộ tài liệu.\nNgoài ra, hệ thống đã xây dựng được các chức năng hỗ trợ như quản lý thư viện học\nthuật, đánh dấu báo cáo yêu thích, trích xuất tài liệu tham khảo, thông báo trong hệ\nthống, quản lý import người dùng từ CSV và thống kê tổng quan. Cơ sở dữ liệu được\nthiết kế tương đối đầy đủ, bao gồm các bảng phục vụ người dùng, học phần, bài tập, bài\nnộp, báo cáo, phiên bản báo cáo, chunk tài liệu, thông báo, đánh giá và lịch sử truy vấn\nAI.\nNhìn chung, đề tài đã xây dựng được một hệ thống hoàn chỉnh ở mức demo và có khả\nnăng mở rộng, kết hợp giữa quản lý học tập, quản lý báo cáo học thuật và khai thác tài\nliệu bằng AI. Hệ thống đáp ứng được các chức năng chính của một nền tảng hỗ trợ\nProject Based Learning có tích hợp RAG.",
+          "summary": "",
+          "path": "KẾT LUẬN > 1. Kết quả đạt được",
+          "children": [],
+          "embedding": null
+        },
+        {
+          "id": "74bd8753-8371-4cac-9b26-2980396ee6ba",
+          "title": "2. Hạn chế",
+          "level": 2,
+          "content": "Mặc dù hệ thống đã hoàn thành nhiều chức năng quan trọng, đề tài vẫn còn tồn tại một\nsố hạn chế cần được cải thiện trong các phiên bản tiếp theo.\nThứ nhất, chức năng RAG vẫn còn phụ thuộc nhiều vào chất lượng trích xuất nội dung\ntừ tài liệu. Đối với các file PDF có định dạng phức tạp, nhiều bảng biểu, hình ảnh, công\nthức hoặc bố cục nhiều cột, quá trình trích xuất văn bản có thể chưa đầy đủ hoặc sai thứ\ntự. Điều này ảnh hưởng trực tiếp đến chất lượng tóm tắt, embedding và câu trả lời của\nhệ thống.\nThứ hai, pipeline xử lý tài liệu hiện tại chủ yếu tập trung vào PDF và DOCX. Hệ thống\nchưa hỗ trợ tốt các loại tài liệu phức tạp như file scan, tài liệu có OCR, hình ảnh chứa\nchữ hoặc báo cáo có nhiều thành phần phi văn bản. Vì vậy, với các tài liệu không có\ntext layer, hệ thống có thể chưa trích xuất được nội dung chính xác.\n\nThứ ba, chất lượng trả lời của trợ lý AI còn phụ thuộc vào khả năng truy xuất đúng ngữ\ncảnh và khả năng sinh phản hồi của mô hình ngôn ngữ. Trong một số trường hợp, hệ\nthống có thể không tìm được node phù hợp hoặc trả lời chưa sát với nội dung tài liệu.\nĐiều này cho thấy cơ chế retrieval, reranking và kiểm soát nguồn trích dẫn vẫn cần được\ncải thiện thêm.\nThứ tư, hệ thống hiện chưa hiển thị đầy đủ nguồn tham chiếu trong giao diện hỏi đáp\nAI. Người dùng nhận được câu trả lời, nhưng chưa luôn thấy rõ câu trả lời được lấy từ\nphần nào của báo cáo, trang nào hoặc đoạn nội dung nào. Điều này làm giảm khả năng\nkiểm chứng thông tin, đặc biệt trong môi trường học thuật.\nThứ năm, cơ chế kiểm tra trùng lặp hoặc đạo văn hiện mới ở mức cơ bản. Hệ thống có\nthể so sánh mức độ tương đồng từ vựng giữa các báo cáo trong cùng lớp, nhưng chưa\ncó một mô hình phát hiện đạo văn chuyên sâu, chưa hỗ trợ paraphrase detection và chưa\nđánh giá được các trường hợp sao chép có chỉnh sửa câu chữ.\nThứ sáu, một số chức năng quản trị và phân quyền vẫn còn ở mức demo hoặc chưa đồng\nbộ hoàn toàn với backend. Ví dụ, phần cấu hình quyền truy cập module trên frontend\nvẫn có phần lưu cục bộ ở trình duyệt. Để triển khai thực tế, chức năng này cần được\nđưa vào cơ sở dữ liệu và kiểm soát chặt ở backend.\nThứ bảy, hệ thống chưa có bộ test tự động đầy đủ cho frontend, backend và worker.\nViệc thiếu unit test, integration test và end-to-end test có thể gây khó khăn khi mở rộng\nhệ thống hoặc chỉnh sửa các chức năng quan trọng. Đặc biệt, các luồng như nộp báo\ncáo, xử lý file, hỏi đáp AI và chấm điểm cần được kiểm thử kỹ hơn.\nThứ tám, hiệu năng xử lý tài liệu còn phụ thuộc vào tài nguyên máy chạy worker và\nLLM Service. Với các báo cáo dài hoặc khi có nhiều tài liệu được nộp cùng lúc, thời\ngian xử lý có thể tăng lên đáng kể. Hệ thống hiện đã sử dụng Redis[9] queue nhưng chưa\ncó cơ chế scale worker, giám sát job hoặc retry nâng cao.\nCuối cùng, tài liệu kỹ thuật và tài liệu hướng dẫn sử dụng vẫn cần được hoàn thiện. Một\nsố file hướng dẫn trong project chưa hoàn toàn đồng bộ với code hiện tại, ví dụ mô tả\nLLM Service cũ chưa khớp với việc sử dụng FastAPI[12] và Ollama[13]. Điều này có\nthể gây khó khăn cho người mới khi cài đặt và vận hành hệ thống.\n\nThứ tám, hệ thống cần bổ sung kiểm thử tự động. Backend nên có unit test và integration\ntest cho các API quan trọng. Frontend nên có test cho các luồng đăng nhập, xem lớp,\nnộp báo cáo và hỏi đáp AI. Worker nên có test cho pipeline xử lý PDF, chunking và cập\nnhật trạng thái báo cáo. Việc bổ sung test giúp hệ thống ổn định hơn khi mở rộng.\nThứ chín, cần bổ sung cơ chế giám sát và quản lý job xử lý tài liệu. Hệ thống có thể\nthêm dashboard hiển thị số job đang chờ, đang xử lý, đã hoàn thành hoặc bị lỗi. Ngoài\nra, có thể bổ sung retry job, giới hạn thời gian xử lý, ghi log chi tiết và cảnh báo khi\nworker gặp sự cố.\nThứ mười, hệ thống có thể được triển khai theo hướng production hoàn chỉnh hơn. Các\nservice có thể được đóng gói bằng Docker[11] Compose hoặc Kubernetes, bổ sung\nreverse proxy, HTTPS, logging tập trung, backup database và phân tách môi trường\ndevelopment, staging, production. Điều này giúp hệ thống sẵn sàng hơn cho triển khai\nthực tế trong môi trường trường học.\nTóm lại, hướng phát triển chính của hệ thống là nâng cao chất lượng xử lý tài liệu, cải\nthiện độ chính xác của RAG, hoàn thiện phân quyền và kiểm thử, đồng thời mở rộng\ncác chức năng hỗ trợ học thuật như đánh giá báo cáo, kiểm tra trùng lặp và hiển thị\nnguồn tham chiếu. Khi các cải tiến này được thực hiện, DUTSTUDY có thể trở thành\nmột nền tảng hỗ trợ quản lý báo cáo và khai thác tri thức học thuật hiệu quả hơn trong\nmôi trường Project Based Learning.",
+          "summary": "",
+          "path": "KẾT LUẬN > 2. Hạn chế",
+          "children": [],
+          "embedding": null
+        }
+      ],
+      "embedding": null
+    },
+    {
+      "id": "45447875-8711-4018-b967-66cf7c0d0ed1",
       "title": "TÀI LIỆU THAM KHẢO",
       "level": 1,
-      "content": "[1] Arduino.vn, http://arduino.vn/bai-viet/415-hoc-arduino-qua-du-lam-xe-dieu-khien-tu-\nxa-phan-1-tong-quan, 22-5-2014.\n[2] Hướng dẫn cách lắp xe điều khiển, https://www.youtube.com/watch?v=kX5sV0433fM\n[3]Tham khảo dự án xe,\nhttps://www.studocu.vn/vn/document/truong-dai-hoc-bach-khoa-ha-noi/do-an-thiet-\nke/do-an-tot-nghiep-thiet-ke-he-thong-xe-tu-hanh-tu-dong/127729587\n[4] Nghiên cứu và phát triển xe tự hành ứng dụng AI, https://jst-haui.vn/media/30/uffile-\nupload-no-title30638.pdf\n[5] MobileNetV, https://keras.io/api/applications/mobilenet/\n[6] Youtube hướng dẫn học Model AI, https://www.youtube.com/watch?v=dMh7 kroj\nLIE&l ist=PLpkFduNMb9uInRPXI-2CtNDq4DYXm9cUK",
+      "content": "[1] React Team. React Documentation. React Official Documentation.\nhttps://react.dev/reference/react (react.dev)\n[2] TypeScript Team. TypeScript Documentation. Microsoft.\nhttps://www.typescriptlang.org/docs/ (typescriptlang.org)\n[3] Node.js Team. Node.js Documentation. OpenJS Foundation.\nhttps://nodejs.org/docs/latest/api/\n[4] Express.js. Express - Node.js Web Application Framework.\nhttps://expressjs.com/ (expressjs.com)\n[5] Tailwind Labs. Tailwind CSS Documentation.\nhttps://tailwindcss.com/docs (tailwindcss.com)\n[6] PostgreSQL Global Development Group. PostgreSQL Documentation.\nhttps://www.postgresql.org/docs/ (postgresql.org)\n[7] PostgreSQL Global Development Group. PostgreSQL Full Text Search.\nhttps://www.postgresql.org/docs/current/datatype-textsearch.html (postgresql.org)\n[8] pgvector. pgvector: Open-source Vector Similarity Search for PostgreSQL.\nhttps://github.com/pgvector/pgvector\n[9] Redis. Redis Documentation.\nhttps://redis.io/docs/latest/ (redis.io)\n[10] MinIO. MinIO Object Storage Documentation.\nhttps://docs.min.io/ (min.io)\n[11] Docker. Docker Compose Documentation.\nhttps://docs.docker.com/compose/ (docs.docker.com)\n[12] FastAPI. FastAPI Documentation.\nhttps://fastapi.tiangolo.com/ (fastapi.tiangolo.com)\n[13] Ollama. Ollama Documentation.\nhttps://docs.ollama.com/ (docs.ollama.com)\n[14] Ollama. Qwen2.5 Model Library.\nhttps://ollama.com/library/qwen2.5 (ollama.com)\n[15] Qwen Team. Qwen2.5 Technical Report. arXiv, 2024.\nhttps://arxiv.org/abs/2412.15115 (arxiv.org)\n[16] Supabase. AI & Vectors Documentation.\nhttps://supabase.com/docs/guides/ai (supabase.com)\n[17] Supabase. Vector Columns with pgvector.\nhttps://supabase.com/docs/guides/ai/vector-columns (supabase.com)\n[18] Pinecone. Pinecone Indexing Overview.\nhttps://docs.pinecone.io/guides/index-data/indexing-overview (docs.pinecone.io)\n[19] Pinecone. Pinecone API Reference.\nhttps://docs.pinecone.io/docs/api-reference (docs.pinecone.io)\n[20] Lewis, P., Perez, E., Piktus, A., et al. Retrieval-Augmented Generation for Knowledge-Intensive\nNLP Tasks. NeurIPS, 2020.\nhttps://papers.nips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-\nAbstract.html (papers.nips.cc)",
       "summary": "",
       "path": "TÀI LIỆU THAM KHẢO",
       "children": [],

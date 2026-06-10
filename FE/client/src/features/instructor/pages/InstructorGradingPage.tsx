@@ -71,6 +71,7 @@ function normalizeReport(row: Record<string, unknown>): Report {
     reviewed_at: row.reviewed_at != null ? String(row.reviewed_at) : null,
     created_at: String(row.created_at ?? ""),
     updated_at: String(row.updated_at ?? ""),
+    summary: row.summary != null ? String(row.summary) : "",
   };
 }
 
