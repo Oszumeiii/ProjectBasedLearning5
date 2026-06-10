@@ -1,42 +1,41 @@
-import type { Request, Response } from 'express'
+import { response, type Request, type Response } from 'express'
 import pool from '../config/db'
 
 export const ragQA = async (req: Request, res: Response): Promise<void> => {
   try {
-
     const { question, reportId } = req.body as {
       question?: string
       reportId?: number
     }
 
     if (!question || !reportId) {
-      res.status(400).json({ 
-        message: 'Thiếu thông tin bắt buộc: question và reportId là bắt buộc.' 
-      });
-      return;
+      res.status(400).json({
+        message: 'Thiếu thông tin bắt buộc: question và reportId là bắt buộc.'
+      })
+      return
     }
-    console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`);  
-    
+    console.log(`🔍 Đang gửi yêu cầu RAG: "${question}" cho reportId: ${reportId}`)
 
-    const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000';
-    
+    const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000'
+
     const response = await fetch(`${LLM_SERVICE_URL}/answer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: question,
-        post_id: reportId,
-      }),
-    });
+        post_id: reportId
+      })
+    })
 
     if (!response.ok) {
       const detail = await response.text()
       console.error(`❌ LLM Service error (${response.status}): ${detail}`)
       res.status(response.status).json({
-        message: response.status === 404
-          ? 'Tài liệu chưa có dữ liệu phù hợp để trả lời. Có thể tài liệu đang được xử lý hoặc chưa index xong.'
-          : 'Lỗi từ LLM Service',
-        detail,
+        message:
+          response.status === 404
+            ? 'Tài liệu chưa có dữ liệu phù hợp để trả lời. Có thể tài liệu đang được xử lý hoặc chưa index xong.'
+            : 'Lỗi từ LLM Service',
+        detail
       })
       return
     }
@@ -46,9 +45,8 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({
       question: question,
       answer: data.response || data.answer || '',
-      contexts: ""
-    });
-
+      contexts: ''
+    })
   } catch (error: any) {
     console.error('❌ Lỗi khi gọi LLM Service:', error.message)
     res.status(500).json({
@@ -58,7 +56,87 @@ export const ragQA = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+export const summary = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { reportId } = req.body as { reportId?: number }
 
+    if (reportId === undefined || reportId === null) {
+      res.status(400).json({ message: 'Thiếu thông tin bắt buộc: reportId là bắt buộc.' })
+      return
+    }
+
+    const result = await pool.query(
+      'SELECT title, summary, content FROM reports WHERE id = $1 AND deleted_at IS NULL',
+      [reportId]
+    )
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'Report not found' })
+      return
+    }
+
+    const { title, summary: cachedSummary, content } = result.rows[0]
+
+    if (cachedSummary) {
+      res.status(200).json({ reportId, title, summary: cachedSummary })
+      return
+    }
+
+    if (!content || content.trim().length < 100) {
+      res.status(200).json({
+        reportId,
+        title,
+        summary: 'Tài liệu chưa được xử lý hoặc nội dung quá ngắn để tóm tắt.'
+      })
+      return
+    }
+
+    const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000'
+    const SERVICE_TIMEOUT_MS = 60_000
+
+    const truncated = content.slice(0, 6000)
+
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), SERVICE_TIMEOUT_MS)
+
+    try {
+      const llmRes = await fetch(`${LLM_SERVICE_URL}/summary`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: truncated, max_new_tokens: 512 }),
+        signal: controller.signal
+      })
+      clearTimeout(timer)
+
+      if (llmRes.ok) {
+        const data = await llmRes.json()
+        const generatedSummary = data.summary || ''
+
+        if (generatedSummary) {
+          await pool.query('UPDATE reports SET summary = $1 WHERE id = $2', [generatedSummary, reportId])
+        }
+
+        res.status(200).json({ reportId, title, summary: generatedSummary || 'Không thể tạo tóm tắt.' })
+        return
+      }
+
+      console.error(`❌ LLM summary error (${llmRes.status}): ${await llmRes.text()}`)
+    } catch (llmErr: any) {
+      clearTimeout(timer)
+      console.error('❌ LLM summary call failed:', llmErr.message)
+    }
+
+    res.status(200).json({
+      reportId,
+      title,
+      summary: 'Không thể kết nối dịch vụ AI để tạo tóm tắt. Vui lòng thử lại sau.'
+    })
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Unknown error'
+    console.error('❌ Lỗi khi lấy summary report:', msg)
+    res.status(500).json({ message: 'Không thể lấy phần tóm tắt báo cáo.', error: msg })
+  }
+}
 
 const toPgVectorLiteral = (embedding: number[]): string => {
   return `[${embedding.join(',')}]`
@@ -153,13 +231,8 @@ export const storeEmbeddings = async (req: Request, res: Response): Promise<void
   }
 }
 
-export const semanticSearch = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-
+export const semanticSearch = async (req: Request, res: Response): Promise<void> => {
   try {
-
     const { query } = req.body as {
       query?: string
     }
@@ -171,30 +244,24 @@ export const semanticSearch = async (
       return
     }
 
-    const LLM_SERVICE_URL =
-      process.env.LLM_SERVICE_URL ||
-      'http://localhost:5000'
+    const LLM_SERVICE_URL = process.env.LLM_SERVICE_URL || 'http://localhost:5000'
 
-    const response = await fetch(
-      `${LLM_SERVICE_URL}/semantic-search`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query
-        }),
-      }
-    )
+    const response = await fetch(`${LLM_SERVICE_URL}/semantic-search`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query
+      })
+    })
 
     if (!response.ok) {
-
       const detail = await response.text()
 
       res.status(response.status).json({
         message: 'Lỗi từ LLM Service',
-        detail,
+        detail
       })
 
       return
@@ -207,17 +274,11 @@ export const semanticSearch = async (
       matches: data.matches || [],
       total: data.matches?.length || 0
     })
-
   } catch (error: any) {
-
-    console.error(
-      '❌ Lỗi khi gọi LLM Service:',
-      error.message
-    )
+    console.error('❌ Lỗi khi gọi LLM Service:', error.message)
 
     res.status(500).json({
-      message:
-        'Không thể kết nối đến dịch vụ AI.',
+      message: 'Không thể kết nối đến dịch vụ AI.',
       error: error.message
     })
   }

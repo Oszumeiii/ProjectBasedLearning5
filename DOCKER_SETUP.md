@@ -1,79 +1,100 @@
-# Docker setup
+# Docker Setup — EduRAG
 
 ## Yêu cầu
-- Cài Docker Desktop
-- Backend vẫn dùng Supabase/PostgreSQL như `.env` hiện tại
+- Docker Desktop đã cài đặt
+- PostgreSQL sử dụng Supabase (external, không trong Docker)
 
-## 1. Chạy môi trường local dev
-Từ thư mục gốc dự án:
+## Kiến trúc
+
+```
+┌─────────────┐    ┌──────────────┐    ┌───────────────┐
+│  Frontend    │───▶│   Backend    │───▶│  PostgreSQL   │
+│  :3000       │    │   :3001      │    │  (Supabase)   │
+└─────────────┘    └──────┬───────┘    └───────────────┘
+                          │
+              ┌───────────┼───────────┐
+              ▼           ▼           ▼
+        ┌──────────┐ ┌─────────┐ ┌──────────────┐
+        │  Redis   │ │  MinIO  │ │ llm_service  │
+        │  :6379   │ │  :9000  │ │   :5000      │
+        └──────────┘ └─────────┘ └──────┬───────┘
+                          ▲             │
+                          │             ▼
+                    ┌─────────────┐  Supabase
+                    │   Worker    │  (nodes/vectors)
+                    │  (Python)   │
+                    └─────────────┘
+```
+
+## 1. Chạy môi trường dev
 
 ```bash
 docker compose up --build
 ```
 
-Mặc định file compose hiện publish:
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:3301/api`
-- MinIO API: `http://localhost:9000`
-- MinIO Console: `http://localhost:9001`
+Services:
 
-Nếu máy bạn đã có backend/frontend local đang chiếm cổng `3001` hoặc `3000`, có thể đổi cổng publish khi chạy Docker:
+| Service | URL | Mô tả |
+|---------|-----|-------|
+| Frontend | http://localhost:3000 | React dev server |
+| Backend API | http://localhost:3001/api | Express API |
+| LLM Service | http://localhost:5000 | FastAPI (AI/RAG) |
+| MinIO API | http://localhost:9000 | Object storage |
+| MinIO Console | http://localhost:9001 | MinIO web UI |
+| Redis | localhost:6379 | Cache & queue |
+
+Bucket `edurag-reports` được **tự động tạo** khi khởi động.
+
+### Đổi port nếu bị trùng
 
 ```bash
-FRONTEND_PORT=3300 BACKEND_PORT=3301 MINIO_API_PORT=9100 MINIO_CONSOLE_PORT=9101 docker compose up --build
+FRONTEND_PORT=3300 BACKEND_PORT=3301 LLM_PORT=5100 docker compose up --build
 ```
 
-Service sau khi chạy:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:3001/api
-- MinIO API: http://localhost:9000
-- MinIO Console: http://localhost:9001
+## 2. Chạy production
 
-Thông tin đăng nhập MinIO mặc định:
-- user: `minioadmin`
-- password: `minioadmin`
-
-## 2. Chạy production-like
 ```bash
 docker compose -f docker-compose.prod.yml --profile prod up --build
 ```
 
-Nếu cần tránh trùng cổng với local app:
+Production sẽ:
+- Build frontend tĩnh với nginx
+- Build backend từ TypeScript đã compile
+- llm_service không mount volume code (dùng image)
+
+## 3. Biến môi trường
+
+Mỗi service đọc `.env` riêng:
+
+| Service | File .env |
+|---------|-----------|
+| Backend | `BE/.env` |
+| Worker Python | `worker-python/.env` |
+| LLM Service | `llm_service/.env` |
+
+Docker Compose tự override các biến nội bộ (Redis host, MinIO host, LLM_SERVICE_URL) để các container giao tiếp qua Docker network.
+
+### Biến quan trọng (override bởi compose)
+
+| Biến | Giá trị trong Docker | Mô tả |
+|------|---------------------|-------|
+| `REDIS_URL` | `redis://redis:6379` | Backend → Redis |
+| `MINIO_ENDPOINT` | `minio` | Backend/Worker → MinIO |
+| `LLM_SERVICE_URL` | `http://llm-service:5000` | Backend → LLM |
+| `RAG_SERVICE_URL` | `http://llm-service:5000` | Backend → RAG |
+
+## 4. Lưu ý
+
+- **LLM Service** lần đầu chạy sẽ tải model (~2-5GB), có thể mất vài phút. Model được cache trong Docker volume `llm_model_cache`.
+- **PostgreSQL** không nằm trong Docker — dùng Supabase external theo `BE/.env`.
+- **File .env** đã được gitignore. Tạo từ `.env.example` nếu cần.
+
+## 5. Dừng / xóa
 
 ```bash
-FRONTEND_PORT=4300 BACKEND_PORT=4301 MINIO_API_PORT=9200 MINIO_CONSOLE_PORT=9201 docker compose -f docker-compose.prod.yml --profile prod up --build
-```
-
-Production-like sẽ:
-- build frontend tĩnh bằng nginx
-- build backend từ bản TypeScript đã compile
-- vẫn dùng MinIO riêng trong Docker
-
-## 3. Biến môi trường quan trọng
-Backend đang đọc `.env` trong `BE/.env`.
-Khi chạy Docker, compose sẽ tự override các biến MinIO sau:
-- `MINIO_ENDPOINT=minio`
-- `MINIO_PORT=9000`
-- `MINIO_USE_SSL=false`
-- `MINIO_PUBLIC_URL=http://localhost:9000` (để link tải trả về dùng host có thể truy cập từ trình duyệt)
-
-Bạn nên giữ:
-- `CLIENT_URL=http://localhost:3000`
-- các biến DB Supabase đúng theo môi trường của bạn
-
-## 4. Kiểm tra upload/download
-Sau khi stack chạy:
-1. đăng nhập hệ thống
-2. nộp file bài tập hoặc upload report
-3. kiểm tra bucket `edurag-reports` trong MinIO Console
-4. thử tải file từ thư viện hoặc màn hình chấm bài
-
-## 5. Dừng môi trường
-```bash
+# Dừng
 docker compose down
-```
 
-Xóa luôn volume MinIO:
-```bash
+# Dừng và xóa volume (mất data MinIO + Redis)
 docker compose down -v
 ```

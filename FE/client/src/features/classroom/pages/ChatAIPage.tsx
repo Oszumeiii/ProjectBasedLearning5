@@ -53,22 +53,36 @@ export const ChatAIPage = () => {
 
   useEffect(() => {
     if (!reportId) return;
+
     const fetchReport = async () => {
       try {
         const data = await getReportById(Number(reportId));
         setReport(data);
-        setMessages([
-          {
-            id: "welcome",
+
+        const msgs: Message[] = [];
+
+        if (data.summary) {
+          msgs.push({
+            id: "summary",
             role: "assistant",
-            content: `Xin chào! Tôi là trợ lý AI cho tài liệu "${data.title}". Bạn có thể hỏi tôi bất kỳ câu hỏi gì về nội dung báo cáo này.`,
+            content: `📋 Tóm tắt báo cáo:\n\n${data.summary}`,
             timestamp: new Date(),
-          },
-        ]);
+          });
+        }
+
+        msgs.push({
+          id: "welcome",
+          role: "assistant",
+          content: `Xin chào! Tôi là trợ lý AI cho tài liệu "${data.title}". Bạn có thể hỏi tôi bất kỳ câu hỏi gì về nội dung báo cáo này.`,
+          timestamp: new Date(),
+        });
+
+        setMessages(msgs);
       } catch (err) {
         console.error("Failed to load report", err);
       }
     };
+
     fetchReport();
   }, [reportId]);
 
@@ -174,7 +188,10 @@ export const ChatAIPage = () => {
                     msg.role === "user" ? "text-white/60" : "text-ink-faint"
                   }`}
                 >
-                  {msg.timestamp.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}
+                  {msg.timestamp.toLocaleTimeString("vi-VN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
               </div>
               {msg.role === "user" && (
