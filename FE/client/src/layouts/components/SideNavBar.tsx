@@ -1,4 +1,4 @@
-import { BookOpen, ClipboardList, Settings } from "lucide-react";
+import { BookOpen, ClipboardList, Heart, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../features/auth/context/AuthContext";
 
@@ -37,6 +37,9 @@ export const SideNavBar = () => {
         </NavLink>
         <NavLink to="library" className={itemClass}>
           <ClipboardList size={18} strokeWidth={2} /> Tài liệu
+        </NavLink>
+        <NavLink to="favorites" className={itemClass}>
+          <Heart size={18} strokeWidth={2} /> Yêu thích
         </NavLink>
       </nav>
 

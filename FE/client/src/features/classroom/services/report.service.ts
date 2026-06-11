@@ -42,8 +42,10 @@ export interface Report {
   semester?: string | null;
   avg_rating?: number;
   rating_count?: number;
+  is_favorited?: boolean;
   created_at: string;
   updated_at: string;
+  summary: string;
 }
 
 export interface PlagiarismMatch {
@@ -115,7 +117,9 @@ export const listReports = async (params?: ListReportsParams) => {
         sort: params.sort === "newest" ? "recent" : params.sort,
       }
     : undefined;
-  const response = await axiosInstance.get("/reports", { params: normalizedParams });
+  const response = await axiosInstance.get("/reports", {
+    params: normalizedParams,
+  });
   return response.data;
 };
 
@@ -139,7 +143,7 @@ export const updateReport = async (
     visibility: string;
     projectId: number;
     courseId: number;
-  }>
+  }>,
 ) => {
   const response = await axiosInstance.patch(`/reports/${id}`, data);
   return response.data;
@@ -153,7 +157,7 @@ export const deleteReport = async (id: number) => {
 export const updateReportStatus = async (
   id: number,
   status: string,
-  reviewNote?: string
+  reviewNote?: string,
 ): Promise<Report & { reviewMessage: string }> => {
   const response = await axiosInstance.patch(`/reports/${id}/status`, {
     status,
@@ -162,15 +166,23 @@ export const updateReportStatus = async (
   return response.data;
 };
 
-export const checkReportPlagiarism = async (reportId: number): Promise<PlagiarismCheckResult> => {
+export const checkReportPlagiarism = async (
+  reportId: number,
+): Promise<PlagiarismCheckResult> => {
   const response = await axiosInstance.post<PlagiarismCheckResult>(
-    `/reports/${reportId}/plagiarism-check`
+    `/reports/${reportId}/plagiarism-check`,
   );
   return response.data;
 };
 
-export const patchReportReviewNote = async (reportId: number, reviewNote: string) => {
-  const response = await axiosInstance.patch(`/reports/${reportId}/review-note`, { reviewNote });
+export const patchReportReviewNote = async (
+  reportId: number,
+  reviewNote: string,
+) => {
+  const response = await axiosInstance.patch(
+    `/reports/${reportId}/review-note`,
+    { reviewNote },
+  );
   return response.data;
 };
 
@@ -178,7 +190,7 @@ export const resubmitReport = async (id: number, formData: FormData) => {
   const response = await axiosInstance.post(
     `/reports/${id}/resubmit`,
     formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    { headers: { "Content-Type": "multipart/form-data" } },
   );
   return response.data;
 };
@@ -195,11 +207,14 @@ const getFileNameFromDisposition = (contentDisposition?: string | null) => {
 
 export const downloadBinaryFile = async (
   url: string,
-  preferredFileName?: string | null
+  preferredFileName?: string | null,
 ): Promise<void> => {
   const response = await axiosInstance.get(url, { responseType: "blob" });
   const blob = new Blob([response.data], {
-    type: response.headers["content-type"] || response.data?.type || "application/octet-stream",
+    type:
+      response.headers["content-type"] ||
+      response.data?.type ||
+      "application/octet-stream",
   });
   const objectUrl = window.URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -220,19 +235,21 @@ export const downloadReport = async (id: number): Promise<void> => {
 
 export const downloadReportInBrowser = async (
   id: number,
-  preferredFileName?: string | null
+  preferredFileName?: string | null,
 ) => {
   await downloadBinaryFile(`/reports/${id}/download`, preferredFileName);
 };
 
 export const listReportVersions = async (
-  id: number
+  id: number,
 ): Promise<ReportVersion[]> => {
   const response = await axiosInstance.get(`/reports/${id}/versions`);
   return response.data.items;
 };
 
-export const getReportFeedback = async (id: number): Promise<ReportFeedback[]> => {
+export const getReportFeedback = async (
+  id: number,
+): Promise<ReportFeedback[]> => {
   const report = await getReportById(id);
   if (!report.review_note?.trim()) return [];
   return [
@@ -257,6 +274,44 @@ export const removeFavorite = async (id: number) => {
   return response.data;
 };
 
+export interface RatingItem {
+  id: number;
+  user_id: number;
+  report_id: number;
+  rating: number;
+  comment: string | null;
+  reviewer_name: string;
+  created_at: string;
+}
+
+export interface RatingsResponse {
+  avgRating: number;
+  count: number;
+  items: RatingItem[];
+}
+
+export const getRatings = async (id: number): Promise<RatingsResponse> => {
+  const response = await axiosInstance.get(`/reports/${id}/ratings`);
+  return response.data;
+};
+
+export const upsertRating = async (
+  id: number,
+  rating: number,
+  comment?: string
+) => {
+  const response = await axiosInstance.put(`/reports/${id}/ratings`, {
+    rating,
+    comment,
+  });
+  return response.data;
+};
+
+export const getMyFavorites = async (): Promise<{ items: Report[] }> => {
+  const response = await axiosInstance.get("/users/me/favorites");
+  return response.data;
+};
+
 export interface ReportReference {
   id: number;
   title: string;
@@ -267,7 +322,9 @@ export interface ReportReference {
   ref_order: number;
 }
 
-export const getReportReferences = async (id: number): Promise<ReportReference[]> => {
+export const getReportReferences = async (
+  id: number,
+): Promise<ReportReference[]> => {
   const response = await axiosInstance.get(`/reports/${id}/references`);
   return response.data.items;
 };
@@ -289,7 +346,9 @@ export interface SemanticSearchResult {
   total: number;
 }
 
-export const semanticSearchReports = async (query: string): Promise<SemanticSearchResult> => {
+export const semanticSearchReports = async (
+  query: string,
+): Promise<SemanticSearchResult> => {
   const response = await axiosInstance.post("/rag/search", { query });
   return response.data;
 };

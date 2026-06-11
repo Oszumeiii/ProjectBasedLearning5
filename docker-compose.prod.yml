@@ -31,6 +31,47 @@ services:
       retries: 8
       start_period: 20s
 
+  minio-init:
+    image: minio/mc:latest
+    container_name: edurag-minio-init-prod
+    profiles: ["prod"]
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 $${MINIO_ROOT_USER:-minioadmin} $${MINIO_ROOT_PASSWORD:-minioadmin};
+      mc mb --ignore-existing local/$${MINIO_BUCKET:-edurag-reports};
+      echo 'Bucket ready';
+      "
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_BUCKET: ${MINIO_BUCKET:-edurag-reports}
+
+  llm-service:
+    build:
+      context: ./llm_service
+      dockerfile: Dockerfile
+    container_name: edurag-llm-prod
+    profiles: ["prod"]
+    env_file:
+      - ./llm_service/.env
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_KEY: ${SUPABASE_KEY:-}
+      PINECONE_API_KEY: ${PINECONE_API_KEY:-}
+    ports:
+      - "${LLM_PORT:-5000}:5000"
+    volumes:
+      - llm_model_cache:/app/model_cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
   backend:
     build:
       context: ./BE
@@ -43,6 +84,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
     env_file:
       - ./BE/.env
     environment:
@@ -53,6 +96,8 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
       REDIS_URL: redis://redis:6379
+      LLM_SERVICE_URL: http://llm-service:5000
+      RAG_SERVICE_URL: http://llm-service:5000
     ports:
       - "${BACKEND_PORT:-3001}:3001"
 
@@ -67,6 +112,8 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
     env_file:
       - ./worker-python/.env
     environment:
@@ -77,13 +124,14 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
       MINIO_BUCKET: ${MINIO_BUCKET:-edurag-reports}
+      LLM_SERVICE_URL: http://llm-service:5000
 
   frontend:
     build:
       context: ./FE/client
       dockerfile: Dockerfile.prod
       args:
-        REACT_APP_API_URL: http://localhost:3001/api
+        REACT_APP_API_URL: http://localhost:${BACKEND_PORT:-3001}/api
     container_name: edurag-frontend-prod
     profiles: ["prod"]
     depends_on:
@@ -94,3 +142,4 @@ services:
 volumes:
   minio_data:
   redis_data:
+  llm_model_cache:

@@ -14,6 +14,7 @@ import {
   GraduationCap,
   HardDrive,
   Star,
+  Heart,
   ChevronRight,
   FileArchive,
   Tag,
@@ -26,6 +27,8 @@ import {
 } from "lucide-react";
 import {
   listReports,
+  addFavorite,
+  removeFavorite,
   type Report,
   type ListReportsParams,
   downloadReportInBrowser,
@@ -141,6 +144,30 @@ export const AcademicLibraryPage = () => {
   const [semanticLoading, setSemanticLoading] = useState(false);
   const [semanticQuery, setSemanticQuery] = useState("");
   const [allReports, setAllReports] = useState<Report[]>([]);
+  const [favLoadingId, setFavLoadingId] = useState<number | null>(null);
+
+  const handleToggleFavorite = async (e: React.MouseEvent, report: Report) => {
+    e.stopPropagation();
+    if (favLoadingId) return;
+    setFavLoadingId(report.id);
+    try {
+      if (report.is_favorited) {
+        await removeFavorite(report.id);
+      } else {
+        await addFavorite(report.id);
+      }
+      const toggle = (list: Report[]) =>
+        list.map((r) =>
+          r.id === report.id ? { ...r, is_favorited: !r.is_favorited } : r
+        );
+      setReports(toggle);
+      setAllReports(toggle);
+    } catch (err) {
+      console.error("Failed to toggle favorite", err);
+    } finally {
+      setFavLoadingId(null);
+    }
+  };
 
   useEffect(() => {
     if (!isSemanticMode) {
@@ -677,6 +704,22 @@ export const AcademicLibraryPage = () => {
 
                       {/* Right: Actions */}
                       <div className="flex shrink-0 items-center gap-2 md:flex-col md:items-stretch md:gap-2">
+                        <button
+                          type="button"
+                          title={report.is_favorited ? "Bỏ yêu thích" : "Thêm yêu thích"}
+                          onClick={(e) => void handleToggleFavorite(e, report)}
+                          disabled={favLoadingId === report.id}
+                          className={`inline-flex items-center justify-center rounded-lg border p-2 transition-colors ${
+                            report.is_favorited
+                              ? "border-red-200 bg-red-50 text-red-500 hover:bg-red-100"
+                              : "border-slate-200 bg-white text-slate-400 hover:border-red-200 hover:text-red-400"
+                          }`}
+                        >
+                          <Heart
+                            size={15}
+                            fill={report.is_favorited ? "currentColor" : "none"}
+                          />
+                        </button>
                         <button
                           type="button"
                           title="Chat AI với tài liệu"

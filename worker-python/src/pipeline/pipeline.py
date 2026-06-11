@@ -112,11 +112,11 @@ def stage_extract_references(documents, report_id):
 # STAGE 7: Upload to Supabase (only for class_posts, not reports)
 # =========================
 def stage_upload(chunks, global_summary, post_id=None):
-    """Upload chunks vào Supabase. Chỉ chạy khi có post_id hợp lệ (từ class_posts)."""
+    """Upload chunks vào Supabase. post_id có thể là class_posts ID hoặc report_id."""
     if post_id:
-        supabase_repo.upload_to_supabase(chunks,global_summary, post_id)
+        supabase_repo.upload_to_supabase(chunks, global_summary, post_id)
     else:
-        print("⏭️ Bỏ qua upload Supabase (không có post_id từ class_posts)")
+        print("⏭️ Bỏ qua upload Supabase (không có post_id)")
 
 
 
@@ -200,14 +200,12 @@ def run_pipeline(pdf_path, report_id=None, post_id=None):
     # =========================
     chunks = stage_flatten_tree(root)
   
-    # Dùng report_id làm khóa vector/metadata nếu không có post_id (luồng nộp báo cáo qua worker).
     embed_key = post_id if post_id is not None else report_id
 
-    stage_upload(
-        chunks,
-        global_summary,
-        embed_key,
-    )
+    if embed_key is not None:
+        stage_upload(chunks, global_summary, embed_key)
+    else:
+        print("⏭️ Bỏ qua upload Supabase (thiếu cả post_id và report_id)")
 
     pc_instance, pc_index = _get_pinecone()
     global_summary_embedding = pc_instance.embed_text(global_summary)

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { BookOpen, ExternalLink } from "lucide-react";
+import { BookOpen, ExternalLink, Heart, Star } from "lucide-react";
 import { GradeBanner } from "../components/GradeBanner";
 import { AiExecutiveSummary } from "../components/AiExecutiveSummary";
 import { DeficiencyAnalysis } from "../components/DeficiencyAnalysis";
@@ -9,9 +9,14 @@ import {
   getReportById,
   getReportFeedback,
   getReportReferences,
+  getRatings,
+  upsertRating,
+  addFavorite,
+  removeFavorite,
   type Report,
   type ReportFeedback,
   type ReportReference,
+  type RatingsResponse,
 } from "../services/report.service";
 
 export const AnalysisFeedbackPage = () => {
@@ -21,17 +26,27 @@ export const AnalysisFeedbackPage = () => {
   const [feedbacks, setFeedbacks] = useState<ReportFeedback[]>([]);
   const [references, setReferences] = useState<ReportReference[]>([]);
   const [loading, setLoading] = useState(!!reportId);
+  const [ratingsData, setRatingsData] = useState<RatingsResponse | null>(null);
+  const [myRating, setMyRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [ratingSubmitting, setRatingSubmitting] = useState(false);
+  const [favLoading, setFavLoading] = useState(false);
 
   useEffect(() => {
     if (!reportId) return;
+    const id = Number(reportId);
     const fetchData = async () => {
       try {
-        const reportData = await getReportById(Number(reportId));
+        const [reportData, feedbackData, refsData, ratData] = await Promise.all([
+          getReportById(id),
+          getReportFeedback(id),
+          getReportReferences(id),
+          getRatings(id),
+        ]);
         setReport(reportData);
-        const feedbackData = await getReportFeedback(Number(reportId));
         setFeedbacks(feedbackData);
-        const refsData = await getReportReferences(Number(reportId));
         setReferences(refsData);
+        setRatingsData(ratData);
       } catch (err) {
         console.error("Failed to load feedback data", err);
       } finally {
@@ -40,6 +55,38 @@ export const AnalysisFeedbackPage = () => {
     };
     fetchData();
   }, [reportId]);
+
+  const handleRate = async (stars: number) => {
+    if (!reportId || ratingSubmitting) return;
+    setRatingSubmitting(true);
+    try {
+      await upsertRating(Number(reportId), stars);
+      setMyRating(stars);
+      const updated = await getRatings(Number(reportId));
+      setRatingsData(updated);
+    } catch (err) {
+      console.error("Failed to submit rating", err);
+    } finally {
+      setRatingSubmitting(false);
+    }
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!report || favLoading) return;
+    setFavLoading(true);
+    try {
+      if (report.is_favorited) {
+        await removeFavorite(report.id);
+      } else {
+        await addFavorite(report.id);
+      }
+      setReport({ ...report, is_favorited: !report.is_favorited });
+    } catch (err) {
+      console.error("Failed to toggle favorite", err);
+    } finally {
+      setFavLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -69,6 +116,60 @@ export const AnalysisFeedbackPage = () => {
     <div className="no-scrollbar flex-1 space-y-8 overflow-y-auto bg-app p-8">
       <div className="mx-auto max-w-7xl space-y-8">
         <GradeBanner title={title} instructorName={reviewer} comment={comment} />
+
+        {/* Rating & Favorite bar */}
+        <div className="flex flex-wrap items-center gap-6 rounded-xl border border-app-line bg-app-card px-6 py-4 shadow-whisper">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-ink-muted">Đánh giá:</span>
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  disabled={ratingSubmitting}
+                  onClick={() => void handleRate(s)}
+                  onMouseEnter={() => setHoverRating(s)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className="p-0.5 transition-transform hover:scale-110 disabled:opacity-50"
+                >
+                  <Star
+                    size={22}
+                    className={
+                      s <= (hoverRating || myRating)
+                        ? "text-amber-400"
+                        : "text-slate-300"
+                    }
+                    fill={s <= (hoverRating || myRating) ? "currentColor" : "none"}
+                  />
+                </button>
+              ))}
+            </div>
+            {ratingsData && ratingsData.count > 0 && (
+              <span className="text-xs text-ink-muted">
+                {Number(ratingsData.avgRating).toFixed(1)} / 5 ({ratingsData.count} lượt)
+              </span>
+            )}
+          </div>
+
+          <div className="h-6 w-px bg-app-line" />
+
+          <button
+            type="button"
+            disabled={favLoading}
+            onClick={() => void handleToggleFavorite()}
+            className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              report?.is_favorited
+                ? "border-red-200 bg-red-50 text-red-600 hover:bg-red-100"
+                : "border-app-line bg-app-inset text-ink-muted hover:border-red-200 hover:text-red-500"
+            }`}
+          >
+            <Heart
+              size={16}
+              fill={report?.is_favorited ? "currentColor" : "none"}
+            />
+            {report?.is_favorited ? "Đã yêu thích" : "Yêu thích"}
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="space-y-8 lg:col-span-8">
